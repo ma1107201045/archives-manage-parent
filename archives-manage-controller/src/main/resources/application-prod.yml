@@ -1,0 +1,49 @@
+server:
+  port: 8090
+  tomcat:
+    accept-count: 1000
+    max-threads: 400
+    min-spare-threads: 1000
+    max-swallow-size: 100MB #文件上传总大小
+  servlet:
+    context-path: /archivesManage
+    session:
+      timeout: 31536000
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.68.131/db_dev_ruixing?serverTimezone=Asia/Shanghai
+      username: root
+      password: 199726Ma.
+      initial-size: 5  #默认值0。初始化时建立物理连接的个数，初始化发生在显示调用init方法，或者第一次getConnection时。
+      max-active: 20 #默认值8。最大连接池数量。
+      min-idle: 5 #最小连接池数量。 #spring.datasource.druid.maxIdle: 已经不再使用，配置了也没效果，可忽略。说明：maxIdle是Druid为了方便DBCP用户迁移而增加的，maxIdle是一个混乱的概念。连接池只应该有maxPoolSize和minPoolSize，druid只保留了maxActive和minIdle，分别相当于maxPoolSize和minPoolSize。
+      max-wait: 60000 #获取连接时最大等待时间，单位毫秒。配置了maxWait之后，缺省启用公平锁，并发效率会有所下降，如果需要可以通过配置useUnfairLock属性为true来使用非公平锁。
+      pool-prepared-statements: true #默认值为false。是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+      max-pool-prepared-statement-per-connection-size: 20 #默认值-1。要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100。
+      validation-query: SELECT 1 FROM DUAL #用来检测连接是否有效的sql，要求是一个查询语句，常用select ‘X’。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用。
+      test-on-borrow: false #默认值为true。申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-return: false #默认值为false。归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-while-idle: true #默认值为false。建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      time-between-eviction-runs-millis: 60000 #1.0.14版本，默认值为1分钟，单位毫秒。有两个含义：一个是Destroy线程会检测连接的间隔时间，如果连接空闲时间大于等于minEvictableIdleTimeMillis则关闭物理连接；另一个是testWhileIdle的判断依据，详细看testWhileIdle属性的说明。
+      min-evictable-idle-time-millis: 30000   #连接保持空闲而不被驱逐的最小时间，单位毫秒。
+      filter:
+        wall:
+          enabled: true
+        stat:
+          enabled: true # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：监控统计用的filter:stat、日志用的filter:log4j、防御sql注入的filter:wall。
+          log-slow-sql: true
+          slow-sql-millis: 2000
+  servlet:
+    multipart:
+      enabled: true   #开启文件上传
+      max-file-size: 10MB #单个文件的最大上限
+      max-request-size: 1000MB  #单个请求的文件总大小上限
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+mybatis-plus:
+  config-location: classpath:mybatis-config.xml
+  type-aliases-package: com.yintu.rixing
