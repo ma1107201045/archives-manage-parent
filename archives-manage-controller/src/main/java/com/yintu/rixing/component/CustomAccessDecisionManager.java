@@ -1,4 +1,4 @@
-package com.yintu.rixing.configuration;
+package com.yintu.rixing.component;
 
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
