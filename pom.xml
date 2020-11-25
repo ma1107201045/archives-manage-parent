@@ -26,8 +26,8 @@
         <archives-manage-all.version>${project.version}</archives-manage-all.version>
         <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
         <mybatis-generator-core.version>1.4.0</mybatis-generator-core.version>
-        <mybatis-plus-boot-starter.version>3.4.0</mybatis-plus-boot-starter.version>
-        <mybatis-plus-generator.version>3.4.0</mybatis-plus-generator.version>
+        <mybatis-plus-boot-starter.version>3.4.1</mybatis-plus-boot-starter.version>
+        <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
         <freemarker.version>2.3.30</freemarker.version>
         <druid-spring-boot-starter.version>1.1.21</druid-spring-boot-starter.version>
         <fastjson.version>1.2.62</fastjson.version>
@@ -35,7 +35,6 @@
         <hutool-all.version>5.3.9</hutool-all.version>
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
-        <mybatis-generator-maven-plugin.version>1.4.0</mybatis-generator-maven-plugin.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -125,29 +124,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.mybatis.generator</groupId>
-                    <artifactId>mybatis-generator-maven-plugin</artifactId>
-                    <version>${mybatis-generator-maven-plugin.version}</version>
-                    <configuration>
-                        <!--配置文件的位置-->
-                        <configurationFile>src/main/resources/generator-config.xml</configurationFile>
-                        <verbose>true</verbose>
-                        <overwrite>true</overwrite>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>Generate MyBatis Artifacts</id>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 </project>
