@@ -1,5 +1,6 @@
 package com.yintu.rixing.gererator;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -7,6 +8,7 @@ import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
@@ -41,7 +43,8 @@ public class MyBatisPlusGenerator {
         gc.setAuthor("mlf");
         gc.setOpen(false);
         gc.setSwagger2(true);// 实体属性 Swagger2 注解
-
+        gc.setIdType(IdType.AUTO);
+        gc.setDateType(DateType.ONLY_DATE);
         mpg.setGlobalConfig(gc);
 
 
@@ -59,8 +62,8 @@ public class MyBatisPlusGenerator {
         pc.setParent("com.yintu.rixing");
         pc.setModuleName(scanner("模块名"));
         pc.setMapper("dao");
-        pc.setXml("dao");
         mpg.setPackageInfo(pc);
+
 
         // 自定义配置
         InjectionConfig cfg = new InjectionConfig() {
@@ -86,6 +89,7 @@ public class MyBatisPlusGenerator {
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
+        cfg.setFileOutConfigList(focList);
         /*
         cfg.setFileCreate(new IFileCreate() {
             @Override
@@ -101,8 +105,8 @@ public class MyBatisPlusGenerator {
             }
         });
         */
-        cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
+
 
         // 配置模板
         TemplateConfig templateConfig = new TemplateConfig();
@@ -118,18 +122,30 @@ public class MyBatisPlusGenerator {
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setNaming(NamingStrategy.underline_to_camel);
-        strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        // strategy.setSuperEntityClass("你自己的父类实体,没有就不用设置!");
-        strategy.setEntityLombokModel(true);
-        strategy.setRestControllerStyle(true);
+        strategy.setNaming(NamingStrategy.underline_to_camel);//实体类名驼峰命名
+        strategy.setColumnNaming(NamingStrategy.underline_to_camel);//实体类属性名驼峰命名
+
+        strategy.setEntityTableFieldAnnotationEnable(true);//表以及字段注解
+        strategy.setEntityLombokModel(true);//lombok注解
+
+
+        // 写于父类中的公共字段
+        strategy.setSuperEntityColumns("id", "create_by", "create_time", "modified_by", "modified_time");
+        // 公共父类
+        strategy.setSuperEntityClass("com.yintu.rixing.BaseEntity");
+
+
+        strategy.setRestControllerStyle(true);//restful api风格控制器
+        strategy.setControllerMappingHyphenStyle(true);// //url中驼峰转连字符
+
         // 公共父类
         //strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
-        // 写于父类中的公共字段
-        strategy.setSuperEntityColumns("id");
+
+
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
-        strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix(pc.getModuleName() + "_");
+
+
+
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();
