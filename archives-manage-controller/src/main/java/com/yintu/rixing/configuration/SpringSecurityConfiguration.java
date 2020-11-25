@@ -9,6 +9,7 @@ import com.yintu.rixing.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.*;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,7 +41,16 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authenticationProvider(authenticationProvider()).httpBasic()
+        http.authenticationProvider(authenticationProvider()).httpBasic().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
+            response.setContentType("application/json;charset=utf-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+            PrintWriter out = response.getWriter();
+            Map<String, Object> errorData = ResponseDataUtil.noAuthorize(authenticationException.getMessage());
+            JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
+            out.write(jo.toJSONString());
+            out.flush();
+            out.close();
+        })
                 .and().authorizeRequests().anyRequest().authenticated() //必须授权才能范围
                 .and().formLogin().permitAll().successHandler((request, response, authenticationException) -> {
             response.setContentType("application/json;charset=utf-8");
@@ -85,16 +95,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
             out.flush();
             out.close();
         }).permitAll()
-                .and().exceptionHandling().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
-            response.setContentType("application/json;charset=utf-8");
-            response.setStatus(HttpServletResponse.SC_OK);
-            PrintWriter out = response.getWriter();
-            Map<String, Object> errorData = ResponseDataUtil.noAuthorize(authenticationException.getMessage());
-            JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
-            out.write(jo.toJSONString());
-            out.flush();
-            out.close();
-        }).accessDeniedHandler((request, response, accessDeniedException) -> {  //没有访问权限时，在这里处理结果，不要重定向
+                .and().exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> {  //没有访问权限时，在这里处理结果，不要重定向
             response.setContentType("application/json;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
@@ -110,7 +111,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-
+        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
     }
 
 
