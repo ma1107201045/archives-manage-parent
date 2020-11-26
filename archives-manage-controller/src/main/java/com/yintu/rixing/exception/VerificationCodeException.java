@@ -15,6 +15,7 @@ public class VerificationCodeException extends AuthenticationException {
         super(msg);
     }
 
+
     public VerificationCodeException(String msg, Throwable t) {
         super(msg, t);
     }

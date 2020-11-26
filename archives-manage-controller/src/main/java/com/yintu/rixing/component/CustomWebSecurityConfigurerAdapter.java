@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.yintu.rixing.exception.VerificationCodeException;
 import com.yintu.rixing.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.*;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -65,7 +67,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             }
         }).anyRequest().authenticated()
                 .and().formLogin().loginProcessingUrl("/login").successHandler((request, response, authenticationException) -> {
-            response.setContentType("application/json;charset=utf-8");
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
             JSONObject jo = (JSONObject) JSONObject.toJSON(ResponseDataUtil.ok("登录成功", authenticationException.getPrincipal()));
@@ -73,10 +75,10 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             out.flush();
             out.close();
         }).permitAll().failureHandler((request, response, authenticationException) -> {
-            response.setContentType("application/json;charset=utf-8");
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
-            Map<String, Object> errorData = ResponseDataUtil.error(authenticationException.getMessage());
+            Map<String, Object> errorData;
             if (authenticationException instanceof VerificationCodeException) {
                 errorData = ResponseDataUtil.error("验证码不正确");
             } else if (authenticationException instanceof BadCredentialsException) {
@@ -91,6 +93,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 errorData = ResponseDataUtil.error("账户过期，请联系管理员");
             } else if (authenticationException instanceof AuthenticationServiceException) {
                 errorData = ResponseDataUtil.error(authenticationException.getMessage());
+            } else {
+                errorData = ResponseDataUtil.error("登录异常");
             }
             JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
             out.write(jo.toJSONString());
@@ -100,7 +104,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .and().rememberMe().userDetailsService(userDetailsService).tokenValiditySeconds(60 * 60 * 24 * 365).rememberMeParameter("rememberMe").rememberMeCookieName("REMEMBERME")
                 .and().logout().logoutUrl("/logout")
                 .logoutSuccessHandler((request, response, authentication) -> {
-                    response.setContentType("application/json;charset=utf-8");
+                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     response.setStatus(HttpServletResponse.SC_OK);
                     PrintWriter out = response.getWriter();
                     Map<String, Object> errorData = ResponseDataUtil.ok("注销成功");
@@ -110,7 +114,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                     out.close();
                 }).permitAll()
                 .and().httpBasic().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
-            response.setContentType("application/json;charset=utf-8");
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
             Map<String, Object> errorData = ResponseDataUtil.noLogin(authenticationException.getMessage());
@@ -120,7 +124,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             out.close();
         })
                 .and().exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> {  //没有访问权限时，在这里处理结果，不要重定向
-            response.setContentType("application/json;charset=utf-8");
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
             Map<String, Object> errorData = ResponseDataUtil.noAuthorize(accessDeniedException.getMessage());
@@ -130,7 +134,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             out.close();
         }).and().sessionManagement().maximumSessions(1).expiredSessionStrategy(event -> {
             HttpServletResponse response = event.getResponse();
-            response.setContentType("application/json;charset=utf-8");
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
             Map<String, Object> errorData = ResponseDataUtil.error("您已在另一台设备登录，本次登录已下线");
