@@ -1,12 +1,9 @@
-package com.yintu.rixing.configuration;
+package com.yintu.rixing.component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.rixing.exception.VerificationCodeException;
-import com.yintu.rixing.system.ISysUserService;
 import com.yintu.rixing.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.*;
@@ -16,9 +13,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -26,11 +25,11 @@ import java.util.Map;
 
 /**
  * @Author: mlf
- * @Date: 2020/11/25 14:40
+ * @Date: 2020/11/26 10:33
  * @Version: 1.0
  */
-@Configuration
-public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
+@Component
+public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
     @Autowired
     private FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource;
 
@@ -38,24 +37,19 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private AccessDecisionManager accessDecisionManager;
 
     @Autowired
-    private ISysUserService iSysUserService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        //对默认的UserDetailsService进行覆盖
-        daoAuthenticationProvider.setUserDetailsService(iSysUserService);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
-        return daoAuthenticationProvider;
-    }
-
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+    protected void configure(AuthenticationManagerBuilder auth) {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        //对默认的UserDetailsService进行覆盖
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        auth.authenticationProvider(daoAuthenticationProvider);
     }
 
     @Override
@@ -101,7 +95,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
             out.flush();
             out.close();
         }).permitAll()
-                .and().rememberMe().userDetailsService(iSysUserService).tokenValiditySeconds(60 * 60 * 24 * 365).rememberMeParameter("rememberMe").rememberMeCookieName("REMEMBERME")
+                .and().rememberMe().userDetailsService(userDetailsService).tokenValiditySeconds(60 * 60 * 24 * 365).rememberMeParameter("rememberMe").rememberMeCookieName("REMEMBERME")
                 .and().logout().logoutUrl("/logout")
                 .logoutSuccessHandler((request, response, authentication) -> {
                     response.setContentType("application/json;charset=utf-8");
@@ -139,10 +133,14 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
     }
 
+    /**
+     * 忽略不用认证的url
+     *
+     * @param web
+     * @throws Exception
+     */
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
     }
-
-
 }
