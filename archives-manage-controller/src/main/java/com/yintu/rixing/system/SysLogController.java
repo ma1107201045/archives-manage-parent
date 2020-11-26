@@ -58,7 +58,7 @@ public class SysLogController extends AuthenticationController {
         Date endDate = sysLogDto.getEndDate();
         if (startDate != null && endDate != null)
             queryWrapper.lambda().between(SysLog::getCreateTime, startDate, endDate);
-        queryWrapper.orderByAsc("id");
+        queryWrapper.orderByDesc("id");
         Page<SysLog> page = sysLogService.page(new Page<>(num, size), queryWrapper);
         return ResponseDataUtil.ok("查询日志信息列表成功", page);
     }

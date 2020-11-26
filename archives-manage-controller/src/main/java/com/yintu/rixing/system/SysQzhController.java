@@ -37,7 +37,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "添加全宗号信息")
     @PostMapping
     @ApiOperation(value = "添加全宗号信息", notes = "添加全宗号信息")
-    public Map<String, Object> add(@Validated @ApiParam("参数") SysQzh entity) {
+    public Map<String, Object> add(@Validated SysQzh entity) {
         String username = this.getLoginUserName();
         Date now = DateUtil.date();
         entity.setCreateBy(username);
@@ -51,7 +51,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @Log(level = EnumLogLevel.ERROR, module = "系统管理", description = "删除全宗号信息")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除全宗号信息", notes = "删除全宗号信息")
-    @ApiImplicitParam(name = "id", value = "主键id", required = true, dataType = "int", paramType = "path")
+    @ApiImplicitParam(name = "id", value = "主键id", required = true)
     public Map<String, Object> remove(@PathVariable Integer id) {
         iSysQzhService.removeById(id);
         return ResponseDataUtil.ok("删除全宗号信息成功");
@@ -60,7 +60,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @Log(level = EnumLogLevel.WARN, module = "系统管理", description = " 修改全宗号信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改全宗号信息", notes = "修改全宗号信息")
-    @ApiImplicitParam(name = "id", value = "主键id", required = true, dataType = "int", paramType = "path")
+    @ApiImplicitParam(name = "id", value = "主键id", required = true)
     public Map<String, Object> edit(@PathVariable Integer id, @Validated SysQzh entity) {
         String username = this.getLoginUserName();
         Date now = DateUtil.date();
@@ -73,7 +73,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询全宗号信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询全宗号信息", notes = " 查询全宗号单条信息")
-    @ApiImplicitParam(name = "id", value = "主键id", required = true, dataType = "int", paramType = "path")
+    @ApiImplicitParam(name = "id", value = "主键id", required = true)
     public Map<String, Object> findById(@PathVariable Integer id) {
         SysQzh sysQzh = iSysQzhService.getById(id);
         return ResponseDataUtil.ok("查询全宗号信息成功", sysQzh);
@@ -83,8 +83,8 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @GetMapping
     @ApiOperation(value = "查询全宗号信息列表", notes = " 多条件查询全宗号信息分页列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "num", value = "页码", required = true, dataType = "int", paramType = "query", defaultValue = "1"),
-            @ApiImplicitParam(name = "size", value = "页数", required = true, dataType = "int", paramType = "query", defaultValue = "10"),
+            @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
             @ApiImplicitParam(name = "qzhName", value = "全宗号名称", dataType = "string", paramType = "query")
     })
     public Map<String, Object> findPage(@RequestParam Integer num, @RequestParam Integer size, String qzhName) {
@@ -92,6 +92,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
         queryWrapper.lambda()
                 .select(SysQzh.class, tableFieldInfo -> !"".equals(tableFieldInfo.getColumn()))
                 .like(SysQzh::getQzhName, qzhName == null ? "" : qzhName);
+        queryWrapper.orderByDesc("id");
         Page<SysQzh> page = iSysQzhService.page(new Page<>(num, size), queryWrapper);
         return ResponseDataUtil.ok("查询全宗号信息列表成功", page);
     }
