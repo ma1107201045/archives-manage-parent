@@ -1,6 +1,7 @@
 package com.yintu.rixing.system;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,6 +9,7 @@ import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.config.exception.BaseRuntimeException;
+import com.yintu.rixing.dto.system.SysQzhDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import io.swagger.annotations.*;
@@ -29,7 +31,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/system/sys-qzh")
 @Api(tags = "全宗号接口")
-public class SysQzhController extends AuthenticationController implements BaseController<SysQzh, Integer> {
+public class SysQzhController extends AuthenticationController implements BaseController<SysQzhDto, Integer> {
 
     @Autowired
     private ISysQzhService iSysQzhService;
@@ -37,14 +39,15 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "添加全宗号信息")
     @PostMapping
     @ApiOperation(value = "添加全宗号信息", notes = "添加全宗号信息")
-    public Map<String, Object> add(@Validated SysQzh entity) {
+    public Map<String, Object> add(@Validated SysQzhDto sysQzhDto) {
         String username = this.getLoginUserName();
         Date now = DateUtil.date();
-        entity.setCreateBy(username);
-        entity.setCreateTime(now);
-        entity.setModifiedBy(username);
-        entity.setModifiedTime(now);
-        iSysQzhService.save(entity);
+        SysQzh sysQzh = BeanUtil.toBean(sysQzhDto, SysQzh.class);
+        sysQzh.setCreateBy(username);
+        sysQzh.setCreateTime(now);
+        sysQzh.setModifiedBy(username);
+        sysQzh.setModifiedTime(now);
+        iSysQzhService.save(sysQzh);
         return ResponseDataUtil.ok("添加全宗号信息成功");
     }
 
@@ -61,12 +64,13 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @PutMapping("/{id}")
     @ApiOperation(value = "修改全宗号信息", notes = "修改全宗号信息")
     @ApiImplicitParam(name = "id", value = "主键id", required = true)
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated SysQzh entity) {
+    public Map<String, Object> edit(@PathVariable Integer id, @Validated SysQzhDto sysQzhDto) {
         String username = this.getLoginUserName();
         Date now = DateUtil.date();
-        entity.setModifiedBy(username);
-        entity.setModifiedTime(now);
-        iSysQzhService.updateById(entity);
+        SysQzh sysQzh = BeanUtil.toBean(sysQzhDto, SysQzh.class);
+        sysQzh.setModifiedBy(username);
+        sysQzh.setModifiedTime(now);
+        iSysQzhService.updateById(sysQzh);
         return ResponseDataUtil.ok("修改全宗号信息成功");
     }
 

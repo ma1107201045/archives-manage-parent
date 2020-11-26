@@ -8,7 +8,7 @@ import java.util.Map;
  * @Date: 2020/11/27 13:18
  * @Version: 1.0
  */
-public interface BaseController<T extends Serializable, PK extends Serializable> {
+public interface BaseController<T, PK extends Serializable> {
 
     Map<String, Object> add(T entity);
 
