@@ -40,6 +40,7 @@ import java.util.Map;
 public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
     @Autowired
     private VerificationCodeFilter verificationCodeFilter;
+
     @Autowired
     private FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource;
 
@@ -156,8 +157,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     /**
      * 忽略不用认证的url
      *
-     * @param web
-     * @throws Exception
+     * @param web web
+     * @throws Exception exception
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
