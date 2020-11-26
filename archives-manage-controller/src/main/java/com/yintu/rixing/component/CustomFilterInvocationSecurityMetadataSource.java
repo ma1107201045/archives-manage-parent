@@ -7,7 +7,6 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author:mlf
