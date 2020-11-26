@@ -13,10 +13,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
@@ -122,6 +124,16 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
             Map<String, Object> errorData = ResponseDataUtil.noAuthorize(accessDeniedException.getMessage());
+            JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
+            out.write(jo.toJSONString());
+            out.flush();
+            out.close();
+        }).and().sessionManagement().maximumSessions(1).expiredSessionStrategy(event -> {
+            HttpServletResponse response = event.getResponse();
+            response.setContentType("application/json;charset=utf-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+            PrintWriter out = response.getWriter();
+            Map<String, Object> errorData = ResponseDataUtil.error("您已在另一台设备登录，本次登录已下线");
             JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
             out.write(jo.toJSONString());
             out.flush();
