@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-;
+;import java.util.Date;
 
 /**
  * @Author: mlf
@@ -19,19 +19,19 @@ import lombok.EqualsAndHashCode;
 @ApiModel(value = "SysLogDto对象", description = "系统日志Dto")
 public class SysLogDto {
 
-    @ApiModelProperty(name = "operator", value = "登录名称", dataType = "string")
+    @ApiModelProperty(name = "operator", value = "操作人")
     private String operator;
 
-    @ApiModelProperty(name = "loginId", value = "登录ip", dataType = "string")
+    @ApiModelProperty(name = "loginId", value = "登录ip")
     private String loginId;
 
-    @ApiModelProperty(name = "level", value = "日志级别", dataType = "string")
-    private String level;
+    @ApiModelProperty(name = "level", value = "日志级别")
+    private Short level;
 
-    @ApiModelProperty(name = "beginTime", value = "开始日期", dataType = "date")
-    private String beginTime;
+    @ApiModelProperty(name = "beginDate", value = "开始日期")
+    private Date beginDate;
 
-    @ApiModelProperty(name = "endTime", value = "结束日期", dataType = "date")
-    private String endTime;
+    @ApiModelProperty(name = "endDate", value = "结束日期")
+    private Date endDate;
 
 }

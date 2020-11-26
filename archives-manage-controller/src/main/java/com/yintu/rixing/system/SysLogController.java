@@ -14,10 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Map;
@@ -42,20 +39,26 @@ public class SysLogController extends AuthenticationController {
     @GetMapping
     @ApiOperation(value = "查询日志信息列表", notes = " 多条件查询日志信息分页列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "num", value = "页码", required = true, dataType = "int", paramType = "query", defaultValue = "1"),
-            @ApiImplicitParam(name = "size", value = "页数", required = true, dataType = "int", paramType = "query", defaultValue = "10"),
+            @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10")
     })
     public Map<String, Object> findPage(@RequestParam Integer num, @RequestParam Integer size, SysLogDto sysLogDto) {
         QueryWrapper<SysLog> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().select(SysLog.class, tableFieldInfo -> !"".equals(tableFieldInfo.getColumn()));
-        if (sysLogDto.getOperator() != null && !"".equals(sysLogDto.getOperator()))
-            queryWrapper.lambda().eq(SysLog::getOperator, sysLogDto.getOperator());
-        if (sysLogDto.getLoginId() != null && !"".equals(sysLogDto.getLoginId()))
-            queryWrapper.lambda().eq(SysLog::getLoginIp, sysLogDto.getLoginId());
+        String operator = sysLogDto.getOperator();
+        if (operator != null && !"".equals(operator))
+            queryWrapper.lambda().eq(SysLog::getOperator, operator);
+        String loginIp = sysLogDto.getOperator();
+        if (loginIp != null && !"".equals(loginIp))
+            queryWrapper.lambda().eq(SysLog::getLoginIp, loginIp);
+        Short level = sysLogDto.getLevel();
         if (sysLogDto.getLevel() != null)
-            queryWrapper.lambda().eq(SysLog::getLevel, sysLogDto.getLevel());
-        if (sysLogDto.getBeginTime() != null && sysLogDto.getEndTime() != null)
-            queryWrapper.lambda().between(SysLog::getCreateTime, sysLogDto.getBeginTime(), sysLogDto.getEndTime());
+            queryWrapper.lambda().eq(SysLog::getLevel, level);
+        Date startDate = sysLogDto.getBeginDate();
+        Date endDate = sysLogDto.getEndDate();
+        if (startDate != null && endDate != null)
+            queryWrapper.lambda().between(SysLog::getCreateTime, startDate, endDate);
+        queryWrapper.orderByAsc("id");
         Page<SysLog> page = sysLogService.page(new Page<>(num, size), queryWrapper);
         return ResponseDataUtil.ok("查询日志信息列表成功", page);
     }
