@@ -1,5 +1,6 @@
 package com.yintu.rixing.component;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Date: 2020/11/25 11:49
  * @Version: 1.0
  */
+@Component
 public class CustomWebMvcConfigurer implements WebMvcConfigurer {
 
     @Override

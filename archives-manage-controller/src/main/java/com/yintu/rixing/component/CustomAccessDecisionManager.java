@@ -25,12 +25,11 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
-        System.out.println(authentication);
-        System.out.println(authentication.getPrincipal());
         if (authentication instanceof AnonymousAuthenticationToken) {
             throw new AuthenticationServiceException("尚未登录，请先登录");
         } else {
-            throw new AuthorizationServiceException("权限不足，请联系管理员");
+            return;
+//            throw new AuthorizationServiceException("权限不足，请联系管理员");
         }
 
     }
