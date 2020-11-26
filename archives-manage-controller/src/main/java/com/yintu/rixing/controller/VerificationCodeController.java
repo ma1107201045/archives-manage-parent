@@ -20,7 +20,7 @@ import java.io.OutputStream;
  * @Version: 1.0
  */
 @Controller
-@RequestMapping("/code")
+@RequestMapping("/login/verification-code")
 public class VerificationCodeController {
     @GetMapping("/get")
     public void getCode(HttpSession session, HttpServletResponse response) throws IOException {

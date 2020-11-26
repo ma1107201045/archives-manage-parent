@@ -161,6 +161,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**").mvcMatchers("/code/**");
+        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**")
+                .mvcMatchers("/login/verification-code/**");//忽略验证码接口
     }
 }
