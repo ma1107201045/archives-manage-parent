@@ -5,13 +5,13 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- *  Mapper 接口
+ * 系统角色表 Mapper 接口
  * </p>
  *
  * @author mlf
- * @since 2020-11-25
+ * @since 2020-11-26
  */
 @Mapper
-public interface SysTestMapper extends BaseMapper<SysTest> {
+public interface SysRoleMapper extends BaseMapper<SysRole> {
 
 }

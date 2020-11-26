@@ -2,15 +2,10 @@ package com.yintu.rixing.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.yintu.rixing.exception.VerificationCodeException;
 import com.yintu.rixing.util.ResponseDataUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.*;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -38,7 +33,7 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
                 && StrUtil.equalsIgnoreCase("post", request.getMethod())) {
             try {
                 //校验验证码 校验通过、继续向下执行   验证失败、抛出异常
-                validateCode(request);
+                //validateCode(request);
             } catch (VerificationCodeException e) {
                 response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                 response.setStatus(HttpServletResponse.SC_OK);

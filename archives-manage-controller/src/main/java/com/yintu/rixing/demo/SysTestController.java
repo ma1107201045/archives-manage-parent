@@ -1,4 +1,4 @@
-package com.yintu.rixing.system;
+package com.yintu.rixing.demo;
 
 
 import com.yintu.rixing.util.ResponseDataUtil;

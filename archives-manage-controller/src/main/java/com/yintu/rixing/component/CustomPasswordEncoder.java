@@ -1,5 +1,6 @@
 package com.yintu.rixing.component;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -10,13 +11,25 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CustomPasswordEncoder implements PasswordEncoder {
+
+    private final PasswordEncoder passwordEncoder;
+
+    public CustomPasswordEncoder() {
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
+
     @Override
     public String encode(CharSequence rawPassword) {
-        return rawPassword.toString();
+        return passwordEncoder.encode(rawPassword);
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return encode(rawPassword).equals("123456");
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    public static void main(String[] args) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        System.out.println(passwordEncoder.encode("123456"));
     }
 }

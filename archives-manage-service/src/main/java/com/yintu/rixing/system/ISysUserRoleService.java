@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- *  服务类
+ * 系统用户角色表 服务类
  * </p>
  *
  * @author mlf
- * @since 2020-11-25
+ * @since 2020-11-26
  */
-public interface ISysTestService extends IService<SysTest> {
+public interface ISysUserRoleService extends IService<SysUserRole> {
 
 }

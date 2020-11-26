@@ -1,9 +1,9 @@
-package com.yintu.rixing.system.impl;
+package com.yintu.rixing.demo.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yintu.rixing.system.ISysTestService;
-import com.yintu.rixing.system.SysTest;
-import com.yintu.rixing.system.SysTestMapper;
+import com.yintu.rixing.demo.ISysTestService;
+import com.yintu.rixing.demo.SysTest;
+import com.yintu.rixing.demo.SysTestMapper;
 import org.springframework.stereotype.Service;
 
 /**
