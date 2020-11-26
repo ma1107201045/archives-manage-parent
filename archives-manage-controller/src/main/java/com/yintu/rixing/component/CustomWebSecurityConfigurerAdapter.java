@@ -2,6 +2,7 @@ package com.yintu.rixing.component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.rixing.exception.VerificationCodeException;
+import com.yintu.rixing.filter.VerificationCodeFilter;
 import com.yintu.rixing.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -20,8 +21,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -35,6 +39,8 @@ import java.util.Map;
 @Component
 public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
     @Autowired
+    private VerificationCodeFilter verificationCodeFilter;
+    @Autowired
     private FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource;
 
     @Autowired
@@ -45,7 +51,6 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
@@ -58,6 +63,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterBefore(verificationCodeFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
             @Override
             public <O extends FilterSecurityInterceptor> O postProcess(O object) {
@@ -79,9 +85,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
             Map<String, Object> errorData;
-            if (authenticationException instanceof VerificationCodeException) {
-                errorData = ResponseDataUtil.error("验证码不正确");
-            } else if (authenticationException instanceof BadCredentialsException) {
+            if (authenticationException instanceof BadCredentialsException) {
                 errorData = ResponseDataUtil.error("用户名或者密码输入错误，请重新输入");
             } else if (authenticationException instanceof DisabledException) {
                 errorData = ResponseDataUtil.error("账户被禁用，请联系管理员");
