@@ -21,6 +21,14 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionController {
 
+    @ExceptionHandler(SQLException.class)
+    public Map<String, Object> sqlException(SQLException e) {
+        if (e instanceof SQLIntegrityConstraintViolationException) {
+            return ResponseDataUtil.error("id重复，操作失败");
+        }
+        return ResponseDataUtil.error("数据库异常，操作失败");
+    }
+
     @ExceptionHandler(BindException.class)
     public Map<String, Object> bindException(BindException e) {
         StringBuilder sb = new StringBuilder();
