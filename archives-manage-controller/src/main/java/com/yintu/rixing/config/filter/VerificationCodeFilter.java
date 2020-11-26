@@ -1,8 +1,8 @@
-package com.yintu.rixing.filter;
+package com.yintu.rixing.config.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.yintu.rixing.exception.VerificationCodeException;
+import com.yintu.rixing.config.exception.VerificationCodeException;
 import com.yintu.rixing.util.ResponseDataUtil;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;

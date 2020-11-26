@@ -1,4 +1,4 @@
-package com.yintu.rixing.component;
+package com.yintu.rixing.config.component;
 
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;

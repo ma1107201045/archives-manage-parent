@@ -1,4 +1,4 @@
-package com.yintu.rixing.component;
+package com.yintu.rixing.config.component;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

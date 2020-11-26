@@ -1,4 +1,4 @@
-package com.yintu.rixing.component;
+package com.yintu.rixing.config.component;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

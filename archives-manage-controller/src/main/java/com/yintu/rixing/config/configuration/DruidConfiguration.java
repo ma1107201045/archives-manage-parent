@@ -1,4 +1,4 @@
-package com.yintu.rixing.configuration;
+package com.yintu.rixing.config.configuration;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;

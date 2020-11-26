@@ -1,7 +1,7 @@
-package com.yintu.rixing.component;
+package com.yintu.rixing.config.component;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yintu.rixing.filter.VerificationCodeFilter;
+import com.yintu.rixing.config.filter.VerificationCodeFilter;
 import com.yintu.rixing.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;

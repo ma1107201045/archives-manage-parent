@@ -1,4 +1,4 @@
-package com.yintu.rixing.controller;
+package com.yintu.rixing.config.controller;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;

@@ -1,4 +1,4 @@
-package com.yintu.rixing.configuration;
+package com.yintu.rixing.config.configuration;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
