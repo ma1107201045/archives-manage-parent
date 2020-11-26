@@ -1,11 +1,9 @@
 package com.yintu.rixing.component;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yintu.rixing.exception.VerificationCodeException;
 import com.yintu.rixing.filter.VerificationCodeFilter;
 import com.yintu.rixing.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDecisionManager;
@@ -16,16 +14,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -137,7 +131,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             out.write(jo.toJSONString());
             out.flush();
             out.close();
-        }).and().sessionManagement().maximumSessions(1).expiredSessionStrategy(event -> {
+        }).and().sessionManagement().maximumSessions(1).expiredSessionStrategy(event -> {//用户登录踢出上一个相同用户
             HttpServletResponse response = event.getResponse();
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
