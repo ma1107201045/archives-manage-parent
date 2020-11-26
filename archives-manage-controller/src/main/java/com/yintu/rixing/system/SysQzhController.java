@@ -85,7 +85,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @ApiImplicitParams({
             @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
-            @ApiImplicitParam(name = "qzhName", value = "全宗号名称", dataType = "string", paramType = "query")
+            @ApiImplicitParam(name = "qzhName", value = "全宗号名称")
     })
     public Map<String, Object> findPage(@RequestParam Integer num, @RequestParam Integer size, String qzhName) {
         QueryWrapper<SysQzh> queryWrapper = new QueryWrapper<>();
