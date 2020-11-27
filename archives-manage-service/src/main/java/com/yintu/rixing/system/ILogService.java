@@ -12,6 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 public interface ILogService {
 
 
-    void put(JoinPoint joinPoint, HttpServletRequest request, Integer userId, String username, String methodName, String module, String description);
+    void put(JoinPoint joinPoint, HttpServletRequest request, String methodName, Integer userId, String username, String operator, Short level, String module, String description);
 
 }

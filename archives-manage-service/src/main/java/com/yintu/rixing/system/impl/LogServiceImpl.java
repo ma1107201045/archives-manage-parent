@@ -50,7 +50,7 @@ public class LogServiceImpl implements ILogService {
     }
 
     @Override
-    public void put(JoinPoint joinPoint, HttpServletRequest request, Integer userId, String username, String methodName, String module, String description) {
+    public void put(JoinPoint joinPoint, HttpServletRequest request, String methodName, Integer userId, String username, String operator, Short level, String module, String description) {
         try {
             SysLog sysLog = new SysLog();
             if (StrUtil.isEmpty(username)) {
@@ -59,6 +59,8 @@ public class LogServiceImpl implements ILogService {
             String ip = IPUtil.getIpAddress(request);
             sysLog.setUserId(userId);
             sysLog.setUsername(username);
+            sysLog.setOperator(operator);
+            sysLog.setLevel(level);
             sysLog.setModule(module);
             sysLog.setCreateTime(new Date());
             sysLog.setDescription(description);
@@ -78,7 +80,7 @@ public class LogServiceImpl implements ILogService {
         Class<?> clazz = Class.forName(classType);
         String clazzName = clazz.getName();
         Map<String, Object> nameAndArgs = getFieldsName(this.getClass(), clazzName, methodName, params);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (!CollectionUtils.isEmpty(nameAndArgs)) {
             Iterator<Map.Entry<String, Object>> it = nameAndArgs.entrySet().iterator();
             while (it.hasNext()) {

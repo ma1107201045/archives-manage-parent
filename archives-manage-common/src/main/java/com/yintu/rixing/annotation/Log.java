@@ -1,5 +1,7 @@
 package com.yintu.rixing.annotation;
 
+import com.yintu.rixing.enumobject.EnumLogLevel;
+
 import java.lang.annotation.*;
 
 /**
@@ -12,6 +14,11 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Log {
+
+    /**
+     * 日志级别
+     */
+    EnumLogLevel level() default EnumLogLevel.TRACE;
 
     /**
      * 模块

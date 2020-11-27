@@ -2,6 +2,7 @@ package com.yintu.rixing.config.aspect;
 
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ILogService;
 import com.yintu.rixing.system.ISysLogService;
 import com.yintu.rixing.system.SysUser;
@@ -12,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -38,17 +40,35 @@ public class LogAspect extends AuthenticationController {
     public void logPointCut() {
     }
 
-
     @AfterReturning(pointcut = "logPointCut()")
     public void doAfter(JoinPoint joinPoint) {
         SysUser sysUser = this.getLoginUser();
         String methodName = joinPoint.getSignature().getName();
         Method method = currentMethod(joinPoint, methodName);
-        Log sysLog = method.getAnnotation(Log.class);
-        String module = sysLog.module();
-        String description = sysLog.description();
+        Log log = method.getAnnotation(Log.class);
+        EnumLogLevel enumLogLevel = log.level();
+        Short level = null;
+        switch (enumLogLevel) {
+            case TRACE:
+                level = 1;
+                break;
+            case INFO:
+                level = 2;
+                break;
+            case DEBUG:
+                level = 3;
+                break;
+            case WARN:
+                level = 4;
+                break;
+            case ERROR:
+                level = 5;
+                break;
+        }
+        String module = log.module();
+        String description = log.description();
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        iLogService.put(joinPoint, request, sysUser.getId(), sysUser.getUsername(), methodName, module, description);
+        iLogService.put(joinPoint, request, methodName, sysUser.getId(), sysUser.getUsername(), sysUser.getTrueName(), level, module, description);
     }
 
     /**

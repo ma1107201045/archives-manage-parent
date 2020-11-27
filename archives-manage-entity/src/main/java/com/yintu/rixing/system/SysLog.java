@@ -29,24 +29,24 @@ public class SysLog extends IdEntity {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "创建时间")
-    @TableField("createTime")
+    @TableField("create_time")
     private Date createTime;
 
     @ApiModelProperty(value = "用户id")
     @TableField("user_id")
     private Integer userId;
 
-    @ApiModelProperty(value = "用户名称")
+    @ApiModelProperty(value = "用户名")
     @TableField("username")
     private String username;
 
-    @ApiModelProperty(value = "登录ip")
-    @TableField("login_ip")
-    private String loginIp;
+    @ApiModelProperty(value = "操作人")
+    @TableField("operator")
+    private String operator;
 
     @ApiModelProperty(value = "日志级别 1.TRACE < 2.DEBUG < 3.INFO < 4.WARN < 5.ERROR")
     @TableField("level")
-    private String level;
+    private Short level;
 
     @ApiModelProperty(value = "日志记录模块名称")
     @TableField("module")
@@ -59,5 +59,9 @@ public class SysLog extends IdEntity {
     @ApiModelProperty(value = "日志描述")
     @TableField("description")
     private String description;
+
+    @ApiModelProperty(value = "登录ip")
+    @TableField("login_ip")
+    private String loginIp;
 
 }
