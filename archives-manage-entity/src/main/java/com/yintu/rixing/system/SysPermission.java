@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_permission")
-@ApiModel(value="SysPermission对象", description="系统权限表")
+@ApiModel(value = "SysPermission对象", description = "系统权限表")
 public class SysPermission extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -32,6 +32,10 @@ public class SysPermission extends BaseEntity {
     @TableField("name")
     private String name;
 
+    @ApiModelProperty(value = "授权名称")
+    @TableField("authorized_name")
+    private String authorizedName;
+
     @ApiModelProperty(value = "相对地址")
     @TableField("url")
     private String url;
@@ -40,7 +44,7 @@ public class SysPermission extends BaseEntity {
     @TableField("method")
     private String method;
 
-    @ApiModelProperty(value = "是否是菜单项")
+    @ApiModelProperty(value = "是否是菜单项 1.是 0.否")
     @TableField("is_menu")
     private Integer isMenu;
 

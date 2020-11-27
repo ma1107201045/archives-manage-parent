@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * <p>
  * 系统角色表
@@ -19,14 +21,19 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_role")
-@ApiModel(value="SysRole对象", description="系统角色表")
+@ApiModel(value = "SysRole对象", description = "系统角色表")
 public class SysRole extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "角色名称")
     @TableField("name")
+    @NotBlank
     private String name;
+
+    @ApiModelProperty(value = "是否作为默认用户角色 1.是 0.否")
+    @TableField("default_role")
+    private Short defaultRole;
 
     @ApiModelProperty(value = "描述")
     @TableField("description")

@@ -9,12 +9,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * <p>
@@ -30,34 +31,57 @@ import java.util.List;
 @ApiModel(value = "SysUser对象", description = "系统日志表")
 public class SysUser extends BaseEntity implements UserDetails {
 
-
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "用户名")
     @TableField("username")
+    @NotBlank
     private String username;
 
     @ApiModelProperty(value = "密码")
     @TableField("password")
     @JsonIgnore
     @JSONField(serialize = false)
+    @NotBlank
     private String password;
 
-    @ApiModelProperty(value = "昵称")
-    @TableField("nickname")
-    private String nickname;
+    @ApiModelProperty(value = "真实姓名")
+    @TableField("true_name")
+    @NotBlank
+    private String trueName;
+
+    @ApiModelProperty(value = "证件类型")
+    @TableField("certificate_type")
+    private Short certificateType;
+
+    @ApiModelProperty(value = "证件号码")
+    @TableField("certificate_number")
+    private String certificateNumber;
+
+    @ApiModelProperty(value = "邮政编码")
+    @TableField("postal_code")
+    private String postalCode;
 
     @ApiModelProperty(value = "邮箱")
     @TableField("email")
+    @Email
     private String email;
 
-    @ApiModelProperty(value = "电话号码")
-    @TableField("phone_number")
-    private String phoneNumber;
+    @ApiModelProperty(value = "地址")
+    @TableField("address")
+    private String address;
 
-    @ApiModelProperty(value = "手机号")
-    @TableField("mobile_number")
-    private String mobileNumber;
+    @ApiModelProperty(value = "电话或者手机号码")
+    @TableField("phone")
+    private String phone;
+
+    @ApiModelProperty(value = "排序编号")
+    @TableField("order_number")
+    private Integer orderNumber;
+
+    @ApiModelProperty(value = "查档用户")
+    @TableField("select_user")
+    private Short selectUser;
 
     @ApiModelProperty(value = "账户过期")
     @TableField("account_expired")
@@ -74,6 +98,11 @@ public class SysUser extends BaseEntity implements UserDetails {
     @ApiModelProperty(value = "账户禁用")
     @TableField("account_enabled")
     private Short accountEnabled;
+
+    @ApiModelProperty(value = "全宗号id")
+    @TableField("qzh_id")
+    @NotNull
+    private Integer qzhId;
 
 
     @Override
