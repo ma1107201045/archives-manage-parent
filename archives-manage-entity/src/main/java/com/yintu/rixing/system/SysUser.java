@@ -99,10 +99,10 @@ public class SysUser extends BaseEntity implements UserDetails {
     @TableField("account_enabled")
     private Short accountEnabled;
 
-    @ApiModelProperty(value = "全宗号id")
-    @TableField("qzh_id")
+    @ApiModelProperty(value = "全宗号")
+    @TableField("qzh_number")
     @NotNull
-    private Integer qzhId;
+    private String qzhNumber;
 
 
     @Override

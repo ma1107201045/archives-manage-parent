@@ -32,6 +32,10 @@ public class SysPermission extends BaseEntity {
     @TableField("name")
     private String name;
 
+    @ApiModelProperty(value = "优先级")
+    @TableField("priority")
+    private Integer priority;
+
     @ApiModelProperty(value = "授权名称")
     @TableField("authorized_name")
     private String authorizedName;
@@ -45,16 +49,20 @@ public class SysPermission extends BaseEntity {
     private String method;
 
     @ApiModelProperty(value = "是否是菜单项 1.是 0.否")
-    @TableField("is_menu")
-    private Integer isMenu;
+    @TableField("menu")
+    private Short menu;
 
     @ApiModelProperty(value = "前端路由转向")
-    @TableField("path")
-    private String path;
+    @TableField("img_path")
+    private String imgPath;
 
-    @ApiModelProperty(value = "菜单项显示的图标")
+    @ApiModelProperty(value = "菜单项显示的图片地址")
     @TableField("icon_cls")
     private String iconCls;
+
+    @ApiModelProperty(value = "模块状态：1.可用 0. 禁用")
+    @TableField("status")
+    private Short status;
 
 
 }
