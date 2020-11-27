@@ -1,7 +1,7 @@
 package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yintu.rixing.system.entity.SysQzh;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +11,7 @@ import com.yintu.rixing.system.entity.SysQzh;
  * @author mlf
  * @since 2020-11-27
  */
+@Mapper
 public interface SysQzhMapper extends BaseMapper<SysQzh> {
 
 }

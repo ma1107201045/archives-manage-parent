@@ -1,7 +1,6 @@
 package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yintu.rixing.system.entity.SysQzh;
 
 /**
  * <p>

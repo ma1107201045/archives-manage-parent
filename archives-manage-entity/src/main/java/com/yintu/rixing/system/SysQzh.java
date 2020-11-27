@@ -8,9 +8,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mlf
@@ -19,17 +22,19 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_qzh")
-@ApiModel(value="SysQzh对象", description="系统全宗号表")
+@ApiModel(value = "SysQzh对象", description = "系统全宗号表")
 public class SysQzh extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "全宗号名称")
     @TableField("qzh_name")
+    @NotBlank
     private String qzhName;
 
     @ApiModelProperty(value = "全宗号")
     @TableField("qzh_number")
+    @NotBlank
     private String qzhNumber;
 
     @ApiModelProperty(value = "电话")
@@ -42,6 +47,7 @@ public class SysQzh extends BaseEntity {
 
     @ApiModelProperty(value = "是否是档案馆 1.是 0.否")
     @TableField("archives_center")
+    @NotNull
     private Integer archivesCenter;
 
     @ApiModelProperty(value = "描述")

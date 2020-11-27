@@ -79,7 +79,7 @@ public class SysUser extends BaseEntity implements UserDetails {
     @TableField("order_number")
     private Integer orderNumber;
 
-    @ApiModelProperty(value = "查档用户")
+    @ApiModelProperty(value = "查档用户 1.是 0.否")
     @TableField("select_user")
     private Short selectUser;
 
@@ -99,17 +99,24 @@ public class SysUser extends BaseEntity implements UserDetails {
     @TableField("account_enabled")
     private Short accountEnabled;
 
+    @ApiModelProperty(value = "用户类型 0.普通用户 1.管理员用户")
+    @TableField("auth_type")
+    private Short authType;
+
     @ApiModelProperty(value = "全宗号")
     @TableField("qzh_number")
     @NotNull
     private String qzhNumber;
 
-
+    @JsonIgnore
+    @JSONField(serialize = false)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>();
     }
 
+    @JsonIgnore
+    @JSONField(serialize = false)
     @Override
     public String getPassword() {
         return password;
@@ -119,22 +126,26 @@ public class SysUser extends BaseEntity implements UserDetails {
     public String getUsername() {
         return username;
     }
-
+    @JsonIgnore
+    @JSONField(serialize = false)
     @Override
     public boolean isAccountNonExpired() {
         return !(accountExpired == null || accountExpired == 1);
     }
-
+    @JsonIgnore
+    @JSONField(serialize = false)
     @Override
     public boolean isAccountNonLocked() {
         return !(accountLocked == null || accountLocked == 1);
     }
-
+    @JsonIgnore
+    @JSONField(serialize = false)
     @Override
     public boolean isCredentialsNonExpired() {
         return !(credentialsExpired == null || credentialsExpired == 1);
     }
-
+    @JsonIgnore
+    @JSONField(serialize = false)
     @Override
     public boolean isEnabled() {
         return !(accountEnabled == null || accountEnabled == 0);

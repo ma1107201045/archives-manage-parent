@@ -2,11 +2,15 @@ package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.sun.javafx.geom.transform.Identity;
 import com.yintu.rixing.BaseEntity;
+import com.yintu.rixing.IdEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -20,13 +24,21 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_log")
 @ApiModel(value = "SysLog对象", description = "系统日志表")
-public class SysLog extends BaseEntity {
+public class SysLog extends IdEntity {
 
     private static final long serialVersionUID = 1L;
+
+    @ApiModelProperty(value = "创建时间")
+    @TableField("createTime")
+    private Date createTime;
 
     @ApiModelProperty(value = "用户id")
     @TableField("user_id")
     private Integer userId;
+
+    @ApiModelProperty(value = "用户名称")
+    @TableField("username")
+    private String username;
 
     @ApiModelProperty(value = "登录ip")
     @TableField("login_ip")
@@ -36,9 +48,16 @@ public class SysLog extends BaseEntity {
     @TableField("level")
     private String level;
 
+    @ApiModelProperty(value = "日志记录模块名称")
+    @TableField("module")
+    private String module;
+
     @ApiModelProperty(value = "日志内容")
     @TableField("context")
     private String context;
 
+    @ApiModelProperty(value = "日志描述")
+    @TableField("description")
+    private String description;
 
 }

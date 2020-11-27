@@ -1,12 +1,20 @@
 package com.yintu.rixing.system;
 
 
+import com.yintu.rixing.base.BaseController;
+import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.util.ResponseDataUtil;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author mlf
@@ -14,6 +22,27 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/system/sys-qzh")
-public class SysQzhController {
+public class SysQzhController extends AuthenticationController implements BaseController<SysQzh, Integer> {
+    @Autowired
+    private ISysQzhService iSysQzhService;
 
+    @Override
+    public Map<String, Object> add(@Validated SysQzh entity) {
+        return ResponseDataUtil.ok("添加全宗号信息成功");
+    }
+
+    @Override
+    public Map<String, Object> remove(Integer id) {
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> edit(Integer id, SysQzh entity) {
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer id) {
+        return null;
+    }
 }
