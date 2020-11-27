@@ -4,16 +4,13 @@ import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ILogService;
-import com.yintu.rixing.system.ISysLogService;
 import com.yintu.rixing.system.SysUser;
-import com.yintu.rixing.system.impl.LogServiceImpl;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
