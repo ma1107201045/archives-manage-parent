@@ -112,26 +112,37 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                     out.flush();
                     out.close();
                 }).permitAll()
-                .and().httpBasic().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
-            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            response.setStatus(HttpServletResponse.SC_OK);
-            PrintWriter out = response.getWriter();
-            Map<String, Object> errorData = ResponseDataUtil.noLogin(authenticationException.getMessage());
-            JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
-            out.write(jo.toJSONString());
-            out.flush();
-            out.close();
-        })
-                .and().exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> {  //没有访问权限时，在这里处理结果，不要重定向
-            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            response.setStatus(HttpServletResponse.SC_OK);
-            PrintWriter out = response.getWriter();
-            Map<String, Object> errorData = ResponseDataUtil.noAuthorize(accessDeniedException.getMessage());
-            JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
-            out.write(jo.toJSONString());
-            out.flush();
-            out.close();
-        }).and().sessionManagement().maximumSessions(1).expiredSessionStrategy(event -> {//用户登录踢出上一个相同用户
+//                .and().httpBasic().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
+//            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+//            response.setStatus(HttpServletResponse.SC_OK);
+//            PrintWriter out = response.getWriter();
+//            Map<String, Object> errorData = ResponseDataUtil.noLogin(authenticationException.getMessage());
+//            JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
+//            out.write(jo.toJSONString());
+//            out.flush();
+//            out.close();
+//        })
+                .and().exceptionHandling()
+                .authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
+                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    PrintWriter out = response.getWriter();
+                    Map<String, Object> errorData = ResponseDataUtil.noLogin(authenticationException.getMessage());
+                    JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
+                    out.write(jo.toJSONString());
+                    out.flush();
+                    out.close();
+                })
+                .accessDeniedHandler((request, response, accessDeniedException) -> {  //没有访问权限时，在这里处理结果，不要重定向
+                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    PrintWriter out = response.getWriter();
+                    Map<String, Object> errorData = ResponseDataUtil.noAuthorize(accessDeniedException.getMessage());
+                    JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
+                    out.write(jo.toJSONString());
+                    out.flush();
+                    out.close();
+                }).and().sessionManagement().maximumSessions(1).expiredSessionStrategy(event -> {//用户登录踢出上一个相同用户
             HttpServletResponse response = event.getResponse();
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
@@ -157,8 +168,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**")
-                .antMatchers("/druid/**")//忽略druid接口
                 .antMatchers("/webjars/**", "/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs")//忽略swagger2接口
+                .antMatchers("/druid/**")//忽略druid接口
                 .antMatchers("/login/verification-code/**");//忽略验证码接口
     }
 }

@@ -22,7 +22,7 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("demo_test")
+@TableName("de_test")
 @ApiModel(value = "DemoTest对象", description = "")
 public class DeTest extends IdEntity {
 
