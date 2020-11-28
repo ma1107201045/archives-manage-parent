@@ -3,6 +3,7 @@ package com.yintu.rixing.demo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.yintu.rixing.IdEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,8 +22,9 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value = "SysTest对象", description = "")
-public class SysTest extends IdEntity {
+@TableName("demo_test")
+@ApiModel(value = "DemoTest对象", description = "")
+public class DemoTest extends IdEntity {
 
     private static final long serialVersionUID = 1L;
 

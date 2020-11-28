@@ -1,7 +1,6 @@
 package com.yintu.rixing.demo;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yintu.rixing.demo.SysTest;
 
 /**
  * <p>
@@ -11,6 +10,6 @@ import com.yintu.rixing.demo.SysTest;
  * @author mlf
  * @since 2020-11-25
  */
-public interface ISysTestService extends IService<SysTest> {
+public interface IDemoTestService extends IService<DemoTest> {
 
 }

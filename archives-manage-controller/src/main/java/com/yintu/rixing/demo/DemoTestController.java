@@ -2,6 +2,7 @@ package com.yintu.rixing.demo;
 
 
 import com.yintu.rixing.util.ResponseDataUtil;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,8 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/demo/demo-test")
-public class SysTestController {
+@Api(tags = "测试接口")
+public class DemoTestController {
 
     @GetMapping("test")
     public Map<String, Object> test() {

@@ -2,15 +2,12 @@ package com.yintu.rixing.system.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yintu.rixing.demo.SysTest;
 import com.yintu.rixing.system.ISysUserService;
 import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.system.SysUserMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * <p>

@@ -1,9 +1,9 @@
 package com.yintu.rixing.demo.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yintu.rixing.demo.ISysTestService;
-import com.yintu.rixing.demo.SysTest;
-import com.yintu.rixing.demo.SysTestMapper;
+import com.yintu.rixing.demo.IDemoTestService;
+import com.yintu.rixing.demo.DemoTest;
+import com.yintu.rixing.demo.DemoTestMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2020-11-25
  */
 @Service
-public class SysTestServiceImpl extends ServiceImpl<SysTestMapper, SysTest> implements ISysTestService {
+public class DemoTestServiceImpl extends ServiceImpl<DemoTestMapper, DemoTest> implements IDemoTestService {
 
 }

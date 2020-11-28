@@ -4,6 +4,7 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.captcha.ICaptcha;
 import cn.hutool.captcha.generator.MathGenerator;
+import io.swagger.annotations.Api;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import java.io.OutputStream;
  */
 @Controller
 @RequestMapping("/login/verification-code")
+@Api(tags = "登录接口")
 public class VerificationCodeController {
     @GetMapping("/get")
     public void getCode(HttpSession session, HttpServletResponse response) throws IOException {
