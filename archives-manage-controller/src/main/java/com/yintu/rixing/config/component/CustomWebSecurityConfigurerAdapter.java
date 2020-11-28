@@ -112,16 +112,16 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                     out.flush();
                     out.close();
                 }).permitAll()
-//                .and().httpBasic().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
-//            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-//            response.setStatus(HttpServletResponse.SC_OK);
-//            PrintWriter out = response.getWriter();
-//            Map<String, Object> errorData = ResponseDataUtil.noLogin(authenticationException.getMessage());
-//            JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
-//            out.write(jo.toJSONString());
-//            out.flush();
-//            out.close();
-//        })
+                .and().httpBasic().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            response.setStatus(HttpServletResponse.SC_OK);
+            PrintWriter out = response.getWriter();
+            Map<String, Object> errorData = ResponseDataUtil.noLogin(authenticationException.getMessage());
+            JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
+            out.write(jo.toJSONString());
+            out.flush();
+            out.close();
+        })
                 .and().exceptionHandling()
                 .authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
                     response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);

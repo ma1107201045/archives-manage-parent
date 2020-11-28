@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.config.exception.BaseRuntimeException;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import io.swagger.annotations.*;
@@ -44,7 +45,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
         entity.setModifiedBy(username);
         entity.setModifiedTime(now);
         iSysQzhService.save(entity);
-        return ResponseDataUtil.ok("添加全宗号信息成功", entity);
+        return ResponseDataUtil.ok("添加全宗号信息成功");
     }
 
     @Log(level = EnumLogLevel.ERROR, module = "系统管理", description = "删除全宗号信息")

@@ -4,8 +4,8 @@ import com.yintu.rixing.config.exception.BaseRuntimeException;
 import com.yintu.rixing.util.ResponseDataUtil;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.sql.SQLException;
@@ -18,17 +18,8 @@ import java.util.Map;
  * @Date: 2020/11/26 13:54
  * @Version: 1.0
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionController {
-
-    @ExceptionHandler(SQLException.class)
-    public Map<String, Object> sqlException(SQLException e) {
-        if (e instanceof SQLIntegrityConstraintViolationException) {
-            return ResponseDataUtil.error("id重复，操作失败");
-        }
-        return ResponseDataUtil.error("数据库异常，操作失败");
-    }
-
     @ExceptionHandler(BindException.class)
     public Map<String, Object> bindException(BindException e) {
         StringBuilder sb = new StringBuilder();
@@ -39,11 +30,19 @@ public class GlobalExceptionController {
         return ResponseDataUtil.error(sb.toString());
     }
 
+    @ExceptionHandler(SQLException.class)
+    public Map<String, Object> sqlException(SQLException e) {
+        if (e instanceof SQLIntegrityConstraintViolationException) {
+            return ResponseDataUtil.error("值不能重复，操作失败" + e.getMessage());
+        }
+        return ResponseDataUtil.error("数据库异常，操作失败");
+    }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public Map<String, Object> maxUploadSizeExceededException(MaxUploadSizeExceededException e) {
         return ResponseDataUtil.error("文件上传异常，文件过大");
     }
+
 
     @ExceptionHandler(BaseRuntimeException.class)
     public Map<String, Object> baseRuntimeException(BaseRuntimeException e) {
