@@ -67,18 +67,14 @@ swagger:
       base-path:
         - /login
         - /login/**
-      exclude-path: [ /error ]
+      exclude-path: [ /error /error ]
     system:
       title: 系统管理模块
       description: 系统管理模块有关的接口
-      version: 1.0
-      license: Apache License, Version 2.0
-      license-url: https://www.apache.org/licenses/LICENSE-2.0.html
-      terms-of-service-url: https://github.com/dyc87112/spring-boot-starter-swagger
       base-package: com.yintu.rixing
       base-path:
         - /system/**
-      exclude-path: [ /error ]
+      exclude-path: [ /error /error ]
 
 
 
