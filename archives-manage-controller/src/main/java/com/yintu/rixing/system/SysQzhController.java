@@ -84,7 +84,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询全宗号信息列表")
     @GetMapping
     @ApiOperation(value = "查询全宗号信息列表", notes = "查询全宗号信息列表", httpMethod = "GET", response = Map.class)
-    public Map<String, Object> findPage(@RequestParam Integer num, @RequestParam Integer size, @RequestParam String qzhName) {
+    public Map<String, Object> findPage(@RequestParam Integer num, @RequestParam Integer size, String qzhName) {
         QueryWrapper<SysQzh> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysQzh.class, tableFieldInfo -> !"".equals(tableFieldInfo.getColumn()))
