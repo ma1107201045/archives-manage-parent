@@ -30,6 +30,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/system/sys-qzh")
 public class SysQzhController extends AuthenticationController implements BaseController<SysQzh, Integer> {
+
     @Autowired
     private ISysQzhService iSysQzhService;
 
