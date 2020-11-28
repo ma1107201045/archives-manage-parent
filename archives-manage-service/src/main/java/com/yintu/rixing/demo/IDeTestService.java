@@ -10,6 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author mlf
  * @since 2020-11-25
  */
-public interface IDemoTestService extends IService<DemoTest> {
+public interface IDeTestService extends IService<DeTest> {
 
 }

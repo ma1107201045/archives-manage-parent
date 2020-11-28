@@ -24,7 +24,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @TableName("demo_test")
 @ApiModel(value = "DemoTest对象", description = "")
-public class DemoTest extends IdEntity {
+public class DeTest extends IdEntity {
 
     private static final long serialVersionUID = 1L;
 

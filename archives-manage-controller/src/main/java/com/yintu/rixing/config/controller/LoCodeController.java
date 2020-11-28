@@ -21,10 +21,11 @@ import java.io.OutputStream;
  * @Version: 1.0
  */
 @Controller
-@RequestMapping("/login/verification-code")
+@RequestMapping("/login/lo-code")
 @Api(tags = "登录接口")
-public class VerificationCodeController {
-    @GetMapping("/get")
+public class LoCodeController {
+
+    @GetMapping
     public void getCode(HttpSession session, HttpServletResponse response) throws IOException {
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
         response.setStatus(HttpServletResponse.SC_OK);

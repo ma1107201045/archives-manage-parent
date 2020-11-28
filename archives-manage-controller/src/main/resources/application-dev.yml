@@ -60,21 +60,27 @@ swagger:
     url: https://www.baidu.com
     email: 1107201045@qq.com
   docket:
+    demo:
+      title: demo模块
+      description: demo有关接口
+      base-package: com.yintu.rixing.demo
+      base-path:
+        - /demo/**
+      exclude-path: [ /error ]
     login:
       title: 登录模块
       description: 登录有关的接口
-      base-package: com.yintu.rixing
+      base-package: com.yintu.rixing.config.controller
       base-path:
-        - /login
         - /login/**
-      exclude-path: [ /error /error ]
+      exclude-path: [ /error ]
     system:
       title: 系统管理模块
       description: 系统管理模块有关的接口
-      base-package: com.yintu.rixing
+      base-package: com.yintu.rixing.system
       base-path:
         - /system/**
-      exclude-path: [ /error /error ]
+      exclude-path: [ /error ]
 
 
 

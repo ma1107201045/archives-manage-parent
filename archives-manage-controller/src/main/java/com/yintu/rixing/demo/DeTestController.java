@@ -19,9 +19,9 @@ import java.util.Map;
  * @since 2020-11-25
  */
 @RestController
-@RequestMapping("/demo/demo-test")
+@RequestMapping("/demo/de-test")
 @Api(tags = "测试接口")
-public class DemoTestController {
+public class DeTestController {
 
     @GetMapping("test")
     public Map<String, Object> test() {

@@ -12,6 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2020-11-25
  */
 @Mapper
-public interface DemoTestMapper extends BaseMapper<DemoTest> {
+public interface DeTestMapper extends BaseMapper<DeTest> {
 
 }
