@@ -1,11 +1,15 @@
 package com.yintu.rixing.demo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.yintu.rixing.IdEntity;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -18,20 +22,28 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "SysTest对象", description = "")
-public class SysTest implements Serializable {
+public class SysTest extends IdEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
-
+    @TableField("create_by")
+    @ApiModelProperty(value = "创建人")
     private String createBy;
 
-    private LocalDateTime createDate;
+    @TableField("create_date")
+    @ApiModelProperty(value = "创建时间")
+    private Date createDate;
 
+    @TableField("name")
+    @ApiModelProperty(value = "用户名")
     private String name;
 
+    @TableField("age")
+    @ApiModelProperty(value = "年龄")
     private Integer age;
 
+    @TableField("email")
+    @ApiModelProperty(value = "邮箱")
     private String email;
 
 

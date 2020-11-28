@@ -47,3 +47,34 @@ spring:
 mybatis-plus:
   config-location: classpath:mybatis-config.xml
   type-aliases-package: com.yintu.rixing
+#api接口配置
+swagger:
+  version: 1.0
+  license: Apache License, Version 2.0
+  license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+  terms-of-service-url: https://github.com/dyc87112/spring-boot-starter-swagger
+  contact:
+    name: 马龙飞
+    url: https://www.baidu.com
+    email: 1107201045@qq.com
+  docket:
+    login:
+      title: 登录模块
+      description: 登录有关的接口
+      base-package: com.yintu.rixing
+      base-path:
+        - /login
+        - /login/**
+      exclude-path: [ /error ]
+    system:
+      title: 系统管理模块
+      description: 系统管理模块有关的接口
+      version: 1.0
+      license: Apache License, Version 2.0
+      license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+      terms-of-service-url: https://github.com/dyc87112/spring-boot-starter-swagger
+      base-package: com.yintu.rixing
+      base-path:
+        - /system/**
+      exclude-path: [ /error ]
+

@@ -5,6 +5,7 @@ import com.yintu.rixing.util.ResponseDataUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import java.util.Map;
  * @since 2020-11-25
  */
 @RestController
-@RequestMapping("/system/sys-test")
+@RequestMapping("/demo/demo-test")
 public class SysTestController {
 
     @GetMapping("test")
