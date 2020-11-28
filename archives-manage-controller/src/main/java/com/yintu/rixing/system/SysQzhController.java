@@ -10,9 +10,7 @@ import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.demo.SysTest;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -37,8 +35,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
 
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "添加全宗号信息")
     @PostMapping
-    @Override
-    @ApiOperation(value = "添加全宗号信息", notes = "添加全宗号信息", httpMethod = "POST", response = Map.class)
+    @ApiOperation(value = "添加全宗号信息", httpMethod = "POST", response = Map.class)
     public Map<String, Object> add(@Validated @ApiParam("参数") SysQzh entity) {
         String username = this.getLoginUserName();
         Date now = DateUtil.date();
@@ -52,8 +49,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
 
     @Log(level = EnumLogLevel.ERROR, module = "系统管理", description = "删除全宗号信息")
     @DeleteMapping("/{id}")
-    @Override
-    @ApiOperation(value = "删除全宗号信息", notes = "删除全宗号信息", httpMethod = "DELETE", response = Map.class)
+    @ApiOperation(value = "删除全宗号信息", httpMethod = "DELETE", response = Map.class)
     public Map<String, Object> remove(@PathVariable Integer id) {
         iSysQzhService.removeById(id);
         return ResponseDataUtil.ok("删除全宗号信息成功");
@@ -61,8 +57,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
 
     @Log(level = EnumLogLevel.WARN, module = "系统管理", description = " 修改全宗号信息")
     @PutMapping("/{id}")
-    @Override
-    @ApiOperation(value = "修改全宗号信息", notes = "修改全宗号信息", httpMethod = "PUT", response = Map.class)
+    @ApiOperation(value = "修改全宗号信息", httpMethod = "PUT", response = Map.class)
     public Map<String, Object> edit(@PathVariable Integer id, @Validated SysQzh entity) {
         String username = this.getLoginUserName();
         Date now = DateUtil.date();
@@ -74,8 +69,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询全宗号信息")
     @GetMapping("/{id}")
-    @Override
-    @ApiOperation(value = "查询全宗号信息", notes = "查询全宗号信息", httpMethod = "GET", response = Map.class)
+    @ApiOperation(value = "查询全宗号信息", httpMethod = "GET", response = Map.class)
     public Map<String, Object> findById(@PathVariable Integer id) {
         SysQzh sysQzh = iSysQzhService.getById(id);
         return ResponseDataUtil.ok("查询单条全宗号信息成功", sysQzh);
@@ -83,8 +77,8 @@ public class SysQzhController extends AuthenticationController implements BaseCo
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询全宗号信息列表")
     @GetMapping
-    @ApiOperation(value = "查询全宗号信息列表", notes = "查询全宗号信息列表", httpMethod = "GET", response = Map.class)
-    public Map<String, Object> findPage(@RequestParam Integer num, @RequestParam Integer size, String qzhName) {
+    @ApiOperation(value = "查询全宗号信息列表", httpMethod = "GET", response = Map.class)
+    public Map<String, Object> findPage(@RequestParam @ApiParam("页码") Integer num, @RequestParam @ApiParam("页数") Integer size, @ApiParam("全宗号名称") String qzhName) {
         QueryWrapper<SysQzh> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysQzh.class, tableFieldInfo -> !"".equals(tableFieldInfo.getColumn()))
