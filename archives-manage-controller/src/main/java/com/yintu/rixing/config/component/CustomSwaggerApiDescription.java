@@ -72,16 +72,6 @@ public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
                                     .required(true)
                                     .modelRef(new ModelRef("string"))
                                     .build(),
-//                        new ParameterBuilder()
-//                                .description("验证码唯一标识")
-//                                .type(new TypeResolver().resolve(String.class))
-//                                .name("randomKey")
-//                                .defaultValue("666666")
-//                                .parameterType("query")
-//                                .parameterAccess("access")
-//                                .required(true)
-//                                .modelRef(new ModelRef("string"))
-//                                .build(),
                             new ParameterBuilder()
                                     .description("验证码")
                                     .type(new TypeResolver().resolve(String.class))
