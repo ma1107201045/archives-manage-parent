@@ -76,23 +76,23 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @ApiImplicitParam(name = "id", value = "主键id", required = true, dataType = "int", paramType = "path")
     public Map<String, Object> findById(@PathVariable Integer id) {
         SysQzh sysQzh = iSysQzhService.getById(id);
-        return ResponseDataUtil.ok("查询单条全宗号信息成功", sysQzh);
+        return ResponseDataUtil.ok("查询全宗号信息成功", sysQzh);
     }
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询全宗号信息列表")
     @GetMapping
     @ApiOperation(value = "查询全宗号信息列表", notes = " 多条件全宗号信息分页列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "num", value = "页码", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "size", value = "页数", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "num", value = "页码", required = true, dataType = "int", paramType = "query", defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "页数", required = true, dataType = "int", paramType = "query", defaultValue = "10"),
             @ApiImplicitParam(name = "qzhName", value = "全宗号名称", dataType = "string", paramType = "query")
     })
     public Map<String, Object> findPage(@RequestParam Integer num, @RequestParam Integer size, String qzhName) {
         QueryWrapper<SysQzh> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysQzh.class, tableFieldInfo -> !"".equals(tableFieldInfo.getColumn()))
-                .like(SysQzh::getQzhName, qzhName);
+                .like(SysQzh::getQzhName, qzhName == null ? "" : qzhName);
         Page<SysQzh> page = iSysQzhService.page(new Page<>(num, size), queryWrapper);
-        return ResponseDataUtil.ok("查询单条全宗号信息成功", page);
+        return ResponseDataUtil.ok("查询全宗号信息列表成功", page);
     }
 }
