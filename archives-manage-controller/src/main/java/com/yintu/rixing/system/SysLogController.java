@@ -39,7 +39,7 @@ public class SysLogController extends AuthenticationController {
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询日志信息列表")
     @GetMapping
-    @ApiOperation(value = "查询日志信息列表", notes = " 多条件日志信息分页列表")
+    @ApiOperation(value = "查询日志信息列表", notes = " 多条件查询日志信息分页列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "num", value = "页码", required = true, dataType = "int", paramType = "query", defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "页数", required = true, dataType = "int", paramType = "query", defaultValue = "10"),
