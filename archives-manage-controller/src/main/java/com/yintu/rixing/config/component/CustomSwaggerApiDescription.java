@@ -1,26 +1,26 @@
 package com.yintu.rixing.config.component;
 
 import com.fasterxml.classmate.TypeResolver;
-import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMethod;
 import springfox.documentation.builders.ApiDescriptionBuilder;
 import springfox.documentation.builders.OperationBuilder;
 import springfox.documentation.builders.ParameterBuilder;
-import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiDescription;
 import springfox.documentation.service.Operation;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.ApiListingScannerPlugin;
 import springfox.documentation.spi.service.contexts.DocumentationContext;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @Author: mlf
@@ -41,34 +41,37 @@ public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
      */
     @Override
     public List<ApiDescription> apply(DocumentationContext context) {
-
-        Operation loginOperation = new OperationBuilder(new CachingOperationNameGenerator())
-                .tags(Sets.newHashSet("登录接口"))
-                .method(HttpMethod.POST)
-                .summary("用户名密码登录")
-                .consumes(Sets.newHashSet(MediaType.APPLICATION_FORM_URLENCODED_VALUE)) // 接收参数格式
-                .produces(Sets.newHashSet(MediaType.APPLICATION_JSON_VALUE)) // 返回参数格式
-                .parameters(Arrays.asList(
-                        new ParameterBuilder()
-                                .description("用户名")
-                                .type(new TypeResolver().resolve(String.class))
-                                .name("username")
-                                .defaultValue("super")
-                                .parameterType("form")
-                                .parameterAccess("access")
-                                .required(true)
-                                .modelRef(new ModelRef("string"))
-                                .build(),
-                        new ParameterBuilder()
-                                .description("密码")
-                                .type(new TypeResolver().resolve(String.class))
-                                .name("password")
-                                .defaultValue("123456")
-                                .parameterType("form")
-                                .parameterAccess("access")
-                                .required(true)
-                                .modelRef(new ModelRef("string"))
-                                .build(),
+        if ("login".equals(context.getGroupName())) {
+            Operation loginOperation = new OperationBuilder(new CachingOperationNameGenerator())
+                    .authorizations(context.getSecurityContexts().stream().map(SecurityContext::getSecurityReferences).findFirst().orElse(null))
+                    .tags(Sets.newHashSet("登录有关接口"))
+                    .uniqueId("login")
+                    .method(HttpMethod.POST)
+                    .summary("登录")
+                    .notes("登录")
+                    .produces(context.getProduces())
+                    .consumes(context.getConsumes())
+                    .parameters(Arrays.asList(
+                            new ParameterBuilder()
+                                    .description("用户名")
+                                    .type(new TypeResolver().resolve(String.class))
+                                    .name("username")
+                                    .defaultValue("super")
+                                    .parameterType("form")
+                                    .parameterAccess("access")
+                                    .required(true)
+                                    .modelRef(new ModelRef("string"))
+                                    .build(),
+                            new ParameterBuilder()
+                                    .description("密码")
+                                    .type(new TypeResolver().resolve(String.class))
+                                    .name("password")
+                                    .defaultValue("123456")
+                                    .parameterType("form")
+                                    .parameterAccess("access")
+                                    .required(true)
+                                    .modelRef(new ModelRef("string"))
+                                    .build(),
 //                        new ParameterBuilder()
 //                                .description("验证码唯一标识")
 //                                .type(new TypeResolver().resolve(String.class))
@@ -79,51 +82,50 @@ public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
 //                                .required(true)
 //                                .modelRef(new ModelRef("string"))
 //                                .build(),
-                        new ParameterBuilder()
-                                .description("验证码")
-                                .type(new TypeResolver().resolve(String.class))
-                                .name("captcha")
-                                .parameterType("form")
-                                .parameterAccess("access")
-                                .required(true)
-                                .modelRef(new ModelRef("string"))
-                                .build()
-                ))
-                .responseMessages(Collections.singleton(
-                        new ResponseMessageBuilder().code(200).message("请求成功")
-                                .responseModel(new ModelRef(
-                                        "com.yintu.rixing.util.ResponseDataUtil")
-                                ).build()))
-                .build();
-        Operation logoutOperation = new OperationBuilder(new CachingOperationNameGenerator())
-                .tags(Sets.newHashSet("登录接口"))
-                .method(HttpMethod.POST)
-                .summary("用户名密码登录")
-                .consumes(Sets.newHashSet(MediaType.APPLICATION_FORM_URLENCODED_VALUE)) // 接收参数格式
-                .produces(Sets.newHashSet(MediaType.APPLICATION_JSON_VALUE)) // 返回参数格式
-                .responseMessages(Collections.singleton(
-                        new ResponseMessageBuilder().code(200).message("请求成功")
-                                .responseModel(new ModelRef(
-                                        "com.yintu.rixing.util.ResponseDataUtil")
-                                ).build()))
-                .build();
+                            new ParameterBuilder()
+                                    .description("验证码")
+                                    .type(new TypeResolver().resolve(String.class))
+                                    .name("captcha")
+                                    .parameterType("form")
+                                    .parameterAccess("access")
+                                    .required(true)
+                                    .modelRef(new ModelRef("string"))
+                                    .build()
+                    ))
+                    .responseMessages(new HashSet<>(context.getGlobalResponseMessages().get(RequestMethod.GET)))
+                    .build();
+            ApiDescription login = new ApiDescriptionBuilder(context.operationOrdering())
+                    .groupName("login")
+                    .path("/login")
+                    .pathDecorator(s -> s)
+                    .operations(Collections.singletonList(loginOperation))
+                    .hidden(false)
+                    .build();
 
-        ApiDescriptionBuilder apiDescriptionBuilder = new ApiDescriptionBuilder(null);
-        ApiDescription login = apiDescriptionBuilder
-                .groupName("login")
-                .path("/login")
-                .description("登录接口")
-                .operations(Collections.singletonList(loginOperation))
-                .hidden(false)
-                .build();
-        ApiDescription logout = apiDescriptionBuilder
-                .groupName("login")
-                .path("/logout")
-                .description("登录接口")
-                .operations(Collections.singletonList(logoutOperation))
-                .hidden(false)
-                .build();
-        return Arrays.asList(login, logout);
+
+            Operation logoutOperation = new OperationBuilder(new CachingOperationNameGenerator())
+                    .authorizations(context.getSecurityContexts().stream().map(SecurityContext::getSecurityReferences).findFirst().orElse(null))
+                    .tags(Sets.newHashSet("登录有关接口"))
+                    .uniqueId("logout")
+                    .method(HttpMethod.POST)
+                    .summary("注销")
+                    .notes("注销")
+                    .produces(context.getProduces())
+                    .consumes(context.getConsumes())
+                    .responseMessages(new HashSet<>(context.getGlobalResponseMessages().get(RequestMethod.GET)))
+                    .build();
+            ApiDescription logout = new ApiDescriptionBuilder(context.operationOrdering())
+                    .groupName("login")
+                    .path("/logout")
+                    .pathDecorator(s -> s)
+                    .operations(Collections.singletonList(logoutOperation))
+                    .hidden(false)
+                    .build();
+
+
+            return Arrays.asList(login, logout);
+        }
+        return Collections.emptyList();
     }
 
     /**
