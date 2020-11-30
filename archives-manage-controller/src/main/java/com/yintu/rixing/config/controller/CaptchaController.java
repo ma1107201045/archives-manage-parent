@@ -5,6 +5,7 @@ import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.captcha.ICaptcha;
 import cn.hutool.captcha.generator.MathGenerator;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +22,12 @@ import java.io.OutputStream;
  * @Version: 1.0
  */
 @Controller
-@RequestMapping("/login/lo-code")
-@Api(tags = "登录接口")
-public class LoCodeController {
+@RequestMapping("/captcha")
+@Api(tags = "登录有关接口")
+public class CaptchaController {
 
     @GetMapping
+    @ApiOperation(value = "获取验证码信息", notes = "获取验证码信息")
     public void getCode(HttpSession session, HttpServletResponse response) throws IOException {
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
         response.setStatus(HttpServletResponse.SC_OK);

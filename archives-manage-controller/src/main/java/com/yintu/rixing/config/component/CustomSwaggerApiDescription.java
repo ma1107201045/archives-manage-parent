@@ -1,10 +1,12 @@
 package com.yintu.rixing.config.component;
 
 import com.fasterxml.classmate.TypeResolver;
+import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import springfox.documentation.builders.ApiDescriptionBuilder;
 import springfox.documentation.builders.OperationBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.ResponseMessageBuilder;
@@ -39,20 +41,20 @@ public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
      */
     @Override
     public List<ApiDescription> apply(DocumentationContext context) {
-        Operation usernamePasswordOperation = new OperationBuilder(new CachingOperationNameGenerator())
+
+        Operation loginOperation = new OperationBuilder(new CachingOperationNameGenerator())
+                .tags(Sets.newHashSet("登录接口"))
                 .method(HttpMethod.POST)
                 .summary("用户名密码登录")
-                .notes("username/password登录")
                 .consumes(Sets.newHashSet(MediaType.APPLICATION_FORM_URLENCODED_VALUE)) // 接收参数格式
                 .produces(Sets.newHashSet(MediaType.APPLICATION_JSON_VALUE)) // 返回参数格式
-                .tags(Sets.newHashSet("登录"))
                 .parameters(Arrays.asList(
                         new ParameterBuilder()
                                 .description("用户名")
                                 .type(new TypeResolver().resolve(String.class))
                                 .name("username")
-                                .defaultValue("admin")
-                                .parameterType("query")
+                                .defaultValue("super")
+                                .parameterType("form")
                                 .parameterAccess("access")
                                 .required(true)
                                 .modelRef(new ModelRef("string"))
@@ -62,26 +64,26 @@ public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
                                 .type(new TypeResolver().resolve(String.class))
                                 .name("password")
                                 .defaultValue("123456")
-                                .parameterType("query")
+                                .parameterType("form")
                                 .parameterAccess("access")
                                 .required(true)
                                 .modelRef(new ModelRef("string"))
                                 .build(),
-                        new ParameterBuilder()
-                                .description("验证码唯一标识")
-                                .type(new TypeResolver().resolve(String.class))
-                                .name("randomKey")
-                                .defaultValue("666666")
-                                .parameterType("query")
-                                .parameterAccess("access")
-                                .required(true)
-                                .modelRef(new ModelRef("string"))
-                                .build(),
+//                        new ParameterBuilder()
+//                                .description("验证码唯一标识")
+//                                .type(new TypeResolver().resolve(String.class))
+//                                .name("randomKey")
+//                                .defaultValue("666666")
+//                                .parameterType("query")
+//                                .parameterAccess("access")
+//                                .required(true)
+//                                .modelRef(new ModelRef("string"))
+//                                .build(),
                         new ParameterBuilder()
                                 .description("验证码")
                                 .type(new TypeResolver().resolve(String.class))
-                                .name("code")
-                                .parameterType("query")
+                                .name("captcha")
+                                .parameterType("form")
                                 .parameterAccess("access")
                                 .required(true)
                                 .modelRef(new ModelRef("string"))
@@ -93,14 +95,35 @@ public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
                                         "com.yintu.rixing.util.ResponseDataUtil")
                                 ).build()))
                 .build();
+        Operation logoutOperation = new OperationBuilder(new CachingOperationNameGenerator())
+                .tags(Sets.newHashSet("登录接口"))
+                .method(HttpMethod.POST)
+                .summary("用户名密码登录")
+                .consumes(Sets.newHashSet(MediaType.APPLICATION_FORM_URLENCODED_VALUE)) // 接收参数格式
+                .produces(Sets.newHashSet(MediaType.APPLICATION_JSON_VALUE)) // 返回参数格式
+                .responseMessages(Collections.singleton(
+                        new ResponseMessageBuilder().code(200).message("请求成功")
+                                .responseModel(new ModelRef(
+                                        "com.yintu.rixing.util.ResponseDataUtil")
+                                ).build()))
+                .build();
 
-        ApiDescription loginApiDescription = new ApiDescription("login", "/login", "登录接口",
-                Collections.singletonList(usernamePasswordOperation), false);
-
-        ApiDescription logoutApiDescription = new ApiDescription("login", "/logout", "注销接口",
-                null, false);
-
-        return Arrays.asList(loginApiDescription, logoutApiDescription);
+        ApiDescriptionBuilder apiDescriptionBuilder = new ApiDescriptionBuilder(null);
+        ApiDescription login = apiDescriptionBuilder
+                .groupName("login")
+                .path("/login")
+                .description("登录接口")
+                .operations(Collections.singletonList(loginOperation))
+                .hidden(false)
+                .build();
+        ApiDescription logout = apiDescriptionBuilder
+                .groupName("login")
+                .path("/logout")
+                .description("登录接口")
+                .operations(Collections.singletonList(logoutOperation))
+                .hidden(false)
+                .build();
+        return Arrays.asList(login, logout);
     }
 
     /**

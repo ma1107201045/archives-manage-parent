@@ -72,7 +72,9 @@ swagger:
       description: 登录有关的接口
       base-package: com.yintu.rixing.config.controller
       base-path:
-        - /login/**
+        - /login
+        - /logout
+        - /captcha
       exclude-path: [ /error ]
     system:
       title: 系统管理模块
