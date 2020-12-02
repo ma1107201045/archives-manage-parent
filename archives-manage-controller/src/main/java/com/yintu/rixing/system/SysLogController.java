@@ -33,7 +33,7 @@ import java.util.Map;
 public class SysLogController extends AuthenticationController {
 
     @Autowired
-    private ISysLogService sysLogService;
+    private ISysLogService iSysLogService;
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询日志信息列表")
     @GetMapping
@@ -59,7 +59,7 @@ public class SysLogController extends AuthenticationController {
         if (startDate != null && endDate != null)
             queryWrapper.lambda().between(SysLog::getCreateTime, startDate, endDate);
         queryWrapper.orderByDesc("id");
-        Page<SysLog> page = sysLogService.page(new Page<>(num, size), queryWrapper);
+        Page<SysLog> page = iSysLogService.page(new Page<>(num, size), queryWrapper);
         return ResponseDataUtil.ok("查询日志信息列表成功", page);
     }
 }
