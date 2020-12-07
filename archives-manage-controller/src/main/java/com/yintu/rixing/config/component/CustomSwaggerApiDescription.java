@@ -11,16 +11,16 @@ import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiDescription;
 import springfox.documentation.service.Operation;
-import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.ApiListingScannerPlugin;
 import springfox.documentation.spi.service.contexts.DocumentationContext;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator;
 
-import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * @Author: mlf
