@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- *  Mapper 接口
+ *  系统全宗号表 Mapper 接口
  * </p>
  *
  * @author mlf
