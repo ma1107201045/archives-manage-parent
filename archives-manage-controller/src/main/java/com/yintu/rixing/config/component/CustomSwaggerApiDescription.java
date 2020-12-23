@@ -90,8 +90,6 @@ public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
                     .operations(Collections.singletonList(loginOperation))
                     .hidden(false)
                     .build();
-
-
             Operation logoutOperation = new OperationBuilder(new CachingOperationNameGenerator())
                     .authorizations(context.getSecurityContexts().stream().map(SecurityContext::getSecurityReferences).findFirst().orElse(null))
                     .tags(Sets.newHashSet("登录有关接口"))

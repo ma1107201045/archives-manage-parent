@@ -17,4 +17,5 @@ public interface BaseController<T, PK extends Serializable> {
     Map<String, Object> edit(PK id, T entity);
 
     Map<String, Object> findById(PK id);
+
 }

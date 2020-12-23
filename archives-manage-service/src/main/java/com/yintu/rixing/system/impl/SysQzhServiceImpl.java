@@ -6,6 +6,7 @@ import com.yintu.rixing.system.ISysQzhService;
 import com.yintu.rixing.system.SysQzh;
 import com.yintu.rixing.system.SysQzhMapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,6 +20,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysQzhServiceImpl extends ServiceImpl<SysQzhMapper, SysQzh> implements ISysQzhService {
 
-    
 
 }

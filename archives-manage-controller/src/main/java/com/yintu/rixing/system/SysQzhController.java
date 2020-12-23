@@ -13,7 +13,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,7 +84,7 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     }
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询全宗号信息列表")
-    @GetMapping
+    @GetMapping("/findpage")
     @ApiOperation(value = "查询全宗号信息列表", notes = " 多条件查询全宗号信息分页列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
@@ -97,5 +99,8 @@ public class SysQzhController extends AuthenticationController implements BaseCo
         queryWrapper.orderByDesc("id");
         Page<SysQzh> page = iSysQzhService.page(new Page<>(num, size), queryWrapper);
         return ResponseDataUtil.ok("查询全宗号信息列表成功", page);
+
     }
+
+
 }

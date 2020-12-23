@@ -50,7 +50,7 @@ public class MyBatisPlusGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://192.168.68.132/db_dev_rixing?serverTimezone=Asia/Shanghai");
+        dsc.setUrl("jdbc:mysql://192.168.68.131/db_dev_rixing?serverTimezone=Asia/Shanghai");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");

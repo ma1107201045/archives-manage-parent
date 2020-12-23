@@ -19,12 +19,10 @@ import java.util.Collection;
 @Component
 public class CustomFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
-
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         return SecurityConfig.createList("ROLE_ALL_PERMISSION");
     }
-
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
         return null;

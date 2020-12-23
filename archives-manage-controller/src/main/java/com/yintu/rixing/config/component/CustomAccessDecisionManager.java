@@ -21,7 +21,6 @@ import java.util.Collection;
  */
 @Component
 public class CustomAccessDecisionManager implements AccessDecisionManager {
-
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
         if (authentication instanceof AnonymousAuthenticationToken) {
@@ -30,9 +29,7 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
             return;
 //            throw new AuthorizationServiceException("权限不足，请联系管理员");
         }
-
     }
-
     @Override
     public boolean supports(ConfigAttribute attribute) {
         return false;

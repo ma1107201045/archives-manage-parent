@@ -92,9 +92,8 @@
     </springProfile>
     <springProfile name="test">
         <logger name="com.yintu.rixing" level="DEBUG" />
-        <root level="DEBUG">
-            <appender-ref ref="allFile"/>
-            <appender-ref ref="errorFile"/>
+        <root level="INFO">
+            <appender-ref ref="console"/>
         </root>
     </springProfile>
     <springProfile name="prod">

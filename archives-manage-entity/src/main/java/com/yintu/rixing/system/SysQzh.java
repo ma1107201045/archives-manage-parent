@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_qzh")
 @ApiModel(value = "SysQzh对象", description = "系统全宗号表")
-public class SysQzh extends BaseEntity {
+public class  SysQzh extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
