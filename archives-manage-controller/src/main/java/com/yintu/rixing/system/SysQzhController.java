@@ -99,7 +99,6 @@ public class SysQzhController extends AuthenticationController implements BaseCo
         queryWrapper.orderByDesc("id");
         Page<SysQzh> page = iSysQzhService.page(new Page<>(num, size), queryWrapper);
         return ResponseDataUtil.ok("查询全宗号信息列表成功", page);
-
     }
 
 

@@ -13,9 +13,6 @@ import java.io.Serializable;
 @Data
 public class SysTableMessge implements Serializable {
 
-    @ApiModelProperty(value = "中文名称")
-    @TableField("comment")
-    private String comment;
 
     @ApiModelProperty(value = "字段")
     @TableField("field")
@@ -24,6 +21,10 @@ public class SysTableMessge implements Serializable {
     @ApiModelProperty(value = "类型")
     @TableField("type")
     private String type;
+
+    @ApiModelProperty(value = "字段长度")
+    @TableField("fieldlength")
+    private String fieldlength;
 
     private String Null;
 
@@ -34,5 +35,8 @@ public class SysTableMessge implements Serializable {
     private String Extra;
 
 
+    @ApiModelProperty(value = "中文名称")
+    @TableField("comment")
+    private String comment;
 
 }
