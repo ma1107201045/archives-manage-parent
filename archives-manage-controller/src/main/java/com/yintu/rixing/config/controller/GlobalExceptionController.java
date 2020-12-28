@@ -49,4 +49,17 @@ public class GlobalExceptionController {
         return ResponseDataUtil.error(e.getMessage());
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public Map<String, Object> runtimeException(RuntimeException e) {
+        if (e instanceof NullPointerException) {
+            return ResponseDataUtil.error("空指针异常");
+        }
+        return ResponseDataUtil.error(e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public Map<String, Object> exception(Exception e) {
+        return ResponseDataUtil.error(e.getMessage());
+    }
+
 }
