@@ -10,6 +10,17 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yintu.rixing.system.ISysLibraryService;
+import com.yintu.rixing.system.SysLibrary;
+import com.yintu.rixing.system.SysLibraryMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -34,6 +45,8 @@ public class SysLibraryServiceImpl extends ServiceImpl<SysLibraryMapper, SysLibr
 
     /**
      * 查询单条数据及下级数据
+    /**
+     * 查询单条数据
      *
      * @param id
      * @return
@@ -276,15 +289,6 @@ public class SysLibraryServiceImpl extends ServiceImpl<SysLibraryMapper, SysLibr
         return  ResponseDataUtil.error("失败");
     }
 
-    @Override
-    public Map<String, Object> xxfield(Integer id, String xfieldName, String mfieldName, String valuetype, String fieldlength) {
-        Map<String,Object> map=new HashMap<>();
-        String tablename = sysLibraryMapper.findByOne(id).getTablename();
-        map.put("tablename",tablename);
-        map.put("xfieldName",xfieldName);
-        map.put("mfieldName",mfieldName);
-        map.put("valuetype",valuetype);
-        map.put("fieldlength",fieldlength);
 
         Integer integer=   sysLibraryMapper.xxfield(map);
         if (integer==0){

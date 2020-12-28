@@ -7,11 +7,11 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
  * Mapper 接口
+ *  Mapper 接口
  * </p>
  *
  * @author mlf
