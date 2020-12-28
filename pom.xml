@@ -26,6 +26,7 @@
         <archives-manage-all.version>${project.version}</archives-manage-all.version>
         <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
         <mybatis-generator-core.version>1.4.0</mybatis-generator-core.version>
+        <mybatis-dynamic-sql.version>1.2.1</mybatis-dynamic-sql.version>
         <mybatis-plus-boot-starter.version>3.4.1</mybatis-plus-boot-starter.version>
         <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
         <freemarker.version>2.3.30</freemarker.version>
@@ -67,6 +68,11 @@
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-core</artifactId>
                 <version>${mybatis-generator-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.dynamic-sql</groupId>
+                <artifactId>mybatis-dynamic-sql</artifactId>
+                <version>${mybatis-dynamic-sql.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
