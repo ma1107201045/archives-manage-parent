@@ -42,12 +42,6 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @PostMapping
     @ApiOperation(value = "添加全宗号信息", notes = "添加全宗号信息")
     public Map<String, Object> add(@Validated SysQzh sysQzh) {
-        String username = this.getLoginUserName();
-        Date now = DateUtil.date();
-        sysQzh.setCreateBy(username);
-        sysQzh.setCreateTime(now);
-        sysQzh.setModifiedBy(username);
-        sysQzh.setModifiedTime(now);
         iSysQzhService.save(sysQzh);
         return ResponseDataUtil.ok("添加全宗号信息成功");
     }
@@ -66,10 +60,6 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @ApiOperation(value = "修改全宗号信息", notes = "修改全宗号信息")
     @ApiImplicitParam(name = "id", value = "主键id", required = true)
     public Map<String, Object> edit(@PathVariable Integer id, @Validated SysQzh sysQzh) {
-        String username = this.getLoginUserName();
-        Date now = DateUtil.date();
-        sysQzh.setModifiedBy(username);
-        sysQzh.setModifiedTime(now);
         iSysQzhService.updateById(sysQzh);
         return ResponseDataUtil.ok("修改全宗号信息成功");
     }

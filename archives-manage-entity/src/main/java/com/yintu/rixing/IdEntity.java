@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class IdEntity implements Serializable {
     private static final long serialVersionUID = -2411492813615673916L;
 
+    @ApiModelProperty(value = "主键id", accessMode = ApiModelProperty.AccessMode.READ_ONLY)
     @TableId(type = IdType.AUTO)
-    @ApiModelProperty(value = "主键id")
     private Integer id;
 }

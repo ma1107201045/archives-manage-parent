@@ -23,16 +23,16 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_qzh")
 @ApiModel(value = "SysQzh对象", description = "系统全宗号表")
-public class  SysQzh extends BaseEntity {
+public class SysQzh extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "全宗号名称")
+    @ApiModelProperty(value = "全宗号名称", required = true)
     @TableField("qzh_name")
     @NotBlank
     private String qzhName;
 
-    @ApiModelProperty(value = "全宗号")
+    @ApiModelProperty(value = "全宗号", required = true)
     @TableField("qzh_number")
     @NotBlank
     private String qzhNumber;
@@ -45,7 +45,7 @@ public class  SysQzh extends BaseEntity {
     @TableField("address")
     private String address;
 
-    @ApiModelProperty(value = "是否是档案馆 1.是 0.否")
+    @ApiModelProperty(value = "是否是档案馆 1.是 0.否", required = true)
     @TableField("archives_center")
     @NotNull
     private Integer archivesCenter;
