@@ -92,8 +92,7 @@ public class SysLibraryController implements BaseController<SysLibrary, Integer>
         List<Map<String, Object>> byId = iSysLibraryService.findById(id);
         return ResponseDataUtil.ok("成功", byId);
     }
-
-
+    
     /**
      * 可以根据库类别，库名称组合查询
      *
