@@ -10,6 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author mlf
  * @since 2020-12-22
  */
-public interface ISysDepartmentUserService extends IService<SysDepartmentUser> {
+public interface ISysUserDepartmentService extends IService<SysUserDepartment> {
 
 }

@@ -66,7 +66,7 @@ public class LogAspect extends AuthenticationController {
         String module = log.module();
         String description = log.description();
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        iLogService.put(joinPoint, request, methodName, sysUser.getId(), sysUser.getUsername(), sysUser.getTrueName(), level, module, description);
+        iLogService.put(joinPoint, request, methodName, sysUser.getId(), sysUser.getUsername(), sysUser.getNickname(), level, module, description);
     }
 
     /**

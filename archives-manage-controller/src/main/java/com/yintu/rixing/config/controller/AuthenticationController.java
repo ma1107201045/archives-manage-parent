@@ -42,12 +42,12 @@ public class AuthenticationController {
     }
 
     /**
-     * 获取登录真实姓名
+     * 获取登录用户名称
      *
-     * @return 真实姓名
+     * @return 用户名称
      */
     protected String getLoginTrueName() {
-        return this.getLoginUser().getTrueName();
+        return this.getLoginUser().getNickname();
     }
 
     /**

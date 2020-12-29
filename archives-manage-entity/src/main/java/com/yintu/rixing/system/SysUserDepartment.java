@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mlf
@@ -18,19 +18,19 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_department_user")
-@ApiModel(value="SysDepartmentUser对象", description="系统部门用户中间表")
-public class SysDepartmentUser extends BaseEntity {
+@TableName("sys_user_department")
+@ApiModel(value = "SysUserDepartment对象", description = "系统用户部门中间表")
+public class SysUserDepartment extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    @ApiModelProperty(value = "部门id")
-    @TableField("department_id")
-    private Integer departmentId;
 
     @ApiModelProperty(value = "用户id")
     @TableField("user_id")
     private Integer userId;
+
+    @ApiModelProperty(value = "部门id")
+    @TableField("department_id")
+    private Integer departmentId;
 
 
 }

@@ -10,12 +10,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>
@@ -35,20 +37,17 @@ public class SysUser extends BaseEntity implements UserDetails {
 
     @ApiModelProperty(value = "用户名")
     @TableField("username")
-    @NotBlank
     private String username;
 
     @ApiModelProperty(value = "密码")
     @TableField("password")
     @JsonIgnore
     @JSONField(serialize = false)
-    @NotBlank
     private String password;
 
-    @ApiModelProperty(value = "真实姓名")
-    @TableField("true_name")
-    @NotBlank
-    private String trueName;
+    @ApiModelProperty(value = "用户名称")
+    @TableField("nickname")
+    private String nickname;
 
     @ApiModelProperty(value = "证件类型")
     @TableField("certificate_type")
@@ -58,13 +57,8 @@ public class SysUser extends BaseEntity implements UserDetails {
     @TableField("certificate_number")
     private String certificateNumber;
 
-    @ApiModelProperty(value = "邮政编码")
-    @TableField("postal_code")
-    private String postalCode;
-
     @ApiModelProperty(value = "邮箱")
     @TableField("email")
-    @Email
     private String email;
 
     @ApiModelProperty(value = "地址")
@@ -75,27 +69,19 @@ public class SysUser extends BaseEntity implements UserDetails {
     @TableField("phone")
     private String phone;
 
-    @ApiModelProperty(value = "排序编号")
-    @TableField("order_number")
-    private Integer orderNumber;
-
-    @ApiModelProperty(value = "查档用户 1.是 0.否")
-    @TableField("select_user")
-    private Short selectUser;
-
-    @ApiModelProperty(value = "账户过期")
+    @ApiModelProperty(value = "账户过期", hidden = true)
     @TableField("account_expired")
     private Short accountExpired;
 
-    @ApiModelProperty(value = "账户锁定")
+    @ApiModelProperty(value = "账户锁定", hidden = true)
     @TableField("account_locked")
     private Short accountLocked;
 
-    @ApiModelProperty(value = "密码过期")
+    @ApiModelProperty(value = "密码过期", hidden = true)
     @TableField("credentials_expired")
     private Short credentialsExpired;
 
-    @ApiModelProperty(value = "账户禁用")
+    @ApiModelProperty(value = "账户禁用", hidden = true)
     @TableField("account_enabled")
     private Short accountEnabled;
 
@@ -103,20 +89,16 @@ public class SysUser extends BaseEntity implements UserDetails {
     @TableField("auth_type")
     private Short authType;
 
-    @ApiModelProperty(value = "全宗号")
-    @TableField("qzh_number")
-    @NotNull
-    private String qzhNumber;
 
-    @JsonIgnore
-    @JSONField(serialize = false)
+    private List<SysRole> sysRoles;
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>();
     }
 
-    @JsonIgnore
-    @JSONField(serialize = false)
+
     @Override
     public String getPassword() {
         return password;
@@ -126,26 +108,25 @@ public class SysUser extends BaseEntity implements UserDetails {
     public String getUsername() {
         return username;
     }
-    @JsonIgnore
-    @JSONField(serialize = false)
+
+
     @Override
     public boolean isAccountNonExpired() {
         return !(accountExpired == null || accountExpired == 1);
     }
-    @JsonIgnore
-    @JSONField(serialize = false)
+
     @Override
     public boolean isAccountNonLocked() {
         return !(accountLocked == null || accountLocked == 1);
     }
-    @JsonIgnore
-    @JSONField(serialize = false)
+
+
     @Override
     public boolean isCredentialsNonExpired() {
         return !(credentialsExpired == null || credentialsExpired == 1);
     }
-    @JsonIgnore
-    @JSONField(serialize = false)
+
+
     @Override
     public boolean isEnabled() {
         return !(accountEnabled == null || accountEnabled == 0);

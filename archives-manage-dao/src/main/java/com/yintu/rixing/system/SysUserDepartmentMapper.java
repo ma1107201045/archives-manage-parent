@@ -12,6 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2020-12-22
  */
 @Mapper
-public interface SysDepartmentUserMapper extends BaseMapper<SysDepartmentUser> {
+public interface SysUserDepartmentMapper extends BaseMapper<SysUserDepartment> {
 
 }

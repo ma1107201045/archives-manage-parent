@@ -6,7 +6,7 @@ package com.yintu.rixing.enumobject;
  */
 public enum EnumFlag {
 
-    FlagTrue("是", (short) 1, true), FlagFalse("否", (short) 0, true);
+    True("是", (short) 1, true), False("否", (short) 0, true);
 
     private String name;
 

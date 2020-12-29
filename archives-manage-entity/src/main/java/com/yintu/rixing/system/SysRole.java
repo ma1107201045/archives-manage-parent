@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -26,13 +27,14 @@ public class SysRole extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "角色名称")
+    @ApiModelProperty(value = "角色名称", required = true)
     @TableField("name")
     @NotBlank
     private String name;
 
     @ApiModelProperty(value = "是否作为默认用户角色 1.是 0.否")
     @TableField("default_role")
+    @NotNull
     private Short defaultRole;
 
     @ApiModelProperty(value = "描述")

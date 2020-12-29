@@ -1,6 +1,16 @@
 package com.yintu.rixing.system;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yintu.rixing.dto.system.SysRoleFormDto;
+import com.yintu.rixing.dto.system.SysRoleQueryDto;
+import com.yintu.rixing.dto.system.SysUserFormDto;
+import com.yintu.rixing.dto.system.SysUserQueryDto;
+import com.yintu.rixing.util.TreeNodeUtil;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -11,5 +21,21 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-11-26
  */
 public interface ISysRoleService extends IService<SysRole> {
+
+    @Transactional(rollbackFor = {Exception.class})
+    void save(SysRoleFormDto sysRoleFormDto);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void updateById(SysRoleFormDto sysRoleFormDto);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void savePermissionsById(Integer id, Set<Integer> permissionIds);
+
+    Page<SysRole> page(SysRoleQueryDto sysRoleQueryDto);
+
+    List<SysPermission> sysPermissionsByIdAndParentId(Integer id, Integer parentId);
+
+    void sysPermissionsTreeByIdAndParentId(Integer id, Integer parentId, List<TreeNodeUtil> treeNodeUtils);
+
 
 }
