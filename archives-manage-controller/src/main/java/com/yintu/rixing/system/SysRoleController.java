@@ -12,10 +12,7 @@ import com.yintu.rixing.dto.system.SysUserFormDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.TreeNodeUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +33,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-role")
 @Api(tags = "角色接口")
+@ApiSort(2)
 public class SysRoleController extends AuthenticationController implements BaseController<SysRoleFormDto, Integer> {
     @Autowired
     private ISysRoleService iSysRoleService;

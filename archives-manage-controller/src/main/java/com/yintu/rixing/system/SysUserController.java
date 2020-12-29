@@ -11,10 +11,7 @@ import com.yintu.rixing.dto.system.SysUserQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.TreeNodeUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +32,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-user")
 @Api(tags = "用户接口")
+@ApiSort(1)
 public class SysUserController extends AuthenticationController implements BaseController<SysUserFormDto, Integer> {
     @Autowired
     private ISysUserService iSysUserService;

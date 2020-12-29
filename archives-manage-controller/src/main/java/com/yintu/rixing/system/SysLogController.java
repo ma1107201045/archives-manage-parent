@@ -9,6 +9,7 @@ import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiSort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/system/sys-log")
 @Api(tags = "日志接口")
+@ApiSort(5)
 public class SysLogController extends AuthenticationController {
 
     @Autowired

@@ -9,8 +9,10 @@ import com.yintu.rixing.dto.system.SysPermissionFormDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.TreeNodeUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiSort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,8 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/system/sys-department")
+@Api(tags = "部门接口（组织机构接口）")
+@ApiSort(4)
 public class SysDepartmentController extends AuthenticationController {
     @Autowired
     private ISysDepartmentService iSysDepartmentService;

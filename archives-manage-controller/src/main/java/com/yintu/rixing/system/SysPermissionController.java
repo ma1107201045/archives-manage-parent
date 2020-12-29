@@ -11,6 +11,7 @@ import com.yintu.rixing.util.TreeNodeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiSort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-permission")
 @Api(tags = "权限接口")
+@ApiSort(3)
 public class SysPermissionController extends AuthenticationController {
 
     @Autowired
@@ -61,9 +63,9 @@ public class SysPermissionController extends AuthenticationController {
         return ResponseDataUtil.ok("修改权限信息成功");
     }
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询权限信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询权限单条信息")
     @GetMapping("/{id}")
-    @ApiOperation(value = "查询用户单条信息", notes = " 查询用户单条信息")
+    @ApiOperation(value = "查询权限单条信息", notes = " 查询权限单条信息")
     @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
     public Map<String, Object> findById(@PathVariable Integer id) {
         SysPermission sysPermission = iSysPermissionService.getById(id);

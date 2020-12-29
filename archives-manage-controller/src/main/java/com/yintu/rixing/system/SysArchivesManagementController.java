@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-//@RestController
-//@RequestMapping("/system/archives")
-//@Api(tags = "模板字段信息接口")
+@RestController
+@RequestMapping("/system/archives")
+@Api(tags = "模板字段信息接口")
 public class SysArchivesManagementController implements BaseController<SysArchives, Integer> {
 
     @Autowired

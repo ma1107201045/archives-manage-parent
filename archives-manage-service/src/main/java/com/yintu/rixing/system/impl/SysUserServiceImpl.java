@@ -12,6 +12,8 @@ import com.yintu.rixing.util.TreeNodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -45,6 +47,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUser.setCredentialsExpired(EnumFlag.False.getValue());
         sysUser.setAccountEnabled(EnumFlag.True.getValue());
         BeanUtil.copyProperties(sysUserFormDto, sysUser);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         this.save(sysUser);
         this.saveRolesById(sysUser.getId(), sysUserFormDto.getRoleIds());
     }

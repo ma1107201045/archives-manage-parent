@@ -168,7 +168,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**")
-                .antMatchers("/webjars/**", "/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/doc.html")//忽略swagger2接口
+                .antMatchers("/webjars/**", "/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/v2/api-docs-ext", "/doc.html")//忽略swagger2接口
                 .antMatchers("/druid/**")//忽略druid接口
                 .antMatchers("/captcha");//忽略验证码接口
     }

@@ -8,6 +8,7 @@ import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +34,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/system/sysborrowaudit")
+@Api(tags = "借阅审批接口")
 public class SysBorrowauditController extends AuthenticationController implements BaseController<SysBorrowaudit, Integer> {
 
 
@@ -122,8 +124,7 @@ public class SysBorrowauditController extends AuthenticationController implement
                                         @RequestParam("borrower") String borrower,
                                         @RequestParam("recordnumber") String recordnumber,
                                         @RequestParam("abstrac") String abstrac,
-                                        @RequestParam("borroweway") String borroweway)
-    {
+                                        @RequestParam("borroweway") String borroweway) {
         QueryWrapper<SysBorrowaudit> queryWrapper = new QueryWrapper<>();
 
         queryWrapper.lambda()
