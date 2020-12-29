@@ -97,7 +97,7 @@ public class SysRoleController extends AuthenticationController {
     @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
     public Map<String, Object> findPermissionTreeById(@PathVariable Integer id) {
         List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
-        iSysRoleService.sysPermissionsTreeByIdAndParentId(id, -1, treeNodeUtils);
+        iSysRoleService.sysPermissionTreeByIdAndParentId(id, -1, treeNodeUtils);
         return ResponseDataUtil.ok("查询角色拥有权限列表信息成功", treeNodeUtils);
     }
 }

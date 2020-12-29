@@ -1,13 +1,11 @@
 package com.yintu.rixing.dto.system;
 
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-;import java.util.Date;
+import java.util.Date;
 
 /**
  * @Author: mlf

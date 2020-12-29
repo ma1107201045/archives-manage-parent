@@ -69,12 +69,12 @@ public class SysPermissionController extends AuthenticationController {
         return ResponseDataUtil.ok("查询权限单条信息", sysPermission);
     }
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询权限列表信息成功")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询权限列表信息树")
     @GetMapping
-    @ApiOperation(value = "查询权限列表信息成功", notes = "查询权限列表信息成功")
+    @ApiOperation(value = "查询权限列表信息树", notes = "查询权限列表信息树")
     public Map<String, Object> findTree() {
         List<TreeNodeUtil> treeNodeUtils = iSysPermissionService.listTree(-1);
-        return ResponseDataUtil.ok("查询权限列表信息成功", treeNodeUtils);
+        return ResponseDataUtil.ok("查询权限列表信息树成功", treeNodeUtils);
     }
 
 }

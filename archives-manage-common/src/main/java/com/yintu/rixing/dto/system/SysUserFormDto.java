@@ -9,6 +9,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
+/**
+ * @Author: mlf
+ * @Date: 2020/12/29 13:31:47
+ * @Version: 1.0
+ */
 @Data
 public class SysUserFormDto {
 

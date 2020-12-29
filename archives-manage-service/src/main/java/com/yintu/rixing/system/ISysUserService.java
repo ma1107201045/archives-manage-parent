@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.system.SysUserFormDto;
 import com.yintu.rixing.dto.system.SysUserQueryDto;
+import com.yintu.rixing.util.TreeNodeUtil;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,10 @@ public interface ISysUserService extends IService<SysUser>, UserDetailsService {
     void saveRolesById(Integer id, Set<Integer> roleIds);
 
     Page<SysUser> page(SysUserQueryDto sysUserDto);
+
+    List<SysDepartment> sysDepartmentsByIdAndParentId(Integer id, Integer parentId);
+
+    void sysDepartmentTreeByIdAndParentId(Integer id, Integer parentId, List<TreeNodeUtil> treeNodeUtils);
 
     List<SysRole> sysRolesById(Integer id);
 }

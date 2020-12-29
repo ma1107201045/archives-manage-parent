@@ -92,12 +92,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public void sysPermissionsTreeByIdAndParentId(Integer id, Integer parentId, List<TreeNodeUtil> treeNodeUtils) {
+    public void sysPermissionTreeByIdAndParentId(Integer id, Integer parentId, List<TreeNodeUtil> treeNodeUtils) {
         List<SysPermission> sysPermissions = this.sysPermissionsByIdAndParentId(id, parentId);
         for (SysPermission sysPermission : sysPermissions) {
             List<SysPermission> permissions = this.sysPermissionsByIdAndParentId(id, parentId);
             if (!permissions.isEmpty()) {
-                sysPermissionsTreeByIdAndParentId(id, sysPermission.getId(), treeNodeUtils);
+                sysPermissionTreeByIdAndParentId(id, sysPermission.getId(), treeNodeUtils);
             } else {
                 TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
                 treeNodeUtil.setId(sysPermission.getId().longValue());

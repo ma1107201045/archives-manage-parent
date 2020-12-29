@@ -5,6 +5,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * @Author: mlf
+ * @Date: 2020/12/29 13:31:47
+ * @Version: 1.0
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class SysRoleQueryDto extends PageDto {

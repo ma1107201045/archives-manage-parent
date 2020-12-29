@@ -6,10 +6,15 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * @Author: mlf
+ * @Date: 2020/12/29 13:31:47
+ * @Version: 1.0
+ */
 @Data
 public class SysPermissionFormDto {
 
-    @ApiModelProperty(value = "父节点主键")
+    @ApiModelProperty(value = "主键")
     private Integer id;
 
     @ApiModelProperty(value = "父节点主键", required = true)

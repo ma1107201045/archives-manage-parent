@@ -8,6 +8,7 @@ import com.yintu.rixing.dto.system.SysUserFormDto;
 import com.yintu.rixing.dto.system.SysUserQueryDto;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.system.*;
+import com.yintu.rixing.util.TreeNodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,6 +27,11 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
+
+    @Autowired
+    private ISysUserDepartmentService iSysUserDepartmentService;
+    @Autowired
+    private ISysDepartmentService iSysDepartmentService;
     @Autowired
     private ISysUserRoleService iSysUserRoleService;
     @Autowired
@@ -84,6 +90,33 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             sysUser.setSysRoles(this.sysRolesById(sysUser.getId()));
         });
         return sysUserPage;
+    }
+
+    @Override
+    public List<SysDepartment> sysDepartmentsByIdAndParentId(Integer id, Integer parentId) {
+        QueryWrapper<SysUserDepartment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().select(SysUserDepartment::getDepartmentId).eq(SysUserDepartment::getUserId, id);
+        List<Integer> departmentIds = iSysUserDepartmentService.list(queryWrapper).stream().map(SysUserDepartment::getDepartmentId).collect(Collectors.toList());
+
+        QueryWrapper<SysDepartment> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.lambda().eq(SysDepartment::getId, parentId).in(SysDepartment::getId, departmentIds);
+        return iSysDepartmentService.list(queryWrapper1);
+    }
+
+    @Override
+    public void sysDepartmentTreeByIdAndParentId(Integer id, Integer parentId, List<TreeNodeUtil> treeNodeUtils) {
+        List<SysDepartment> sysDepartments = this.sysDepartmentsByIdAndParentId(id, parentId);
+        for (SysDepartment sysDepartment : sysDepartments) {
+            List<SysDepartment> departments = this.sysDepartmentsByIdAndParentId(id, parentId);
+            if (!departments.isEmpty()) {
+                sysDepartmentTreeByIdAndParentId(id, sysDepartment.getId(), treeNodeUtils);
+            } else {
+                TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+                treeNodeUtil.setId(sysDepartment.getId().longValue());
+                treeNodeUtil.setLabel(sysDepartment.getName());
+                treeNodeUtils.add(treeNodeUtil);
+            }
+        }
     }
 
     @Override

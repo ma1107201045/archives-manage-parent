@@ -1,6 +1,13 @@
 package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yintu.rixing.dto.system.SysDepartmentFormDto;
+import com.yintu.rixing.dto.system.SysPermissionFormDto;
+import com.yintu.rixing.system.impl.SysDepartmentServiceImpl;
+import com.yintu.rixing.util.TreeNodeUtil;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * <p>
@@ -11,5 +18,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-12-22
  */
 public interface ISysDepartmentService extends IService<SysDepartment> {
+
+    @Transactional(rollbackFor = {Exception.class})
+    void save(SysDepartmentFormDto sysDepartmentFormDto);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void updateById(SysDepartmentFormDto sysDepartmentFormDto);
+
+    List<TreeNodeUtil> listTree(Integer parentId);
 
 }
