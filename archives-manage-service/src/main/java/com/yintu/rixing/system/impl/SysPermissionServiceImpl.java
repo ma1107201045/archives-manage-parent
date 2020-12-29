@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysPermissionFormDto;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.vo.system.SysPermissionVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Period;
@@ -23,6 +25,8 @@ import java.util.List;
 @Service
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements ISysPermissionService {
 
+    @Autowired
+    private SysPermissionMapper sysPermissionMapper;
 
     @Override
     public void save(SysPermissionFormDto sysPermissionFormDto) {
@@ -67,5 +71,10 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             treeNodeUtils.add(treeNodeUtil);
         }
         return treeNodeUtils;
+    }
+
+    @Override
+    public List<SysPermissionVo> list(Short menu) {
+        return sysPermissionMapper.selectAllPermission(menu);
     }
 }

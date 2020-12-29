@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -89,13 +90,17 @@ public class SysUser extends BaseEntity implements UserDetails {
     @TableField("auth_type")
     private Short authType;
 
-
+    @TableField(exist = false)
     private List<SysRole> sysRoles;
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+        List<SimpleGrantedAuthority> list = new ArrayList<>(sysRoles.size());
+        for (SysRole sysRole : sysRoles) {
+            list.add(new SimpleGrantedAuthority(sysRole.getName()));
+        }
+        return list;
     }
 
 

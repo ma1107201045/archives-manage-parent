@@ -124,7 +124,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, id);
         List<Integer> roles = iSysUserRoleService.list(queryWrapper).stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
-        return iSysRoleService.listByIds(roles);
+        return roles.isEmpty() ? new ArrayList<>() : iSysRoleService.listByIds(roles);
     }
 
 
@@ -132,13 +132,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //在这里可以自己调用数据库，对username进行查询，看看在数据库中是否存在
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda()
-                .select(SysUser.class, tableFieldInfo -> !"".equals(tableFieldInfo.getColumn()))
-                .eq(SysUser::getUsername, username);
-        SysUser sysUser = this.getOne(queryWrapper);
-        if (sysUser == null)
+        queryWrapper.lambda().eq(SysUser::getUsername, username);
+        List<SysUser> sysUsers = this.list(queryWrapper);
+        if (sysUsers.isEmpty())
             throw new UsernameNotFoundException("用户名不存在");
+        SysUser sysUser = sysUsers.get(0);
         //查询角色
+        sysUser.setSysRoles(this.sysRolesById(sysUser.getId()));
         return sysUser;
     }
 

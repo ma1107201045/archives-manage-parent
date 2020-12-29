@@ -35,7 +35,7 @@
         <poi-ooxml.version>3.17</poi-ooxml.version>
         <hutool-all.version>5.3.9</hutool-all.version>
         <swagger-spring-boot-starter.version>1.9.1.RELEASE</swagger-spring-boot-starter.version>
-        <swagger-bootstrap-ui.version>1.9.0</swagger-bootstrap-ui.version>
+        <swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
     </properties>
     <dependencyManagement>
         <dependencies>

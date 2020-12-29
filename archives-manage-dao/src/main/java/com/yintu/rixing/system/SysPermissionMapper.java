@@ -1,7 +1,10 @@
 package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yintu.rixing.vo.system.SysPermissionVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,5 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {
+
+    List<SysPermissionVo> selectAllPermission(Short menu);
 
 }
