@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -38,8 +39,8 @@ public class SysMessageController implements BaseController<SysMessage, Integer>
     }
 
     @DeleteMapping("/del")
-    public Map<String, Object> remove(@RequestParam Integer id) {
-        boolean b = sysMessageService.removeById(id);
+    public Map<String, Object> remove(@RequestParam Set<Integer> ids) {
+        boolean b = sysMessageService.removeByIds(ids);
         if (b) {
             return ResponseDataUtil.ok("删除成功");
         }

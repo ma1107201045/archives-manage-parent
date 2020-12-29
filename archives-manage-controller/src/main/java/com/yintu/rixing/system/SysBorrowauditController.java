@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -42,7 +43,8 @@ public class SysBorrowauditController extends AuthenticationController implement
         return null;
     }
 
-    public Map<String, Object> remove(Integer id) {
+    @Override
+    public Map<String, Object> remove(Set<Integer> id) {
         return null;
     }
 

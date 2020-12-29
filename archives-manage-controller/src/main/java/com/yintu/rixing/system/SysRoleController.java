@@ -83,12 +83,12 @@ public class SysRoleController extends AuthenticationController {
     }
 
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询权限列表树信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询角色权限列表树信息")
     @GetMapping("/sys-permission")
-    @ApiOperation(value = "查询权限列表树信息", notes = "查询权限列表树信息")
+    @ApiOperation(value = "查询角色权限列表树信息", notes = "查询角色权限列表树信息")
     public Map<String, Object> findPermissionTree() {
         List<TreeNodeUtil> treeNodeUtils = iSysPermissionService.listTree(-1);
-        return ResponseDataUtil.ok("查询权限列表树信息成功", treeNodeUtils);
+        return ResponseDataUtil.ok("查询角色权限列表树信息成功", treeNodeUtils);
     }
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询角色拥有权限列表信息")

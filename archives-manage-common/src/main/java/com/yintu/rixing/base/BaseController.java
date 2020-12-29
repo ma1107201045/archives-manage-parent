@@ -3,6 +3,7 @@ package com.yintu.rixing.base;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author: mlf
@@ -13,7 +14,7 @@ public interface BaseController<T, PK extends Serializable> {
 
     Map<String, Object> add(T entity);
 
-    Map<String, Object> remove(Collection<PK> id);
+    Map<String, Object> remove(Set<PK> id);
 
     Map<String, Object> edit(PK id, T entity);
 

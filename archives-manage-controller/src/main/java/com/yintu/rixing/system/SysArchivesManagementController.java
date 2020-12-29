@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 //@RestController
 //@RequestMapping("/system/archives")
@@ -38,11 +39,11 @@ public class SysArchivesManagementController implements BaseController<SysArchiv
     }
 
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "删除字段信息")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除字段信息", notes = "删除字段信息")
-    @ApiImplicitParam(name = "id", value = "主键id", required = true)
-    public Map<String, Object> remove(@PathVariable Integer id) {
-        iSysArchivesService.removeById(id);
+    @ApiImplicitParam(name = "ids", value = "主键id集", required = true)
+    public Map<String, Object> remove(@PathVariable Set<Integer> ids) {
+        iSysArchivesService.removeByIds(ids);
         return ResponseDataUtil.ok("删除档案字段信息成功");
     }
 
@@ -55,6 +56,7 @@ public class SysArchivesManagementController implements BaseController<SysArchiv
         iSysArchivesService.updateById(entity);
         return ResponseDataUtil.ok("修改档案字段信息成功");
     }
+
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "查询模板信息")
     @GetMapping
     @ApiOperation(value = "查询模板信息", notes = "查询模板信息")

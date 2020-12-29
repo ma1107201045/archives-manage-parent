@@ -289,14 +289,19 @@ public class SysLibraryServiceImpl extends ServiceImpl<SysLibraryMapper, SysLibr
         return  ResponseDataUtil.error("失败");
     }
 
-
-        Integer integer=   sysLibraryMapper.xxfield(map);
-        if (integer==0){
-            return ResponseDataUtil.ok("成功");
-        }
-        return  ResponseDataUtil.error("失败");
-
+    @Override
+    public Map<String, Object> xxfield(Integer id, String xfieldName, String mfieldName, String valuetype, String fieldlength) {
+        return null;
     }
+
+//
+//        Integer integer=   sysLibraryMapper.xxfield(map);
+//        if (integer==0){
+//            return ResponseDataUtil.ok("成功");
+//        }
+//        return  ResponseDataUtil.error("失败");
+
+    //}
 
     /**
      * 递归

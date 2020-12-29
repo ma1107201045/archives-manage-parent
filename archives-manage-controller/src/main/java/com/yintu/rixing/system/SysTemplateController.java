@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -46,8 +47,8 @@ public class SysTemplateController implements BaseController<SysTemplate, Intege
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "删除模板信息列表")
     @ApiOperation(value = "删除模板", notes = "删除模板")
     @DeleteMapping("/del")
-    public Map<String, Object> remove(@Param("id") Integer id) {
-        iSysTemplateService.removeById(id);
+    public Map<String, Object> remove(@Param("ids") Set<Integer> ids) {
+        iSysTemplateService.removeByIds(ids);
         return ResponseDataUtil.ok("删除成功");
     }
 
@@ -65,8 +66,6 @@ public class SysTemplateController implements BaseController<SysTemplate, Intege
         List<SysTableMessge> list = iSysTemplateService.findById(id);
         return ResponseDataUtil.ok("查询成功", list);
     }
-
-
 
 
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "引入模板")
@@ -170,15 +169,15 @@ public class SysTemplateController implements BaseController<SysTemplate, Intege
     @PostMapping("/addjd")
     @ApiOperation(value = "添加子节点", notes = "添加子节点")
 
-    public Map<String, Object> addjd(@Param("id")Integer    id,@Param("tepname")String  tepname) {
-        SysTemplate sysTemplate=new SysTemplate();
+    public Map<String, Object> addjd(@Param("id") Integer id, @Param("tepname") String tepname) {
+        SysTemplate sysTemplate = new SysTemplate();
         sysTemplate.setPid(id);
         sysTemplate.setTepname(tepname);
         boolean save = iSysTemplateService.save(sysTemplate);
-        if (save){
+        if (save) {
             return ResponseDataUtil.ok("添加成功");
         }
-         return ResponseDataUtil.ok("添加成功");
+        return ResponseDataUtil.ok("添加成功");
     }
 
     @ApiOperation(value = "删除子节点", notes = "删除子节点")
@@ -192,10 +191,11 @@ public class SysTemplateController implements BaseController<SysTemplate, Intege
         }
         return ResponseDataUtil.error("删除失败");
     }
+
     @ApiOperation(value = "编辑子节点", notes = "编辑子节点")
     @PutMapping("/uptejd")
-    public Map<String, Object> uptejd(@Param("id") Integer id,@Param("tepname")String  tepname) {
-        SysTemplate sysTemplate=new SysTemplate();
+    public Map<String, Object> uptejd(@Param("id") Integer id, @Param("tepname") String tepname) {
+        SysTemplate sysTemplate = new SysTemplate();
         sysTemplate.setId(id);
         sysTemplate.setTepname(tepname);
         boolean b = iSysTemplateService.updateById(sysTemplate);

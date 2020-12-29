@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -47,11 +48,11 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     }
 
     @Log(level = EnumLogLevel.ERROR, module = "系统管理", description = "删除全宗号信息")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除全宗号信息", notes = "删除全宗号信息")
-    @ApiImplicitParam(name = "id", value = "主键id", required = true)
-    public Map<String, Object> remove(@PathVariable Integer id) {
-        iSysQzhService.removeById(id);
+    @ApiImplicitParam(name = "ids", value = "主键id", required = true)
+    public Map<String, Object> remove(@PathVariable Set<Integer> ids) {
+        iSysQzhService.removeByIds(ids);
         return ResponseDataUtil.ok("删除全宗号信息成功");
     }
 

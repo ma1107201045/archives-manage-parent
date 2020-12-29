@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -51,6 +52,7 @@ public class SysLibraryController implements BaseController<SysLibrary, Integer>
         }
         return ResponseDataUtil.error("添加失败");
     }
+
     @PostMapping("/addmulu")
     @Override
     public Map<String, Object> add(@Validated SysLibrary entity) {
@@ -59,13 +61,11 @@ public class SysLibraryController implements BaseController<SysLibrary, Integer>
     }
 
     @Log(level = EnumLogLevel.ERROR, module = "系统管理", description = "删除档案信息")
-    @DeleteMapping("/del/{id}")
+    @DeleteMapping("/del/{ids}")
     @ApiOperation(value = "删除档案信息", notes = "删除档案信息")
     @Override
-    public Map<String, Object> remove(@PathVariable("id") Integer id) {
-
-        iSysLibraryService.removeById(id);
-
+    public Map<String, Object> remove(@PathVariable("ids") Set<Integer> ids) {
+        iSysLibraryService.removeByIds(ids);
         return ResponseDataUtil.ok("删除成功");
     }
 
@@ -92,7 +92,7 @@ public class SysLibraryController implements BaseController<SysLibrary, Integer>
         List<Map<String, Object>> byId = iSysLibraryService.findById(id);
         return ResponseDataUtil.ok("成功", byId);
     }
-    
+
     /**
      * 可以根据库类别，库名称组合查询
      *
@@ -113,8 +113,8 @@ public class SysLibraryController implements BaseController<SysLibrary, Integer>
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "新增档案库")
     @PostMapping("/xzdak")
     @ApiOperation(value = "新增档案库", notes = "新增档案库")
-    public Map<String, Object> yrmb( @Param("tepname") String tepname, @Param("id") Integer id,@Param("librname") String    librname ) {
-        Map<String, Object> bytepname = iSysLibraryService.findBytepname(tepname, id,librname);
+    public Map<String, Object> yrmb(@Param("tepname") String tepname, @Param("id") Integer id, @Param("librname") String librname) {
+        Map<String, Object> bytepname = iSysLibraryService.findBytepname(tepname, id, librname);
         return ResponseDataUtil.ok("成功", bytepname);
 
     }
