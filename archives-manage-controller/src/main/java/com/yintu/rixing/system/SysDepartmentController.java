@@ -29,7 +29,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/system/sys-department")
-public class SysDepartmentController extends AuthenticationController implements BaseController<SysDepartmentFormDto, Integer> {
+public class SysDepartmentController extends AuthenticationController {
     @Autowired
     private ISysDepartmentService iSysDepartmentService;
 
@@ -42,11 +42,11 @@ public class SysDepartmentController extends AuthenticationController implements
     }
 
     @Log(level = EnumLogLevel.ERROR, module = "系统管理", description = "删除部门信息")
-    @DeleteMapping("/{ids}")
+    @DeleteMapping("/{id}")
     @ApiOperation(value = "删除部门信息", notes = "删除部门信息")
-    @ApiImplicitParam(name = "ids", value = "主键id集", required = true, paramType = "path")
-    public Map<String, Object> remove(@PathVariable Set<Integer> ids) {
-        iSysDepartmentService.removeByIds(ids);
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id集", required = true, paramType = "path")
+    public Map<String, Object> remove(@PathVariable Integer id) {
+        iSysDepartmentService.removeById(id);
         return ResponseDataUtil.ok("删除部门信息成功");
     }
 

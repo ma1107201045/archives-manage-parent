@@ -32,6 +32,17 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
+    public void removeTree(Integer id) {
+        this.removeById(id);
+        QueryWrapper<SysPermission> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysPermission::getParentId, id);
+        List<SysPermission> sysPermissions = this.list(queryWrapper);
+        for (SysPermission sysPermission : sysPermissions) {
+            this.removeTree(sysPermission.getId());
+        }
+    }
+
+    @Override
     public void updateById(SysPermissionFormDto sysPermissionFormDto) {
         SysPermission sysPermission = this.getById(sysPermissionFormDto.getId());
         if (sysPermission != null) {

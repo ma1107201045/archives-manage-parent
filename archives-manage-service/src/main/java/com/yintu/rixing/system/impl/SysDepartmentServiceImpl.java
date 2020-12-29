@@ -27,12 +27,22 @@ import java.util.List;
 @Service
 public class SysDepartmentServiceImpl extends ServiceImpl<SysDepartmentMapper, SysDepartment> implements ISysDepartmentService {
 
-
     @Override
     public void save(SysDepartmentFormDto sysDepartmentFormDto) {
         SysDepartment sysPermission = new SysDepartment();
         BeanUtil.copyProperties(sysDepartmentFormDto, sysPermission);
         this.save(sysPermission);
+    }
+
+    @Override
+    public void removeTree(Integer id) {
+        this.removeById(id);
+        QueryWrapper<SysDepartment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysDepartment::getParentId, id);
+        List<SysDepartment> sysDepartments = this.list(queryWrapper);
+        for (SysDepartment sysDepartment : sysDepartments) {
+            this.removeTree(sysDepartment.getId());
+        }
     }
 
     @Override

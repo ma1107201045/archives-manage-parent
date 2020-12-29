@@ -30,7 +30,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-permission")
 @Api(tags = "权限接口")
-public class SysPermissionController extends AuthenticationController implements BaseController<SysPermissionFormDto, Integer> {
+public class SysPermissionController extends AuthenticationController {
 
     @Autowired
     private ISysPermissionService iSysPermissionService;
@@ -44,11 +44,11 @@ public class SysPermissionController extends AuthenticationController implements
     }
 
     @Log(level = EnumLogLevel.ERROR, module = "系统管理", description = "删除权限信息")
-    @DeleteMapping("/{ids}")
+    @DeleteMapping("/{id}")
     @ApiOperation(value = "删除权限信息", notes = "删除权限信息")
-    @ApiImplicitParam(name = "ids", value = "主键id集", required = true, paramType = "path")
-    public Map<String, Object> remove(@PathVariable Set<Integer> ids) {
-        iSysPermissionService.removeByIds(ids);
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    public Map<String, Object> remove(@PathVariable Integer id) {
+        iSysPermissionService.removeTree(id);
         return ResponseDataUtil.ok("删除权限信息成功");
     }
 
