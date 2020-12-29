@@ -1,5 +1,6 @@
 package com.yintu.rixing.dto.system;
 
+import com.yintu.rixing.dto.common.PageDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,23 +14,22 @@ import java.util.Date;
  * @Version: 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@ApiModel(value = "SysLogDto对象", description = "系统日志Dto")
-public class SysLogDto {
+@EqualsAndHashCode(callSuper = true)
+public class SysLogDto extends PageDto {
 
-    @ApiModelProperty(name = "operator", value = "操作人")
+    @ApiModelProperty(value = "操作人")
     private String operator;
 
-    @ApiModelProperty(name = "loginId", value = "登录ip")
+    @ApiModelProperty(value = "登录ip")
     private String loginId;
 
-    @ApiModelProperty(name = "level", value = "日志级别")
+    @ApiModelProperty(value = "日志级别")
     private Short level;
 
-    @ApiModelProperty(name = "beginDate", value = "开始日期")
+    @ApiModelProperty(value = "开始日期")
     private Date beginDate;
 
-    @ApiModelProperty(name = "endDate", value = "结束日期")
+    @ApiModelProperty(value = "结束日期")
     private Date endDate;
 
 }

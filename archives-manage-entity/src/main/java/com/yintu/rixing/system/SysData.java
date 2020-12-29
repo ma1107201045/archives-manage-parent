@@ -1,9 +1,6 @@
 package com.yintu.rixing.system;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 首页数据统计的实体类

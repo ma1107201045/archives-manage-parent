@@ -53,7 +53,7 @@ public class SysRoleController extends AuthenticationController implements BaseC
     @Log(level = EnumLogLevel.ERROR, module = "系统管理", description = "删除角色信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除角色信息", notes = "删除角色信息")
-    @ApiImplicitParam(name = "ids", value = "主键id集", required = true, paramType = "path")
+    @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
     public Map<String, Object> remove(@PathVariable Set<Integer> ids) {
         iSysRoleService.removeByIds(ids);
         return ResponseDataUtil.ok("删除用户信息成功");
@@ -62,7 +62,7 @@ public class SysRoleController extends AuthenticationController implements BaseC
     @Log(level = EnumLogLevel.WARN, module = "系统管理", description = " 修改角色信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改角色信息", notes = "修改角色信息")
-    @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public Map<String, Object> edit(@PathVariable Integer id, @Validated SysRoleFormDto sysRoleFormDto) {
         iSysRoleService.updateById(sysRoleFormDto);
         return ResponseDataUtil.ok("修改角色信息成功");
@@ -71,7 +71,7 @@ public class SysRoleController extends AuthenticationController implements BaseC
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询角色单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询角色单条信息", notes = " 查询角色单条信息")
-    @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public Map<String, Object> findById(@PathVariable Integer id) {
         SysRole sysRole = iSysRoleService.getById(id);
         return ResponseDataUtil.ok("查询角色单条信息成功", sysRole);

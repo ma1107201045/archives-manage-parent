@@ -55,7 +55,7 @@ public class SysPermissionController extends AuthenticationController implements
     @Log(level = EnumLogLevel.WARN, module = "系统管理", description = " 修改权限信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改权限信息", notes = "修改权限信息")
-    @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
+    @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
     public Map<String, Object> edit(@PathVariable Integer id, @Validated SysPermissionFormDto sysPermissionFomDto) {
         iSysPermissionService.updateById(sysPermissionFomDto);
         return ResponseDataUtil.ok("修改权限信息成功");
@@ -64,7 +64,7 @@ public class SysPermissionController extends AuthenticationController implements
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询权限信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询用户单条信息", notes = " 查询用户单条信息")
-    @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
+    @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
     public Map<String, Object> findById(@PathVariable Integer id) {
         SysPermission sysPermission = iSysPermissionService.getById(id);
         return ResponseDataUtil.ok("查询权限单条信息", sysPermission);

@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * @Version: 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class SysUserQueryDto extends PageDto {
     @ApiModelProperty(value = "用户名")
     private String username;

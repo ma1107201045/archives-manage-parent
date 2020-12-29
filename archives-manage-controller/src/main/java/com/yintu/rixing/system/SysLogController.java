@@ -1,22 +1,20 @@
 package com.yintu.rixing.system;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
-import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.dto.system.SysLogDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -35,31 +33,11 @@ public class SysLogController extends AuthenticationController {
     @Autowired
     private ISysLogService iSysLogService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询日志信息列表")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询日志列表信息")
     @GetMapping
-    @ApiOperation(value = "查询日志信息列表", notes = " 多条件查询日志信息分页列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
-            @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10")
-    })
-    public Map<String, Object> findPage(@RequestParam Integer num, @RequestParam Integer size, SysLogDto sysLogDto) {
-        QueryWrapper<SysLog> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().select(SysLog.class, tableFieldInfo -> !"".equals(tableFieldInfo.getColumn()));
-        String operator = sysLogDto.getOperator();
-        if (operator != null && !"".equals(operator))
-            queryWrapper.lambda().eq(SysLog::getOperator, operator);
-        String loginIp = sysLogDto.getOperator();
-        if (loginIp != null && !"".equals(loginIp))
-            queryWrapper.lambda().eq(SysLog::getLoginIp, loginIp);
-        Short level = sysLogDto.getLevel();
-        if (sysLogDto.getLevel() != null)
-            queryWrapper.lambda().eq(SysLog::getLevel, level);
-        Date startDate = sysLogDto.getBeginDate();
-        Date endDate = sysLogDto.getEndDate();
-        if (startDate != null && endDate != null)
-            queryWrapper.lambda().between(SysLog::getCreateTime, startDate, endDate);
-        queryWrapper.orderByDesc("id");
-        Page<SysLog> page = iSysLogService.page(new Page<>(num, size), queryWrapper);
-        return ResponseDataUtil.ok("查询日志信息列表成功", page);
+    @ApiOperation(value = "查询日志列表信息", notes = " 查询日志列表信息")
+    public Map<String, Object> findPage(@Validated SysLogDto sysLogDto) {
+        Page<SysLog> page = iSysLogService.page(sysLogDto);
+        return ResponseDataUtil.ok("查询日志列表信息成功", page);
     }
 }

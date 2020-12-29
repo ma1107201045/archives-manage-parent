@@ -21,7 +21,7 @@ import java.util.Set;
 
 /**
  * <p>
- * 部门表 前端控制器
+ * 系统部门表 前端控制器
  * </p>
  *
  * @author mlf
@@ -53,7 +53,7 @@ public class SysDepartmentController extends AuthenticationController implements
     @Log(level = EnumLogLevel.WARN, module = "系统管理", description = " 修改部门信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改部门信息", notes = "修改部门信息")
-    @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public Map<String, Object> edit(@PathVariable Integer id, @Validated SysDepartmentFormDto sysDepartmentFormDto) {
         iSysDepartmentService.updateById(sysDepartmentFormDto);
         return ResponseDataUtil.ok("修改部门信息成功");
@@ -62,7 +62,7 @@ public class SysDepartmentController extends AuthenticationController implements
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询部门单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询部门单条信息", notes = " 查询部门单条信息")
-    @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public Map<String, Object> findById(@PathVariable Integer id) {
         SysDepartment sysDepartment = iSysDepartmentService.getById(id);
         return ResponseDataUtil.ok("查询部门单条信息成功", sysDepartment);

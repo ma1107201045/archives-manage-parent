@@ -29,7 +29,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "SysUser对象", description = "系统日志表")
 public class SysUser extends BaseEntity implements UserDetails {
 
