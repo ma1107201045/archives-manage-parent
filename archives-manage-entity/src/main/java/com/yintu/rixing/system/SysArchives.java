@@ -20,7 +20,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_archives")
-@ApiModel(value = "SysArchives", description = "系统日志表")
+@ApiModel(value = "SysArchives", description = "档案模板表")
 public class SysArchives extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

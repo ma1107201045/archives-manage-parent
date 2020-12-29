@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_library")
-@ApiModel(value="SysLibrary对象", description="")
+@ApiModel(value="SysLibrary对象", description="档案库表")
 public class    SysLibrary extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

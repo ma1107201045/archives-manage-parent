@@ -12,9 +12,5 @@ import java.util.List;
  */
 public interface ISysArchivesService extends IService<SysArchives> {
 
-    List<SysTableMessge> findByTableName(String tablename);//模板1查询
-    boolean innertFleId(String tablename,SysArchives sysArchives);//模板添加字段信息
-
-    boolean deleField(String tablename, String fieldName);
 
 }

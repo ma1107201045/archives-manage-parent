@@ -18,14 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/system/archives")
-@Api(tags = "档案库模板接口")
+//@RestController
+//@RequestMapping("/system/archives")
+//@Api(tags = "模板字段信息接口")
 public class SysArchivesManagementController implements BaseController<SysArchives, Integer> {
 
     @Autowired
     ISysArchivesService iSysArchivesService;
-
 
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "添加字段信息")
     @PostMapping("/add")
@@ -53,12 +52,9 @@ public class SysArchivesManagementController implements BaseController<SysArchiv
     @ApiOperation(value = "修改信息", notes = "修改信息")
     @ApiImplicitParam(name = "id", value = "主键id", required = true)
     public Map<String, Object> edit(@PathVariable Integer id, @Validated SysArchives entity) {
-
         iSysArchivesService.updateById(entity);
-
         return ResponseDataUtil.ok("修改档案字段信息成功");
     }
-
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "查询模板信息")
     @GetMapping
     @ApiOperation(value = "查询模板信息", notes = "查询模板信息")
@@ -75,6 +71,7 @@ public class SysArchivesManagementController implements BaseController<SysArchiv
             @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
             @ApiImplicitParam(name = "chinesename", value = "中文名称")
     })
+
     public Map<String, Object> findPage(@RequestParam Integer num, @RequestParam Integer size, String chinesename) {
         QueryWrapper<SysArchives> qw = new QueryWrapper<>();
         qw.lambda()
@@ -84,39 +81,5 @@ public class SysArchivesManagementController implements BaseController<SysArchiv
         qw.orderByDesc("id");
         return ResponseDataUtil.ok("查询档案信息列表成功", page);
     }
-
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "查询模板信息")
-    @GetMapping("/tablename")
-    @ApiOperation(value = "根据表名查询表结构信息", notes = "根据表名查询表结构信息")
-    @ApiImplicitParam(name = "tablename")
-    public Map<String, Object> findByTableName(@Param("tablename") String tablename) {
-        List<SysTableMessge> byTableName = iSysArchivesService.findByTableName(tablename);
-        return ResponseDataUtil.ok("查询成功", byTableName);
-    }
-
-
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "查询模板信息")
-    @PostMapping("/addfleid")
-    @ApiOperation(value = "根据表名添加字段信息", notes = "根据表名添加字段信息")
-    public Map<String, Object> addfleid(@Param("tablename") String tablename, SysArchives sysArchives) {
-        boolean b = iSysArchivesService.innertFleId(tablename, sysArchives);
-        if (b) {
-            return ResponseDataUtil.ok("添加成功");
-        }
-        return ResponseDataUtil.error("添加失败");
-    }
-
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "查询模板信息")
-    @DeleteMapping("/delfield")
-    @ApiOperation(value = "删除字段信息", notes = "删除字段信息")
-    public Map<String, Object> delfield(@Param("tablename") String tablename, @Param("standardfields") String standardfields) {
-        boolean b   =iSysArchivesService.deleField(tablename,standardfields);
-        if (b) {
-            return ResponseDataUtil.ok("删除成功");
-        }
-        return ResponseDataUtil.error("删除失败");
-
-    }
-
 }
 
