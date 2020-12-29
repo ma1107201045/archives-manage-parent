@@ -43,7 +43,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void save(SysUserFormDto sysUserFormDto) {
         SysUser sysUser = new SysUser();
         sysUser.setAccountExpired(EnumFlag.False.getValue());
-        sysUser.setAccountLocked(EnumFlag.True.getValue());
+        sysUser.setAccountLocked(EnumFlag.False.getValue());
         sysUser.setCredentialsExpired(EnumFlag.False.getValue());
         sysUser.setAccountEnabled(EnumFlag.True.getValue());
         BeanUtil.copyProperties(sysUserFormDto, sysUser);

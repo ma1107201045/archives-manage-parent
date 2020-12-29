@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mlf
@@ -21,8 +21,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_library")
-@ApiModel(value="SysLibrary对象", description="档案库表")
-public class    SysLibrary extends BaseEntity {
+@ApiModel(value = "SysLibrary对象", description = "档案库表")
+public class SysLibrary extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -53,7 +53,6 @@ public class    SysLibrary extends BaseEntity {
     @ApiModelProperty(value = "库类别")
     @TableField("libraryclasses")
     private String libraryclasses;
-
 
 
 }
