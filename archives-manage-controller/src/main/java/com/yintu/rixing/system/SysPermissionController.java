@@ -2,6 +2,7 @@ package com.yintu.rixing.system;
 
 
 import com.yintu.rixing.annotation.Log;
+import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.dto.system.SysPermissionFormDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
@@ -29,7 +30,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-permission")
 @Api(tags = "权限接口")
-public class SysPermissionController extends AuthenticationController {
+public class SysPermissionController extends AuthenticationController implements BaseController<SysPermissionFormDto, Integer> {
 
     @Autowired
     private ISysPermissionService iSysPermissionService;

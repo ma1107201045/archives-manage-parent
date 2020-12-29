@@ -4,6 +4,7 @@ package com.yintu.rixing.system;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
+import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.dto.system.SysUserFormDto;
 import com.yintu.rixing.dto.system.SysUserQueryDto;
@@ -34,7 +35,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-user")
 @Api(tags = "用户接口")
-public class SysUserController extends AuthenticationController {
+public class SysUserController extends AuthenticationController implements BaseController<SysUserFormDto, Integer> {
     @Autowired
     private ISysUserService iSysUserService;
     @Autowired
@@ -104,7 +105,6 @@ public class SysUserController extends AuthenticationController {
         iSysUserService.sysDepartmentsByIdAndParentId(id, -1);
         return ResponseDataUtil.ok("查询用户所在部门列表信息树成功", treeNodeUtils);
     }
-
 
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询用户角色列表信息")

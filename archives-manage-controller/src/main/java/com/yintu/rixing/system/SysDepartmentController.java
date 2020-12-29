@@ -2,6 +2,8 @@ package com.yintu.rixing.system;
 
 
 import com.yintu.rixing.annotation.Log;
+import com.yintu.rixing.base.BaseController;
+import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.dto.system.SysDepartmentFormDto;
 import com.yintu.rixing.dto.system.SysPermissionFormDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
@@ -27,7 +29,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/system/sys-department")
-public class SysDepartmentController {
+public class SysDepartmentController extends AuthenticationController implements BaseController<SysDepartmentFormDto, Integer> {
     @Autowired
     private ISysDepartmentService iSysDepartmentService;
 
