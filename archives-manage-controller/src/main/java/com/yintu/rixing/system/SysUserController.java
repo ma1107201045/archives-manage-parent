@@ -67,6 +67,15 @@ public class SysUserController extends AuthenticationController implements BaseC
         return ResponseDataUtil.ok("修改用户信息成功");
     }
 
+    @Log(level = EnumLogLevel.WARN, module = "系统管理", description = " 重置密码")
+    @PutMapping("/{id}/reset-password")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    @ApiOperation(value = "重置密码", notes = "重置密码")
+    public Map<String, Object> resetPassword(@PathVariable Integer id, @Validated SysUserFormDto sysUserFormDto) {
+        iSysUserService.updateById(sysUserFormDto);
+        return ResponseDataUtil.ok("重置密码成功");
+    }
+
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询用户单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询用户单条信息", notes = " 查询用户单条信息")
