@@ -14,7 +14,7 @@ import java.util.Date;
  * @Version: 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class BaseEntity extends IdEntity {
 
     private static final long serialVersionUID = 7607862306834821931L;

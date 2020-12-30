@@ -1,8 +1,10 @@
 package com.yintu.rixing.dto.system;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.yintu.rixing.dto.common.FormDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -15,10 +17,8 @@ import java.util.Set;
  * @Version: 1.0
  */
 @Data
-public class SysUserFormDto {
-
-    @ApiModelProperty(value = "主键id")
-    private Integer id;
+@EqualsAndHashCode(callSuper = true)
+public class SysUserFormDto extends FormDto {
 
     @ApiModelProperty(value = "用户名", required = true)
     @NotBlank

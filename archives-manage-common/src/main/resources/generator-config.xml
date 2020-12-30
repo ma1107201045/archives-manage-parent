@@ -15,7 +15,7 @@
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.68.131/db_dev_rixing?serverTimezone=Asia/Shanghai"
+                        connectionURL="jdbc:mysql://192.168.68.132/db_dev_rixing?serverTimezone=Asia/Shanghai"
                         userId="root"
                         password="199726Ma.">
         </jdbcConnection>

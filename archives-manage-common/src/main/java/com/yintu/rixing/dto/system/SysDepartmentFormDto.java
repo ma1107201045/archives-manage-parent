@@ -1,7 +1,9 @@
 package com.yintu.rixing.dto.system;
 
+import com.yintu.rixing.dto.common.FormDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,10 +14,8 @@ import javax.validation.constraints.NotNull;
  * @Version: 1.0
  */
 @Data
-public class SysDepartmentFormDto {
-
-    @ApiModelProperty(value = "主键")
-    private Integer id;
+@EqualsAndHashCode(callSuper = true)
+public class SysDepartmentFormDto extends FormDto {
 
     @ApiModelProperty(value = "父节点主键", required = true)
     @NotNull

@@ -8,10 +8,7 @@ import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +26,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/system/sys-qzh")
+@ApiSort(9)
 @Api(tags = "全宗号接口")
 public class SysQzhController extends AuthenticationController implements BaseController<SysQzh, Integer> {
 

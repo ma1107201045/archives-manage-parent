@@ -28,8 +28,8 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/system/sys-log")
-@Api(tags = "日志接口")
 @ApiSort(5)
+@Api(tags = "日志接口")
 public class SysLogController extends AuthenticationController {
 
     @Autowired

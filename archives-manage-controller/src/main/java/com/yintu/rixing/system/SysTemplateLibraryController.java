@@ -2,10 +2,9 @@ package com.yintu.rixing.system;
 
 
 import com.yintu.rixing.annotation.Log;
-import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.dto.system.SysDepartmentFormDto;
-import com.yintu.rixing.dto.system.SysPermissionFormDto;
+import com.yintu.rixing.dto.system.SysTemplateLibraryFormDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.TreeNodeUtil;
@@ -19,48 +18,48 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * <p>
- * 系统部门表 前端控制器
+ * 系统模板库表 前端控制器
  * </p>
  *
  * @author mlf
- * @since 2020-12-22
+ * @since 2020-12-30
  */
 @RestController
-@RequestMapping("/system/sys-department")
-@Api(tags = "部门接口（组织机构接口）")
-@ApiSort(4)
-public class SysDepartmentController extends AuthenticationController {
-    @Autowired
-    private ISysDepartmentService iSysDepartmentService;
+@RequestMapping("/system/sys-template-library")
+@ApiSort(6)
+@Api(tags = "模块库接口")
+public class SysTemplateLibraryController extends AuthenticationController {
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "添加部门信息")
+    @Autowired
+    private ISysTemplateLibraryService iSysTemplateLibraryService;
+
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "添加模板库信息")
     @PostMapping
-    @ApiOperation(value = "添加部门信息", notes = "添加部门信息")
-    public Map<String, Object> add(@Validated SysDepartmentFormDto sysDepartmentFormDto) {
-        iSysDepartmentService.save(sysDepartmentFormDto);
-        return ResponseDataUtil.ok("添加部门信息成功");
+    @ApiOperation(value = "添加模板库信息", notes = "添加模板库信息")
+    public Map<String, Object> add(@Validated SysTemplateLibraryFormDto sysDepartmentFormDto) {
+        iSysTemplateLibraryService.save(sysDepartmentFormDto);
+        return ResponseDataUtil.ok("添加模板库信息成功");
     }
 
-    @Log(level = EnumLogLevel.ERROR, module = "系统管理", description = "删除部门信息")
+    @Log(level = EnumLogLevel.ERROR, module = "系统管理", description = "删除模板库信息")
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "删除部门信息", notes = "删除部门信息")
+    @ApiOperation(value = "删除模板库信息", notes = "删除模板库信息")
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public Map<String, Object> remove(@PathVariable Integer id) {
-        iSysDepartmentService.removeById(id);
-        return ResponseDataUtil.ok("删除部门信息成功");
+        iSysTemplateLibraryService.removeById(id);
+        return ResponseDataUtil.ok("删除模板库信息成功");
     }
 
-    @Log(level = EnumLogLevel.WARN, module = "系统管理", description = " 修改部门信息")
+    @Log(level = EnumLogLevel.WARN, module = "系统管理", description = " 修改模板库信息")
     @PutMapping("/{id}")
-    @ApiOperation(value = "修改部门信息", notes = "修改部门信息")
+    @ApiOperation(value = "修改模板库信息", notes = "修改模板库信息")
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated SysDepartmentFormDto sysDepartmentFormDto) {
-        iSysDepartmentService.updateById(sysDepartmentFormDto);
-        return ResponseDataUtil.ok("修改部门信息成功");
+    public Map<String, Object> edit(@PathVariable Integer id, @Validated SysTemplateLibraryFormDto sysTemplateLibraryFormDto) {
+        iSysTemplateLibraryService.updateById(sysTemplateLibraryFormDto);
+        return ResponseDataUtil.ok("修改模板库信息成功");
     }
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询部门单条信息")
@@ -79,4 +78,5 @@ public class SysDepartmentController extends AuthenticationController {
         List<TreeNodeUtil> treeNodeUtils = iSysDepartmentService.listTree(-1);
         return ResponseDataUtil.ok("查询部门列表信息树成功", treeNodeUtils);
     }
+
 }

@@ -14,7 +14,6 @@ import java.io.Serializable;
  * @Version: 1.0
  */
 @Data
-@EqualsAndHashCode
 public class IdEntity implements Serializable {
     private static final long serialVersionUID = -2411492813615673916L;
 
