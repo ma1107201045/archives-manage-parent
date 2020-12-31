@@ -2,6 +2,7 @@ package com.yintu.rixing.system;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
@@ -33,7 +34,7 @@ import java.util.Set;
 @RequestMapping("/system/sys-user")
 @Api(tags = "用户接口")
 @ApiSort(1)
-public class SysUserController extends AuthenticationController implements BaseController<SysUserFormDto, SysUser, Integer> {
+public class SysUserController extends AuthenticationController implements BaseController<SysUserFormDto, SysUserQueryDto, SysUser, Integer> {
     @Autowired
     private ISysUserService iSysUserService;
     @Autowired
@@ -84,6 +85,7 @@ public class SysUserController extends AuthenticationController implements BaseC
         SysUser sysUser = iSysUserService.getById(id);
         return ResultDataUtil.ok("查询用户单条信息", sysUser);
     }
+
 
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询用户列表信息")
     @GetMapping

@@ -2,6 +2,7 @@ package com.yintu.rixing.system;
 
 
 import com.yintu.rixing.base.BaseController;
+import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
@@ -25,7 +26,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sysmessage")
 @Api(tags = "引入模板后的信息接口")
-public class SysMessageController implements BaseController<SysMessage, SysMessage, Integer> {
+public class SysMessageController extends AuthenticationController {
 
     @Autowired
     ISysMessageService sysMessageService;

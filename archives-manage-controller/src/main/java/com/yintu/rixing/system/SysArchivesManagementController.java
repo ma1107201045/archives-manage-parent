@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
+import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.ResultDataUtil;
@@ -23,7 +24,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/archives")
 @Api(tags = "模板字段信息接口")
-public class SysArchivesManagementController implements BaseController<SysArchives, SysArchives, Integer> {
+public class SysArchivesManagementController extends AuthenticationController {
 
     @Autowired
     ISysArchivesService iSysArchivesService;

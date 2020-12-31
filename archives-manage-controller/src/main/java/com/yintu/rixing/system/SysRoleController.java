@@ -31,7 +31,7 @@ import java.util.Set;
 @RequestMapping("/system/sys-role")
 @Api(tags = "角色接口")
 @ApiSort(2)
-public class SysRoleController extends AuthenticationController implements BaseController<SysRoleFormDto, SysRole, Integer> {
+public class SysRoleController extends AuthenticationController implements BaseController<SysRoleFormDto, SysRoleQueryDto, SysRole, Integer> {
     @Autowired
     private ISysRoleService iSysRoleService;
     @Autowired
@@ -40,8 +40,8 @@ public class SysRoleController extends AuthenticationController implements BaseC
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "添加角色信息")
     @PostMapping
     @ApiOperation(value = "添加角色信息", notes = "添加角色信息", position = 1)
-    public ResultDataUtil<Object> add(@Validated SysRoleFormDto dto) {
-        iSysRoleService.save(dto);
+    public ResultDataUtil<Object> add(@Validated SysRoleFormDto formDto) {
+        iSysRoleService.save(formDto);
         return ResultDataUtil.ok("添加角色信息成功");
     }
 
@@ -75,10 +75,9 @@ public class SysRoleController extends AuthenticationController implements BaseC
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询角色列表信息")
     @GetMapping
     @ApiOperation(value = "查询角色列表信息", notes = "查询角色列表信息", position = 5, response = SysRole.class)
-    public ResultDataUtil<Page<SysRole>> findPage(@Validated SysRoleQueryDto sysRoleQueryDto) {
-        return ResultDataUtil.ok("查询角色列表信息成功", iSysRoleService.page(sysRoleQueryDto));
+    public ResultDataUtil<Page<SysRole>> findPage(@Validated SysRoleQueryDto queryDto) {
+        return ResultDataUtil.ok("查询角色列表信息成功", iSysRoleService.page(queryDto));
     }
-
 
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询角色权限列表树信息")
     @GetMapping("/sys-permission")

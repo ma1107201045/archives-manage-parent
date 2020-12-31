@@ -37,30 +37,10 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sysborrowaudit")
 @Api(tags = "借阅审批接口")
-public class SysBorrowauditController extends AuthenticationController implements BaseController<SysBorrowaudit, SysBorrowaudit, Integer> {
+public class SysBorrowauditController extends AuthenticationController {
 
     @Autowired
     private ISysBorrowauditService iSysBorrowauditService;
-
-    @Override
-    public ResultDataUtil<Object> add(SysBorrowaudit entity) {
-        return null;
-    }
-
-    @Override
-    public ResultDataUtil<Object> remove(Set<Integer> id) {
-        return null;
-    }
-
-    @Override
-    public ResultDataUtil<Object> edit(Integer id, SysBorrowaudit entity) {
-        return null;
-    }
-
-    @Override
-    public ResultDataUtil<SysBorrowaudit> findById(Integer id) {
-        return null;
-    }
 
     /**
      * 待审批

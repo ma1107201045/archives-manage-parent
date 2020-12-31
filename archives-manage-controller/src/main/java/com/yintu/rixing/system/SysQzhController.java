@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.dto.system.SysQzhFromDto;
+import com.yintu.rixing.dto.system.SysQzhQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.ResultDataUtil;
@@ -30,7 +32,7 @@ import java.util.Set;
 @RequestMapping("/system/sys-qzh")
 @ApiSort(9)
 @Api(tags = "全宗号接口")
-public class SysQzhController extends AuthenticationController implements BaseController<SysQzh, SysQzh, Integer> {
+public class SysQzhController extends AuthenticationController implements BaseController<SysQzhFromDto, SysQzhQueryDto, SysQzh, Integer> {
 
     @Autowired
     private ISysQzhService iSysQzhService;
@@ -38,8 +40,8 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "添加全宗号信息")
     @PostMapping
     @ApiOperation(value = "添加全宗号信息", notes = "添加全宗号信息")
-    public ResultDataUtil<Object> add(@Validated SysQzh sysQzh) {
-        iSysQzhService.save(sysQzh);
+    public ResultDataUtil<Object> add(@Validated SysQzhFromDto formDto) {
+        iSysQzhService.save(formDto);
         return ResultDataUtil.ok("添加全宗号信息成功");
     }
 
@@ -56,8 +58,8 @@ public class SysQzhController extends AuthenticationController implements BaseCo
     @PutMapping("/{id}")
     @ApiOperation(value = "修改全宗号信息", notes = "修改全宗号信息")
     @ApiImplicitParam(name = "id", value = "主键id", required = true)
-    public ResultDataUtil<Object> edit(@PathVariable Integer id, @Validated SysQzh sysQzh) {
-        iSysQzhService.updateById(sysQzh);
+    public ResultDataUtil<Object> edit(@PathVariable Integer id, @Validated SysQzhFromDto formDto) {
+        iSysQzhService.updateById(formDto);
         return ResultDataUtil.ok("修改全宗号信息成功");
     }
 
@@ -72,21 +74,9 @@ public class SysQzhController extends AuthenticationController implements BaseCo
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询全宗号信息列表")
     @GetMapping
-    @ApiOperation(value = "查询全宗号信息列表", notes = " 多条件查询全宗号信息分页列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
-            @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
-            @ApiImplicitParam(name = "qzhName", value = "全宗号名称")
-    })
-    public ResultDataUtil<Page<SysQzh>> findPage(@RequestParam Integer num, @RequestParam Integer size, String qzhName) {
-        QueryWrapper<SysQzh> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda()
-                .select(SysQzh.class, tableFieldInfo -> !"".equals(tableFieldInfo.getColumn()))
-                .like(SysQzh::getQzhName, qzhName == null ? "" : qzhName);
-        queryWrapper.orderByDesc("id");
-        Page<SysQzh> page = iSysQzhService.page(new Page<>(num, size), queryWrapper);
+    @ApiOperation(value = "查询全宗号信息列表", notes = " 查询全宗号信息列表")
+    public ResultDataUtil<Page<SysQzh>> findPage(SysQzhQueryDto queryDto) {
+        Page<SysQzh> page = iSysQzhService.page(queryDto);
         return ResultDataUtil.ok("查询全宗号信息列表成功", page);
     }
-
-
 }

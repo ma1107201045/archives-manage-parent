@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFieldFormDto;
+import com.yintu.rixing.dto.system.SysTemplateLibraryFieldQueryDto;
 import com.yintu.rixing.dto.system.SysUserFormDto;
 import com.yintu.rixing.dto.system.SysUserQueryDto;
 import com.yintu.rixing.system.*;
@@ -34,7 +35,7 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
     }
 
     @Override
-    public Page<SysUser> page(SysUserQueryDto sysUserDto) {
+    public Page<SysTemplateLibraryField> page(SysTemplateLibraryFieldQueryDto sysTemplateLibraryFieldQueryDto) {
         return null;
     }
 }

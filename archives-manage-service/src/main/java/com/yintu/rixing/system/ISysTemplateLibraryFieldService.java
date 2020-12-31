@@ -3,8 +3,7 @@ package com.yintu.rixing.system;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFieldFormDto;
-import com.yintu.rixing.dto.system.SysUserFormDto;
-import com.yintu.rixing.dto.system.SysUserQueryDto;
+import com.yintu.rixing.dto.system.SysTemplateLibraryFieldQueryDto;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -23,7 +22,7 @@ public interface ISysTemplateLibraryFieldService extends IService<SysTemplateLib
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysTemplateLibraryFieldFormDto sysTemplateLibraryFieldFormDto);
 
-    Page<SysUser> page(SysUserQueryDto sysUserDto);
+    Page<SysTemplateLibraryField> page(SysTemplateLibraryFieldQueryDto sysTemplateLibraryFieldQueryDto);
 
 
 }

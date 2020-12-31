@@ -3,6 +3,7 @@ package com.yintu.rixing.system;
 
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
+import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.impl.SysTemplateServiceImpl;
 import com.yintu.rixing.util.ResponseDataUtil;
@@ -33,7 +34,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/systemplate")
 @Api(tags = "模板库管理接口")
-public class SysTemplateController implements BaseController<SysTemplate, SysTableMessge, Integer> {
+public class SysTemplateController extends AuthenticationController {
     @Autowired
     ISysTemplateService iSysTemplateService;
 
