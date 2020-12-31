@@ -23,23 +23,23 @@ import lombok.EqualsAndHashCode;
 public class SysTemplateLibrary extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-    @ApiModelProperty(value = "父节点主键")
+    @ApiModelProperty(value = "父节点主键", position = 6)
     @TableField("parent_id")
     private Integer parentId;
 
-    @ApiModelProperty(value = "模板库编号")
+    @ApiModelProperty(value = "模板库编号", position = 7)
     @TableField("number")
     private Integer number;
 
-    @ApiModelProperty(value = "模板库名称")
+    @ApiModelProperty(value = "模板库名称", position = 8)
     @TableField("name")
     private String name;
 
-    @ApiModelProperty(value = "模板库分类 1.目录 2.库")
+    @ApiModelProperty(value = "模板库分类 1.目录 2.库", position = 9)
     @TableField("type")
     private Integer type;
 
-    @ApiModelProperty(value = "模板库描述")
+    @ApiModelProperty(value = "模板库描述", position = 10)
     @TableField("description")
     private String description;
 

@@ -19,16 +19,16 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_template_library_field_type")
-@ApiModel(value="SysTemplateLibraryFieldType对象", description="系统模板库字段类型表")
+@ApiModel(value = "SysTemplateLibraryFieldType对象", description = "系统模板库字段类型表")
 public class SysTemplateLibraryFieldType extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "字段类型名称")
+    @ApiModelProperty(value = "字段类型名称", position = 6)
     @TableField("name")
     private String name;
 
-    @ApiModelProperty(value = "key")
+    @ApiModelProperty(value = "key", position = 7)
     @TableField("key")
     private String key;
 

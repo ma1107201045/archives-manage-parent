@@ -32,35 +32,35 @@ public class SysLog extends IdEntity {
     @TableField("create_time")
     private Date createTime;
 
-    @ApiModelProperty(value = "用户id")
+    @ApiModelProperty(value = "用户id", position = 6)
     @TableField("user_id")
     private Integer userId;
 
-    @ApiModelProperty(value = "用户名")
+    @ApiModelProperty(value = "用户名", position = 7)
     @TableField("username")
     private String username;
 
-    @ApiModelProperty(value = "操作人")
+    @ApiModelProperty(value = "操作人", position = 8)
     @TableField("operator")
     private String operator;
 
-    @ApiModelProperty(value = "日志级别 1.TRACE < 2.DEBUG < 3.INFO < 4.WARN < 5.ERROR")
+    @ApiModelProperty(value = "日志级别 1.TRACE < 2.DEBUG < 3.INFO < 4.WARN < 5.ERROR", position = 9)
     @TableField("level")
     private Short level;
 
-    @ApiModelProperty(value = "日志记录模块名称")
+    @ApiModelProperty(value = "日志记录模块名称", position = 10)
     @TableField("module")
     private String module;
 
-    @ApiModelProperty(value = "日志内容")
+    @ApiModelProperty(value = "日志内容", position = 11)
     @TableField("context")
     private String context;
 
-    @ApiModelProperty(value = "日志描述")
+    @ApiModelProperty(value = "日志描述", position = 12)
     @TableField("description")
     private String description;
 
-    @ApiModelProperty(value = "登录ip")
+    @ApiModelProperty(value = "登录ip", position = 13)
     @TableField("login_ip")
     private String loginIp;
 

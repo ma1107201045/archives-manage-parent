@@ -27,17 +27,17 @@ public class SysRole extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "角色名称", required = true)
+    @ApiModelProperty(value = "角色名称", required = true, position = 6)
     @TableField("name")
     @NotBlank
     private String name;
 
-    @ApiModelProperty(value = "是否作为默认用户角色 1.是 0.否")
+    @ApiModelProperty(value = "是否作为默认用户角色 1.是 0.否", position = 7)
     @TableField("default_role")
     @NotNull
     private Short defaultRole;
 
-    @ApiModelProperty(value = "描述")
+    @ApiModelProperty(value = "描述", position = 8)
     @TableField("description")
     private String description;
 

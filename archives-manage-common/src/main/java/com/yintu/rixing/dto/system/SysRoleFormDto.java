@@ -1,6 +1,7 @@
 package com.yintu.rixing.dto.system;
 
 import com.yintu.rixing.dto.common.IdDto;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,6 +17,7 @@ import java.util.Set;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel
 public class SysRoleFormDto extends IdDto {
 
     @ApiModelProperty(value = "主键id")

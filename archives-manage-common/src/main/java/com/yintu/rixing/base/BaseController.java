@@ -2,6 +2,7 @@ package com.yintu.rixing.base;
 
 import com.yintu.rixing.util.ResultDataUtil;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
@@ -18,7 +19,7 @@ public interface BaseController<T, E, PK extends Serializable> {
 
     ResultDataUtil<Object> remove(Set<PK> id);
 
-    ResultDataUtil<Object> edit(PK id, T entity);
+    ResultDataUtil<Object> edit(PK id, T dto);
 
     ResultDataUtil<E> findById(PK id);
 

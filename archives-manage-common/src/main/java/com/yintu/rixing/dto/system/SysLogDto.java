@@ -15,12 +15,13 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel
 public class SysLogDto extends PageDto {
 
-    @ApiModelProperty(value = "操作人")
+    @ApiModelProperty(value = "操作人", position = 0)
     private String operator;
 
-    @ApiModelProperty(value = "登录ip")
+    @ApiModelProperty(value = "登录ip", position = 1)
     private String loginId;
 
     @ApiModelProperty(value = "日志级别")

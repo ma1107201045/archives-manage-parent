@@ -24,11 +24,11 @@ public class SysDepartment extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "父节点主键")
+    @ApiModelProperty(value = "父节点主键", position = 6)
     @TableField("parent_id")
     private Integer parentId;
 
-    @ApiModelProperty(value = "部门名称")
+    @ApiModelProperty(value = "部门名称", position = 7)
     @TableField("name")
     private String name;
 

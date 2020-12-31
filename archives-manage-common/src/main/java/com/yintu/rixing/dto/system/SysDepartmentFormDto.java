@@ -1,6 +1,7 @@
 package com.yintu.rixing.dto.system;
 
 import com.yintu.rixing.dto.common.IdDto;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel
 public class SysDepartmentFormDto extends IdDto {
 
     @ApiModelProperty(value = "父节点主键", required = true)

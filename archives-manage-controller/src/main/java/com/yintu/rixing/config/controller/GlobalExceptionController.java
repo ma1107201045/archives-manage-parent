@@ -1,5 +1,7 @@
 package com.yintu.rixing.config.controller;
 
+import com.yintu.rixing.annotation.Log;
+import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.util.ResponseDataUtil;
 import org.springframework.validation.BindException;
@@ -20,6 +22,8 @@ import java.util.Map;
  */
 @RestControllerAdvice
 public class GlobalExceptionController {
+
+    @Log(level = EnumLogLevel.ERROR, module = "系统全局", description = "参数异常")
     @ExceptionHandler(BindException.class)
     public Map<String, Object> bindException(BindException e) {
         StringBuilder sb = new StringBuilder();
@@ -30,6 +34,7 @@ public class GlobalExceptionController {
         return ResponseDataUtil.error(sb.toString());
     }
 
+    @Log(level = EnumLogLevel.ERROR, module = "系统全局", description = "数据库异常")
     @ExceptionHandler(SQLException.class)
     public Map<String, Object> sqlException(SQLException e) {
         if (e instanceof SQLIntegrityConstraintViolationException) {
@@ -38,17 +43,19 @@ public class GlobalExceptionController {
         return ResponseDataUtil.error("数据库异常，操作失败");
     }
 
+    @Log(level = EnumLogLevel.ERROR, module = "系统全局", description = "文件上传异常")
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public Map<String, Object> maxUploadSizeExceededException(MaxUploadSizeExceededException e) {
         return ResponseDataUtil.error("文件上传异常，文件过大");
     }
 
-
+    @Log(level = EnumLogLevel.ERROR, module = "系统全局", description = "服务器异常")
     @ExceptionHandler(BaseRuntimeException.class)
     public Map<String, Object> baseRuntimeException(BaseRuntimeException e) {
         return ResponseDataUtil.error(e.getMessage());
     }
 
+    @Log(level = EnumLogLevel.ERROR, module = "系统全局", description = "服务器运行异常")
     @ExceptionHandler(RuntimeException.class)
     public Map<String, Object> runtimeException(RuntimeException e) {
         if (e instanceof NullPointerException) {
@@ -57,6 +64,7 @@ public class GlobalExceptionController {
         return ResponseDataUtil.error(e.getMessage());
     }
 
+    @Log(level = EnumLogLevel.ERROR, module = "系统全局", description = "服务器异常")
     @ExceptionHandler(Exception.class)
     public Map<String, Object> exception(Exception e) {
         return ResponseDataUtil.error(e.getMessage());

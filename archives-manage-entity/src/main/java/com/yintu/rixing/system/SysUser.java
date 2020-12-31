@@ -36,61 +36,61 @@ public class SysUser extends BaseEntity implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户名", position = 1)
+    @ApiModelProperty(value = "用户名", position = 6)
     @TableField("username")
     private String username;
 
-    @ApiModelProperty(value = "密码", position = 2)
+    @ApiModelProperty(value = "密码", position = 7)
     @TableField("password")
     @JsonIgnore
     @JSONField(serialize = false)
     private String password;
 
-    @ApiModelProperty(value = "用户名称", position = 3)
+    @ApiModelProperty(value = "用户名称", position = 8)
     @TableField("nickname")
     private String nickname;
 
-    @ApiModelProperty(value = "证件类型", position = 4)
+    @ApiModelProperty(value = "证件类型", position = 9)
     @TableField("certificate_type")
     private Short certificateType;
 
-    @ApiModelProperty(value = "证件号码", position = 5)
+    @ApiModelProperty(value = "证件号码", position = 10)
     @TableField("certificate_number")
     private String certificateNumber;
 
-    @ApiModelProperty(value = "邮箱", position = 6)
+    @ApiModelProperty(value = "邮箱", position = 11)
     @TableField("email")
     private String email;
 
-    @ApiModelProperty(value = "地址", position = 7)
+    @ApiModelProperty(value = "地址", position = 12)
     @TableField("address")
     private String address;
 
-    @ApiModelProperty(value = "电话或者手机号码", position = 8)
+    @ApiModelProperty(value = "电话或者手机号码", position = 13)
     @TableField("phone")
     private String phone;
 
-    @ApiModelProperty(value = "账户过期", position = 9)
+    @ApiModelProperty(value = "账户过期", position = 14)
     @TableField("account_expired")
     private Short accountExpired;
 
-    @ApiModelProperty(value = "账户锁定", position = 10)
+    @ApiModelProperty(value = "账户锁定", position = 15)
     @TableField("account_locked")
     private Short accountLocked;
 
-    @ApiModelProperty(value = "密码过期", position = 11)
+    @ApiModelProperty(value = "密码过期", position = 16)
     @TableField("credentials_expired")
     private Short credentialsExpired;
 
-    @ApiModelProperty(value = "账户禁用", position = 12)
+    @ApiModelProperty(value = "账户禁用", position = 17)
     @TableField("account_enabled")
     private Short accountEnabled;
 
-    @ApiModelProperty(value = "用户类型 0.普通用户 1.管理员用户", position = 13)
+    @ApiModelProperty(value = "用户类型 0.普通用户 1.管理员用户", position = 18)
     @TableField("auth_type")
     private Short authType;
 
-    @ApiModelProperty(value = "用户拥有角色集", position = 14)
+    @ApiModelProperty(value = "用户拥有角色集", position = 19)
     @TableField(exist = false)
     private List<SysRole> sysRoles;
 

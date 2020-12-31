@@ -24,39 +24,39 @@ public class SysPermission extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "父节点主键")
+    @ApiModelProperty(value = "父节点主键", position = 6)
     @TableField("parent_id")
     private Integer parentId;
 
-    @ApiModelProperty(value = "权限名称")
+    @ApiModelProperty(value = "权限名称", position = 7)
     @TableField("name")
     private String name;
 
-    @ApiModelProperty(value = "优先级")
+    @ApiModelProperty(value = "优先级", position = 8)
     @TableField("priority")
     private Integer priority;
 
-    @ApiModelProperty(value = "授权名称")
+    @ApiModelProperty(value = "授权名称", position = 9)
     @TableField("authorized_name")
     private String authorizedName;
 
-    @ApiModelProperty(value = "是否是菜单项 1.是 0.否")
+    @ApiModelProperty(value = "是否是菜单项 1.是 0.否", position = 10)
     @TableField("menu")
     private Short menu;
 
-    @ApiModelProperty(value = "相对地址")
+    @ApiModelProperty(value = "相对地址", position = 11)
     @TableField("url")
     private String url;
 
-    @ApiModelProperty(value = "请求方法")
+    @ApiModelProperty(value = "请求方法", position = 12)
     @TableField("method")
     private String method;
 
-    @ApiModelProperty(value = "前端路由转向")
+    @ApiModelProperty(value = "前端路由转向", position = 13)
     @TableField("path")
     private String path;
 
-    @ApiModelProperty(value = "菜单项显示的图片地址")
+    @ApiModelProperty(value = "菜单项显示的图片地址", position = 14)
     @TableField("img_path")
     private String imgPath;
 

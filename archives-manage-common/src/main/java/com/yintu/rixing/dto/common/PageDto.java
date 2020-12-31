@@ -1,9 +1,11 @@
 package com.yintu.rixing.dto.common;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
+@ApiModel
 public class PageDto {
 
     @ApiModelProperty(value = "页码", required = true)

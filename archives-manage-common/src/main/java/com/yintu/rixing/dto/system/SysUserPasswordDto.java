@@ -1,6 +1,7 @@
 package com.yintu.rixing.dto.system;
 
 import com.yintu.rixing.dto.common.IdDto;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel
 public class SysUserPasswordDto extends IdDto {
 
     @ApiModelProperty(value = "旧密码", required = true)

@@ -21,7 +21,7 @@ public class ResultDataUtil<T> {
     @ApiModelProperty("返回码（200:正常 401:未认证（未登录）403：未授权（未授权） 500：后台错误")
     private Integer code;
 
-    @ApiModelProperty("返回数据（对象或者数组（[]or{}））")
+    @ApiModelProperty("返回数据（对象或者数组（{}or[]）,只有查询才有此key值）")
     private T data;
 
     @ApiModelProperty("返回信息(用于提示的消息)")

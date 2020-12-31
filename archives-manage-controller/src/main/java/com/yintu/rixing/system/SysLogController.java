@@ -36,7 +36,7 @@ public class SysLogController extends AuthenticationController {
     @Autowired
     private ISysLogService iSysLogService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询日志列表信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询日志列表信息")
     @GetMapping
     @ApiOperation(value = "查询日志列表信息", notes = " 查询日志列表信息")
     public ResultDataUtil<Page<SysLog>> findPage(@Validated SysLogDto sysLogDto) {
