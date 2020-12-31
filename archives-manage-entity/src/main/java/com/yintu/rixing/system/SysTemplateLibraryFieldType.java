@@ -28,9 +28,9 @@ public class SysTemplateLibraryFieldType extends BaseEntity {
     @TableField("name")
     private String name;
 
-    @ApiModelProperty(value = "定义数据库字段名", position = 7)
-    @TableField("d_key")
-    private String dKey;
+    @ApiModelProperty(value = "key（定义数据库字段名类型名）", position = 7)
+    @TableField("data_key")
+    private String dataKey;
 
 
 }

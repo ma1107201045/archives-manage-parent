@@ -28,9 +28,9 @@ public class SysTemplateLibraryField extends BaseEntity {
     @TableField("name")
     private String name;
 
-    @ApiModelProperty(value = "定义数据库字段名类型", position = 7)
-    @TableField("d_key")
-    private String dKey;
+    @ApiModelProperty(value = "key（定义数据库字段名）", position = 7)
+    @TableField("data_key")
+    private String dataKey;
 
     @ApiModelProperty(value = "字段是否必填 1.是 0.否", position = 8)
     @TableField("required")
