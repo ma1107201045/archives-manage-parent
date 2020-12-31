@@ -26,7 +26,7 @@ public class SysTemplateLibraryFieldFormDto extends IdDto {
 
     @ApiModelProperty(value = "key", required = true)
     @NotNull
-    private String key;
+    private String dKey;
 
     @ApiModelProperty(value = "字段是否必填 1.是 0.否", required = true)
     @NotNull
