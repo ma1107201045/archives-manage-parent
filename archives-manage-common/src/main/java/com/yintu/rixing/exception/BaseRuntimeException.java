@@ -1,4 +1,4 @@
-package com.yintu.rixing.config.exception;
+package com.yintu.rixing.exception;
 
 /**
  * @Author: mlf

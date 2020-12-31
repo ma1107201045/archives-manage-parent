@@ -1,6 +1,6 @@
 package com.yintu.rixing.config.controller;
 
-import com.yintu.rixing.config.exception.BaseRuntimeException;
+import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.util.ResponseDataUtil;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;

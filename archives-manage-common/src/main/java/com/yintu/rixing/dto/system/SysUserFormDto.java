@@ -1,7 +1,7 @@
 package com.yintu.rixing.dto.system;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.yintu.rixing.dto.common.FormDto;
+import com.yintu.rixing.dto.common.IdDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +18,7 @@ import java.util.Set;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysUserFormDto extends FormDto {
+public class SysUserFormDto extends IdDto {
 
     @ApiModelProperty(value = "用户名", required = true)
     @NotBlank

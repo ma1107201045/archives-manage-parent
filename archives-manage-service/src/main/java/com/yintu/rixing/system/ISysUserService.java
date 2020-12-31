@@ -3,6 +3,7 @@ package com.yintu.rixing.system;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.system.SysUserFormDto;
+import com.yintu.rixing.dto.system.SysUserPasswordDto;
 import com.yintu.rixing.dto.system.SysUserQueryDto;
 import com.yintu.rixing.util.TreeNodeUtil;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +26,9 @@ public interface ISysUserService extends IService<SysUser>, UserDetailsService {
 
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysUserFormDto sysUserFormDto);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void resetPassword(SysUserPasswordDto sysUserPasswordDto);
 
     @Transactional(rollbackFor = {Exception.class})
     void saveRolesById(Integer id, Set<Integer> roleIds);

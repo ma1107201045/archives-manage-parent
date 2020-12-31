@@ -9,8 +9,8 @@ import lombok.Data;
  * @Version: 1.0
  */
 @Data
-public class FormDto {
+public class IdDto {
 
-    @ApiModelProperty(value = "主键id(添加不需要带上，修改必须带上)")
+    @ApiModelProperty(hidden = true)
     private Integer id;
 }

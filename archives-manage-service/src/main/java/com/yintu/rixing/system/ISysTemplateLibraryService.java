@@ -1,7 +1,6 @@
 package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yintu.rixing.dto.system.SysDepartmentFormDto;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFormDto;
 import com.yintu.rixing.util.TreeNodeUtil;
 import org.springframework.transaction.annotation.Transactional;

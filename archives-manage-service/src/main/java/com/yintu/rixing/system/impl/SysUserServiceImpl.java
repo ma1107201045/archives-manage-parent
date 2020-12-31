@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysUserFormDto;
+import com.yintu.rixing.dto.system.SysUserPasswordDto;
 import com.yintu.rixing.dto.system.SysUserQueryDto;
 import com.yintu.rixing.enumobject.EnumFlag;
+import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.TreeNodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +43,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void save(SysUserFormDto sysUserFormDto) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        sysUserFormDto.setPassword(passwordEncoder.encode(sysUserFormDto.getPassword()));
         SysUser sysUser = new SysUser();
         sysUser.setAccountExpired(EnumFlag.False.getValue());
         sysUser.setAccountLocked(EnumFlag.False.getValue());
         sysUser.setCredentialsExpired(EnumFlag.False.getValue());
         sysUser.setAccountEnabled(EnumFlag.True.getValue());
         BeanUtil.copyProperties(sysUserFormDto, sysUser);
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         this.save(sysUser);
         this.saveRolesById(sysUser.getId(), sysUserFormDto.getRoleIds());
     }
@@ -57,12 +59,31 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void updateById(SysUserFormDto sysUserFormDto) {
         SysUser sysUser = this.getById(sysUserFormDto.getId());
         if (sysUser != null) {
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            sysUserFormDto.setPassword(passwordEncoder.encode(sysUserFormDto.getPassword()));
             BeanUtil.copyProperties(sysUserFormDto, sysUser);
             this.updateById(sysUser);
             QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().eq(SysUserRole::getUserId, sysUser.getId());
             iSysUserRoleService.remove(queryWrapper);
             this.saveRolesById(sysUser.getId(), sysUserFormDto.getRoleIds());
+        }
+    }
+
+    @Override
+    public void resetPassword(SysUserPasswordDto sysUserPasswordDto) {
+        Integer id = sysUserPasswordDto.getId();
+        String oldPassword = sysUserPasswordDto.getOldPassword();
+        String newPassword = sysUserPasswordDto.getOldPassword();
+        if (oldPassword != null && !oldPassword.isEmpty() && newPassword != null && !newPassword.isEmpty()) {
+            SysUser sysUser = this.getById(id);
+            if (sysUser == null)
+                throw new BaseRuntimeException("当前用户不存在");
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            if (!passwordEncoder.matches(oldPassword, sysUser.getPassword()))
+                throw new BaseRuntimeException("旧密码错误");
+            sysUser.setPassword(passwordEncoder.encode(newPassword));
+            this.updateById(sysUser);
         }
     }
 

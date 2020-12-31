@@ -1,7 +1,6 @@
 package com.yintu.rixing.dto.system;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.yintu.rixing.dto.common.FormDto;
+import com.yintu.rixing.dto.common.IdDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +14,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysTemplateLibraryFormDto extends FormDto {
+public class SysTemplateLibraryFormDto extends IdDto {
 
     @ApiModelProperty(value = "父节点主键", required = true)
     @NotNull
