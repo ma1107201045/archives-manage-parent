@@ -33,8 +33,6 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
             try {
                 //校验验证码 校验通过、继续向下执行   验证失败、抛出异常
                 this.validateCode(request);
-                //从Session移除该字段信息
-                request.getSession().removeAttribute("captcha");
             } catch (VerificationCodeException e) {
                 System.out.println(request.getSession().getAttribute("captcha"));
                 response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
@@ -71,6 +69,7 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
         if (!StrUtil.equalsAnyIgnoreCase(codeInRequest, codeInSession)) {
             throw new VerificationCodeException("验证码不正确！");
         }
-
+        //从Session移除该字段信息
+        request.getSession().removeAttribute("captcha");
     }
 }
