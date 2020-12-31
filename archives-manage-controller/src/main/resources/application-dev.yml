@@ -79,7 +79,7 @@ swagger:
         - /captcha
       exclude-path: [ /error ]
     system:
-      title: 系统管理模块
+      title: 系统设置模块
       description: 系统管理模块有关的接口
       base-package: com.yintu.rixing.system
       base-path:

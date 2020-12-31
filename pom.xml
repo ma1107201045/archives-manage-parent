@@ -35,6 +35,7 @@
         <poi-ooxml.version>3.17</poi-ooxml.version>
         <hutool-all.version>5.3.9</hutool-all.version>
         <swagger-spring-boot-starter.version>1.9.1.RELEASE</swagger-spring-boot-starter.version>
+        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
         <swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
     </properties>
     <dependencyManagement>
@@ -122,6 +123,11 @@
                 <groupId>com.spring4all</groupId>
                 <artifactId>swagger-spring-boot-starter</artifactId>
                 <version>${swagger-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${springfox-boot-starter.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
