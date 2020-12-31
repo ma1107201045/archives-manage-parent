@@ -32,7 +32,7 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
                 && StrUtil.equalsIgnoreCase("post", request.getMethod())) {
             try {
                 //校验验证码 校验通过、继续向下执行   验证失败、抛出异常
-                this.validateCode(request);
+               // this.validateCode(request);
             } catch (VerificationCodeException e) {
                 System.out.println(request.getSession().getAttribute("captcha"));
                 response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
