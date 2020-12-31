@@ -3,12 +3,10 @@ package com.yintu.rixing.system;
 
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.controller.AuthenticationController;
-import com.yintu.rixing.dto.system.SysDepartmentFormDto;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFormDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.ResultDataUtil;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -75,8 +72,8 @@ public class SysTemplateLibraryController extends AuthenticationController {
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询档案库列表信息树")
     @GetMapping
     @ApiOperation(value = "查询档案库列表信息树", notes = "查询档案库列表信息树", position = 5)
-    public ResultDataUtil<List<TreeNodeUtil>> findTree() {
-        List<TreeNodeUtil> treeNodeUtils = iSysTemplateLibraryService.listTree(-1);
+    public ResultDataUtil<List<TreeUtil>> findTree() {
+        List<TreeUtil> treeNodeUtils = iSysTemplateLibraryService.listTree(-1);
         return ResultDataUtil.ok("查询档案库列表信息树成功", treeNodeUtils);
     }
 

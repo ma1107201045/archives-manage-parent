@@ -10,7 +10,7 @@ import lombok.Data;
  * @Version: 1.0
  */
 @Data
-@ApiModel(value = "ResponseData对象", description = "返回参数")
+@ApiModel(value = "ResultDataUtil对象", description = "返回参数")
 public class ResultDataUtil<T> {
 
     public static final Integer CODE_VALUE_200 = 200;

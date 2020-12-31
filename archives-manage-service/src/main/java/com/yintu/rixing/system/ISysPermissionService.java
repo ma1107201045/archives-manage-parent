@@ -2,7 +2,7 @@ package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.system.SysPermissionFormDto;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.system.SysPermissionVo;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +27,7 @@ public interface ISysPermissionService extends IService<SysPermission> {
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysPermissionFormDto sysPermissionFormDto);
 
-    List<TreeNodeUtil> listTree(Integer parentId);
+    List<TreeUtil> listTree(Integer parentId);
 
     List<SysPermissionVo> list(Short menu);
 

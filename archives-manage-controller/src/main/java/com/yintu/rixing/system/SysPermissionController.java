@@ -2,12 +2,11 @@ package com.yintu.rixing.system;
 
 
 import com.yintu.rixing.annotation.Log;
-import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.dto.system.SysPermissionFormDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * <p>
@@ -76,7 +74,7 @@ public class SysPermissionController extends AuthenticationController {
     @GetMapping
     @ApiOperation(value = "查询权限列表信息树", notes = "查询权限列表信息树", position = 5)
     public Map<String, Object> findTree() {
-        List<TreeNodeUtil> treeNodeUtils = iSysPermissionService.listTree(-1);
+        List<TreeUtil> treeNodeUtils = iSysPermissionService.listTree(-1);
         return ResponseDataUtil.ok("查询权限列表信息树成功", treeNodeUtils);
     }
 

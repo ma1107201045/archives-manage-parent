@@ -10,9 +10,8 @@ import com.yintu.rixing.dto.system.SysUserFormDto;
 import com.yintu.rixing.dto.system.SysUserPasswordDto;
 import com.yintu.rixing.dto.system.SysUserQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.ResultDataUtil;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -99,8 +97,8 @@ public class SysUserController extends AuthenticationController implements BaseC
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询用户部门列表信息树")
     @GetMapping("/sys-department")
     @ApiOperation(value = "查询用户部门列表信息树", notes = "查询用户部门列表信息树", position = 7)
-    public ResultDataUtil<List<TreeNodeUtil>> findDepartmentTree() {
-        List<TreeNodeUtil> treeNodeUtils = iSysDepartmentService.listTree(-1);
+    public ResultDataUtil<List<TreeUtil>> findDepartmentTree() {
+        List<TreeUtil> treeNodeUtils = iSysDepartmentService.listTree(-1);
         return ResultDataUtil.ok("查询用户部门列表信息树成功", treeNodeUtils);
     }
 
@@ -109,8 +107,8 @@ public class SysUserController extends AuthenticationController implements BaseC
     @GetMapping("/{id}/sys-department")
     @ApiOperation(value = "查询用户所在部门列表信息树", notes = "查询用户所在部门列表信息树", position = 8)
     @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
-    public ResultDataUtil<List<TreeNodeUtil>> findPermissionTreeById(@PathVariable Integer id) {
-        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+    public ResultDataUtil<List<TreeUtil>> findPermissionTreeById(@PathVariable Integer id) {
+        List<TreeUtil> treeNodeUtils = new ArrayList<>();
         iSysUserService.sysDepartmentsByIdAndParentId(id, -1);
         return ResultDataUtil.ok("查询用户所在部门列表信息树成功", treeNodeUtils);
     }

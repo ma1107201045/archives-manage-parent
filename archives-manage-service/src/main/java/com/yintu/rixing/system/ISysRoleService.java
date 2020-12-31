@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.system.SysRoleFormDto;
 import com.yintu.rixing.dto.system.SysRoleQueryDto;
-import com.yintu.rixing.dto.system.SysUserFormDto;
-import com.yintu.rixing.dto.system.SysUserQueryDto;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -35,7 +33,7 @@ public interface ISysRoleService extends IService<SysRole> {
 
     List<SysPermission> sysPermissionsByIdAndParentId(Integer id, Integer parentId);
 
-    void sysPermissionTreeByIdAndParentId(Integer id, Integer parentId, List<TreeNodeUtil> treeNodeUtils);
+    void sysPermissionTreeByIdAndParentId(Integer id, Integer parentId, List<TreeUtil> treeNodeUtils);
 
 
 }

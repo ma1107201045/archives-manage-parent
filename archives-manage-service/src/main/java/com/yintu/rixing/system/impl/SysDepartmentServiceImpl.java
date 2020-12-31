@@ -5,12 +5,10 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysDepartmentFormDto;
-import com.yintu.rixing.dto.system.SysPermissionFormDto;
 import com.yintu.rixing.system.ISysDepartmentService;
 import com.yintu.rixing.system.SysDepartment;
 import com.yintu.rixing.system.SysDepartmentMapper;
-import com.yintu.rixing.system.SysPermission;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -55,13 +53,13 @@ public class SysDepartmentServiceImpl extends ServiceImpl<SysDepartmentMapper, S
     }
 
     @Override
-    public List<TreeNodeUtil> listTree(Integer parentId) {
+    public List<TreeUtil> listTree(Integer parentId) {
         QueryWrapper<SysDepartment> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(SysDepartment::getParentId, parentId);
         List<SysDepartment> sysPermissions = this.list(queryWrapper);
-        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+        List<TreeUtil> treeNodeUtils = new ArrayList<>();
         for (SysDepartment sysDepartment : sysPermissions) {
-            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            TreeUtil treeNodeUtil = new TreeUtil();
             treeNodeUtil.setId(sysDepartment.getId().longValue());
             treeNodeUtil.setLabel(sysDepartment.getName());
             treeNodeUtil.setChildren(this.listTree(sysDepartment.getId()));

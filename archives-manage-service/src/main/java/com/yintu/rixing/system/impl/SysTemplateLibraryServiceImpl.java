@@ -6,10 +6,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFormDto;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.ISysTemplateLibraryService;
-import com.yintu.rixing.system.SysDepartment;
 import com.yintu.rixing.system.SysTemplateLibrary;
 import com.yintu.rixing.system.SysTemplateLibraryMapper;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -72,13 +71,13 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
     }
 
     @Override
-    public List<TreeNodeUtil> listTree(Integer parentId) {
+    public List<TreeUtil> listTree(Integer parentId) {
         QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(SysTemplateLibrary::getParentId, parentId);
         List<SysTemplateLibrary> sysTemplateLibraries = this.list(queryWrapper);
-        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+        List<TreeUtil> treeNodeUtils = new ArrayList<>();
         for (SysTemplateLibrary sysTemplateLibrary : sysTemplateLibraries) {
-            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            TreeUtil treeNodeUtil = new TreeUtil();
             treeNodeUtil.setId(sysTemplateLibrary.getId().longValue());
             treeNodeUtil.setLabel(sysTemplateLibrary.getName());
             treeNodeUtil.setChildren(this.listTree(sysTemplateLibrary.getId()));

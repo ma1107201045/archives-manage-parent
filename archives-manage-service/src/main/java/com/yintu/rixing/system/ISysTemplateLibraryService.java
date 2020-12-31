@@ -2,7 +2,7 @@ package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFormDto;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -27,6 +27,6 @@ public interface ISysTemplateLibraryService extends IService<SysTemplateLibrary>
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysTemplateLibraryFormDto sysTemplateLibraryFormDto);
 
-    List<TreeNodeUtil> listTree(Integer parentId);
+    List<TreeUtil> listTree(Integer parentId);
 
 }

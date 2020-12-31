@@ -10,7 +10,7 @@ import com.yintu.rixing.dto.system.SysUserQueryDto;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -129,14 +129,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void sysDepartmentTreeByIdAndParentId(Integer id, Integer parentId, List<TreeNodeUtil> treeNodeUtils) {
+    public void sysDepartmentTreeByIdAndParentId(Integer id, Integer parentId, List<TreeUtil> treeNodeUtils) {
         List<SysDepartment> sysDepartments = this.sysDepartmentsByIdAndParentId(id, parentId);
         for (SysDepartment sysDepartment : sysDepartments) {
             List<SysDepartment> departments = this.sysDepartmentsByIdAndParentId(id, parentId);
             if (!departments.isEmpty()) {
                 sysDepartmentTreeByIdAndParentId(id, sysDepartment.getId(), treeNodeUtils);
             } else {
-                TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+                TreeUtil treeNodeUtil = new TreeUtil();
                 treeNodeUtil.setId(sysDepartment.getId().longValue());
                 treeNodeUtil.setLabel(sysDepartment.getName());
                 treeNodeUtils.add(treeNodeUtil);

@@ -5,12 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysPermissionFormDto;
 import com.yintu.rixing.system.*;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.system.SysPermissionVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,13 +56,13 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
 
     @Override
-    public List<TreeNodeUtil> listTree(Integer parentId) {
+    public List<TreeUtil> listTree(Integer parentId) {
         QueryWrapper<SysPermission> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(SysPermission::getParentId, parentId);
         List<SysPermission> sysPermissions = this.list(queryWrapper);
-        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+        List<TreeUtil> treeNodeUtils = new ArrayList<>();
         for (SysPermission sysPermission : sysPermissions) {
-            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            TreeUtil treeNodeUtil = new TreeUtil();
             treeNodeUtil.setId(sysPermission.getId().longValue());
             treeNodeUtil.setLabel(sysPermission.getName());
             treeNodeUtil.setIcon(sysPermission.getImgPath());

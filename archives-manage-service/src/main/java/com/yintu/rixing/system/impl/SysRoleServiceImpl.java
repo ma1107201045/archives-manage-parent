@@ -7,10 +7,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysRoleFormDto;
 import com.yintu.rixing.dto.system.SysRoleQueryDto;
-import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.system.*;
-import com.yintu.rixing.util.ResponseDataUtil;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,14 +90,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public void sysPermissionTreeByIdAndParentId(Integer id, Integer parentId, List<TreeNodeUtil> treeNodeUtils) {
+    public void sysPermissionTreeByIdAndParentId(Integer id, Integer parentId, List<TreeUtil> treeNodeUtils) {
         List<SysPermission> sysPermissions = this.sysPermissionsByIdAndParentId(id, parentId);
         for (SysPermission sysPermission : sysPermissions) {
             List<SysPermission> permissions = this.sysPermissionsByIdAndParentId(id, parentId);
             if (!permissions.isEmpty()) {
                 sysPermissionTreeByIdAndParentId(id, sysPermission.getId(), treeNodeUtils);
             } else {
-                TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+                TreeUtil treeNodeUtil = new TreeUtil();
                 treeNodeUtil.setId(sysPermission.getId().longValue());
                 treeNodeUtil.setLabel(sysPermission.getName());
                 treeNodeUtil.setIcon(sysPermission.getImgPath());

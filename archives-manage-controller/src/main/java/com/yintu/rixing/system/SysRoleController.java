@@ -1,18 +1,15 @@
 package com.yintu.rixing.system;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.dto.system.SysRoleFormDto;
 import com.yintu.rixing.dto.system.SysRoleQueryDto;
-import com.yintu.rixing.dto.system.SysUserFormDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.ResultDataUtil;
-import com.yintu.rixing.util.TreeNodeUtil;
+import com.yintu.rixing.util.TreeUtil;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -87,8 +83,8 @@ public class SysRoleController extends AuthenticationController implements BaseC
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询角色权限列表树信息")
     @GetMapping("/sys-permission")
     @ApiOperation(value = "查询角色权限列表树信息", notes = "查询角色权限列表树信息", position = 6)
-    public ResultDataUtil<List<TreeNodeUtil>> findPermissionTree() {
-        List<TreeNodeUtil> treeNodeUtils = iSysPermissionService.listTree(-1);
+    public ResultDataUtil<List<TreeUtil>> findPermissionTree() {
+        List<TreeUtil> treeNodeUtils = iSysPermissionService.listTree(-1);
         return ResultDataUtil.ok("查询角色权限列表树信息成功", treeNodeUtils);
     }
 
@@ -96,8 +92,8 @@ public class SysRoleController extends AuthenticationController implements BaseC
     @GetMapping("/{id}/sys-permission")
     @ApiOperation(value = "查询角色拥有权限列表信息", notes = "查询角色拥有权限列表信息", position = 7)
     @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
-    public ResultDataUtil<List<TreeNodeUtil>> findPermissionTreeById(@PathVariable Integer id) {
-        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+    public ResultDataUtil<List<TreeUtil>> findPermissionTreeById(@PathVariable Integer id) {
+        List<TreeUtil> treeNodeUtils = new ArrayList<>();
         iSysRoleService.sysPermissionTreeByIdAndParentId(id, -1, treeNodeUtils);
         return ResultDataUtil.ok("查询角色拥有权限列表信息成功", treeNodeUtils);
     }
