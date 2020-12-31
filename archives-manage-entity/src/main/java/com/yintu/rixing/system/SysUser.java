@@ -94,7 +94,9 @@ public class SysUser extends BaseEntity implements UserDetails {
     @TableField(exist = false)
     private List<SysRole> sysRoles;
 
-    @ApiModelProperty(hidden = true)
+
+    @JsonIgnore
+    @JSONField(serialize = false)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> list = new ArrayList<>(sysRoles.size());
@@ -115,25 +117,33 @@ public class SysUser extends BaseEntity implements UserDetails {
         return username;
     }
 
-    @ApiModelProperty(hidden = true)
+
+    @JsonIgnore
+    @JSONField(serialize = false)
     @Override
     public boolean isAccountNonExpired() {
         return !(accountExpired == null || accountExpired == 1);
     }
 
-    @ApiModelProperty(hidden = true)
+
+    @JsonIgnore
+    @JSONField(serialize = false)
     @Override
     public boolean isAccountNonLocked() {
         return !(accountLocked == null || accountLocked == 1);
     }
 
-    @ApiModelProperty(hidden = true)
+
+    @JsonIgnore
+    @JSONField(serialize = false)
     @Override
     public boolean isCredentialsNonExpired() {
         return !(credentialsExpired == null || credentialsExpired == 1);
     }
 
-    @ApiModelProperty(hidden = true)
+
+    @JsonIgnore
+    @JSONField(serialize = false)
     @Override
     public boolean isEnabled() {
         return !(accountEnabled == null || accountEnabled == 0);

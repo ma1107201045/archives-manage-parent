@@ -78,6 +78,7 @@ public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
                                     .name("captcha")
                                     .parameterType("query")
                                     .parameterAccess("access")
+                                    .required(true)
                                     .modelRef(new ModelRef("string"))
                                     .build()
                     ))

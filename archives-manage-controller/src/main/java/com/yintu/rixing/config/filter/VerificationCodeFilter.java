@@ -29,11 +29,10 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
         //判断请求页面是否为/login、该路径对应登录form表单的action路径，请求的方法是否为POST，是的话进行验证码校验逻辑，否则直接执行filterChain.doFilter让代码往下走
         String contextPath = request.getContextPath();
         if (StrUtil.equalsIgnoreCase(contextPath + "/login", request.getRequestURI())
-                && StrUtil.equalsIgnoreCase("post", request.getMethod()))
-        {
+                && StrUtil.equalsIgnoreCase("post", request.getMethod())) {
             try {
                 //校验验证码 校验通过、继续向下执行   验证失败、抛出异常
-                //validateCode(request);
+                this.validateCode(request);
             } catch (VerificationCodeException e) {
                 response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                 response.setStatus(HttpServletResponse.SC_OK);
