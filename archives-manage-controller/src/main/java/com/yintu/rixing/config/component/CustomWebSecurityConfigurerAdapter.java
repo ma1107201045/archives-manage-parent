@@ -3,6 +3,7 @@ package com.yintu.rixing.config.component;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.rixing.config.filter.VerificationCodeFilter;
 import com.yintu.rixing.util.ResponseDataUtil;
+import com.yintu.rixing.util.ResultDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -71,7 +72,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
-            JSONObject jo = (JSONObject) JSONObject.toJSON(ResponseDataUtil.ok("登录成功", authenticationException.getPrincipal()));
+            JSONObject jo = (JSONObject) JSONObject.toJSON(ResultDataUtil.ok("登录成功", authenticationException.getPrincipal()));
             out.write(jo.toJSONString());
             out.flush();
             out.close();
@@ -79,23 +80,23 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
-            Map<String, Object> errorData;
+            ResultDataUtil<Object> resultDataUtil;
             if (authenticationException instanceof BadCredentialsException) {
-                errorData = ResponseDataUtil.error("用户名或者密码输入错误，请重新输入");
+                resultDataUtil = ResultDataUtil.error("用户名或者密码输入错误，请重新输入");
             } else if (authenticationException instanceof DisabledException) {
-                errorData = ResponseDataUtil.error("账户被禁用，请联系管理员");
+                resultDataUtil = ResultDataUtil.error("账户被禁用，请联系管理员");
             } else if (authenticationException instanceof LockedException) {
-                errorData = ResponseDataUtil.error("账户被锁定，请联系管理员");
+                resultDataUtil = ResultDataUtil.error("账户被锁定，请联系管理员");
             } else if (authenticationException instanceof CredentialsExpiredException) {
-                errorData = ResponseDataUtil.error("密码过期，请联系管理员");
+                resultDataUtil = ResultDataUtil.error("密码过期，请联系管理员");
             } else if (authenticationException instanceof AccountExpiredException) {
-                errorData = ResponseDataUtil.error("账户过期，请联系管理员");
+                resultDataUtil = ResultDataUtil.error("账户过期，请联系管理员");
             } else if (authenticationException instanceof AuthenticationServiceException) {
-                errorData = ResponseDataUtil.error(authenticationException.getMessage());
+                resultDataUtil = ResultDataUtil.error(authenticationException.getMessage());
             } else {
-                errorData = ResponseDataUtil.error("登录异常");
+                resultDataUtil = ResultDataUtil.error("登录异常");
             }
-            JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
+            JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
             out.write(jo.toJSONString());
             out.flush();
             out.close();
@@ -106,8 +107,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                     response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     response.setStatus(HttpServletResponse.SC_OK);
                     PrintWriter out = response.getWriter();
-                    Map<String, Object> errorData = ResponseDataUtil.ok("注销成功");
-                    JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
+                    ResultDataUtil<Object> resultDataUtil = ResultDataUtil.ok("注销成功");
+                    JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
                     out.write(jo.toJSONString());
                     out.flush();
                     out.close();
@@ -127,8 +128,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                     response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     response.setStatus(HttpServletResponse.SC_OK);
                     PrintWriter out = response.getWriter();
-                    Map<String, Object> errorData = ResponseDataUtil.noLogin(authenticationException.getMessage());
-                    JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
+                    ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noAuthentication(authenticationException.getMessage());
+                    JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
                     out.write(jo.toJSONString());
                     out.flush();
                     out.close();
@@ -137,8 +138,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                     response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     response.setStatus(HttpServletResponse.SC_OK);
                     PrintWriter out = response.getWriter();
-                    Map<String, Object> errorData = ResponseDataUtil.noAuthorize(accessDeniedException.getMessage());
-                    JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
+                    ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noAuthorization(accessDeniedException.getMessage());
+                    JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
                     out.write(jo.toJSONString());
                     out.flush();
                     out.close();
@@ -147,8 +148,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
-            Map<String, Object> errorData = ResponseDataUtil.error("您已在另一台设备登录，本次登录已下线");
-            JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
+            ResultDataUtil<Object> resultDataUtil = ResultDataUtil.error("您已在另一台设备登录，本次登录已下线");
+            JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
             out.write(jo.toJSONString());
             out.flush();
             out.close();

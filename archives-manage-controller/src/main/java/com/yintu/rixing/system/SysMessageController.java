@@ -3,6 +3,7 @@ package com.yintu.rixing.system;
 
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.util.ResponseDataUtil;
+import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,43 +25,43 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sysmessage")
 @Api(tags = "引入模板后的信息接口")
-public class SysMessageController implements BaseController<SysMessage, Integer> {
+public class SysMessageController implements BaseController<SysMessage, SysMessage, Integer> {
 
     @Autowired
     ISysMessageService sysMessageService;
 
     @PostMapping("/add")
-    public Map<String, Object> add(@Validated SysMessage entity) {
+    public ResultDataUtil<Object> add(@Validated SysMessage entity) {
         boolean b = sysMessageService.save(entity);
         if (b) {
-            return ResponseDataUtil.ok("添加成功");
+            return ResultDataUtil.ok("添加成功");
         }
-        return ResponseDataUtil.ok("添加失败");
+        return ResultDataUtil.ok("添加失败");
     }
 
     @DeleteMapping("/del")
-    public Map<String, Object> remove(@RequestParam Set<Integer> ids) {
+    public ResultDataUtil<Object> remove(@RequestParam Set<Integer> ids) {
         boolean b = sysMessageService.removeByIds(ids);
         if (b) {
-            return ResponseDataUtil.ok("删除成功");
+            return ResultDataUtil.ok("删除成功");
         }
-        return ResponseDataUtil.ok("删除失败");
+        return ResultDataUtil.ok("删除失败");
     }
 
     @PutMapping("/edit")
-    public Map<String, Object> edit(@RequestParam Integer id, @Validated SysMessage entity) {
+    public ResultDataUtil<Object> edit(@RequestParam Integer id, @Validated SysMessage entity) {
         boolean b = sysMessageService.updateById(entity);
         if (b) {
-            return ResponseDataUtil.ok("编辑成功");
+            return ResultDataUtil.ok("编辑成功");
         }
 
-        return ResponseDataUtil.ok("编辑失败");
+        return ResultDataUtil.ok("编辑失败");
     }
 
     @GetMapping("/{id}")
-    public Map<String, Object> findById(@Param("id") Integer id) {
+    public ResultDataUtil<SysMessage> findById(@Param("id") Integer id) {
         SysMessage byId = sysMessageService.getById(id);
-        return ResponseDataUtil.ok("查询成功", byId);
+        return ResultDataUtil.ok("查询成功", byId);
     }
 
 

@@ -8,6 +8,7 @@ import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
+import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,28 +37,28 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sysborrowaudit")
 @Api(tags = "借阅审批接口")
-public class SysBorrowauditController extends AuthenticationController implements BaseController<SysBorrowaudit, Integer> {
-
+public class SysBorrowauditController extends AuthenticationController implements BaseController<SysBorrowaudit, SysBorrowaudit, Integer> {
 
     @Autowired
-    ISysBorrowauditService iSysBorrowauditService;
+    private ISysBorrowauditService iSysBorrowauditService;
 
-    public Map<String, Object> add(SysBorrowaudit entity) {
+    @Override
+    public ResultDataUtil<Object> add(SysBorrowaudit entity) {
         return null;
     }
 
     @Override
-    public Map<String, Object> remove(Set<Integer> id) {
-        return null;
-    }
-
-
-    public Map<String, Object> edit(Integer id, SysBorrowaudit entity) {
+    public ResultDataUtil<Object> remove(Set<Integer> id) {
         return null;
     }
 
     @Override
-    public Map<String, Object> findById(Integer id) {
+    public ResultDataUtil<Object> edit(Integer id, SysBorrowaudit entity) {
+        return null;
+    }
+
+    @Override
+    public ResultDataUtil<SysBorrowaudit> findById(Integer id) {
         return null;
     }
 

@@ -7,6 +7,7 @@ import com.yintu.rixing.config.controller.AuthenticationController;
 import com.yintu.rixing.dto.system.SysLogDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
+import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiSort;
@@ -38,8 +39,8 @@ public class SysLogController extends AuthenticationController {
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询日志列表信息")
     @GetMapping
     @ApiOperation(value = "查询日志列表信息", notes = " 查询日志列表信息")
-    public Map<String, Object> findPage(@Validated SysLogDto sysLogDto) {
+    public ResultDataUtil<Page<SysLog>> findPage(@Validated SysLogDto sysLogDto) {
         Page<SysLog> page = iSysLogService.page(sysLogDto);
-        return ResponseDataUtil.ok("查询日志列表信息成功", page);
+        return ResultDataUtil.ok("查询日志列表信息成功", page);
     }
 }

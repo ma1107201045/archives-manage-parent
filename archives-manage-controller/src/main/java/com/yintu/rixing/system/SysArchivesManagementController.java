@@ -6,6 +6,7 @@ import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
+import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -22,7 +23,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/archives")
 @Api(tags = "模板字段信息接口")
-public class SysArchivesManagementController implements BaseController<SysArchives, Integer> {
+public class SysArchivesManagementController implements BaseController<SysArchives, SysArchives, Integer> {
 
     @Autowired
     ISysArchivesService iSysArchivesService;
@@ -30,21 +31,21 @@ public class SysArchivesManagementController implements BaseController<SysArchiv
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "添加字段信息")
     @PostMapping("/add")
     @ApiOperation(value = "添加字段信息", notes = "添加字段信息")
-    public Map<String, Object> add(@Validated SysArchives sysArchives) {
+    public ResultDataUtil<Object> add(@Validated SysArchives sysArchives) {
         boolean save = iSysArchivesService.save(sysArchives);
         if (save) {
-            return ResponseDataUtil.ok("添加字段信息成功");
+            return ResultDataUtil.ok("添加字段信息成功");
         }
-        return ResponseDataUtil.error("添加字段信息失败");
+        return ResultDataUtil.error("添加字段信息失败");
     }
 
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "删除字段信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除字段信息", notes = "删除字段信息")
     @ApiImplicitParam(name = "ids", value = "主键id集", required = true)
-    public Map<String, Object> remove(@PathVariable Set<Integer> ids) {
+    public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids) {
         iSysArchivesService.removeByIds(ids);
-        return ResponseDataUtil.ok("删除档案字段信息成功");
+        return ResultDataUtil.ok("删除档案字段信息成功");
     }
 
 
@@ -52,17 +53,17 @@ public class SysArchivesManagementController implements BaseController<SysArchiv
     @PutMapping("/{id}")
     @ApiOperation(value = "修改信息", notes = "修改信息")
     @ApiImplicitParam(name = "id", value = "主键id", required = true)
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated SysArchives entity) {
+    public ResultDataUtil<Object> edit(@PathVariable Integer id, @Validated SysArchives entity) {
         iSysArchivesService.updateById(entity);
-        return ResponseDataUtil.ok("修改档案字段信息成功");
+        return ResultDataUtil.ok("修改档案字段信息成功");
     }
 
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "查询模板信息")
     @GetMapping
     @ApiOperation(value = "查询模板信息", notes = "查询模板信息")
-    public Map<String, Object> findById(@PathVariable Integer id) {
+    public ResultDataUtil<SysArchives> findById(@PathVariable Integer id) {
         SysArchives byId = iSysArchivesService.getById(id);
-        return ResponseDataUtil.ok("查询成功", byId);
+        return ResultDataUtil.ok("查询成功", byId);
     }
 
     @Log(level = EnumLogLevel.INFO, module = "档案库管理", description = "查询档案库信息列表")

@@ -6,6 +6,7 @@ import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.impl.SysTemplateServiceImpl;
 import com.yintu.rixing.util.ResponseDataUtil;
+import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -32,39 +33,39 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/systemplate")
 @Api(tags = "模板库管理接口")
-public class SysTemplateController implements BaseController<SysTemplate, Integer> {
+public class SysTemplateController implements BaseController<SysTemplate, SysTableMessge, Integer> {
     @Autowired
     ISysTemplateService iSysTemplateService;
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "添加模板")
     @ApiOperation(value = "添加模板", notes = "添加模板")
     @PostMapping("/add")
-    public Map<String, Object> add(@Validated SysTemplate entity) {
+    public ResultDataUtil<Object> add(@Validated SysTemplate entity) {
         iSysTemplateService.save(entity);
-        return ResponseDataUtil.ok("添加成功");
+        return ResultDataUtil.ok("添加成功");
     }
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "删除模板信息列表")
     @ApiOperation(value = "删除模板", notes = "删除模板")
     @DeleteMapping("/del")
-    public Map<String, Object> remove(@Param("ids") Set<Integer> ids) {
+    public ResultDataUtil<Object> remove(@Param("ids") Set<Integer> ids) {
         iSysTemplateService.removeByIds(ids);
-        return ResponseDataUtil.ok("删除成功");
+        return ResultDataUtil.ok("删除成功");
     }
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "编辑模板信息")
     @PutMapping("/edit")
     @ApiOperation(value = "编辑模板信息", notes = "编辑模板信息")
-    public Map<String, Object> edit(@Param("id") Integer id, @Validated SysTemplate entity) {
+    public ResultDataUtil<Object> edit(@Param("id") Integer id, @Validated SysTemplate entity) {
         iSysTemplateService.updateById(entity);
-        return ResponseDataUtil.ok("编辑成功");
+        return ResultDataUtil.ok("编辑成功");
     }
 
     @GetMapping("/findById")
     @ApiOperation(value = "查询模板信息", notes = "查询模板信息")
-    public Map<String, Object> findById(@Param("id") Integer id) {
+    public ResultDataUtil<SysTableMessge> findById(@Param("id") Integer id) {
         List<SysTableMessge> list = iSysTemplateService.findById(id);
-        return ResponseDataUtil.ok("查询成功", list);
+        return ResultDataUtil.ok("查询成功", list.get(0));
     }
 
 

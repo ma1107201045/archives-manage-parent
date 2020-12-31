@@ -1,5 +1,7 @@
 package com.yintu.rixing.base;
 
+import com.yintu.rixing.util.ResultDataUtil;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
@@ -10,14 +12,14 @@ import java.util.Set;
  * @Date: 2020/11/27 13:18
  * @Version: 1.0
  */
-public interface BaseController<T, PK extends Serializable> {
+public interface BaseController<T, E, PK extends Serializable> {
 
-    Map<String, Object> add(T entity);
+    ResultDataUtil<Object> add(T entity);
 
-    Map<String, Object> remove(Set<PK> id);
+    ResultDataUtil<Object> remove(Set<PK> id);
 
-    Map<String, Object> edit(PK id, T entity);
+    ResultDataUtil<Object> edit(PK id, T entity);
 
-    Map<String, Object> findById(PK id);
+    ResultDataUtil<E> findById(PK id);
 
 }
