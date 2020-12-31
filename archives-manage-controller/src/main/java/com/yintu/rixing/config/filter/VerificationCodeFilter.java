@@ -36,6 +36,7 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
                 //从Session移除该字段信息
                 request.getSession().removeAttribute("captcha");
             } catch (VerificationCodeException e) {
+                System.out.println(request.getSession().getAttribute("captcha"));
                 response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                 response.setStatus(HttpServletResponse.SC_OK);
                 PrintWriter out = response.getWriter();
