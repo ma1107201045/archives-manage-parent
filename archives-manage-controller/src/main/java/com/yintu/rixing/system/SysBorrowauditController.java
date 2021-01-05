@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -37,6 +38,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sysborrowaudit")
 @Api(tags = "借阅审批接口")
+@ApiIgnore
 public class SysBorrowauditController extends AuthenticationController {
 
     @Autowired

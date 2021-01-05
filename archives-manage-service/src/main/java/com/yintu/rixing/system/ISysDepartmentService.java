@@ -26,6 +26,6 @@ public interface ISysDepartmentService extends IService<SysDepartment> {
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysDepartmentFormDto sysDepartmentFormDto);
 
-    List<TreeUtil> listTree(Integer parentId);
+    List<TreeUtil> listTree(Integer id);
 
 }

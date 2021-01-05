@@ -118,28 +118,28 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public List<SysDepartment> sysDepartmentsByIdAndParentId(Integer id, Integer parentId) {
+    public List<SysDepartment> sysDepartmentsByIdAndDepartmentId(Integer id, Integer departmentId) {
         QueryWrapper<SysUserDepartment> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().select(SysUserDepartment::getDepartmentId).eq(SysUserDepartment::getUserId, id);
         List<Integer> departmentIds = iSysUserDepartmentService.list(queryWrapper).stream().map(SysUserDepartment::getDepartmentId).collect(Collectors.toList());
 
         QueryWrapper<SysDepartment> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper1.lambda().eq(SysDepartment::getId, parentId).in(SysDepartment::getId, departmentIds);
+        queryWrapper1.lambda().in(SysDepartment::getId, departmentIds).eq(SysDepartment::getParentId, departmentId);
         return iSysDepartmentService.list(queryWrapper1);
     }
 
     @Override
-    public void sysDepartmentTreeByIdAndParentId(Integer id, Integer parentId, List<TreeUtil> treeNodeUtils) {
-        List<SysDepartment> sysDepartments = this.sysDepartmentsByIdAndParentId(id, parentId);
+    public void sysDepartmentTreeByIdAndDepartmentId(Integer id, Integer departmentId, List<TreeUtil> treeUtils) {
+        List<SysDepartment> sysDepartments = this.sysDepartmentsByIdAndDepartmentId(id, departmentId);
         for (SysDepartment sysDepartment : sysDepartments) {
-            List<SysDepartment> departments = this.sysDepartmentsByIdAndParentId(id, parentId);
+            List<SysDepartment> departments = this.sysDepartmentsByIdAndDepartmentId(id, departmentId);
             if (!departments.isEmpty()) {
-                sysDepartmentTreeByIdAndParentId(id, sysDepartment.getId(), treeNodeUtils);
+                sysDepartmentTreeByIdAndDepartmentId(id, sysDepartment.getId(), treeUtils);
             } else {
-                TreeUtil treeNodeUtil = new TreeUtil();
-                treeNodeUtil.setId(sysDepartment.getId().longValue());
-                treeNodeUtil.setLabel(sysDepartment.getName());
-                treeNodeUtils.add(treeNodeUtil);
+                TreeUtil treeUtil = new TreeUtil();
+                treeUtil.setId(sysDepartment.getId().longValue());
+                treeUtil.setLabel(sysDepartment.getName());
+                treeUtils.add(treeUtil);
             }
         }
     }

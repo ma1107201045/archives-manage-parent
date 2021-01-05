@@ -56,20 +56,21 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
 
     @Override
-    public List<TreeUtil> listTree(Integer parentId) {
+    public List<TreeUtil> listTree(Integer id) {
         QueryWrapper<SysPermission> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysPermission::getParentId, parentId);
+        queryWrapper.lambda().eq(SysPermission::getParentId, id).orderByAsc(SysPermission::getPriority);
         List<SysPermission> sysPermissions = this.list(queryWrapper);
-        List<TreeUtil> treeNodeUtils = new ArrayList<>();
+        List<TreeUtil> treeUtils = new ArrayList<>();
         for (SysPermission sysPermission : sysPermissions) {
-            TreeUtil treeNodeUtil = new TreeUtil();
-            treeNodeUtil.setId(sysPermission.getId().longValue());
-            treeNodeUtil.setLabel(sysPermission.getName());
-            treeNodeUtil.setIcon(sysPermission.getImgPath());
-            treeNodeUtil.setChildren(this.listTree(sysPermission.getId()));
-            treeNodeUtils.add(treeNodeUtil);
+            TreeUtil treeUtil = new TreeUtil();
+            treeUtil.setId(sysPermission.getId().longValue());
+            treeUtil.setLabel(sysPermission.getName());
+            treeUtil.setIcon(sysPermission.getIconCls());
+            treeUtil.setA_attr(BeanUtil.beanToMap(sysPermission));
+            treeUtil.setChildren(this.listTree(sysPermission.getId()));
+            treeUtils.add(treeUtil);
         }
-        return treeNodeUtils;
+        return treeUtils;
     }
 
     @Override

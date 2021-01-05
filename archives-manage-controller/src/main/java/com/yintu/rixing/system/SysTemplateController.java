@@ -17,6 +17,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -34,6 +35,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/systemplate")
 @Api(tags = "模板库管理接口")
+@ApiIgnore
 public class SysTemplateController extends AuthenticationController {
     @Autowired
     ISysTemplateService iSysTemplateService;

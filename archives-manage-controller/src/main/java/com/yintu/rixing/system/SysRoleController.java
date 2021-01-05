@@ -93,7 +93,7 @@ public class SysRoleController extends AuthenticationController implements BaseC
     @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<List<TreeUtil>> findPermissionTreeById(@PathVariable Integer id) {
         List<TreeUtil> treeNodeUtils = new ArrayList<>();
-        iSysRoleService.sysPermissionTreeByIdAndParentId(id, -1, treeNodeUtils);
+        iSysRoleService.sysPermissionTreeByIdAndPermissionId(id, -1, treeNodeUtils);
         return ResultDataUtil.ok("查询角色拥有权限列表信息成功", treeNodeUtils);
     }
 }

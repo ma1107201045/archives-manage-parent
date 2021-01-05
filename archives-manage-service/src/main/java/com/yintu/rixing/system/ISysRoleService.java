@@ -31,9 +31,9 @@ public interface ISysRoleService extends IService<SysRole> {
 
     Page<SysRole> page(SysRoleQueryDto sysRoleQueryDto);
 
-    List<SysPermission> sysPermissionsByIdAndParentId(Integer id, Integer parentId);
+    List<SysPermission> sysPermissionsByIdAndPermissionId(Integer id, Integer permissionId);
 
-    void sysPermissionTreeByIdAndParentId(Integer id, Integer parentId, List<TreeUtil> treeNodeUtils);
+    void sysPermissionTreeByIdAndPermissionId(Integer id, Integer permissionId, List<TreeUtil> treeUtils);
 
 
 }

@@ -52,13 +52,13 @@ public class SysPermission extends BaseEntity {
     @TableField("method")
     private String method;
 
+    @ApiModelProperty(value = "菜单项显示的图片地址", position = 14)
+    @TableField("icon_cls")
+    private String iconCls;
+
     @ApiModelProperty(value = "前端路由转向", position = 13)
     @TableField("path")
     private String path;
-
-    @ApiModelProperty(value = "菜单项显示的图片地址", position = 14)
-    @TableField("img_path")
-    private String imgPath;
 
 
 }

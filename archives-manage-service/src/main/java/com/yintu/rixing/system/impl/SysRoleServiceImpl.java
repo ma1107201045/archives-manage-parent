@@ -79,29 +79,29 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public List<SysPermission> sysPermissionsByIdAndParentId(Integer id, Integer parentId) {
+    public List<SysPermission> sysPermissionsByIdAndPermissionId(Integer id, Integer parentId) {
         QueryWrapper<SysRolePermission> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().select(SysRolePermission::getPermissionId).eq(SysRolePermission::getRoleId, id);
         List<Integer> permissionIds = iSysRolePermissionService.list(queryWrapper).stream().map(SysRolePermission::getPermissionId).collect(Collectors.toList());
 
         QueryWrapper<SysPermission> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper1.lambda().eq(SysPermission::getId, parentId).in(SysPermission::getId, permissionIds);
+        queryWrapper1.lambda().in(SysPermission::getId, permissionIds).eq(SysPermission::getParentId, parentId);
         return iSysPermissionService.list(queryWrapper1);
     }
 
     @Override
-    public void sysPermissionTreeByIdAndParentId(Integer id, Integer parentId, List<TreeUtil> treeNodeUtils) {
-        List<SysPermission> sysPermissions = this.sysPermissionsByIdAndParentId(id, parentId);
+    public void sysPermissionTreeByIdAndPermissionId(Integer id, Integer parentId, List<TreeUtil> treeUtils) {
+        List<SysPermission> sysPermissions = this.sysPermissionsByIdAndPermissionId(id, parentId);
         for (SysPermission sysPermission : sysPermissions) {
-            List<SysPermission> permissions = this.sysPermissionsByIdAndParentId(id, parentId);
+            List<SysPermission> permissions = this.sysPermissionsByIdAndPermissionId(id, sysPermission.getId());
             if (!permissions.isEmpty()) {
-                sysPermissionTreeByIdAndParentId(id, sysPermission.getId(), treeNodeUtils);
+                sysPermissionTreeByIdAndPermissionId(id, sysPermission.getId(), treeUtils);
             } else {
-                TreeUtil treeNodeUtil = new TreeUtil();
-                treeNodeUtil.setId(sysPermission.getId().longValue());
-                treeNodeUtil.setLabel(sysPermission.getName());
-                treeNodeUtil.setIcon(sysPermission.getImgPath());
-                treeNodeUtils.add(treeNodeUtil);
+                TreeUtil treeUtil = new TreeUtil();
+                treeUtil.setId(sysPermission.getId().longValue());
+                treeUtil.setLabel(sysPermission.getName());
+                treeUtil.setIcon(sysPermission.getIconCls());
+                treeUtils.add(treeUtil);
             }
         }
     }

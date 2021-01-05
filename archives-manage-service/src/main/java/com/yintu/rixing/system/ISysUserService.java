@@ -35,9 +35,9 @@ public interface ISysUserService extends IService<SysUser>, UserDetailsService {
 
     Page<SysUser> page(SysUserQueryDto sysUserDto);
 
-    List<SysDepartment> sysDepartmentsByIdAndParentId(Integer id, Integer parentId);
+    List<SysDepartment> sysDepartmentsByIdAndDepartmentId(Integer id, Integer departmentId);
 
-    void sysDepartmentTreeByIdAndParentId(Integer id, Integer parentId, List<TreeUtil> treeNodeUtils);
+    void sysDepartmentTreeByIdAndDepartmentId(Integer id, Integer departmentId, List<TreeUtil> treeUtils);
 
     List<SysRole> sysRolesById(Integer id);
 }

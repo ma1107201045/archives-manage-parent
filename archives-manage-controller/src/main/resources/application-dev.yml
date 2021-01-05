@@ -78,6 +78,13 @@ swagger:
         - /logout
         - /captcha
       exclude-path: [ /error ]
+    common:
+      title: 公共模块
+      description: 无需授权有关的接口
+      base-package: com.yintu.rixing.common
+      base-path:
+        - /common/**
+      exclude-path: [ /error ]
     system:
       title: 系统设置模块
       description: 系统管理模块有关的接口

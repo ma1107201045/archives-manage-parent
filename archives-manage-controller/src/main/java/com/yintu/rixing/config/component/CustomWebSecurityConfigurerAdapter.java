@@ -92,7 +92,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             } else if (authenticationException instanceof AccountExpiredException) {
                 resultDataUtil = ResultDataUtil.error("账户过期，请联系管理员");
             } else if (authenticationException instanceof AuthenticationServiceException) {
-                resultDataUtil = ResultDataUtil.error(authenticationException.getMessage());
+                resultDataUtil = ResultDataUtil.noAuthentication(authenticationException.getMessage());
             } else {
                 resultDataUtil = ResultDataUtil.error("登录异常");
             }

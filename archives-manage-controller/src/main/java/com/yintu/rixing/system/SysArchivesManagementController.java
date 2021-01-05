@@ -16,6 +16,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/archives")
 @Api(tags = "模板字段信息接口")
+@ApiIgnore
 public class SysArchivesManagementController extends AuthenticationController {
 
     @Autowired

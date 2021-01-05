@@ -111,7 +111,7 @@ public class SysUserController extends AuthenticationController implements BaseC
     @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<List<TreeUtil>> findPermissionTreeById(@PathVariable Integer id) {
         List<TreeUtil> treeNodeUtils = new ArrayList<>();
-        iSysUserService.sysDepartmentsByIdAndParentId(id, -1);
+        iSysUserService.sysDepartmentsByIdAndDepartmentId(id, -1);
         return ResultDataUtil.ok("查询用户所在部门列表信息树成功", treeNodeUtils);
     }
 

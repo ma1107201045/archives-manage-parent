@@ -53,17 +53,18 @@ public class SysDepartmentServiceImpl extends ServiceImpl<SysDepartmentMapper, S
     }
 
     @Override
-    public List<TreeUtil> listTree(Integer parentId) {
+    public List<TreeUtil> listTree(Integer id) {
         QueryWrapper<SysDepartment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysDepartment::getParentId, parentId);
+        queryWrapper.lambda().eq(SysDepartment::getParentId, id);
         List<SysDepartment> sysPermissions = this.list(queryWrapper);
         List<TreeUtil> treeNodeUtils = new ArrayList<>();
         for (SysDepartment sysDepartment : sysPermissions) {
-            TreeUtil treeNodeUtil = new TreeUtil();
-            treeNodeUtil.setId(sysDepartment.getId().longValue());
-            treeNodeUtil.setLabel(sysDepartment.getName());
-            treeNodeUtil.setChildren(this.listTree(sysDepartment.getId()));
-            treeNodeUtils.add(treeNodeUtil);
+            TreeUtil treeUtil = new TreeUtil();
+            treeUtil.setId(sysDepartment.getId().longValue());
+            treeUtil.setLabel(sysDepartment.getName());
+            treeUtil.setA_attr(BeanUtil.beanToMap(sysDepartment));
+            treeUtil.setChildren(this.listTree(sysDepartment.getId()));
+            treeNodeUtils.add(treeUtil);
         }
         return treeNodeUtils;
     }

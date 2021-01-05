@@ -75,14 +75,14 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(SysTemplateLibrary::getParentId, parentId);
         List<SysTemplateLibrary> sysTemplateLibraries = this.list(queryWrapper);
-        List<TreeUtil> treeNodeUtils = new ArrayList<>();
+        List<TreeUtil> treeUtils = new ArrayList<>();
         for (SysTemplateLibrary sysTemplateLibrary : sysTemplateLibraries) {
-            TreeUtil treeNodeUtil = new TreeUtil();
-            treeNodeUtil.setId(sysTemplateLibrary.getId().longValue());
-            treeNodeUtil.setLabel(sysTemplateLibrary.getName());
-            treeNodeUtil.setChildren(this.listTree(sysTemplateLibrary.getId()));
-            treeNodeUtils.add(treeNodeUtil);
+            TreeUtil treeUtil = new TreeUtil();
+            treeUtil.setId(sysTemplateLibrary.getId().longValue());
+            treeUtil.setLabel(sysTemplateLibrary.getName());
+            treeUtil.setChildren(this.listTree(sysTemplateLibrary.getId()));
+            treeUtils.add(treeUtil);
         }
-        return treeNodeUtils;
+        return treeUtils;
     }
 }

@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 import java.util.Map;
@@ -26,6 +27,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sysmessage")
 @Api(tags = "引入模板后的信息接口")
+@ApiIgnore
 public class SysMessageController extends AuthenticationController {
 
     @Autowired

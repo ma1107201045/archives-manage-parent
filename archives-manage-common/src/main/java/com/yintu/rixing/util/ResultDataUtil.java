@@ -43,7 +43,7 @@ public class ResultDataUtil<T> {
 
 
     public static <T> ResultDataUtil<T> noAuthentication(String message) {
-        return ResultDataUtil.ok(message, null);
+        return ResultDataUtil.noAuthentication(message, null);
 
     }
 
@@ -58,7 +58,7 @@ public class ResultDataUtil<T> {
 
 
     public static <T> ResultDataUtil<T> noAuthorization(String message) {
-        return ResultDataUtil.ok(message, null);
+        return ResultDataUtil.noAuthorization(message, null);
 
     }
 
@@ -72,7 +72,7 @@ public class ResultDataUtil<T> {
 
 
     public static <T> ResultDataUtil<T> error(String message) {
-        return ResultDataUtil.ok(message, null);
+        return ResultDataUtil.error(message, null);
 
     }
 

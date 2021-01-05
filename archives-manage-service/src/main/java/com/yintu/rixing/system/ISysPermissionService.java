@@ -27,7 +27,7 @@ public interface ISysPermissionService extends IService<SysPermission> {
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysPermissionFormDto sysPermissionFormDto);
 
-    List<TreeUtil> listTree(Integer parentId);
+    List<TreeUtil> listTree(Integer id);
 
     List<SysPermissionVo> list(Short menu);
 
