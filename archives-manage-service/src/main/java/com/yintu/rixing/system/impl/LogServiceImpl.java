@@ -2,6 +2,7 @@ package com.yintu.rixing.system.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.yintu.rixing.system.ILogService;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Modifier;
 import java.util.Date;
@@ -70,9 +72,7 @@ public class LogServiceImpl implements ILogService {
         Map<String, Object> nameAndArgs = getFieldsName(this.getClass(), clazzName, methodName, params);
         StringBuilder sb = new StringBuilder();
         if (!CollectionUtils.isEmpty(nameAndArgs)) {
-            Iterator<Map.Entry<String, Object>> it = nameAndArgs.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<String, Object> entry = it.next();
+            for (Map.Entry<String, Object> entry : nameAndArgs.entrySet()) {
                 String key = entry.getKey();
                 String value = JSONObject.toJSONString(entry.getValue());
                 sb.append(key).append("=");
@@ -103,7 +103,10 @@ public class LogServiceImpl implements ILogService {
         }
         int pos = Modifier.isStatic(cm.getModifiers()) ? 0 : 1;
         for (int i = 0; i < cm.getParameterTypes().length; i++) {
-            map.put(attr.variableName(i + pos), args[i]);//paramNames即参数名
+            if (args[i] instanceof ServletResponse)
+                map.put(attr.variableName(i + pos), args[i].toString());
+            else
+                map.put(attr.variableName(i + pos), args[i]);//paramNames即参数名
         }
         return map;
     }

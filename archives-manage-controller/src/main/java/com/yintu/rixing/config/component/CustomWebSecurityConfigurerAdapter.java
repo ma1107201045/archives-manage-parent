@@ -2,8 +2,10 @@ package com.yintu.rixing.config.component;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.config.filter.VerificationCodeFilter;
+import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysLogService;
 import com.yintu.rixing.system.SysLog;
 import com.yintu.rixing.system.SysUser;
@@ -20,14 +22,21 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
+import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
@@ -75,27 +84,18 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 return object;
             }
         }).anyRequest().authenticated()
-                .and().formLogin().loginProcessingUrl("/login").successHandler((request, response, authenticationException) -> {
-            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            response.setStatus(HttpServletResponse.SC_OK);
-            PrintWriter out = response.getWriter();
-            JSONObject jo = (JSONObject) JSONObject.toJSON(ResultDataUtil.ok("登录成功", authenticationException.getPrincipal()));
-            out.write(jo.toJSONString());
-            out.flush();
-            out.close();
-            //登录日志
-            SysUser sysUser = Authenticator.getPrincipal();
-            SysLog sysLog = new SysLog();
-            sysLog.setUserId(sysUser == null ? -1 : sysUser.getId());
-            sysLog.setUsername(sysUser == null ? "unknown" : sysUser.getUsername());
-            sysLog.setOperator(sysUser == null ? "unknown" : sysUser.getNickname());
-            sysLog.setLevel((short) 1);
-            sysLog.setModule("登录");
-            sysLog.setCreateTime(DateUtil.date());
-            sysLog.setDescription("登录系统");
-            sysLog.setLoginIp(IPUtil.getIpAddress(request));
-            sysLog.setContext(null);
-            iSysLogService.save(sysLog);
+                .and().formLogin().loginProcessingUrl("/login").successHandler(new AuthenticationSuccessHandler() {
+            @Log(level = EnumLogLevel.TRACE, module = "登录", description = "登录系统")
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                response.setStatus(HttpServletResponse.SC_OK);
+                PrintWriter out = response.getWriter();
+                JSONObject jo = (JSONObject) JSONObject.toJSON(ResultDataUtil.ok("登录成功", authentication.getPrincipal()));
+                out.write(jo.toJSONString());
+                out.flush();
+                out.close();
+            }
         }).permitAll().failureHandler((request, response, authenticationException) -> {
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
@@ -122,31 +122,20 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             out.close();
         }).permitAll()
                 .and().rememberMe().userDetailsService(userDetailsService).tokenValiditySeconds(60 * 60 * 24 * 365).rememberMeParameter("rememberMe").rememberMeCookieName("REMEMBERME")
-                .and().logout().logoutUrl("/logout")
-                .logoutSuccessHandler((request, response, authentication) -> {
-                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    PrintWriter out = response.getWriter();
-                    ResultDataUtil<Object> resultDataUtil = ResultDataUtil.ok("注销成功");
-                    JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
-                    out.write(jo.toJSONString());
-                    out.flush();
-                    out.close();
-
-                    //注销日志
-                    SysUser sysUser = Authenticator.getPrincipal();
-                    SysLog sysLog = new SysLog();
-                    sysLog.setUserId(sysUser == null ? -1 : sysUser.getId());
-                    sysLog.setUsername(sysUser == null ? "unknown" : sysUser.getUsername());
-                    sysLog.setOperator(sysUser == null ? "unknown" : sysUser.getNickname());
-                    sysLog.setLevel((short) 1);
-                    sysLog.setModule("注销");
-                    sysLog.setCreateTime(DateUtil.date());
-                    sysLog.setDescription("注销系统");
-                    sysLog.setLoginIp(IPUtil.getIpAddress(request));
-                    sysLog.setContext(null);
-                    iSysLogService.save(sysLog);
-                }).permitAll()
+                .and().logout().logoutUrl("/logout").logoutSuccessHandler(new LogoutSuccessHandler() {
+            @Log(level = EnumLogLevel.TRACE, module = "登录", description = "注销系统")
+            @Override
+            public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                response.setStatus(HttpServletResponse.SC_OK);
+                PrintWriter out = response.getWriter();
+                ResultDataUtil<Object> resultDataUtil = ResultDataUtil.ok("注销成功");
+                JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
+                out.write(jo.toJSONString());
+                out.flush();
+                out.close();
+            }
+        }).permitAll()
 //                .and().httpBasic().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
 //            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 //            response.setStatus(HttpServletResponse.SC_OK);
