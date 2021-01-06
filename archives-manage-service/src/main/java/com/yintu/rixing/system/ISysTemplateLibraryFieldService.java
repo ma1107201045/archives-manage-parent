@@ -22,6 +22,9 @@ public interface ISysTemplateLibraryFieldService extends IService<SysTemplateLib
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysTemplateLibraryFieldFormDto sysTemplateLibraryFieldFormDto);
 
+    @Transactional(rollbackFor = {Exception.class})
+    void updateOrderByIds(Integer id1, Integer id2);
+
     Page<SysTemplateLibraryField> page(SysTemplateLibraryFieldQueryDto sysTemplateLibraryFieldQueryDto);
 
 

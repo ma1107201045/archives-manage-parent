@@ -52,5 +52,7 @@ public class SysTemplateLibraryField extends BaseEntity {
     @TableField("template_library_field_type_id")
     private Integer templateLibraryFieldTypeId;
 
-
+    @ApiModelProperty(value = "模板库字段对应类型", position = 13)
+    @TableField(exist = false)
+    private SysTemplateLibraryFieldType sysTemplateLibraryFieldType;
 }

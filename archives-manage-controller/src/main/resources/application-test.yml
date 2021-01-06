@@ -49,8 +49,10 @@ spring:
     time-zone: GMT+8
     default-property-inclusion: non_null
 mybatis-plus:
-  config-location: classpath:mybatis-config.xml
+  #config-location: classpath:mybatis-config.xml
   type-aliases-package: com.yintu.rixing
+ #configuration:
+   #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #api接口配置
 swagger:
   version: 1.0
