@@ -1,5 +1,6 @@
 package com.yintu.rixing.system.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -36,36 +37,23 @@ public class LogServiceImpl implements ILogService {
 
     private static final String LOG_CONTENT = "[类名]:%s,[方法]:%s,[参数]:%s,[IP]:%s";
 
-    private String username;
 
     @Autowired
     private ISysLogService iSysLogService;
-
-
-    public String initUsername(String username) {
-        if (!StrUtil.isEmpty(username)) {
-            this.username = username;
-        }
-        return this.username;
-    }
 
     @Override
     public void put(JoinPoint joinPoint, HttpServletRequest request, String methodName, Integer userId, String username, String operator, Short level, String module, String description) {
         try {
             SysLog sysLog = new SysLog();
-            if (StrUtil.isEmpty(username)) {
-                this.username = "未知用户";
-            }
-            String ip = IPUtil.getIpAddress(request);
             sysLog.setUserId(userId);
             sysLog.setUsername(username);
             sysLog.setOperator(operator);
             sysLog.setLevel(level);
             sysLog.setModule(module);
-            sysLog.setCreateTime(new Date());
+            sysLog.setCreateTime(DateUtil.date());
             sysLog.setDescription(description);
-            sysLog.setLoginIp(ip);
-            sysLog.setContext(operateContent(joinPoint, methodName, ip, request));
+            sysLog.setLoginIp(IPUtil.getIpAddress(request));
+            sysLog.setContext(operateContent(joinPoint, methodName, IPUtil.getIpAddress(request), request));
             iSysLogService.save(sysLog);
         } catch (Exception e) {
             e.printStackTrace();

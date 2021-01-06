@@ -1,23 +1,19 @@
 package com.yintu.rixing.system;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
-import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.config.controller.Authenticator;
 import com.yintu.rixing.dto.system.SysQzhFromDto;
 import com.yintu.rixing.dto.system.SysQzhQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -32,7 +28,7 @@ import java.util.Set;
 @RequestMapping("/system/sys-qzh")
 @ApiSort(9)
 @Api(tags = "全宗号接口")
-public class SysQzhController extends AuthenticationController implements BaseController<SysQzhFromDto, SysQzhQueryDto, SysQzh, Integer> {
+public class SysQzhController extends Authenticator implements BaseController<SysQzhFromDto, SysQzhQueryDto, SysQzh, Integer> {
 
     @Autowired
     private ISysQzhService iSysQzhService;

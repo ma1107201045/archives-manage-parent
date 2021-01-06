@@ -1,8 +1,13 @@
 package com.yintu.rixing.config.component;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.yintu.rixing.config.controller.Authenticator;
 import com.yintu.rixing.config.filter.VerificationCodeFilter;
-import com.yintu.rixing.util.ResponseDataUtil;
+import com.yintu.rixing.system.ISysLogService;
+import com.yintu.rixing.system.SysLog;
+import com.yintu.rixing.system.SysUser;
+import com.yintu.rixing.util.IPUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -24,7 +29,6 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.Map;
 
 /**
  * @Author: mlf
@@ -47,6 +51,9 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ISysLogService iSysLogService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
@@ -76,6 +83,19 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             out.write(jo.toJSONString());
             out.flush();
             out.close();
+            //登录日志
+            SysUser sysUser = Authenticator.getPrincipal();
+            SysLog sysLog = new SysLog();
+            sysLog.setUserId(sysUser == null ? -1 : sysUser.getId());
+            sysLog.setUsername(sysUser == null ? "unknown" : sysUser.getUsername());
+            sysLog.setOperator(sysUser == null ? "unknown" : sysUser.getNickname());
+            sysLog.setLevel((short) 1);
+            sysLog.setModule("登录");
+            sysLog.setCreateTime(DateUtil.date());
+            sysLog.setDescription("登录系统");
+            sysLog.setLoginIp(IPUtil.getIpAddress(request));
+            sysLog.setContext(null);
+            iSysLogService.save(sysLog);
         }).permitAll().failureHandler((request, response, authenticationException) -> {
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
@@ -112,6 +132,20 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                     out.write(jo.toJSONString());
                     out.flush();
                     out.close();
+
+                    //注销日志
+                    SysUser sysUser = Authenticator.getPrincipal();
+                    SysLog sysLog = new SysLog();
+                    sysLog.setUserId(sysUser == null ? -1 : sysUser.getId());
+                    sysLog.setUsername(sysUser == null ? "unknown" : sysUser.getUsername());
+                    sysLog.setOperator(sysUser == null ? "unknown" : sysUser.getNickname());
+                    sysLog.setLevel((short) 1);
+                    sysLog.setModule("注销");
+                    sysLog.setCreateTime(DateUtil.date());
+                    sysLog.setDescription("注销系统");
+                    sysLog.setLoginIp(IPUtil.getIpAddress(request));
+                    sysLog.setContext(null);
+                    iSysLogService.save(sysLog);
                 }).permitAll()
 //                .and().httpBasic().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
 //            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);

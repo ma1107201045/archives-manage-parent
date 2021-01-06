@@ -2,11 +2,10 @@ package com.yintu.rixing.system;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
-import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.config.controller.Authenticator;
 import com.yintu.rixing.dto.system.SysUserFormDto;
 import com.yintu.rixing.dto.system.SysUserPasswordDto;
 import com.yintu.rixing.dto.system.SysUserQueryDto;
@@ -34,7 +33,7 @@ import java.util.Set;
 @RequestMapping("/system/sys-user")
 @Api(tags = "用户接口")
 @ApiSort(1)
-public class SysUserController extends AuthenticationController implements BaseController<SysUserFormDto, SysUserQueryDto, SysUser, Integer> {
+public class SysUserController extends Authenticator implements BaseController<SysUserFormDto, SysUserQueryDto, SysUser, Integer> {
     @Autowired
     private ISysUserService iSysUserService;
     @Autowired

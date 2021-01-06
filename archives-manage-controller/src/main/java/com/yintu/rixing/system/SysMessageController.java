@@ -1,9 +1,7 @@
 package com.yintu.rixing.system;
 
 
-import com.yintu.rixing.base.BaseController;
-import com.yintu.rixing.config.controller.AuthenticationController;
-import com.yintu.rixing.util.ResponseDataUtil;
+import com.yintu.rixing.config.controller.Authenticator;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Param;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -28,7 +25,7 @@ import java.util.Set;
 @RequestMapping("/system/sysmessage")
 @Api(tags = "引入模板后的信息接口")
 @ApiIgnore
-public class SysMessageController extends AuthenticationController {
+public class SysMessageController extends Authenticator {
 
     @Autowired
     ISysMessageService sysMessageService;

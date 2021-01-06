@@ -2,24 +2,20 @@ package com.yintu.rixing.system;
 
 
 import com.yintu.rixing.annotation.Log;
-import com.yintu.rixing.base.BaseController;
-import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.config.controller.Authenticator;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.system.impl.SysTemplateServiceImpl;
 import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +32,7 @@ import java.util.Set;
 @RequestMapping("/system/systemplate")
 @Api(tags = "模板库管理接口")
 @ApiIgnore
-public class SysTemplateController extends AuthenticationController {
+public class SysTemplateController extends Authenticator {
     @Autowired
     ISysTemplateService iSysTemplateService;
 

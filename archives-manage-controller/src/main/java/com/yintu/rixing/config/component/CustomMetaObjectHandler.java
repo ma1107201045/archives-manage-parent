@@ -2,13 +2,9 @@ package com.yintu.rixing.config.component;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.yintu.rixing.config.controller.Authenticator;
 import com.yintu.rixing.system.SysUser;
 import org.apache.ibatis.reflection.MetaObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationTrustResolver;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,9 +20,8 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            SysUser sysUser = (SysUser) authentication.getPrincipal();
+        SysUser sysUser = Authenticator.getPrincipal();
+        if (sysUser != null) {
             this.setFieldValByName("createBy", sysUser.getUsername(), metaObject);
             this.setFieldValByName("modifiedBy", sysUser.getUsername(), metaObject);
         } else {
@@ -39,9 +34,8 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            SysUser sysUser = (SysUser) authentication.getPrincipal();
+        SysUser sysUser = Authenticator.getPrincipal();
+        if (sysUser != null) {
             this.setFieldValByName("modifiedBy", sysUser.getUsername(), metaObject);
         } else {
             this.setFieldValByName("modifiedBy", "unknown", metaObject);

@@ -2,8 +2,7 @@ package com.yintu.rixing.system;
 
 
 import com.yintu.rixing.annotation.Log;
-import com.yintu.rixing.base.BaseController;
-import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.config.controller.Authenticator;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.ResultDataUtil;
@@ -33,7 +32,7 @@ import java.util.Set;
 @RequestMapping("/system/syslibrary")
 @Api(tags = "档案库管理接口")
 @ApiIgnore
-public class SysLibraryController extends AuthenticationController {
+public class SysLibraryController extends Authenticator {
 
     @Autowired
     ISysLibraryService iSysLibraryService;

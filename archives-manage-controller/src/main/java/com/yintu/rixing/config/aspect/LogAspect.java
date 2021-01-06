@@ -1,14 +1,13 @@
 package com.yintu.rixing.config.aspect;
 
 import com.yintu.rixing.annotation.Log;
-import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.config.controller.Authenticator;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ILogService;
 import com.yintu.rixing.system.SysUser;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,7 +25,7 @@ import java.util.Objects;
  */
 @Aspect
 @Component
-public class LogAspect extends AuthenticationController {
+public class LogAspect extends Authenticator {
 
     @Autowired
     private ILogService iLogService;
@@ -40,8 +39,17 @@ public class LogAspect extends AuthenticationController {
 
     @AfterReturning(pointcut = "logPointCut()")
     public void doAfter(JoinPoint joinPoint) {
-        SysUser sysUser = this.getLoginUser();
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         String methodName = joinPoint.getSignature().getName();
+        SysUser sysUser = this.getLoginUser();
+        Integer userId = -1;
+        String username = "unknown";
+        String nickName = "unknown";
+        if (sysUser != null) {
+            userId = sysUser.getId();
+            username = sysUser.getUsername();
+            nickName = sysUser.getNickname();
+        }
         Method method = currentMethod(joinPoint, methodName);
         Log log = method.getAnnotation(Log.class);
         EnumLogLevel enumLogLevel = log.level();
@@ -65,8 +73,7 @@ public class LogAspect extends AuthenticationController {
         }
         String module = log.module();
         String description = log.description();
-        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        iLogService.put(joinPoint, request, methodName, sysUser.getId(), sysUser.getUsername(), sysUser.getNickname(), level, module, description);
+        iLogService.put(joinPoint, request, methodName, userId, username, nickName, level, module, description);
     }
 
     /**

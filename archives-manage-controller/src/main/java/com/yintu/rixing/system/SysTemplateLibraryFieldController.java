@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
-import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.config.controller.Authenticator;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFieldFormDto;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFieldQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
@@ -33,7 +33,7 @@ import java.util.Set;
 @RequestMapping("/system/sys-template-library-field")
 @ApiSort(7)
 @Api(tags = "模块库字段接口")
-public class SysTemplateLibraryFieldController extends AuthenticationController implements BaseController<SysTemplateLibraryFieldFormDto, SysTemplateLibraryFieldQueryDto, SysTemplateLibraryField, Integer> {
+public class SysTemplateLibraryFieldController extends Authenticator implements BaseController<SysTemplateLibraryFieldFormDto, SysTemplateLibraryFieldQueryDto, SysTemplateLibraryField, Integer> {
 
     @Autowired
     private ISysTemplateLibraryFieldService iSysTemplateLibraryFieldService;

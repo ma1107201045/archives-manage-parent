@@ -5,6 +5,7 @@ import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.captcha.ICaptcha;
 import cn.hutool.captcha.generator.MathGenerator;
 import com.yintu.rixing.annotation.Log;
+import com.yintu.rixing.enumobject.EnumLogLevel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
@@ -28,6 +29,7 @@ import java.io.OutputStream;
 @Api(tags = "登录有关接口")
 public class CaptchaController {
 
+    @Log(level = EnumLogLevel.TRACE, module = "登录", description = "获取验证码信息")
     @GetMapping
     @ApiOperation(value = "获取验证码信息", notes = "获取验证码信息")
     public void getCode(@ApiIgnore HttpSession session, @ApiIgnore HttpServletResponse response) throws IOException {

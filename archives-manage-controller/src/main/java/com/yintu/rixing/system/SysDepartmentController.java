@@ -2,7 +2,7 @@ package com.yintu.rixing.system;
 
 
 import com.yintu.rixing.annotation.Log;
-import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.config.controller.Authenticator;
 import com.yintu.rixing.dto.system.SysDepartmentFormDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResultDataUtil;
@@ -29,7 +29,7 @@ import java.util.List;
 @RequestMapping("/system/sys-department")
 @Api(tags = "部门接口（组织机构接口）")
 @ApiSort(4)
-public class SysDepartmentController extends AuthenticationController {
+public class SysDepartmentController extends Authenticator {
     @Autowired
     private ISysDepartmentService iSysDepartmentService;
 

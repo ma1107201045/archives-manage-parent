@@ -7,7 +7,7 @@
     <artifactId>archives-manage-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Archives Manage Parent</name>
+    <name>archives-manage-parent</name>
 
     <modules>
         <module>archives-manage-common</module>

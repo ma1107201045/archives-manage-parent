@@ -4,7 +4,7 @@ package com.yintu.rixing.system;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
-import com.yintu.rixing.config.controller.AuthenticationController;
+import com.yintu.rixing.config.controller.Authenticator;
 import com.yintu.rixing.dto.system.SysRoleFormDto;
 import com.yintu.rixing.dto.system.SysRoleQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
@@ -31,7 +31,7 @@ import java.util.Set;
 @RequestMapping("/system/sys-role")
 @Api(tags = "角色接口")
 @ApiSort(2)
-public class SysRoleController extends AuthenticationController implements BaseController<SysRoleFormDto, SysRoleQueryDto, SysRole, Integer> {
+public class SysRoleController extends Authenticator implements BaseController<SysRoleFormDto, SysRoleQueryDto, SysRole, Integer> {
     @Autowired
     private ISysRoleService iSysRoleService;
     @Autowired

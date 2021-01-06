@@ -1,6 +1,7 @@
 package com.yintu.rixing.config.controller;
 
 import com.yintu.rixing.system.SysUser;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,7 +11,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @Date: 2020/11/27 13:11
  * @Version: 1.0
  */
-public class AuthenticationController {
+public class Authenticator {
+
+
+    public static Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public static SysUser getPrincipal() {
+        Authentication authentication = getAuthentication();
+        return authentication == null ? null : (SysUser) authentication.getPrincipal();
+    }
 
     /**
      * 获取登录用户信息
@@ -20,7 +31,7 @@ public class AuthenticationController {
     protected SysUser getLoginUser() {
         SecurityContext sc = SecurityContextHolder.getContext();
         Authentication auth = sc.getAuthentication();
-        return (SysUser) auth.getPrincipal();
+        return auth == null ? null : (SysUser) auth.getPrincipal();
     }
 
     /**
@@ -29,7 +40,7 @@ public class AuthenticationController {
      * @return 用户id值
      */
     protected Integer getLoginUserId() {
-        return this.getLoginUser().getId();
+        return this.getLoginUser() == null ? -1 : this.getLoginUser().getId();
     }
 
     /**
@@ -38,7 +49,7 @@ public class AuthenticationController {
      * @return 用户名
      */
     protected String getLoginUserName() {
-        return this.getLoginUser().getUsername();
+        return this.getLoginUser() == null ? "unknown" : this.getLoginUser().getUsername();
     }
 
     /**
@@ -47,7 +58,7 @@ public class AuthenticationController {
      * @return 用户名称
      */
     protected String getLoginTrueName() {
-        return this.getLoginUser().getNickname();
+        return this.getLoginUser() == null ? "unknown" : this.getLoginUser().getNickname();
     }
 
     /**
@@ -56,6 +67,6 @@ public class AuthenticationController {
      * @return 用户类型值
      */
     protected Short getUserAuthType() {
-        return this.getLoginUser().getAuthType();
+        return this.getLoginUser() == null ? -1 : this.getLoginUser().getAuthType();
     }
 }
