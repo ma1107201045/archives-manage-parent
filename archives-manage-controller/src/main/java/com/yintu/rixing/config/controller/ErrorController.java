@@ -7,6 +7,7 @@ package com.yintu.rixing.config.controller;
  */
 
 import com.yintu.rixing.util.ResponseDataUtil;
+import com.yintu.rixing.util.ResultDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.http.HttpStatus;
@@ -31,12 +32,12 @@ public class ErrorController {
      * @return 默认错误异常处理
      */
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
-    public Map<String, Object> error(HttpServletRequest request, HttpServletResponse response) {
+    public ResultDataUtil<Object> error(HttpServletRequest request, HttpServletResponse response) {
         //定义为正常返回
         response.setStatus(HttpStatus.OK.value());
         //获取异常返回
         ResponseEntity<Map<String, Object>> errorDetail = basicErrorController.error(request);
         //自行组织返回数据
-        return ResponseDataUtil.error(errorDetail.getStatusCode().toString());
+        return ResultDataUtil.error(errorDetail.getStatusCode().toString());
     }
 }

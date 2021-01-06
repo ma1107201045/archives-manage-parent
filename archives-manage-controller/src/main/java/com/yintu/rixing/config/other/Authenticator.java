@@ -1,4 +1,4 @@
-package com.yintu.rixing.config.controller;
+package com.yintu.rixing.config.other;
 
 import com.yintu.rixing.system.SysUser;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;

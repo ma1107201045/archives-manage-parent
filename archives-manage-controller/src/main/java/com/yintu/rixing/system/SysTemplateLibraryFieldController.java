@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
-import com.yintu.rixing.config.controller.Authenticator;
+import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFieldFormDto;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFieldQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;

@@ -1,7 +1,7 @@
 package com.yintu.rixing.system;
 
 
-import com.yintu.rixing.config.controller.Authenticator;
+import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Param;

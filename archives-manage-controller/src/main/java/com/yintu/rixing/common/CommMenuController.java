@@ -1,6 +1,6 @@
 package com.yintu.rixing.common;
 
-import com.yintu.rixing.config.controller.Authenticator;
+import com.yintu.rixing.config.other.Authenticator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiSort;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -2,7 +2,7 @@ package com.yintu.rixing.config.component;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.yintu.rixing.config.controller.Authenticator;
+import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.config.filter.VerificationCodeFilter;
 import com.yintu.rixing.system.ISysLogService;
 import com.yintu.rixing.system.SysLog;

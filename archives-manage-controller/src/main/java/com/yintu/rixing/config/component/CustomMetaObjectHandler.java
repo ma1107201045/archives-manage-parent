@@ -2,7 +2,7 @@ package com.yintu.rixing.config.component;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.yintu.rixing.config.controller.Authenticator;
+import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.system.SysUser;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
