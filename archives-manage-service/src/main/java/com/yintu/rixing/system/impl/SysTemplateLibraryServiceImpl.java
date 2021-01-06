@@ -80,6 +80,7 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
             TreeUtil treeUtil = new TreeUtil();
             treeUtil.setId(sysTemplateLibrary.getId().longValue());
             treeUtil.setLabel(sysTemplateLibrary.getName());
+            treeUtil.setA_attr(BeanUtil.beanToMap(sysTemplateLibrary));
             treeUtil.setChildren(this.listTree(sysTemplateLibrary.getId()));
             treeUtils.add(treeUtil);
         }
