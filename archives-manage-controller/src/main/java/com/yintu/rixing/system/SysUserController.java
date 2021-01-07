@@ -68,7 +68,7 @@ public class SysUserController extends Authenticator implements BaseController<S
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = " 重置密码")
-    @PutMapping("/{id}/reset-password")
+    @PatchMapping("/{id}")
     @ApiOperation(value = "重置密码", notes = "重置密码", position = 4)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<Object> editPassword(@PathVariable Integer id, @Validated SysUserPasswordDto sysUserPasswordDto) {
@@ -116,7 +116,7 @@ public class SysUserController extends Authenticator implements BaseController<S
     @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<List<TreeUtil>> findPermissionTreeById(@PathVariable Integer id) {
         List<TreeUtil> treeNodeUtils = new ArrayList<>();
-        iSysUserService.sysDepartmentsByIdAndDepartmentId(id, -1);
+        iSysUserService.sysDepartmentTreeByIdAndDepartmentId(id, -1, treeNodeUtils);
         return ResultDataUtil.ok("查询用户所在部门列表信息树成功", treeNodeUtils);
     }
 

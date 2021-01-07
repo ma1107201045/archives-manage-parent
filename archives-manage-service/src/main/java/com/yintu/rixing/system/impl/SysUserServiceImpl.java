@@ -1,6 +1,7 @@
 package com.yintu.rixing.system.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -48,6 +49,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new BaseRuntimeException("密码不能为空");
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         sysUserFormDto.setPassword(passwordEncoder.encode(sysUserFormDto.getPassword()));
+        //判断用户名是否重复
+        List<Integer> sysUsers = this.listByUsername(sysUserFormDto.getUsername());
+        if (!sysUsers.isEmpty())
+            throw new BaseRuntimeException("用户名重复");
         SysUser sysUser = new SysUser();
         sysUser.setAccountExpired(EnumFlag.False.getValue());
         sysUser.setAccountLocked(EnumFlag.False.getValue());
@@ -61,12 +66,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void updateById(SysUserFormDto sysUserFormDto) {
-        SysUser sysUser = this.getById(sysUserFormDto.getId());
+        Integer id = sysUserFormDto.getId();
+        SysUser sysUser = this.getById(id);
         if (sysUser != null) {
+            //判断用户名是否重复
+            List<Integer> sysUsers = this.listByUsername(sysUserFormDto.getUsername());
+            if (!sysUsers.isEmpty() && !sysUsers.stream().findFirst().orElse(null).equals(id))
+                throw new BaseRuntimeException("用户名重复");
             BeanUtil.copyProperties(sysUserFormDto, sysUser);
             this.updateById(sysUser);
 
-            Integer id = sysUser.getId();
             QueryWrapper<SysUserRole> queryWrapper1 = new QueryWrapper<>();
             queryWrapper1.lambda().eq(SysUserRole::getUserId, id);
             iSysUserRoleService.remove(queryWrapper1);
@@ -83,7 +92,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void resetPassword(SysUserPasswordDto sysUserPasswordDto) {
         Integer id = sysUserPasswordDto.getId();
         String oldPassword = sysUserPasswordDto.getOldPassword();
-        String newPassword = sysUserPasswordDto.getOldPassword();
+        String newPassword = sysUserPasswordDto.getNewPassword();
         if (oldPassword != null && !oldPassword.isEmpty() && newPassword != null && !newPassword.isEmpty()) {
             SysUser sysUser = this.getById(id);
             if (sysUser == null)
@@ -121,6 +130,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public List<Integer> listByUsername(String username) {
+        if (StrUtil.isEmpty(username))
+            throw new BaseRuntimeException("用户名不能为空");
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().
+                select(tableFieldInfo -> tableFieldInfo.getColumn().equals("id")).
+                eq(SysUser::getUsername, username);
+        return this.listObjs(queryWrapper, obj -> {
+            SysUser sysUser = (SysUser) obj;
+            return sysUser.getId();
+        });
+    }
+
+    @Override
     public Page<SysUser> page(SysUserQueryDto sysUserQueryDto) {
         Integer num = sysUserQueryDto.getNum();
         Integer size = sysUserQueryDto.getSize();
@@ -142,16 +165,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public List<SysRole> sysRolesById(Integer id) {
         QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, id);
-        List<Integer> roles = iSysUserRoleService.list(queryWrapper).stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
-        return roles.isEmpty() ? new ArrayList<>() : iSysRoleService.listByIds(roles);
+        List<Integer> roleIds = iSysUserRoleService.list(queryWrapper).stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+        return roleIds.isEmpty() ? new ArrayList<>() : iSysRoleService.listByIds(roleIds);
     }
+
 
     @Override
     public List<SysDepartment> sysDepartmentsByIdAndDepartmentId(Integer id, Integer departmentId) {
         QueryWrapper<SysUserDepartment> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().select(SysUserDepartment::getDepartmentId).eq(SysUserDepartment::getUserId, id);
         List<Integer> departmentIds = iSysUserDepartmentService.list(queryWrapper).stream().map(SysUserDepartment::getDepartmentId).collect(Collectors.toList());
-
+        if (departmentIds.isEmpty())
+            return new ArrayList<>();
         QueryWrapper<SysDepartment> queryWrapper1 = new QueryWrapper<>();
         queryWrapper1.lambda().in(SysDepartment::getId, departmentIds).eq(SysDepartment::getParentId, departmentId);
         return iSysDepartmentService.list(queryWrapper1);
@@ -161,7 +186,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void sysDepartmentTreeByIdAndDepartmentId(Integer id, Integer departmentId, List<TreeUtil> treeUtils) {
         List<SysDepartment> sysDepartments = this.sysDepartmentsByIdAndDepartmentId(id, departmentId);
         for (SysDepartment sysDepartment : sysDepartments) {
-            List<SysDepartment> departments = this.sysDepartmentsByIdAndDepartmentId(id, departmentId);
+            List<SysDepartment> departments = this.sysDepartmentsByIdAndDepartmentId(id, sysDepartment.getId());
             if (!departments.isEmpty()) {
                 sysDepartmentTreeByIdAndDepartmentId(id, sysDepartment.getId(), treeUtils);
             } else {

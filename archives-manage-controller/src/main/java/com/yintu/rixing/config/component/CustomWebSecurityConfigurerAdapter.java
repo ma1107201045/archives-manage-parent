@@ -2,10 +2,10 @@ package com.yintu.rixing.config.component;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.config.filter.VerificationCodeFilter;
+import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.security.ISecLogService;
-import com.yintu.rixing.system.SecLog;
+import com.yintu.rixing.security.SecLog;
 import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.IPUtil;
 import com.yintu.rixing.util.ResultDataUtil;
@@ -53,7 +53,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private ISecLogService iSysLogService;
+    private ISecLogService isecLogService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
@@ -85,17 +85,17 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             out.close();
             //登录日志
             SysUser sysUser = Authenticator.getPrincipal();
-            SecLog sysLog = new SecLog();
-            sysLog.setUserId(sysUser == null ? -1 : sysUser.getId());
-            sysLog.setUsername(sysUser == null ? "unknown" : sysUser.getUsername());
-            sysLog.setOperator(sysUser == null ? "unknown" : sysUser.getNickname());
-            sysLog.setLevel((short) 1);
-            sysLog.setModule("登录");
-            sysLog.setCreateTime(DateUtil.date());
-            sysLog.setDescription("登录系统");
-            sysLog.setLoginIp(IPUtil.getIpAddress(request));
-            sysLog.setContext(null);
-            iSysLogService.save(sysLog);
+            SecLog secLog = new SecLog();
+            secLog.setUserId(sysUser == null ? -1 : sysUser.getId());
+            secLog.setUsername(sysUser == null ? "unknown" : sysUser.getUsername());
+            secLog.setOperator(sysUser == null ? "unknown" : sysUser.getNickname());
+            secLog.setLevel((short) 1);
+            secLog.setModule("登录");
+            secLog.setCreateTime(DateUtil.date());
+            secLog.setDescription("登录系统");
+            secLog.setLoginIp(IPUtil.getIpAddress(request));
+            secLog.setContext(null);
+            isecLogService.save(secLog);
         }).permitAll().failureHandler((request, response, authenticationException) -> {
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
@@ -135,17 +135,17 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
                     //注销日志
                     SysUser sysUser = Authenticator.getPrincipal();
-                    SecLog sysLog = new SecLog();
-                    sysLog.setUserId(sysUser == null ? -1 : sysUser.getId());
-                    sysLog.setUsername(sysUser == null ? "unknown" : sysUser.getUsername());
-                    sysLog.setOperator(sysUser == null ? "unknown" : sysUser.getNickname());
-                    sysLog.setLevel((short) 1);
-                    sysLog.setModule("登录");
-                    sysLog.setCreateTime(DateUtil.date());
-                    sysLog.setDescription("注销系统");
-                    sysLog.setLoginIp(IPUtil.getIpAddress(request));
-                    sysLog.setContext(null);
-                    iSysLogService.save(sysLog);
+                    SecLog secLog = new SecLog();
+                    secLog.setUserId(sysUser == null ? -1 : sysUser.getId());
+                    secLog.setUsername(sysUser == null ? "unknown" : sysUser.getUsername());
+                    secLog.setOperator(sysUser == null ? "unknown" : sysUser.getNickname());
+                    secLog.setLevel((short) 1);
+                    secLog.setModule("登录");
+                    secLog.setCreateTime(DateUtil.date());
+                    secLog.setDescription("注销系统");
+                    secLog.setLoginIp(IPUtil.getIpAddress(request));
+                    secLog.setContext(null);
+                    isecLogService.save(secLog);
                 }).permitAll()
 //                .and().httpBasic().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
 //            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);

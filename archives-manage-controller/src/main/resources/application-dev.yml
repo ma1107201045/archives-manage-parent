@@ -51,8 +51,8 @@ spring:
 mybatis-plus:
   #  config-location: classpath:mybatis-config.xml
   type-aliases-package: com.yintu.rixing
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #api接口配置
 swagger:
   version: 1.0
@@ -86,6 +86,13 @@ swagger:
       base-package: com.yintu.rixing.common
       base-path:
         - /common/**
+      exclude-path: [ /error ]
+    security:
+      title: 安全中心模块
+      description: 安全中心模块有关的接口
+      base-package: com.yintu.rixing.security
+      base-path:
+        - /security/**
       exclude-path: [ /error ]
     system:
       title: 系统设置模块

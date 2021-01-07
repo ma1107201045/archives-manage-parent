@@ -64,7 +64,7 @@ public class SysTemplateLibraryFieldController extends Authenticator implements 
     }
 
     @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "修改模板库字段顺序")
-    @PutMapping("/{id1}/{id2}")
+    @PatchMapping("/{id1}/{id2}")
     @ApiOperation(value = "修改模板库字段顺序", notes = "修改模板库字段顺序", position = 4)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id1", required = true, paramType = "path"),

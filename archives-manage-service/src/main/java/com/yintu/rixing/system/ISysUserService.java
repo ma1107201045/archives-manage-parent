@@ -36,6 +36,8 @@ public interface ISysUserService extends IService<SysUser>, UserDetailsService {
     @Transactional(rollbackFor = {Exception.class})
     void saveDepartmentsById(Integer id, Set<Integer> departmentIds);
 
+    List<Integer> listByUsername(String username);
+
     Page<SysUser> page(SysUserQueryDto sysUserDto);
 
     List<SysRole> sysRolesById(Integer id);

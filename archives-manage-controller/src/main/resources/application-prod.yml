@@ -80,6 +80,13 @@ swagger:
         - /logout
         - /captcha
       exclude-path: [ /error ]
+    security:
+      title: 安全中心模块
+      description: 安全中心模块有关的接口
+      base-package: com.yintu.rixing.security
+      base-path:
+        - /security/**
+      exclude-path: [ /error ]
     system:
       title: 系统管理模块
       description: 系统管理模块有关的接口
