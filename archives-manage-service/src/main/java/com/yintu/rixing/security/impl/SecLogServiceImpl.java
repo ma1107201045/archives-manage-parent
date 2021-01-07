@@ -26,24 +26,24 @@ public class SecLogServiceImpl extends ServiceImpl<SecLogMapper, SecLog> impleme
 
     @Override
     public Page<SecLog> page(SecLogDto secLogDto) {
-        QueryWrapper<SecLog> queryWrapper = new QueryWrapper<>();
-        LambdaQueryWrapper<SecLog> lambdaQueryWrapper = queryWrapper.lambda();
+        Integer num = secLogDto.getNum();
+        Integer size = secLogDto.getSize();
         String operator = secLogDto.getOperator();
-        if (operator != null)
-            lambdaQueryWrapper.like(SecLog::getOperator, operator);
-        String loginIp = secLogDto.getOperator();
-        if (loginIp != null && !"".equals(loginIp))
-            lambdaQueryWrapper.eq(SecLog::getLoginIp, loginIp);
+        String loginIp = secLogDto.getLoginId();
         Short level = secLogDto.getLevel();
-        if (secLogDto.getLevel() != null)
-            lambdaQueryWrapper.eq(SecLog::getLevel, level);
         Date startDate = secLogDto.getBeginDate();
         Date endDate = secLogDto.getEndDate();
+        QueryWrapper<SecLog> queryWrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<SecLog> lambdaQueryWrapper = queryWrapper.lambda();
+        if (operator != null)
+            lambdaQueryWrapper.like(SecLog::getOperator, operator);
+        if (loginIp != null && !"".equals(loginIp))
+            lambdaQueryWrapper.eq(SecLog::getLoginIp, loginIp);
+        if (secLogDto.getLevel() != null)
+            lambdaQueryWrapper.eq(SecLog::getLevel, level);
         if (startDate != null && endDate != null)
             lambdaQueryWrapper.between(SecLog::getCreateTime, startDate, endDate);
         queryWrapper.orderByDesc("id");
-        Integer num = secLogDto.getNum();
-        Integer size = secLogDto.getSize();
         return this.page(new Page<>(num, size), queryWrapper);
     }
 }

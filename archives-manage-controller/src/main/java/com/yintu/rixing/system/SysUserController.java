@@ -79,8 +79,11 @@ public class SysUserController extends Authenticator implements BaseController<S
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "修改用户启用禁用状态")
     @PatchMapping("/{id}/account-enabled")
     @ApiOperation(value = "修改用户启用禁用状态", notes = "修改用户启用禁用状态", position = 5)
-    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
-    public ResultDataUtil<Object> editAccountEnabledOrDisabled(@PathVariable Integer id, Short accountEnabled) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "accountEnabled", dataType = "int", value = "用户状态（启用 1 禁用 0）", required = true, paramType = "query"),
+    })
+    public ResultDataUtil<Object> editAccountEnabledOrDisabled(@PathVariable Integer id, @RequestParam Short accountEnabled) {
         iSysUserService.changeAccountEnabledOrDisabled(id, accountEnabled);
         return ResultDataUtil.ok("修改用户启用禁用状态成功");
     }
