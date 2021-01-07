@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -144,13 +145,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (StrUtil.isEmpty(username))
             throw new BaseRuntimeException("用户名不能为空");
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().
-                select(tableFieldInfo -> tableFieldInfo.getColumn().equals("id")).
-                eq(SysUser::getUsername, username);
-        return this.listObjs(queryWrapper, obj -> {
-            SysUser sysUser = (SysUser) obj;
-            return sysUser.getId();
-        });
+        queryWrapper.lambda()
+                .select(SysUser.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("username"))
+                .eq(SysUser::getUsername, username);
+        return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
     @Override
