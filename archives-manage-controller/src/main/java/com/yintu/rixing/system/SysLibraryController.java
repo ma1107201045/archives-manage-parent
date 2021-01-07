@@ -38,7 +38,7 @@ public class SysLibraryController extends Authenticator {
     ISysLibraryService iSysLibraryService;
 
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "新增下级信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "新增下级信息")
     @PostMapping("/addxj")
     @ApiOperation(value = "新增下级信息", notes = "新增下级信息")
     public ResultDataUtil<Object> addXJ(@Param("id") Integer id, @Validated SysLibrary entity) {
@@ -62,7 +62,7 @@ public class SysLibraryController extends Authenticator {
         return ResultDataUtil.ok("添加成功");
     }
 
-    @Log(level = EnumLogLevel.ERROR, module = "系统管理", description = "删除档案信息")
+    @Log(level = EnumLogLevel.ERROR, module = "系统管理", context = "删除档案信息")
     @DeleteMapping("/del/{ids}")
     @ApiOperation(value = "删除档案信息", notes = "删除档案信息")
     public ResultDataUtil<Object> remove(@PathVariable("ids") Set<Integer> ids) {
@@ -70,7 +70,7 @@ public class SysLibraryController extends Authenticator {
         return ResultDataUtil.ok("删除成功");
     }
 
-    @Log(level = EnumLogLevel.WARN, module = "系统管理", description = "编辑档案信息")
+    @Log(level = EnumLogLevel.WARN, module = "系统管理", context = "编辑档案信息")
     @PostMapping("/edit")
     @ApiOperation(value = "编辑档案信息", notes = "编辑档案信息")
     public ResultDataUtil<Object> edit(@Param("id") Integer id, SysLibrary entity) {
@@ -83,7 +83,7 @@ public class SysLibraryController extends Authenticator {
 
     }
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询单条档案及下级信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "查询单条档案及下级信息")
     @GetMapping("/find")
     @ApiOperation(value = "查询单条档案及下级信息", notes = "查询单条档案及下级信息")
     @ApiImplicitParam(name = "id")
@@ -99,7 +99,7 @@ public class SysLibraryController extends Authenticator {
      * @return
      */
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "根据名称，类别查询")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "根据名称，类别查询")
     @GetMapping("/findByname")
     @ApiOperation(value = "根据名称，类别查询", notes = "根据名称，类别查询")
     public Map<String, Object> findBylnameAndlclasses(@Param("libraryname") String libraryname,
@@ -109,7 +109,7 @@ public class SysLibraryController extends Authenticator {
 
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "新增档案库")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "新增档案库")
     @PostMapping("/xzdak")
     @ApiOperation(value = "新增档案库", notes = "新增档案库")
     public Map<String, Object> yrmb(@Param("tepname") String tepname, @Param("id") Integer id, @Param("librname") String librname) {
@@ -119,7 +119,7 @@ public class SysLibraryController extends Authenticator {
     }
 
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "编辑模板字段信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "编辑模板字段信息")
     @PutMapping("/editField")
     @ApiOperation(value = "编辑模板字段信息", notes = "编辑模板字段信息")
     public Map<String, Object> editField(@Param("id") Integer id,
@@ -136,14 +136,14 @@ public class SysLibraryController extends Authenticator {
 
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "添加模板字段信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "添加模板字段信息")
     @ApiOperation(value = "添加模板字段信息", notes = "添加模板字段信息")
     @PostMapping("/addfield")
     public Map<String, Object> innertFleId(@Param("id") Integer id, @Validated SysTableMessge sysTableMessge) {
         return iSysLibraryService.innertFleId(id, sysTableMessge);
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "删除模板字段")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "删除模板字段")
     @ApiOperation(value = "删除模板字段", notes = "删除模板字段")
     @DeleteMapping("/delfield")
     public Map<String, Object> delfield(@Param("id") Integer id, @Param("fieldName") String fieldName) {
@@ -152,7 +152,7 @@ public class SysLibraryController extends Authenticator {
 
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "向上调整字段")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "向上调整字段")
     @ApiOperation(value = "向上调整字段", notes = "向上调整字段")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sfieldName", value = "上面的字段", required = true),
@@ -169,7 +169,7 @@ public class SysLibraryController extends Authenticator {
 
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "向下调整字段")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "向下调整字段")
     @ApiOperation(value = "向下调整字段", notes = "向下调整字段")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "xfieldName", value = "下面的字段", required = true),

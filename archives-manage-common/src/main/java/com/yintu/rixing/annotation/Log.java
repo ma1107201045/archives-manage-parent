@@ -26,7 +26,7 @@ public @interface Log {
     String module() default "";
 
     /**
-     * 描述
+     * 内容
      */
-    String description() default "";
+    String context() default "";
 }

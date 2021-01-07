@@ -72,8 +72,8 @@ public class LogAspect extends Authenticator {
                 break;
         }
         String module = log.module();
-        String description = log.description();
-        iLogService.put(joinPoint, request, methodName, userId, username, nickName, level, module, description);
+        String context = log.context();
+        iLogService.put(joinPoint, request, methodName, userId, username, nickName, level, module, context);
     }
 
     /**

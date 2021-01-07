@@ -36,7 +36,7 @@ public class SysTemplateController extends Authenticator {
     @Autowired
     ISysTemplateService iSysTemplateService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "添加模板")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加模板")
     @ApiOperation(value = "添加模板", notes = "添加模板")
     @PostMapping("/add")
     public ResultDataUtil<Object> add(@Validated SysTemplate entity) {
@@ -44,7 +44,7 @@ public class SysTemplateController extends Authenticator {
         return ResultDataUtil.ok("添加成功");
     }
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "删除模板信息列表")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "删除模板信息列表")
     @ApiOperation(value = "删除模板", notes = "删除模板")
     @DeleteMapping("/del")
     public ResultDataUtil<Object> remove(@Param("ids") Set<Integer> ids) {
@@ -52,7 +52,7 @@ public class SysTemplateController extends Authenticator {
         return ResultDataUtil.ok("删除成功");
     }
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "编辑模板信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "编辑模板信息")
     @PutMapping("/edit")
     @ApiOperation(value = "编辑模板信息", notes = "编辑模板信息")
     public ResultDataUtil<Object> edit(@Param("id") Integer id, @Validated SysTemplate entity) {
@@ -68,7 +68,7 @@ public class SysTemplateController extends Authenticator {
     }
 
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "引入模板")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "引入模板")
     @GetMapping("/yrmb")
     @ApiOperation(value = "引入模板", notes = "引入模板")
     public Map<String, Object> yrmb(@Param("id") Integer id) {
@@ -82,7 +82,7 @@ public class SysTemplateController extends Authenticator {
      * @param mantname
      * @return
      */
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "根据模式名称查询模板")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "根据模式名称查询模板")
     @ApiOperation(value = "根据模式名称查询模板", notes = "根据模式名称查询模板")
     @GetMapping("/findByname")
     public Map<String, Object> findBymanageentname(@RequestParam("mantname") String mantname) {
@@ -91,7 +91,7 @@ public class SysTemplateController extends Authenticator {
         return ResponseDataUtil.ok("查询成功", sysTemplates);
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "添加模板字段信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "添加模板字段信息")
     @ApiOperation(value = "添加模板字段信息", notes = "添加模板字段信息")
     @PostMapping("/addfield")
     public Map<String, Object> findBymanageentname(@Param("id") Integer id, @Validated SysTableMessge sysTableMessge) {
@@ -102,7 +102,7 @@ public class SysTemplateController extends Authenticator {
         return ResponseDataUtil.ok("添加失败");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "编辑模板字段信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "编辑模板字段信息")
     @ApiOperation(value = "编辑模板字段信息", notes = "编辑模板字段信息")
     @PostMapping("/editfield")
     public Map<String, Object> editfield(@Param("id") Integer id,
@@ -118,7 +118,7 @@ public class SysTemplateController extends Authenticator {
         return ResponseDataUtil.ok("编辑失败");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "删除模板字段信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "删除模板字段信息")
     @ApiOperation(value = "删除模板字段信息", notes = "删除模板字段信息")
     @PostMapping("/delfield")
     public Map<String, Object> delfield(@Param("id") Integer id, @Param("field") String field) {
@@ -130,7 +130,7 @@ public class SysTemplateController extends Authenticator {
         return ResponseDataUtil.ok("编辑失败");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "向上调整字段")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "向上调整字段")
     @ApiOperation(value = "向上调整字段", notes = "向上调整字段")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sfieldName", value = "上面的字段", required = true),
@@ -147,7 +147,7 @@ public class SysTemplateController extends Authenticator {
 
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "向下调整字段")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "向下调整字段")
     @ApiOperation(value = "向下调整字段", notes = "向下调整字段")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "xfieldName", value = "下面的字段", required = true),
@@ -206,7 +206,7 @@ public class SysTemplateController extends Authenticator {
     }
 
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询单条目录及下级信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "查询单条目录及下级信息")
     @GetMapping("/findAlljd")
     @ApiOperation(value = "查询单条目录及下级信息", notes = "查询单条目录及下级信息")
     @ApiImplicitParam(name = "id")

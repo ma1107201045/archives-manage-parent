@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
@@ -106,6 +107,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public void changeAccountEnabledOrDisabled(Integer id, Short accountEnabled) {
+        SysUser sysUser = this.getById(id);
+        if (sysUser != null) {
+            sysUser.setAccountEnabled(accountEnabled);
+            this.saveOrUpdate(sysUser);
+        }
+    }
+
+    @Override
     public void saveRolesById(Integer id, Set<Integer> roleIds) {
         Collection<SysUserRole> sysUserRoles = new LinkedHashSet<>();
         for (Integer roleId : roleIds) {
@@ -149,6 +159,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Integer size = sysUserQueryDto.getSize();
         String username = sysUserQueryDto.getUsername();
         String nickname = sysUserQueryDto.getNickname();
+        Integer departmentId = sysUserQueryDto.getDepartmentId();
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .like(SysUser::getUsername, username == null ? "" : username)
@@ -156,8 +167,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         queryWrapper.orderByDesc("id");
         Page<SysUser> sysUserPage = this.page(new Page<>(num, size), queryWrapper);
         sysUserPage.getRecords().forEach(sysUser -> {
-            sysUser.setSysRoles(this.sysRolesById(sysUser.getId()));
+            Integer id = sysUser.getId();
+            sysUser.setSysRoles(this.sysRolesById(id));
+            sysUser.setSysDepartments(this.sysDepartmentsByIdAndDepartmentId(id, null));
         });
+        sysUserPage.setRecords(sysUserPage.getRecords().stream().filter((sysUser -> {
+            if (departmentId == null)
+                return true;
+            for (SysDepartment sysDepartment : sysUser.getSysDepartments()) {
+                if (sysDepartment.getId().equals(departmentId))
+                    return true;
+            }
+            return false;
+        })).collect(Collectors.toList()));
         return sysUserPage;
     }
 
@@ -178,7 +200,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (departmentIds.isEmpty())
             return new ArrayList<>();
         QueryWrapper<SysDepartment> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper1.lambda().in(SysDepartment::getId, departmentIds).eq(SysDepartment::getParentId, departmentId);
+        queryWrapper1.lambda().in(SysDepartment::getId, departmentIds);
+        if (departmentId != null)
+            queryWrapper1.lambda().eq(SysDepartment::getParentId, departmentId);
         return iSysDepartmentService.list(queryWrapper1);
     }
 

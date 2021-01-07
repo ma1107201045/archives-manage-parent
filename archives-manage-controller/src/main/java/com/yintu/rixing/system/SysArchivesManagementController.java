@@ -28,7 +28,7 @@ public class SysArchivesManagementController extends Authenticator {
     @Autowired
     ISysArchivesService iSysArchivesService;
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "添加字段信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "添加字段信息")
     @PostMapping("/add")
     @ApiOperation(value = "添加字段信息", notes = "添加字段信息")
     public ResultDataUtil<Object> add(@Validated SysArchives sysArchives) {
@@ -39,7 +39,7 @@ public class SysArchivesManagementController extends Authenticator {
         return ResultDataUtil.error("添加字段信息失败");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "删除字段信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "删除字段信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除字段信息", notes = "删除字段信息")
     @ApiImplicitParam(name = "ids", value = "主键id集", required = true)
@@ -49,7 +49,7 @@ public class SysArchivesManagementController extends Authenticator {
     }
 
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "修改信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "修改信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改信息", notes = "修改信息")
     @ApiImplicitParam(name = "id", value = "主键id", required = true)
@@ -58,7 +58,7 @@ public class SysArchivesManagementController extends Authenticator {
         return ResultDataUtil.ok("修改档案字段信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = "查询模板信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "查询模板信息")
     @GetMapping
     @ApiOperation(value = "查询模板信息", notes = "查询模板信息")
     public ResultDataUtil<SysArchives> findById(@PathVariable Integer id) {
@@ -66,7 +66,7 @@ public class SysArchivesManagementController extends Authenticator {
         return ResultDataUtil.ok("查询成功", byId);
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "档案库管理", description = "查询档案库信息列表")
+    @Log(level = EnumLogLevel.INFO, module = "档案库管理", context = "查询档案库信息列表")
     @GetMapping("/findpage")
     @ApiOperation(value = "查询档案库信息列表", notes = "查询档案库信息列表")
     @ApiImplicitParams({

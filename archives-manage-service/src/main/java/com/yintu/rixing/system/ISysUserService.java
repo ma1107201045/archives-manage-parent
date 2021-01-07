@@ -31,6 +31,9 @@ public interface ISysUserService extends IService<SysUser>, UserDetailsService {
     void resetPassword(SysUserPasswordDto sysUserPasswordDto);
 
     @Transactional(rollbackFor = {Exception.class})
+    void changeAccountEnabledOrDisabled(Integer id, Short accountEnabled);
+
+    @Transactional(rollbackFor = {Exception.class})
     void saveRolesById(Integer id, Set<Integer> roleIds);
 
     @Transactional(rollbackFor = {Exception.class})
@@ -41,6 +44,7 @@ public interface ISysUserService extends IService<SysUser>, UserDetailsService {
     Page<SysUser> page(SysUserQueryDto sysUserDto);
 
     List<SysRole> sysRolesById(Integer id);
+
 
     List<SysDepartment> sysDepartmentsByIdAndDepartmentId(Integer id, Integer departmentId);
 

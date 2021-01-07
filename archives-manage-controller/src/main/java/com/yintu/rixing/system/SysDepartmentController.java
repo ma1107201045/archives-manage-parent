@@ -33,7 +33,7 @@ public class SysDepartmentController extends Authenticator {
     @Autowired
     private ISysDepartmentService iSysDepartmentService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "添加部门信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加部门信息")
     @PostMapping
     @ApiOperation(value = "添加部门信息", notes = "添加部门信息", position = 1)
     public ResultDataUtil<Object> add(@Validated SysDepartmentFormDto sysDepartmentFormDto) {
@@ -41,7 +41,7 @@ public class SysDepartmentController extends Authenticator {
         return ResultDataUtil.ok("添加部门信息成功");
     }
 
-    @Log(level = EnumLogLevel.WARN, module = "系统管理", description = "删除部门信息")
+    @Log(level = EnumLogLevel.WARN, module = "系统管理", context = "删除部门信息")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除部门信息", notes = "删除部门信息", position = 2)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -50,7 +50,7 @@ public class SysDepartmentController extends Authenticator {
         return ResultDataUtil.ok("删除部门信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = " 修改部门信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = " 修改部门信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改部门信息", notes = "修改部门信息", position = 3)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -59,7 +59,7 @@ public class SysDepartmentController extends Authenticator {
         return ResultDataUtil.ok("修改部门信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询部门单条信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询部门单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询部门单条信息", notes = " 查询部门单条信息", position = 4)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -68,7 +68,7 @@ public class SysDepartmentController extends Authenticator {
         return ResultDataUtil.ok("查询部门单条信息成功", sysDepartment);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询部门列表信息树成功")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询部门列表信息树成功")
     @GetMapping
     @ApiOperation(value = "查询部门列表信息树", notes = "查询部门列表信息树", position = 5)
     public ResultDataUtil<List<TreeUtil>> findTree() {

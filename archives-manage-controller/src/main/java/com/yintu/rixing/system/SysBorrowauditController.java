@@ -88,7 +88,7 @@ public class SysBorrowauditController extends Authenticator {
         return ResponseDataUtil.ok("成功", map);
     }
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "查询全宗号信息列表")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "查询全宗号信息列表")
     @GetMapping("/findpage")
     @ApiOperation(value = "查询借阅审批分页列表", notes = " 多条件查询借阅审批分页列表")
     @ApiImplicitParams({

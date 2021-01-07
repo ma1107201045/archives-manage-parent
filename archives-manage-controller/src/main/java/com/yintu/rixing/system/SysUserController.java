@@ -41,7 +41,7 @@ public class SysUserController extends Authenticator implements BaseController<S
     @Autowired
     private ISysRoleService iSysRoleService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "添加用户信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加用户信息")
     @PostMapping
     @ApiOperation(value = "添加用户信息", notes = "添加用户信息", position = 1)
     public ResultDataUtil<Object> add(@Validated SysUserFormDto dto) {
@@ -49,7 +49,7 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("添加用户信息成功");
     }
 
-    @Log(level = EnumLogLevel.WARN, module = "系统管理", description = "删除用户信息")
+    @Log(level = EnumLogLevel.WARN, module = "系统管理", context = "删除用户信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除用户信息", notes = "删除用户信息", position = 2)
     @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
@@ -58,7 +58,7 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("删除用户信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = " 修改用户信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = " 修改用户信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改用户信息", notes = "修改用户信息", position = 3)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -67,7 +67,7 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("修改用户信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = " 重置密码")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = " 重置用户密码")
     @PatchMapping("/{id}")
     @ApiOperation(value = "重置密码", notes = "重置密码", position = 4)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -76,43 +76,52 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("重置密码成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询用户单条信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "修改用户启用禁用状态")
+    @PatchMapping("/{id}/account-enabled")
+    @ApiOperation(value = "修改用户启用禁用状态", notes = "修改用户启用禁用状态", position = 5)
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    public ResultDataUtil<Object> editAccountEnabledOrDisabled(@PathVariable Integer id, Short accountEnabled) {
+        iSysUserService.changeAccountEnabledOrDisabled(id, accountEnabled);
+        return ResultDataUtil.ok("修改用户启用禁用状态成功");
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询用户单条信息")
     @GetMapping("/{id}")
-    @ApiOperation(value = "查询用户单条信息", notes = " 查询用户单条信息", position = 5, response = SysUser.class)
+    @ApiOperation(value = "查询用户单条信息", notes = " 查询用户单条信息", position = 6, response = SysUser.class)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<SysUser> findById(@PathVariable Integer id) {
         SysUser sysUser = iSysUserService.getById(id);
         return ResultDataUtil.ok("查询用户单条信息", sysUser);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询用户列表信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询用户列表信息")
     @GetMapping
-    @ApiOperation(value = "查询用户列表信息", notes = "查询用户列表信息", position = 6, response = SysUser.class)
+    @ApiOperation(value = "查询用户列表信息", notes = "查询用户列表信息", position = 7)
     public ResultDataUtil<Page<SysUser>> findPage(@Validated SysUserQueryDto sysUserDto) {
         Page<SysUser> page = iSysUserService.page(sysUserDto);
         return ResultDataUtil.ok("查询用户列表信息成功", page);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询用户角色列表信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询用户角色列表信息")
     @GetMapping("/sys-role")
-    @ApiOperation(value = "查询用户角色列表信息", notes = "查询用户角色列表信息", position = 7)
+    @ApiOperation(value = "查询用户角色列表信息", notes = "查询用户角色列表信息", position = 8)
     public ResultDataUtil<List<SysRole>> findRoles() {
         List<SysRole> sysRoles = iSysRoleService.list(new QueryWrapper<SysRole>().orderByDesc("id"));
         return ResultDataUtil.ok("查询用户角色列表信息成功", sysRoles);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询用户部门列表信息树")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询用户部门列表信息树")
     @GetMapping("/sys-department")
-    @ApiOperation(value = "查询用户部门列表信息树", notes = "查询用户部门列表信息树", position = 8)
+    @ApiOperation(value = "查询用户部门列表信息树", notes = "查询用户部门列表信息树", position = 9)
     public ResultDataUtil<List<TreeUtil>> findDepartmentTree() {
         List<TreeUtil> treeNodeUtils = iSysDepartmentService.listTree(-1);
         return ResultDataUtil.ok("查询用户部门列表信息树成功", treeNodeUtils);
     }
 
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询用户所在部门列表信息树")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询用户所在部门列表信息树")
     @GetMapping("/{id}/sys-department")
-    @ApiOperation(value = "查询用户所在部门列表信息树", notes = "查询用户所在部门列表信息树", position = 9)
+    @ApiOperation(value = "查询用户所在部门列表信息树", notes = "查询用户所在部门列表信息树", position = 10)
     @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<List<TreeUtil>> findPermissionTreeById(@PathVariable Integer id) {
         List<TreeUtil> treeNodeUtils = new ArrayList<>();

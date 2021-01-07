@@ -37,7 +37,7 @@ public class SysRoleController extends Authenticator implements BaseController<S
     @Autowired
     private ISysPermissionService iSysPermissionService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", description = "添加角色信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加角色信息")
     @PostMapping
     @ApiOperation(value = "添加角色信息", notes = "添加角色信息", position = 1)
     public ResultDataUtil<Object> add(@Validated SysRoleFormDto formDto) {
@@ -45,7 +45,7 @@ public class SysRoleController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("添加角色信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "删除角色信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "删除角色信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除角色信息", notes = "删除角色信息", position = 2)
     @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
@@ -54,7 +54,7 @@ public class SysRoleController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("删除用户信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", description = " 修改角色信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = " 修改角色信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改角色信息", notes = "修改角色信息", position = 3)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -63,7 +63,7 @@ public class SysRoleController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("修改角色信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询角色单条信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询角色单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询角色单条信息", notes = " 查询角色单条信息", position = 4, response = SysRole.class)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -72,14 +72,14 @@ public class SysRoleController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("查询角色单条信息成功", sysRole);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询角色列表信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询角色列表信息")
     @GetMapping
     @ApiOperation(value = "查询角色列表信息", notes = "查询角色列表信息", position = 5, response = SysRole.class)
     public ResultDataUtil<Page<SysRole>> findPage(@Validated SysRoleQueryDto queryDto) {
         return ResultDataUtil.ok("查询角色列表信息成功", iSysRoleService.page(queryDto));
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询角色权限列表树信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询角色权限列表树信息")
     @GetMapping("/sys-permission")
     @ApiOperation(value = "查询角色权限列表树信息", notes = "查询角色权限列表树信息", position = 6)
     public ResultDataUtil<List<TreeUtil>> findPermissionTree() {
@@ -87,7 +87,7 @@ public class SysRoleController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("查询角色权限列表树信息成功", treeNodeUtils);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询角色拥有权限列表信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询角色拥有权限列表信息")
     @GetMapping("/{id}/sys-permission")
     @ApiOperation(value = "查询角色拥有权限列表信息", notes = "查询角色拥有权限列表信息", position = 7)
     @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")

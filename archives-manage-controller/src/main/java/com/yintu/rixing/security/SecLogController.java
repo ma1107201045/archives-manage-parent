@@ -33,7 +33,7 @@ public class SecLogController extends Authenticator {
     @Autowired
     private ISecLogService iSysLogService;
 
-    @Log(level = EnumLogLevel.TRACE, module = "安全中心", description = "查询日志列表信息")
+    @Log(level = EnumLogLevel.TRACE, module = "安全中心", context = "查询日志列表信息")
     @GetMapping
     @ApiOperation(value = "查询日志列表信息", notes = " 查询日志列表信息")
     public ResultDataUtil<Page<SecLog>> findPage(@Validated SecLogDto secLogDto) {

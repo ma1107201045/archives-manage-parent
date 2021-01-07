@@ -39,7 +39,7 @@ public class LogServiceImpl implements ILogService {
     private ISecLogService iSecLogService;
 
     @Override
-    public void put(JoinPoint joinPoint, HttpServletRequest request, String methodName, Integer userId, String username, String operator, Short level, String module, String description) {
+    public void put(JoinPoint joinPoint, HttpServletRequest request, String methodName, Integer userId, String username, String operator, Short level, String module, String context) {
         try {
             SecLog secLog = new SecLog();
             secLog.setUserId(userId);
@@ -48,9 +48,9 @@ public class LogServiceImpl implements ILogService {
             secLog.setLevel(level);
             secLog.setModule(module);
             secLog.setCreateTime(DateUtil.date());
-            secLog.setDescription(description);
+            secLog.setContext(context);
             secLog.setLoginIp(IPUtil.getIpAddress(request));
-            secLog.setContext(operateContent(joinPoint, methodName, IPUtil.getIpAddress(request), request));
+            secLog.setDescription(this.operateContent(joinPoint, methodName, IPUtil.getIpAddress(request), request));
             iSecLogService.save(secLog);
         } catch (Exception e) {
             e.printStackTrace();

@@ -21,4 +21,7 @@ public class SysUserQueryDto extends PageDto {
     @ApiModelProperty(value = "用户名称")
     private String nickname;
 
+    @ApiModelProperty(value = "部门主键id")
+    private Integer departmentId;
+
 }

@@ -94,6 +94,10 @@ public class SysUser extends BaseEntity implements UserDetails {
     @TableField(exist = false)
     private List<SysRole> sysRoles;
 
+    @ApiModelProperty(value = "用户所在部门集", position = 20)
+    @TableField(exist = false)
+    private List<SysDepartment> sysDepartments;
+
 
     @JsonIgnore
     @JSONField(serialize = false)

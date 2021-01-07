@@ -18,7 +18,7 @@ public class CustomConverter implements Converter<String, Date> {
         if (source.length() == 0) {
             return null;
         }
-        // HH:mm:ss
+        // HH:mm:ss 8
         // yyyy-MM-dd 10
         // yyyy-MM-dd HH:mm:ss 19
         if (source.length() == 8)

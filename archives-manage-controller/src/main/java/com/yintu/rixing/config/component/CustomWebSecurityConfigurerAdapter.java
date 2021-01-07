@@ -92,9 +92,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             secLog.setLevel((short) 1);
             secLog.setModule("登录");
             secLog.setCreateTime(DateUtil.date());
-            secLog.setDescription("登录系统");
+            secLog.setContext("登录系统");
             secLog.setLoginIp(IPUtil.getIpAddress(request));
-            secLog.setContext(null);
             isecLogService.save(secLog);
         }).permitAll().failureHandler((request, response, authenticationException) -> {
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
@@ -142,9 +141,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                     secLog.setLevel((short) 1);
                     secLog.setModule("登录");
                     secLog.setCreateTime(DateUtil.date());
-                    secLog.setDescription("注销系统");
+                    secLog.setContext("注销系统");
                     secLog.setLoginIp(IPUtil.getIpAddress(request));
-                    secLog.setContext(null);
                     isecLogService.save(secLog);
                 }).permitAll()
 //                .and().httpBasic().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
