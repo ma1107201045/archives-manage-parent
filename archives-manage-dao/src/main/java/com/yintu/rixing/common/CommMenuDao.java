@@ -1,6 +1,7 @@
 package com.yintu.rixing.common;
 
 import com.yintu.rixing.vo.common.CommMenuVo;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  * @Date: 2021/1/4 10:42:51
  * @Version: 1.0
  */
+@Mapper
 public interface CommMenuDao {
 
 

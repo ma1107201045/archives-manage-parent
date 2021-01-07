@@ -1,9 +1,7 @@
-package com.yintu.rixing.system;
+package com.yintu.rixing.security;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.sun.javafx.geom.transform.Identity;
-import com.yintu.rixing.BaseEntity;
 import com.yintu.rixing.IdEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,9 +20,9 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_log")
-@ApiModel(value = "SysLog对象", description = "系统日志表")
-public class SysLog extends IdEntity {
+@TableName("sec_log")
+@ApiModel(value = "SecLog对象", description = "安全日志表")
+public class SecLog extends IdEntity {
 
     private static final long serialVersionUID = 1L;
 

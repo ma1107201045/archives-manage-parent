@@ -1,15 +1,12 @@
-package com.yintu.rixing.system.impl;
+package com.yintu.rixing.security.impl;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.yintu.rixing.system.ILogService;
-import com.yintu.rixing.system.ISysLogService;
-import com.yintu.rixing.system.SysLog;
+import com.yintu.rixing.security.ILogService;
+import com.yintu.rixing.security.ISecLogService;
+import com.yintu.rixing.security.SecLog;
 import com.yintu.rixing.util.IPUtil;
-import jdk.nashorn.internal.ir.annotations.Reference;
 import org.apache.ibatis.javassist.*;
 import org.apache.ibatis.javassist.bytecode.CodeAttribute;
 import org.apache.ibatis.javassist.bytecode.LocalVariableAttribute;
@@ -23,9 +20,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Modifier;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -41,22 +36,22 @@ public class LogServiceImpl implements ILogService {
 
 
     @Autowired
-    private ISysLogService iSysLogService;
+    private ISecLogService iSecLogService;
 
     @Override
     public void put(JoinPoint joinPoint, HttpServletRequest request, String methodName, Integer userId, String username, String operator, Short level, String module, String description) {
         try {
-            SysLog sysLog = new SysLog();
-            sysLog.setUserId(userId);
-            sysLog.setUsername(username);
-            sysLog.setOperator(operator);
-            sysLog.setLevel(level);
-            sysLog.setModule(module);
-            sysLog.setCreateTime(DateUtil.date());
-            sysLog.setDescription(description);
-            sysLog.setLoginIp(IPUtil.getIpAddress(request));
-            sysLog.setContext(operateContent(joinPoint, methodName, IPUtil.getIpAddress(request), request));
-            iSysLogService.save(sysLog);
+            SecLog secLog = new SecLog();
+            secLog.setUserId(userId);
+            secLog.setUsername(username);
+            secLog.setOperator(operator);
+            secLog.setLevel(level);
+            secLog.setModule(module);
+            secLog.setCreateTime(DateUtil.date());
+            secLog.setDescription(description);
+            secLog.setLoginIp(IPUtil.getIpAddress(request));
+            secLog.setContext(operateContent(joinPoint, methodName, IPUtil.getIpAddress(request), request));
+            iSecLogService.save(secLog);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/system/sys-template-library-field-type")
-@ApiSort(8)
+@ApiSort(7)
 @Api(tags = "模块库字段类型接口")
 public class SysTemplateLibraryFieldTypeController {
 

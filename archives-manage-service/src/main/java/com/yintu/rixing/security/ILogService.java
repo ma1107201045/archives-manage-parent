@@ -1,4 +1,4 @@
-package com.yintu.rixing.system;
+package com.yintu.rixing.security;
 
 import org.aspectj.lang.JoinPoint;
 

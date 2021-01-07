@@ -79,13 +79,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public List<SysPermission> sysPermissionsByIdAndPermissionId(Integer id, Integer parentId) {
+    public List<SysPermission> sysPermissionsByIdAndPermissionId(Integer id, Integer permissionId) {
         QueryWrapper<SysRolePermission> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().select(SysRolePermission::getPermissionId).eq(SysRolePermission::getRoleId, id);
         List<Integer> permissionIds = iSysRolePermissionService.list(queryWrapper).stream().map(SysRolePermission::getPermissionId).collect(Collectors.toList());
 
         QueryWrapper<SysPermission> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper1.lambda().in(SysPermission::getId, permissionIds).eq(SysPermission::getParentId, parentId);
+        queryWrapper1.lambda().in(SysPermission::getId, permissionIds).eq(SysPermission::getParentId, permissionId);
         return iSysPermissionService.list(queryWrapper1);
     }
 

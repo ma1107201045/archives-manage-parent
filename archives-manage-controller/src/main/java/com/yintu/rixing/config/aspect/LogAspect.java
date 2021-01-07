@@ -3,7 +3,7 @@ package com.yintu.rixing.config.aspect;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.system.ILogService;
+import com.yintu.rixing.security.ILogService;
 import com.yintu.rixing.system.SysUser;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;

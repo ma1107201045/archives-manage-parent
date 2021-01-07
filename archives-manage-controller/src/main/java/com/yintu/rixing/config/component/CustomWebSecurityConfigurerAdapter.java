@@ -4,8 +4,8 @@ import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.config.filter.VerificationCodeFilter;
-import com.yintu.rixing.system.ISysLogService;
-import com.yintu.rixing.system.SysLog;
+import com.yintu.rixing.security.ISecLogService;
+import com.yintu.rixing.system.SecLog;
 import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.IPUtil;
 import com.yintu.rixing.util.ResultDataUtil;
@@ -53,7 +53,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private ISysLogService iSysLogService;
+    private ISecLogService iSysLogService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
@@ -85,7 +85,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             out.close();
             //登录日志
             SysUser sysUser = Authenticator.getPrincipal();
-            SysLog sysLog = new SysLog();
+            SecLog sysLog = new SecLog();
             sysLog.setUserId(sysUser == null ? -1 : sysUser.getId());
             sysLog.setUsername(sysUser == null ? "unknown" : sysUser.getUsername());
             sysLog.setOperator(sysUser == null ? "unknown" : sysUser.getNickname());
@@ -135,7 +135,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
                     //注销日志
                     SysUser sysUser = Authenticator.getPrincipal();
-                    SysLog sysLog = new SysLog();
+                    SecLog sysLog = new SecLog();
                     sysLog.setUserId(sysUser == null ? -1 : sysUser.getId());
                     sysLog.setUsername(sysUser == null ? "unknown" : sysUser.getUsername());
                     sysLog.setOperator(sysUser == null ? "unknown" : sysUser.getNickname());

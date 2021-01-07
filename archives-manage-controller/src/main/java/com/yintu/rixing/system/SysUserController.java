@@ -85,7 +85,6 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("查询用户单条信息", sysUser);
     }
 
-
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询用户列表信息")
     @GetMapping
     @ApiOperation(value = "查询用户列表信息", notes = "查询用户列表信息", position = 6, response = SysUser.class)
@@ -94,10 +93,17 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("查询用户列表信息成功", page);
     }
 
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询用户角色列表信息")
+    @GetMapping("/sys-role")
+    @ApiOperation(value = "查询用户角色列表信息", notes = "查询用户角色列表信息", position = 7)
+    public ResultDataUtil<List<SysRole>> findRoles() {
+        List<SysRole> sysRoles = iSysRoleService.list(new QueryWrapper<SysRole>().orderByDesc("id"));
+        return ResultDataUtil.ok("查询用户角色列表信息成功", sysRoles);
+    }
 
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询用户部门列表信息树")
     @GetMapping("/sys-department")
-    @ApiOperation(value = "查询用户部门列表信息树", notes = "查询用户部门列表信息树", position = 7)
+    @ApiOperation(value = "查询用户部门列表信息树", notes = "查询用户部门列表信息树", position = 8)
     public ResultDataUtil<List<TreeUtil>> findDepartmentTree() {
         List<TreeUtil> treeNodeUtils = iSysDepartmentService.listTree(-1);
         return ResultDataUtil.ok("查询用户部门列表信息树成功", treeNodeUtils);
@@ -106,7 +112,7 @@ public class SysUserController extends Authenticator implements BaseController<S
 
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询用户所在部门列表信息树")
     @GetMapping("/{id}/sys-department")
-    @ApiOperation(value = "查询用户所在部门列表信息树", notes = "查询用户所在部门列表信息树", position = 8)
+    @ApiOperation(value = "查询用户所在部门列表信息树", notes = "查询用户所在部门列表信息树", position = 9)
     @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<List<TreeUtil>> findPermissionTreeById(@PathVariable Integer id) {
         List<TreeUtil> treeNodeUtils = new ArrayList<>();
@@ -114,13 +120,5 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("查询用户所在部门列表信息树成功", treeNodeUtils);
     }
 
-
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", description = "查询用户角色列表信息")
-    @GetMapping("/sys-role")
-    @ApiOperation(value = "查询用户角色列表信息", notes = "查询用户角色列表信息", position = 9)
-    public ResultDataUtil<List<SysRole>> findRoles() {
-        List<SysRole> sysRoles = iSysRoleService.list(new QueryWrapper<SysRole>().orderByDesc("id"));
-        return ResultDataUtil.ok("查询用户角色列表信息成功", sysRoles);
-    }
 
 }

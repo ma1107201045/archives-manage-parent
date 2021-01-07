@@ -1,4 +1,4 @@
-package com.yintu.rixing.dto.system;
+package com.yintu.rixing.dto.security;
 
 import com.yintu.rixing.dto.common.PageDto;
 import io.swagger.annotations.ApiModel;
@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel
-public class SysLogDto extends PageDto {
+public class SecLogDto extends PageDto {
 
     @ApiModelProperty(value = "操作人", position = 0)
     private String operator;
