@@ -1,6 +1,7 @@
 package com.yintu.rixing.system.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFormDto;
@@ -8,6 +9,7 @@ import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.ISysTemplateLibraryService;
 import com.yintu.rixing.system.SysTemplateLibrary;
 import com.yintu.rixing.system.SysTemplateLibraryMapper;
+import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.TreeUtil;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +29,15 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
 
     @Override
     public void save(SysTemplateLibraryFormDto sysTemplateLibraryFormDto) {
+        Integer id = sysTemplateLibraryFormDto.getId();
         Short type = sysTemplateLibraryFormDto.getType();
         Integer number = sysTemplateLibraryFormDto.getNumber();
         if (type != null && type == 2 && number != null)
             throw new BaseRuntimeException("模板编号不能为空");
-        SysTemplateLibrary sysTemplateLibrary = new SysTemplateLibrary();
-        List<SysTemplateLibrary> sysTemplateLibraries = this.list(new QueryWrapper<SysTemplateLibrary>().lambda().eq(SysTemplateLibrary::getNumber, sysTemplateLibraryFormDto.getNumber()));
-        if (!sysTemplateLibraries.isEmpty())
+        List<Integer> ids = this.listByNumber(number);
+        if (!ids.isEmpty())
             throw new BaseRuntimeException("模板编号不能重复");
+        SysTemplateLibrary sysTemplateLibrary = new SysTemplateLibrary();
         if (sysTemplateLibraryFormDto.getType() == 2) {
             sysTemplateLibrary = this.getById(sysTemplateLibraryFormDto.getParentId());
             if (sysTemplateLibrary != null) {
@@ -59,12 +62,13 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
 
     @Override
     public void updateById(SysTemplateLibraryFormDto sysTemplateLibraryFormDto) {
+        Integer id = sysTemplateLibraryFormDto.getId();
         Short type = sysTemplateLibraryFormDto.getType();
         Integer number = sysTemplateLibraryFormDto.getNumber();
         if (type != null && type == 2 && number != null)
             throw new BaseRuntimeException("模板编号不能为空");
-        List<SysTemplateLibrary> sysTemplateLibraries = this.list(new QueryWrapper<SysTemplateLibrary>().lambda().eq(SysTemplateLibrary::getNumber, sysTemplateLibraryFormDto.getNumber()));
-        if (!sysTemplateLibraries.isEmpty() && !sysTemplateLibraries.get(0).getId().equals(sysTemplateLibraryFormDto.getId()))
+        List<Integer> ids = this.listByNumber(number);
+        if (!ids.isEmpty() && !ids.get(0).equals(id))
             throw new BaseRuntimeException("模板编号不能重复");
         SysTemplateLibrary sysTemplateLibrary = new SysTemplateLibrary();
         if (sysTemplateLibraryFormDto.getType() == 2) {
@@ -76,6 +80,17 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         }
         BeanUtil.copyProperties(sysTemplateLibraryFormDto, sysTemplateLibrary);
         this.updateById(sysTemplateLibrary);
+    }
+
+    @Override
+    public List<Integer> listByNumber(Integer number) {
+        if (number == null)
+            throw new BaseRuntimeException("模板库编号不能为空");
+        QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .select(SysTemplateLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
+                .eq(SysTemplateLibrary::getNumber, number);
+        return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
     @Override

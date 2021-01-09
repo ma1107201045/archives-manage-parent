@@ -1,6 +1,7 @@
 package com.yintu.rixing.system.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -8,11 +9,14 @@ import com.yintu.rixing.dto.system.SysTemplateLibraryFieldFormDto;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFieldQueryDto;
 import com.yintu.rixing.dto.system.SysUserFormDto;
 import com.yintu.rixing.dto.system.SysUserQueryDto;
+import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -30,6 +34,11 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
 
     @Override
     public void save(SysTemplateLibraryFieldFormDto sysTemplateLibraryFieldFormDto) {
+        String dataKey = sysTemplateLibraryFieldFormDto.getDataKey();
+        //参数校对
+        List<Integer> ids = this.listByDataKey(dataKey);
+        if (!ids.isEmpty())
+            throw new BaseRuntimeException("当前模板库中key值不能重复");
         SysTemplateLibraryField sysTemplateLibraryField = new SysTemplateLibraryField();
         BeanUtil.copyProperties(sysTemplateLibraryFieldFormDto, sysTemplateLibraryField);
         this.save(sysTemplateLibraryField);
@@ -37,7 +46,13 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
 
     @Override
     public void updateById(SysTemplateLibraryFieldFormDto sysTemplateLibraryFieldFormDto) {
-        SysTemplateLibraryField sysTemplateLibraryField = this.getById(sysTemplateLibraryFieldFormDto.getId());
+        Integer id = sysTemplateLibraryFieldFormDto.getId();
+        String dataKey = sysTemplateLibraryFieldFormDto.getDataKey();
+        //参数校对
+        List<Integer> ids = this.listByDataKey(dataKey);
+        if (!ids.isEmpty() && !ids.get(0).equals(id))
+            throw new BaseRuntimeException("当前模板库中key值不能重复");
+        SysTemplateLibraryField sysTemplateLibraryField = this.getById(id);
         if (sysTemplateLibraryField != null) {
             BeanUtil.copyProperties(sysTemplateLibraryFieldFormDto, sysTemplateLibraryField);
             this.updateById(sysTemplateLibraryField);
@@ -55,6 +70,17 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
             this.save(sysTemplateLibraryField1);
             this.save(sysTemplateLibraryField2);
         }
+    }
+
+    @Override
+    public List<Integer> listByDataKey(String dataKey) {
+        if (StrUtil.isEmpty(dataKey))
+            throw new BaseRuntimeException("模板库编号不能为空");
+        QueryWrapper<SysTemplateLibraryField> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .select(SysTemplateLibraryField.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
+                .eq(SysTemplateLibraryField::getDataKey, dataKey);
+        return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
     @Override

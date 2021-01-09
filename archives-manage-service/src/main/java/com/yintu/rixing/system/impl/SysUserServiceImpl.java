@@ -52,8 +52,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         sysUserFormDto.setPassword(passwordEncoder.encode(sysUserFormDto.getPassword()));
         //判断用户名是否重复
-        List<Integer> sysUsers = this.listByUsername(sysUserFormDto.getUsername());
-        if (!sysUsers.isEmpty())
+        List<Integer> ids = this.listByUsername(sysUserFormDto.getUsername());
+        if (!ids.isEmpty())
             throw new BaseRuntimeException("用户名重复");
         SysUser sysUser = new SysUser();
         sysUser.setAccountExpired(EnumFlag.False.getValue());
@@ -72,8 +72,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUser = this.getById(id);
         if (sysUser != null) {
             //判断用户名是否重复
-            List<Integer> sysUsers = this.listByUsername(sysUserFormDto.getUsername());
-            if (!sysUsers.isEmpty() && !sysUsers.stream().findFirst().orElse(null).equals(id))
+            List<Integer> ids = this.listByUsername(sysUserFormDto.getUsername());
+            if (!ids.isEmpty() && !ids.stream().findFirst().orElse(null).equals(id))
                 throw new BaseRuntimeException("用户名重复");
             BeanUtil.copyProperties(sysUserFormDto, sysUser);
             this.updateById(sysUser);
@@ -146,7 +146,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new BaseRuntimeException("用户名不能为空");
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .select(SysUser.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("username"))
+                .select(SysUser.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
                 .eq(SysUser::getUsername, username);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }

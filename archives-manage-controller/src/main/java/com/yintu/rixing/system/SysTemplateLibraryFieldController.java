@@ -40,7 +40,7 @@ public class SysTemplateLibraryFieldController extends Authenticator implements 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加模板库字段信息")
     @PostMapping
     @ApiOperation(value = "添加模板库字段信息", notes = "添加模板库字段信息", position = 1)
-    public ResultDataUtil<Object> add(SysTemplateLibraryFieldFormDto dto) {
+    public ResultDataUtil<Object> add(@Validated SysTemplateLibraryFieldFormDto dto) {
         iSysTemplateLibraryFieldService.save(dto);
         return ResultDataUtil.ok("添加模板库字段信息成功");
     }
@@ -58,7 +58,7 @@ public class SysTemplateLibraryFieldController extends Authenticator implements 
     @PutMapping("/{id}")
     @ApiOperation(value = "修改模板库字段信息", notes = "修改模板库字段信息", position = 3)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
-    public ResultDataUtil<Object> edit(@PathVariable Integer id, SysTemplateLibraryFieldFormDto dto) {
+    public ResultDataUtil<Object> edit(@PathVariable Integer id,@Validated SysTemplateLibraryFieldFormDto dto) {
         iSysTemplateLibraryFieldService.updateById(dto);
         return ResultDataUtil.ok("修改模板库字段信息成功");
     }

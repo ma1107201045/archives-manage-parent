@@ -6,6 +6,8 @@ import com.yintu.rixing.dto.system.SysTemplateLibraryFieldFormDto;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFieldQueryDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * <p>
  * 系统模板库字段表 服务类
@@ -24,6 +26,8 @@ public interface ISysTemplateLibraryFieldService extends IService<SysTemplateLib
 
     @Transactional(rollbackFor = {Exception.class})
     void updateOrderByIds(Integer id1, Integer id2);
+
+    List<Integer> listByDataKey(String dataKey);
 
     Page<SysTemplateLibraryField> page(SysTemplateLibraryFieldQueryDto sysTemplateLibraryFieldQueryDto);
 

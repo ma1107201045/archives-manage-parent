@@ -27,6 +27,8 @@ public interface ISysTemplateLibraryService extends IService<SysTemplateLibrary>
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysTemplateLibraryFormDto sysTemplateLibraryFormDto);
 
+    List<Integer> listByNumber(Integer number);
+
     List<TreeUtil> listTree(Integer parentId);
 
 }
