@@ -73,7 +73,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (sysUser != null) {
             //判断用户名是否重复
             List<Integer> ids = this.listByUsername(sysUserFormDto.getUsername());
-            if (!ids.isEmpty() && !ids.stream().findFirst().orElse(null).equals(id))
+            if (!ids.isEmpty() && !ids.get(0).equals(id))
                 throw new BaseRuntimeException("用户名重复");
             BeanUtil.copyProperties(sysUserFormDto, sysUser);
             this.updateById(sysUser);

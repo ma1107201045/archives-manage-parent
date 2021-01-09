@@ -31,21 +31,20 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
     public void save(SysTemplateLibraryFormDto sysTemplateLibraryFormDto) {
         Short type = sysTemplateLibraryFormDto.getType();
         Integer number = sysTemplateLibraryFormDto.getNumber();
-        if (type != null && type == 2 && number == null)
+        if (type == 2 && number == null)
             throw new BaseRuntimeException("模板编号不能为空");
-        List<Integer> ids = this.listByNumber(number);
-        if (!ids.isEmpty())
-            throw new BaseRuntimeException("模板编号不能重复");
-        SysTemplateLibrary sysTemplateLibrary = new SysTemplateLibrary();
-        if (sysTemplateLibraryFormDto.getType() == 2) {
-            sysTemplateLibrary = this.getById(sysTemplateLibraryFormDto.getParentId());
-            if (sysTemplateLibrary != null) {
-                if (sysTemplateLibrary.getType() == 1)
-                    throw new BaseRuntimeException("模板库下边不能添加目录");
-            } else sysTemplateLibrary = new SysTemplateLibrary();
+        if (type == 2) {
+            List<Integer> ids = this.listByNumber(number);
+            if (!ids.isEmpty())
+                throw new BaseRuntimeException("模板编号不能重复");
         }
-        BeanUtil.copyProperties(sysTemplateLibraryFormDto, sysTemplateLibrary);
-        this.save(sysTemplateLibrary);
+        SysTemplateLibrary sysTemplateLibrary = this.getById(sysTemplateLibraryFormDto.getParentId());
+        if (sysTemplateLibrary != null) {
+            if (sysTemplateLibrary.getType() == 2 && type == 1)
+                throw new BaseRuntimeException("模板库下边不能添加目录");
+            BeanUtil.copyProperties(sysTemplateLibraryFormDto, sysTemplateLibrary);
+            this.save(sysTemplateLibrary);
+        }
     }
 
     @Override
@@ -64,21 +63,20 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         Integer id = sysTemplateLibraryFormDto.getId();
         Short type = sysTemplateLibraryFormDto.getType();
         Integer number = sysTemplateLibraryFormDto.getNumber();
-        if (type != null && type == 2 && number != null)
+        if (type == 2 && number == null)
             throw new BaseRuntimeException("模板编号不能为空");
-        List<Integer> ids = this.listByNumber(number);
-        if (!ids.isEmpty() && !ids.get(0).equals(id))
-            throw new BaseRuntimeException("模板编号不能重复");
-        SysTemplateLibrary sysTemplateLibrary = new SysTemplateLibrary();
-        if (sysTemplateLibraryFormDto.getType() == 2) {
-            sysTemplateLibrary = this.getById(sysTemplateLibraryFormDto.getParentId());
-            if (sysTemplateLibrary != null) {
-                if (sysTemplateLibrary.getType() == 1)
-                    throw new BaseRuntimeException("模板库下级不能添加目录");
-            } else sysTemplateLibrary = new SysTemplateLibrary();
+        if (type == 2) {
+            List<Integer> ids = this.listByNumber(number);
+            if (!ids.isEmpty() && !ids.get(0).equals(id))
+                throw new BaseRuntimeException("模板编号不能重复");
         }
-        BeanUtil.copyProperties(sysTemplateLibraryFormDto, sysTemplateLibrary);
-        this.updateById(sysTemplateLibrary);
+        SysTemplateLibrary sysTemplateLibrary = this.getById(sysTemplateLibraryFormDto.getParentId());
+        if (sysTemplateLibrary != null) {
+            if (sysTemplateLibrary.getType() == 2 && type == 1)
+                throw new BaseRuntimeException("模板库下级不能添加目录");
+            BeanUtil.copyProperties(sysTemplateLibraryFormDto, sysTemplateLibrary);
+            this.updateById(sysTemplateLibrary);
+        }
     }
 
     @Override
