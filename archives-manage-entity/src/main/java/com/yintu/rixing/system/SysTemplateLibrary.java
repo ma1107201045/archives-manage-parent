@@ -37,7 +37,7 @@ public class SysTemplateLibrary extends BaseEntity {
 
     @ApiModelProperty(value = "模板库分类 1.目录 2.库", position = 9)
     @TableField("type")
-    private Integer type;
+    private Short type;
 
     @ApiModelProperty(value = "模板库描述", position = 10)
     @TableField("description")

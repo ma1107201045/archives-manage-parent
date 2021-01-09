@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
@@ -57,10 +58,12 @@ public class SysUserFormDto extends IdDto {
 
     @ApiModelProperty(value = "角色id集", required = true)
     @NotNull
+    @Size(min = 1)
     private Set<Integer> roleIds;
 
     @ApiModelProperty(value = "部门id集", required = true)
     @NotNull
+    @Size(min = 1)
     private Set<Integer> departmentIds;
 
 }

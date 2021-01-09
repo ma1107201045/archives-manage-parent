@@ -23,7 +23,6 @@ public class SysTemplateLibraryFormDto extends IdDto {
     private Integer parentId;
 
     @ApiModelProperty(value = "模板库编号")
-    @NotNull
     private Integer number;
 
     @ApiModelProperty(value = "模板库名称")
@@ -32,7 +31,7 @@ public class SysTemplateLibraryFormDto extends IdDto {
 
     @ApiModelProperty(value = "模板库分类 1.目录 2.库")
     @NotNull
-    private Integer type;
+    private Short type;
 
     @ApiModelProperty(value = "模板库描述")
     private String description;

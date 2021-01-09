@@ -33,7 +33,7 @@ public class SysQzhController extends Authenticator implements BaseController<Sy
     @Autowired
     private ISysQzhService iSysQzhService;
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "添加全宗号信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加全宗号信息")
     @PostMapping
     @ApiOperation(value = "添加全宗号信息", notes = "添加全宗号信息")
     public ResultDataUtil<Object> add(@Validated SysQzhFromDto formDto) {
@@ -41,7 +41,7 @@ public class SysQzhController extends Authenticator implements BaseController<Sy
         return ResultDataUtil.ok("添加全宗号信息成功");
     }
 
-    @Log(level = EnumLogLevel.ERROR, module = "系统管理", context = "删除全宗号信息")
+    @Log(level = EnumLogLevel.WARN, module = "系统管理", context = "删除全宗号信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除全宗号信息", notes = "删除全宗号信息")
     @ApiImplicitParam(name = "ids", value = "主键id", required = true)
@@ -50,7 +50,7 @@ public class SysQzhController extends Authenticator implements BaseController<Sy
         return ResultDataUtil.ok("删除全宗号信息成功");
     }
 
-    @Log(level = EnumLogLevel.WARN, module = "系统管理", context = " 修改全宗号信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = " 修改全宗号信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改全宗号信息", notes = "修改全宗号信息")
     @ApiImplicitParam(name = "id", value = "主键id", required = true)
@@ -59,7 +59,7 @@ public class SysQzhController extends Authenticator implements BaseController<Sy
         return ResultDataUtil.ok("修改全宗号信息成功");
     }
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "查询全宗号信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询全宗号信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询全宗号信息", notes = " 查询全宗号单条信息")
     @ApiImplicitParam(name = "id", value = "主键id", required = true)
@@ -68,7 +68,7 @@ public class SysQzhController extends Authenticator implements BaseController<Sy
         return ResultDataUtil.ok("查询全宗号信息成功", sysQzh);
     }
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "查询全宗号信息列表")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询全宗号信息列表")
     @GetMapping
     @ApiOperation(value = "查询全宗号信息列表", notes = " 查询全宗号信息列表")
     public ResultDataUtil<Page<SysQzh>> findPage(SysQzhQueryDto queryDto) {

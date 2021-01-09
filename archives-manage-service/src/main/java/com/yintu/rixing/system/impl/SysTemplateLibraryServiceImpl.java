@@ -27,6 +27,10 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
 
     @Override
     public void save(SysTemplateLibraryFormDto sysTemplateLibraryFormDto) {
+        Short type = sysTemplateLibraryFormDto.getType();
+        Integer number = sysTemplateLibraryFormDto.getNumber();
+        if (type != null && type == 2 && number != null)
+            throw new BaseRuntimeException("模板编号不能为空");
         SysTemplateLibrary sysTemplateLibrary = new SysTemplateLibrary();
         List<SysTemplateLibrary> sysTemplateLibraries = this.list(new QueryWrapper<SysTemplateLibrary>().lambda().eq(SysTemplateLibrary::getNumber, sysTemplateLibraryFormDto.getNumber()));
         if (!sysTemplateLibraries.isEmpty())
@@ -55,6 +59,10 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
 
     @Override
     public void updateById(SysTemplateLibraryFormDto sysTemplateLibraryFormDto) {
+        Short type = sysTemplateLibraryFormDto.getType();
+        Integer number = sysTemplateLibraryFormDto.getNumber();
+        if (type != null && type == 2 && number != null)
+            throw new BaseRuntimeException("模板编号不能为空");
         List<SysTemplateLibrary> sysTemplateLibraries = this.list(new QueryWrapper<SysTemplateLibrary>().lambda().eq(SysTemplateLibrary::getNumber, sysTemplateLibraryFormDto.getNumber()));
         if (!sysTemplateLibraries.isEmpty() && !sysTemplateLibraries.get(0).getId().equals(sysTemplateLibraryFormDto.getId()))
             throw new BaseRuntimeException("模板编号不能重复");

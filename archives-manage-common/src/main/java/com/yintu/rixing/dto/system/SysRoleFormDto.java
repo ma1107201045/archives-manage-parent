@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
@@ -36,5 +37,6 @@ public class SysRoleFormDto extends IdDto {
 
     @ApiModelProperty(value = "权限id集", required = true)
     @NotNull
+    @Size(min = 1)
     private Set<Integer> permissionIds;
 }

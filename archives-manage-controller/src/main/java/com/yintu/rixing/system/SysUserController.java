@@ -67,7 +67,7 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("修改用户信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = " 重置用户密码")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = " 重置用户密码")
     @PatchMapping("/{id}")
     @ApiOperation(value = "重置密码", notes = "重置密码", position = 4)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -76,7 +76,7 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("重置密码成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "修改用户启用禁用状态")
+    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "修改用户启用禁用状态")
     @PatchMapping("/{id}/account-enabled")
     @ApiOperation(value = "修改用户启用禁用状态", notes = "修改用户启用禁用状态", position = 5)
     @ApiImplicitParams({
