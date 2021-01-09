@@ -11,7 +11,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Mapper
-public interface CommMenuDao {
+public interface CommMenuMapper {
 
 
     List<CommMenuVo> selectByExample(Integer permissionId, Short menu);

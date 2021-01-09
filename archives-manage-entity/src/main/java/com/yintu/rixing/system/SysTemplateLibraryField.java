@@ -37,11 +37,11 @@ public class SysTemplateLibraryField extends BaseEntity {
     private Integer required;
 
     @ApiModelProperty(value = "字段是否是索引 1.是 0.否", position = 9)
-    @TableField("index")
+    @TableField("`index`")
     private Integer index;
 
     @ApiModelProperty(value = "字段顺序", position = 10)
-    @TableField("order")
+    @TableField("`order`")
     private Integer order;
 
     @ApiModelProperty(value = "模板库id", position = 11)

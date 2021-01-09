@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Pattern;
 
 /**
  * @Author: mlf
@@ -24,9 +25,10 @@ public class SysTemplateLibraryFieldFormDto extends IdDto {
     @ApiModelProperty(value = "字段名称（注释或者描述）")
     private String name;
 
-    @ApiModelProperty(value = "key", required = true)
+    @ApiModelProperty(value = "key（用于添加表的字段名）", required = true)
     @NotNull
-    private String dKey;
+    @Pattern(regexp = "^/w+$", message = "输入的key由数字、26个英文字母或者下划线组成")
+    private String dataKey;
 
     @ApiModelProperty(value = "字段是否必填 1.是 0.否", required = true)
     @NotNull

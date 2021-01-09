@@ -11,7 +11,6 @@ import java.util.List;
  */
 public interface ICommMenuService {
 
-
     /**
      * 查询全部权限
      *

@@ -1,7 +1,7 @@
 package com.yintu.rixing.common.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.yintu.rixing.common.CommMenuDao;
+import com.yintu.rixing.common.CommMenuMapper;
 import com.yintu.rixing.common.ICommMenuService;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.util.TreeUtil;
@@ -21,11 +21,11 @@ import java.util.List;
 public class CommMenuServiceImpl implements ICommMenuService {
 
     @Autowired
-    private CommMenuDao commMenuDao;
+    private CommMenuMapper commMenuDao;
 
 
     @Override
-    public List<TreeUtil> findMenus(Integer userId, Integer permissionId) {
+    public List<TreeUtil> findMenus(Integer permissionId, Integer userId) {
         List<CommMenuVo> commMenuVos;
         commMenuVos = userId == null ? commMenuDao.selectByExample(permissionId, EnumFlag.True.getValue()) :
                 commMenuDao.selectByExampleAndUserId(permissionId, EnumFlag.True.getValue(), userId);
@@ -35,7 +35,7 @@ public class CommMenuServiceImpl implements ICommMenuService {
             treeUtil.setId(commMenuVo.getId().longValue());
             treeUtil.setLabel(commMenuVo.getName());
             treeUtil.setA_attr(BeanUtil.beanToMap(commMenuVo));
-            treeUtil.setChildren(this.findMenus(userId, commMenuVo.getId()));
+            treeUtil.setChildren(this.findMenus(commMenuVo.getId(), userId));
             treeUtils.add(treeUtil);
         }
         return treeUtils;
