@@ -27,7 +27,7 @@ public interface ISysTemplateLibraryFieldService extends IService<SysTemplateLib
     @Transactional(rollbackFor = {Exception.class})
     void updateOrderByIds(Integer id1, Integer id2);
 
-    List<Integer> listByDataKey(String dataKey);
+    List<Integer> listByDataKey(Integer templateLibraryId, String dataKey);
 
     Page<SysTemplateLibraryField> page(SysTemplateLibraryFieldQueryDto sysTemplateLibraryFieldQueryDto);
 

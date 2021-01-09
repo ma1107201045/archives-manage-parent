@@ -36,7 +36,7 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
     public void save(SysTemplateLibraryFieldFormDto sysTemplateLibraryFieldFormDto) {
         String dataKey = sysTemplateLibraryFieldFormDto.getDataKey();
         //参数校对
-        List<Integer> ids = this.listByDataKey(dataKey);
+        List<Integer> ids = this.listByDataKey(sysTemplateLibraryFieldFormDto.getTemplateLibraryId(), dataKey);
         if (!ids.isEmpty())
             throw new BaseRuntimeException("当前模板库中key值不能重复");
         SysTemplateLibraryField sysTemplateLibraryField = new SysTemplateLibraryField();
@@ -49,7 +49,7 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
         Integer id = sysTemplateLibraryFieldFormDto.getId();
         String dataKey = sysTemplateLibraryFieldFormDto.getDataKey();
         //参数校对
-        List<Integer> ids = this.listByDataKey(dataKey);
+        List<Integer> ids = this.listByDataKey(sysTemplateLibraryFieldFormDto.getTemplateLibraryId(), dataKey);
         if (!ids.isEmpty() && !ids.get(0).equals(id))
             throw new BaseRuntimeException("当前模板库中key值不能重复");
         SysTemplateLibraryField sysTemplateLibraryField = this.getById(id);
@@ -73,12 +73,13 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
     }
 
     @Override
-    public List<Integer> listByDataKey(String dataKey) {
-        if (StrUtil.isEmpty(dataKey))
-            throw new BaseRuntimeException("模板库编号不能为空");
+    public List<Integer> listByDataKey(Integer templateLibraryId, String dataKey) {
+        if (templateLibraryId == null || StrUtil.isEmpty(dataKey))
+            throw new BaseRuntimeException("模板库id或者模板库编号不能为空");
         QueryWrapper<SysTemplateLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysTemplateLibraryField.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
+                .eq(SysTemplateLibraryField::getTemplateLibraryId, templateLibraryId)
                 .eq(SysTemplateLibraryField::getDataKey, dataKey);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
