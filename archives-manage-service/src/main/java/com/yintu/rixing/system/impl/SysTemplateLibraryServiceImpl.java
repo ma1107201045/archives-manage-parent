@@ -29,10 +29,9 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
 
     @Override
     public void save(SysTemplateLibraryFormDto sysTemplateLibraryFormDto) {
-        Integer id = sysTemplateLibraryFormDto.getId();
         Short type = sysTemplateLibraryFormDto.getType();
         Integer number = sysTemplateLibraryFormDto.getNumber();
-        if (type != null && type == 2 && number != null)
+        if (type != null && type == 2 && number == null)
             throw new BaseRuntimeException("模板编号不能为空");
         List<Integer> ids = this.listByNumber(number);
         if (!ids.isEmpty())
@@ -84,8 +83,6 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
 
     @Override
     public List<Integer> listByNumber(Integer number) {
-        if (number == null)
-            throw new BaseRuntimeException("模板库编号不能为空");
         QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysTemplateLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
