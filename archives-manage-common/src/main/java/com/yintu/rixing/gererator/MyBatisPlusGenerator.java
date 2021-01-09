@@ -40,7 +40,7 @@ public class MyBatisPlusGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/archives-manage-common" + "/src/main/java");
-        gc.setAuthor("mlf");
+        gc.setAuthor("Mr.liu");
         gc.setOpen(false);
         gc.setSwagger2(true);// 实体属性 Swagger2 注解
         gc.setIdType(IdType.AUTO);

@@ -291,17 +291,23 @@ public class SysLibraryServiceImpl extends ServiceImpl<SysLibraryMapper, SysLibr
 
     @Override
     public Map<String, Object> xxfield(Integer id, String xfieldName, String mfieldName, String valuetype, String fieldlength) {
-        return null;
+        Map<String,Object> map=new HashMap<>();
+        String tablename = sysLibraryMapper.findByOne(id).getTablename();
+        map.put("tablename",tablename);
+        map.put("xfieldName",xfieldName);
+        map.put("mfieldName",mfieldName);
+        map.put("valuetype",valuetype);
+        map.put("fieldlength",fieldlength);
+        Integer integer=   sysLibraryMapper.xxfield(map);
+        if (integer==0){
+            return ResponseDataUtil.ok("成功");
+        }
+        return  ResponseDataUtil.error("失败");
     }
 
-//
-//        Integer integer=   sysLibraryMapper.xxfield(map);
-//        if (integer==0){
-//            return ResponseDataUtil.ok("成功");
-//        }
-//        return  ResponseDataUtil.error("失败");
+/*
 
-    //}
+    }*/
 
     /**
      * 递归
