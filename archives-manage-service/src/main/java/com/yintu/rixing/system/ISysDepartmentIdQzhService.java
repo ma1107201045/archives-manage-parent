@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.system.*;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-
 /**
  * <p>
  * 服务类
@@ -15,15 +13,15 @@ import java.util.Set;
  * @author mlf
  * @since 2020-11-27
  */
-public interface ISysQzhService extends IService<SysQzh> {
+public interface ISysDepartmentIdQzhService extends IService<SysDepartmentQzh> {
 
     @Transactional(rollbackFor = {Exception.class})
-    void save(SysQzhFromDto sysUserFormDto);
+    void save(SysDepartmentQzhFromDto sysUserFormDto);
 
     @Transactional(rollbackFor = {Exception.class})
-    void updateById(SysQzhFromDto sysQzhFromDto);
+    void updateById(SysDepartmentQzhFromDto sysQzhFromDto);
 
 
-    Page<SysQzh> page(SysQzhQueryDto sysQzhQueryDto);
+    Page<SysDepartmentQzh> page(SysDepartmentQzhQueryDto sysQzhQueryDto);
 
 }

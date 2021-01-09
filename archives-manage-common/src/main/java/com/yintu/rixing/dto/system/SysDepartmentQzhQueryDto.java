@@ -14,8 +14,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel
-public class SysQzhQueryDto extends PageDto {
-    
+public class SysDepartmentQzhQueryDto extends PageDto {
+
     @ApiModelProperty(value = "全宗号名称")
     private String name;
+
+    @ApiModelProperty(value = "部门id")
+    private Integer departmentId;
 }

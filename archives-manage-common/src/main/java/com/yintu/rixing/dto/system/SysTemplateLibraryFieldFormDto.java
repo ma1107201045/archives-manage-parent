@@ -19,7 +19,7 @@ import javax.validation.constraints.Pattern;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "SysTemplateLibraryFieldFormDto对象", description = "系统模板库字段Dto")
+@ApiModel
 public class SysTemplateLibraryFieldFormDto extends IdDto {
 
     @ApiModelProperty(value = "字段名称（注释或者描述）")

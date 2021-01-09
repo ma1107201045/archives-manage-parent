@@ -44,8 +44,8 @@ public class SysUserController extends Authenticator implements BaseController<S
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加用户信息")
     @PostMapping
     @ApiOperation(value = "添加用户信息", notes = "添加用户信息", position = 1)
-    public ResultDataUtil<Object> add(@Validated SysUserFormDto dto) {
-        iSysUserService.save(dto);
+    public ResultDataUtil<Object> add(@Validated SysUserFormDto formDto) {
+        iSysUserService.save(formDto);
         return ResultDataUtil.ok("添加用户信息成功");
     }
 
@@ -62,8 +62,8 @@ public class SysUserController extends Authenticator implements BaseController<S
     @PutMapping("/{id}")
     @ApiOperation(value = "修改用户信息", notes = "修改用户信息", position = 3)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
-    public ResultDataUtil<Object> edit(@PathVariable Integer id, @Validated SysUserFormDto dto) {
-        iSysUserService.updateById(dto);
+    public ResultDataUtil<Object> edit(@PathVariable Integer id, @Validated SysUserFormDto formDto) {
+        iSysUserService.updateById(formDto);
         return ResultDataUtil.ok("修改用户信息成功");
     }
 

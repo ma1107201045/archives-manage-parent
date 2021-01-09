@@ -65,7 +65,7 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
         QueryWrapper<SysTemplateLibraryField> queryWrapper = new QueryWrapper<>();
         if (sysTemplateLibraryFieldQueryDto.getTemplateLibraryId() != null)
             queryWrapper.lambda().eq(SysTemplateLibraryField::getTemplateLibraryId, templateLibraryId);
-        queryWrapper.orderByAsc("order");
+        queryWrapper.lambda().orderByAsc(SysTemplateLibraryField::getOrder);
         Page<SysTemplateLibraryField> sysTemplateLibraryFieldPage = this.page(new Page<>(num, size), queryWrapper);
         sysTemplateLibraryFieldPage.getRecords().forEach(sysUser -> {
             sysUser.setSysTemplateLibraryFieldType(iSysTemplateLibraryFieldTypeService.getById(sysUser.getTemplateLibraryFieldTypeId()));

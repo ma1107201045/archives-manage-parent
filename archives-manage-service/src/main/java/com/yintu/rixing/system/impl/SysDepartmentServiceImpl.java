@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * <p>
- * 部门表 服务实现类
+ * 系统部门表 服务实现类
  * </p>
  *
  * @author mlf
