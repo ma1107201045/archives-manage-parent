@@ -28,12 +28,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/system/sys-archives-library")
-@ApiSort(7)
+@ApiSort(8)
 @Api(tags = "档案库接口")
 public class SysArchivesLibraryController extends Authenticator {
 
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
+    @Autowired
+    private ISysTemplateLibraryService iSysTemplateLibraryService;
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加模板库信息")
     @PostMapping
@@ -78,4 +80,11 @@ public class SysArchivesLibraryController extends Authenticator {
         return ResultDataUtil.ok("查询档案库列表信息树成功", treeNodeUtils);
     }
 
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询档案库模板库列表信息树")
+    @GetMapping("/sys-template-library")
+    @ApiOperation(value = "查询档案库模板库列表信息树", notes = "查询档案库模板库列表信息树", position = 6)
+    public ResultDataUtil<List<SysTemplateLibrary>> findSysTemplateLibraries() {
+        List<SysTemplateLibrary> sysTemplateLibraries = iSysTemplateLibraryService.listByType((short) 2);
+        return ResultDataUtil.ok("查询档案库模板库列表信息树成功", sysTemplateLibraries);
+    }
 }
