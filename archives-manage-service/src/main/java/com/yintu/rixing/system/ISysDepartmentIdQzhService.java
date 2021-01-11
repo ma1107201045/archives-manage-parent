@@ -21,7 +21,6 @@ public interface ISysDepartmentIdQzhService extends IService<SysDepartmentQzh> {
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysDepartmentQzhFromDto sysQzhFromDto);
 
-
     Page<SysDepartmentQzh> page(SysDepartmentQzhQueryDto sysQzhQueryDto);
 
 }

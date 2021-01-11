@@ -53,9 +53,9 @@ public class SysDepartmentQzhServiceImpl extends ServiceImpl<SysDepartmentQzhMap
         String name = sysQzhQueryDto.getName();
         Integer departmentId = sysQzhQueryDto.getDepartmentId();
         QueryWrapper<SysDepartmentQzh> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda()
-                .like(SysDepartmentQzh::getName, name == null ? "" : name)
-                .eq(SysDepartmentQzh::getDepartmentId, departmentId);
+        queryWrapper.lambda().like(SysDepartmentQzh::getName, name == null ? "" : name);
+        if (departmentId != null)
+            queryWrapper.lambda().eq(SysDepartmentQzh::getDepartmentId, departmentId);
         queryWrapper.orderByDesc("id");
         return this.page(new Page<>(num, size), queryWrapper);
     }

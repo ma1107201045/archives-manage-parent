@@ -92,6 +92,7 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(SysTemplateLibrary::getType, type);
+        queryWrapper.orderByDesc("id");
         return this.list(queryWrapper);
     }
 
