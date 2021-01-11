@@ -1,9 +1,11 @@
 package com.yintu.rixing.system.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFormDto;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFormDto;
+import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.system.SysArchivesLibraryMapper;
@@ -11,6 +13,7 @@ import com.yintu.rixing.system.SysTemplateLibrary;
 import com.yintu.rixing.util.TreeUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +30,22 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
     @Override
     public void save(SysArchivesLibraryFormDto sysArchivesLibraryFormDto) {
-
+        Short type = sysArchivesLibraryFormDto.getType();
+        Integer number = sysArchivesLibraryFormDto.getNumber();
+        if (type == 2 && number == null)
+            throw new BaseRuntimeException("档案库编号不能为空");
+        if (type == 2) {
+            List<Integer> ids = this.listByNumber(number);
+            if (!ids.isEmpty())
+                throw new BaseRuntimeException("档案编号不能重复");
+        }
+        SysArchivesLibrary sysArchivesLibrary = this.getById(sysArchivesLibraryFormDto.getParentId());
+        if (sysArchivesLibrary != null) {
+            if (sysArchivesLibrary.getType() == 2 && type == 1)
+                throw new BaseRuntimeException("档案库下边不能添加目录");
+            BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
+            this.save(sysArchivesLibrary);
+        }
     }
 
     @Override
@@ -45,7 +63,23 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
     @Override
     public void updateById(SysArchivesLibraryFormDto sysArchivesLibraryFormDto) {
-
+        Integer id = sysArchivesLibraryFormDto.getId();
+        Short type = sysArchivesLibraryFormDto.getType();
+        Integer number = sysArchivesLibraryFormDto.getNumber();
+        if (type == 2 && number == null)
+            throw new BaseRuntimeException("档案编号不能为空");
+        if (type == 2) {
+            List<Integer> ids = this.listByNumber(number);
+            if (!ids.isEmpty() && !ids.get(0).equals(id))
+                throw new BaseRuntimeException("档案编号不能重复");
+        }
+        SysArchivesLibrary sysArchivesLibrary = this.getById(sysArchivesLibraryFormDto.getParentId());
+        if (sysArchivesLibrary != null) {
+            if (sysArchivesLibrary.getType() == 2 && type == 1)
+                throw new BaseRuntimeException("档案库下级不能添加目录");
+            BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
+            this.updateById(sysArchivesLibrary);
+        }
     }
 
     @Override
@@ -59,6 +93,18 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
     @Override
     public List<TreeUtil> listTree(Integer parentId) {
-        return null;
+        QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysArchivesLibrary::getParentId, parentId);
+        List<SysArchivesLibrary> sysArchivesLibraries = this.list(queryWrapper);
+        List<TreeUtil> treeUtils = new ArrayList<>();
+        for (SysArchivesLibrary sysArchivesLibrary : sysArchivesLibraries) {
+            TreeUtil treeUtil = new TreeUtil();
+            treeUtil.setId(sysArchivesLibrary.getId().longValue());
+            treeUtil.setLabel(sysArchivesLibrary.getName());
+            treeUtil.setA_attr(BeanUtil.beanToMap(sysArchivesLibrary));
+            treeUtil.setChildren(this.listTree(sysArchivesLibrary.getId()));
+            treeUtils.add(treeUtil);
+        }
+        return treeUtils;
     }
 }

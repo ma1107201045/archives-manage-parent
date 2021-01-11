@@ -39,10 +39,10 @@ public class SysDepartmentQzhServiceImpl extends ServiceImpl<SysDepartmentQzhMap
 
     @Override
     public void updateById(SysDepartmentQzhFromDto sysDepartmentQzhFromDto) {
-        SysDepartmentQzh sysQzh = this.getById(sysDepartmentQzhFromDto.getId());
-        if (sysQzh != null) {
-            BeanUtil.copyProperties(sysDepartmentQzhFromDto, sysQzh);
-            this.save(sysQzh);
+        SysDepartmentQzh sysDepartmentQzh = this.getById(sysDepartmentQzhFromDto.getId());
+        if (sysDepartmentQzh != null) {
+            BeanUtil.copyProperties(sysDepartmentQzhFromDto, sysDepartmentQzh);
+            this.updateById(sysDepartmentQzh);
         }
     }
 
@@ -51,9 +51,11 @@ public class SysDepartmentQzhServiceImpl extends ServiceImpl<SysDepartmentQzhMap
         Integer num = sysQzhQueryDto.getNum();
         Integer size = sysQzhQueryDto.getSize();
         String name = sysQzhQueryDto.getName();
+        Integer departmentId = sysQzhQueryDto.getDepartmentId();
         QueryWrapper<SysDepartmentQzh> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .like(SysDepartmentQzh::getName, name == null ? "" : name);
+                .like(SysDepartmentQzh::getName, name == null ? "" : name)
+                .eq(SysDepartmentQzh::getDepartmentId, departmentId);
         queryWrapper.orderByDesc("id");
         return this.page(new Page<>(num, size), queryWrapper);
     }

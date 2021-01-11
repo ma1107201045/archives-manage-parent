@@ -21,6 +21,10 @@ public class SysArchivesLibraryFormDto extends IdDto {
     @TableField("parent_id")
     private Integer parentId;
 
+    @ApiModelProperty(value = "档案库编号")
+    @TableField("number")
+    private Integer number;
+
     @ApiModelProperty(value = "档案库名称")
     @TableField("name")
     private String name;
@@ -31,7 +35,7 @@ public class SysArchivesLibraryFormDto extends IdDto {
 
     @ApiModelProperty(value = "档案库分类 1.目录 2.档案库")
     @TableField("type")
-    private Integer type;
+    private Short type;
 
     @ApiModelProperty(value = "档案库描述")
     @TableField("description")
