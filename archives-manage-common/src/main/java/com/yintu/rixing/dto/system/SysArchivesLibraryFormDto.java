@@ -34,9 +34,8 @@ public class SysArchivesLibraryFormDto extends IdDto {
     @NotBlank
     private String name;
 
-    @ApiModelProperty(value = "key（定义数据库表名）", required = true)
+    @ApiModelProperty(value = "key（定义数据库表名）")
     @TableField("data_key")
-    @NotNull
     private String dataKey;
 
     @ApiModelProperty(value = "档案库分类 1.目录 2.档案库", required = true)
@@ -50,7 +49,6 @@ public class SysArchivesLibraryFormDto extends IdDto {
 
     @ApiModelProperty(value = "模板库id", required = true)
     @TableField("template_library_id")
-    @NotNull
     private Integer templateLibraryId;
 
 }

@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFormDto;
 import com.yintu.rixing.exception.BaseRuntimeException;
-import com.yintu.rixing.system.ISysArchivesLibraryService;
-import com.yintu.rixing.system.SysArchivesLibrary;
-import com.yintu.rixing.system.SysArchivesLibraryMapper;
-import com.yintu.rixing.system.SysTemplateLibraryField;
+import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.TreeUtil;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +27,13 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
     @Override
     public void save(SysArchivesLibraryFormDto sysArchivesLibraryFormDto) {
+        Integer parentId = sysArchivesLibraryFormDto.getParentId();
         Short type = sysArchivesLibraryFormDto.getType();
         Integer number = sysArchivesLibraryFormDto.getNumber();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
-        if (type == 2 && number == null)
-            throw new BaseRuntimeException("档案库编号不能为空");
+        Integer templateLibraryId = sysArchivesLibraryFormDto.getTemplateLibraryId();
+        if (type == 2 && (number == null || dataKey == null || templateLibraryId == null))
+            throw new BaseRuntimeException("档案库编号或者key或者模板库id不能为空");
         if (type == 2) {
             List<Integer> ids1 = this.listByNumber(number);
             if (!ids1.isEmpty())
@@ -43,13 +42,17 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             if (!ids2.isEmpty())
                 throw new BaseRuntimeException("key不能重复");
         }
-        SysArchivesLibrary sysArchivesLibrary = this.getById(sysArchivesLibraryFormDto.getParentId());
-        if (sysArchivesLibrary != null) {
-            if (sysArchivesLibrary.getType() == 2 && type == 1)
-                throw new BaseRuntimeException("档案库下边不能添加目录");
-            BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
-            this.save(sysArchivesLibrary);
+        SysArchivesLibrary sysArchivesLibrary = new SysArchivesLibrary();
+        if (parentId != -1) {
+            sysArchivesLibrary = this.getById(sysArchivesLibraryFormDto.getParentId());
+            if (sysArchivesLibrary != null) {
+                if (sysArchivesLibrary.getType() == 2 && type == 1)
+                    throw new BaseRuntimeException("档案库下边不能添加目录");
+
+            } else return;
         }
+        BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
+        this.save(sysArchivesLibrary);
     }
 
     @Override
@@ -68,11 +71,13 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     @Override
     public void updateById(SysArchivesLibraryFormDto sysArchivesLibraryFormDto) {
         Integer id = sysArchivesLibraryFormDto.getId();
+        Integer parentId = sysArchivesLibraryFormDto.getParentId();
         Short type = sysArchivesLibraryFormDto.getType();
         Integer number = sysArchivesLibraryFormDto.getNumber();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
-        if (type == 2 && number == null)
-            throw new BaseRuntimeException("档案编号不能为空");
+        Integer templateLibraryId = sysArchivesLibraryFormDto.getTemplateLibraryId();
+        if (type == 2 && (number == null || dataKey == null || templateLibraryId == null))
+            throw new BaseRuntimeException("档案库编号或者key或者模板库id不能为空");
         if (type == 2) {
             List<Integer> ids1 = this.listByNumber(number);
             if (!ids1.isEmpty() && !ids1.get(0).equals(id))
@@ -83,8 +88,14 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         }
         SysArchivesLibrary sysArchivesLibrary = this.getById(sysArchivesLibraryFormDto.getParentId());
         if (sysArchivesLibrary != null) {
-            if (sysArchivesLibrary.getType() == 2 && type == 1)
-                throw new BaseRuntimeException("档案库下级不能添加目录");
+            if (parentId != -1) {
+                sysArchivesLibrary = this.getById(parentId);
+                if (sysArchivesLibrary != null) {
+                    if (sysArchivesLibrary.getType() == 2 && type == 1)
+                        throw new BaseRuntimeException("档案库下边不能添加目录");
+
+                } else return;
+            }
             BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
             this.updateById(sysArchivesLibrary);
         }

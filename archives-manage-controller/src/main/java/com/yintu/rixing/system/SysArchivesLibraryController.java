@@ -80,11 +80,11 @@ public class SysArchivesLibraryController extends Authenticator {
         return ResultDataUtil.ok("查询档案库列表信息树成功", treeNodeUtils);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询档案库模板库列表信息树")
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询档案库模板库列表信息列表")
     @GetMapping("/sys-template-library")
-    @ApiOperation(value = "查询档案库模板库列表信息树", notes = "查询档案库模板库列表信息树", position = 6)
+    @ApiOperation(value = "查询档案库模板库列表信息列表", notes = "查询档案库模板库列表信息列表", position = 6)
     public ResultDataUtil<List<SysTemplateLibrary>> findSysTemplateLibraries() {
         List<SysTemplateLibrary> sysTemplateLibraries = iSysTemplateLibraryService.listByType((short) 2);
-        return ResultDataUtil.ok("查询档案库模板库列表信息树成功", sysTemplateLibraries);
+        return ResultDataUtil.ok("查询档案库模板库列表信息列表成功", sysTemplateLibraries);
     }
 }

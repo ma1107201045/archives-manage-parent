@@ -26,6 +26,7 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
 
     @Override
     public void save(SysTemplateLibraryFormDto sysTemplateLibraryFormDto) {
+        Integer parentId = sysTemplateLibraryFormDto.getParentId();
         Short type = sysTemplateLibraryFormDto.getType();
         Integer number = sysTemplateLibraryFormDto.getNumber();
         if (type == 2 && number == null)
@@ -35,13 +36,17 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
             if (!ids.isEmpty())
                 throw new BaseRuntimeException("模板编号不能重复");
         }
-        SysTemplateLibrary sysTemplateLibrary = this.getById(sysTemplateLibraryFormDto.getParentId());
-        if (sysTemplateLibrary != null) {
-            if (sysTemplateLibrary.getType() == 2 && type == 1)
-                throw new BaseRuntimeException("模板库下边不能添加目录");
-            BeanUtil.copyProperties(sysTemplateLibraryFormDto, sysTemplateLibrary);
-            this.save(sysTemplateLibrary);
+        SysTemplateLibrary sysTemplateLibrary = new SysTemplateLibrary();
+        if (parentId != -1) {
+            sysTemplateLibrary = this.getById(sysTemplateLibraryFormDto.getParentId());
+            if (sysTemplateLibrary != null) {
+                if (sysTemplateLibrary.getType() == 2 && type == 1)
+                    throw new BaseRuntimeException("模板库下边不能添加目录");
+
+            } else return;
         }
+        BeanUtil.copyProperties(sysTemplateLibraryFormDto, sysTemplateLibrary);
+        this.save(sysTemplateLibrary);
     }
 
     @Override
@@ -59,6 +64,7 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
 
     @Override
     public void updateById(SysTemplateLibraryFormDto sysTemplateLibraryFormDto) {
+        Integer parentId = sysTemplateLibraryFormDto.getParentId();
         Integer id = sysTemplateLibraryFormDto.getId();
         Short type = sysTemplateLibraryFormDto.getType();
         Integer number = sysTemplateLibraryFormDto.getNumber();
@@ -69,10 +75,16 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
             if (!ids.isEmpty() && !ids.get(0).equals(id))
                 throw new BaseRuntimeException("模板编号不能重复");
         }
-        SysTemplateLibrary sysTemplateLibrary = this.getById(sysTemplateLibraryFormDto.getParentId());
+        SysTemplateLibrary sysTemplateLibrary = this.getById(id);
         if (sysTemplateLibrary != null) {
-            if (sysTemplateLibrary.getType() == 2 && type == 1)
-                throw new BaseRuntimeException("模板库下级不能添加目录");
+            if (parentId != -1) {
+                sysTemplateLibrary = this.getById(sysTemplateLibraryFormDto.getParentId());
+                if (sysTemplateLibrary != null) {
+                    if (sysTemplateLibrary.getType() == 2 && type == 1)
+                        throw new BaseRuntimeException("模板库下边不能添加目录");
+
+                } else return;
+            }
             BeanUtil.copyProperties(sysTemplateLibraryFormDto, sysTemplateLibrary);
             this.updateById(sysTemplateLibrary);
         }
