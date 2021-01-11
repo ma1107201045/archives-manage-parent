@@ -1,15 +1,15 @@
 package com.yintu.rixing.system.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFormDto;
-import com.yintu.rixing.dto.system.SysTemplateLibraryFormDto;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.system.SysArchivesLibraryMapper;
-import com.yintu.rixing.system.SysTemplateLibrary;
+import com.yintu.rixing.system.SysTemplateLibraryField;
 import com.yintu.rixing.util.TreeUtil;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +32,16 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     public void save(SysArchivesLibraryFormDto sysArchivesLibraryFormDto) {
         Short type = sysArchivesLibraryFormDto.getType();
         Integer number = sysArchivesLibraryFormDto.getNumber();
+        String dataKey = sysArchivesLibraryFormDto.getDataKey();
         if (type == 2 && number == null)
             throw new BaseRuntimeException("档案库编号不能为空");
         if (type == 2) {
-            List<Integer> ids = this.listByNumber(number);
-            if (!ids.isEmpty())
+            List<Integer> ids1 = this.listByNumber(number);
+            if (!ids1.isEmpty())
                 throw new BaseRuntimeException("档案编号不能重复");
+            List<Integer> ids2 = this.listByDataKey(dataKey);
+            if (!ids2.isEmpty())
+                throw new BaseRuntimeException("key不能重复");
         }
         SysArchivesLibrary sysArchivesLibrary = this.getById(sysArchivesLibraryFormDto.getParentId());
         if (sysArchivesLibrary != null) {
@@ -66,12 +70,16 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         Integer id = sysArchivesLibraryFormDto.getId();
         Short type = sysArchivesLibraryFormDto.getType();
         Integer number = sysArchivesLibraryFormDto.getNumber();
+        String dataKey = sysArchivesLibraryFormDto.getDataKey();
         if (type == 2 && number == null)
             throw new BaseRuntimeException("档案编号不能为空");
         if (type == 2) {
-            List<Integer> ids = this.listByNumber(number);
-            if (!ids.isEmpty() && !ids.get(0).equals(id))
+            List<Integer> ids1 = this.listByNumber(number);
+            if (!ids1.isEmpty() && !ids1.get(0).equals(id))
                 throw new BaseRuntimeException("档案编号不能重复");
+            List<Integer> ids2 = this.listByDataKey(dataKey);
+            if (!ids2.isEmpty() && !ids2.get(0).equals(id))
+                throw new BaseRuntimeException("key不能重复");
         }
         SysArchivesLibrary sysArchivesLibrary = this.getById(sysArchivesLibraryFormDto.getParentId());
         if (sysArchivesLibrary != null) {
@@ -88,6 +96,17 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         queryWrapper.lambda()
                 .select(SysArchivesLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
                 .eq(SysArchivesLibrary::getNumber, number);
+        return this.listObjs(queryWrapper, id -> (Integer) id);
+    }
+
+    @Override
+    public List<Integer> listByDataKey(String dataKey) {
+        if (StrUtil.isEmpty(dataKey))
+            throw new BaseRuntimeException("key不能为空");
+        QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .select(SysArchivesLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
+                .eq(SysArchivesLibrary::getDataKey, dataKey);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 

@@ -89,6 +89,8 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
 
     @Override
     public List<SysTemplateLibrary> listByType(Short type) {
+        if (type == null)
+            throw new BaseRuntimeException("模板库类型不能为空");
         QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(SysTemplateLibrary::getType, type);
