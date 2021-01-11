@@ -10,38 +10,39 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统模板库表
+ * 系统档案库表
  * </p>
  *
  * @author mlf
- * @since 2020-12-30
+ * @since 2021-01-11
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_template_library")
-@ApiModel(value = "SysTemplateLibrary对象", description = "系统模板库表")
-public class SysTemplateLibrary extends BaseEntity {
+@TableName("sys_archives_library")
+@ApiModel(value="SysArchivesLibrary对象", description="系统档案库表")
+public class SysArchivesLibrary extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-    @ApiModelProperty(value = "父节点主键", position = 6)
+
+    @ApiModelProperty(value = "父节点主键")
     @TableField("parent_id")
     private Integer parentId;
 
-    @ApiModelProperty(value = "模板库编号", position = 7)
-    @TableField("number")
-    private Integer number;
-
-    @ApiModelProperty(value = "模板库名称", position = 8)
+    @ApiModelProperty(value = "档案库名称")
     @TableField("name")
     private String name;
 
-    @ApiModelProperty(value = "模板库分类 1.目录 2.模板库", position = 9)
+    @ApiModelProperty(value = "档案库分类 1.目录 2.档案库")
     @TableField("type")
-    private Short type;
+    private Integer type;
 
-    @ApiModelProperty(value = "模板库描述", position = 10)
+    @ApiModelProperty(value = "档案库描述")
     @TableField("description")
     private String description;
+
+    @ApiModelProperty(value = "模板库id")
+    @TableField("template_library_id")
+    private Integer templateLibraryId;
 
 
 }

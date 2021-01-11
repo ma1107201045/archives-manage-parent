@@ -3,6 +3,7 @@ package com.yintu.rixing.security.impl;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.security.ILogService;
 import com.yintu.rixing.security.ISecLogService;
 import com.yintu.rixing.security.SecLog;
@@ -32,7 +33,7 @@ import java.util.Map;
 public class LogServiceImpl implements ILogService {
 
 
-    private static final String LOG_CONTENT = "[类名]:%s,[方法]:%s,[参数]:%s,[IP]:%s";
+    private static final String LOG_DESCRIPTION = "[类名]:%s,[方法]:%s,[参数]:%s,[IP]:%s";
 
 
     @Autowired
@@ -40,21 +41,25 @@ public class LogServiceImpl implements ILogService {
 
     @Override
     public void put(JoinPoint joinPoint, HttpServletRequest request, String methodName, Integer userId, String username, String operator, Short level, String module, String context) {
+        SecLog secLog = new SecLog();
+        String loginIp = IPUtil.getIpAddress(request);
+        secLog.setCreateTime(DateUtil.date());
+        secLog.setUserId(userId);
+        secLog.setUsername(username);
+        secLog.setOperator(operator);
+        secLog.setLevel(level);
+        secLog.setModule(module);
+        secLog.setContext(context);
         try {
-            SecLog secLog = new SecLog();
-            secLog.setUserId(userId);
-            secLog.setUsername(username);
-            secLog.setOperator(operator);
-            secLog.setLevel(level);
-            secLog.setModule(module);
-            secLog.setCreateTime(DateUtil.date());
-            secLog.setContext(context);
-            secLog.setLoginIp(IPUtil.getIpAddress(request));
             secLog.setDescription(this.operateContent(joinPoint, methodName, IPUtil.getIpAddress(request), request));
-            iSecLogService.save(secLog);
         } catch (Exception e) {
-            e.printStackTrace();
+            secLog.setLevel((short) 5);
+            secLog.setModule("日志管理");
+            secLog.setContext(context);
+            secLog.setDescription(String.format(LOG_DESCRIPTION, this.getClass().getName(), "put", "message={\"error\":\"" + e.getMessage() + "\"}", loginIp));
         }
+        secLog.setLoginIp(loginIp);
+        iSecLogService.save(secLog);
     }
 
 
@@ -77,7 +82,7 @@ public class LogServiceImpl implements ILogService {
         if (StringUtils.isEmpty(sb.toString())) {
             sb.append(request.getQueryString());
         }
-        return String.format(LOG_CONTENT, className, methodName, sb.toString(), ip);
+        return String.format(LOG_DESCRIPTION, className, methodName, sb.toString(), ip);
     }
 
     private Map<String, Object> getFieldsName(Class<?> cls, String clazzName, String methodName, Object[] args) throws NotFoundException {
@@ -98,10 +103,7 @@ public class LogServiceImpl implements ILogService {
         }
         int pos = Modifier.isStatic(cm.getModifiers()) ? 0 : 1;
         for (int i = 0; i < cm.getParameterTypes().length; i++) {
-            if (args[i] instanceof ServletResponse)
-                map.put(attr.variableName(i + pos), args[i].toString());
-            else
-                map.put(attr.variableName(i + pos), args[i]);//paramNames即参数名
+            map.put(attr.variableName(i + pos), args[i]);//paramNames即参数名
         }
         return map;
     }

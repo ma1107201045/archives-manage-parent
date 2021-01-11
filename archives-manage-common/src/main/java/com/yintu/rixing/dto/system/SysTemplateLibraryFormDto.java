@@ -29,7 +29,7 @@ public class SysTemplateLibraryFormDto extends IdDto {
     @NotNull
     private String name;
 
-    @ApiModelProperty(value = "模板库分类 1.目录 2.库")
+    @ApiModelProperty(value = "模板库分类 1.目录 2.模板库")
     @NotNull
     private Short type;
 
