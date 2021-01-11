@@ -41,9 +41,10 @@ public class SysDepartmentQzhFromDto extends IdDto {
     @ApiModelProperty(value = "描述")
     private String description;
 
+    @ApiModelProperty(value = "备注")
+    private String remark;
 
     @ApiModelProperty(value = "部门id", required = true)
-    @TableField("departmentId")
     @NotNull
     private Integer departmentId;
 

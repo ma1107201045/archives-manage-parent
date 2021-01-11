@@ -67,8 +67,8 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
             Integer order = sysTemplateLibraryField1.getOrder();
             sysTemplateLibraryField1.setOrder(sysTemplateLibraryField2.getOrder());
             sysTemplateLibraryField2.setOrder(order);
-            this.save(sysTemplateLibraryField1);
-            this.save(sysTemplateLibraryField2);
+            this.saveOrUpdate(sysTemplateLibraryField1);
+            this.saveOrUpdate(sysTemplateLibraryField2);
         }
     }
 

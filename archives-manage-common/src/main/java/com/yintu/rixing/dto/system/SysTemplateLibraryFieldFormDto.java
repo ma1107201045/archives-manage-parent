@@ -27,7 +27,7 @@ public class SysTemplateLibraryFieldFormDto extends IdDto {
 
     @ApiModelProperty(value = "key（用于添加表的字段名）", required = true)
     @NotNull
-    @Pattern(regexp = "^/w+$", message = "输入的key由数字、26个英文字母或者下划线组成")
+    @Pattern(regexp = "(^_([a-zA-Z0-9]_?)*$)|(^[a-zA-Z](_?[a-zA-Z0-9])*_?$)", message = "输入key首位可以是字母以及下划线。首位之后可以是字母，数字以及下划线。下划线后不能接下划线")
     private String dataKey;
 
     @ApiModelProperty(value = "字段是否必填 1.是 0.否", required = true)

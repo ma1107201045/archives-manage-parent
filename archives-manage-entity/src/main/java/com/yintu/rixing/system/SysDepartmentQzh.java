@@ -21,8 +21,8 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_qzh")
-@ApiModel(value = "SysQzh对象", description = "系统全宗号表")
+@TableName("sys_department_qzh")
+@ApiModel(value = "SysDepartmentQzh对象", description = "系统全宗号表")
 public class SysDepartmentQzh extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -54,8 +54,12 @@ public class SysDepartmentQzh extends BaseEntity {
     @TableField("description")
     private String description;
 
+    @ApiModelProperty(value = "备注")
+    @TableField("remark")
+    private String remark;
+
     @ApiModelProperty(value = "部门id", required = true)
-    @TableField("departmentId")
+    @TableField("department_id")
     @NotNull
     private Integer departmentId;
 

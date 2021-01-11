@@ -67,8 +67,8 @@ public class SysTemplateLibraryFieldController extends Authenticator implements 
     @PatchMapping("/{id1}/{id2}")
     @ApiOperation(value = "修改模板库字段顺序", notes = "修改模板库字段顺序", position = 4)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id1", required = true, paramType = "path"),
-            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id2", required = true, paramType = "path")
+            @ApiImplicitParam(name = "id1", dataType = "int", value = "主键id1", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "id2", dataType = "int", value = "主键id2", required = true, paramType = "path")
     })
     public ResultDataUtil<Object> editOrder(@PathVariable Integer id1, @PathVariable Integer id2) {
         iSysTemplateLibraryFieldService.updateOrderByIds(id1, id2);

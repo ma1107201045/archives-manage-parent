@@ -27,7 +27,7 @@ import java.util.Set;
  * @since 2020-11-27
  */
 @RestController
-@RequestMapping("/system/sys-department/sys-qzh")
+@RequestMapping("/system/sys-department-qzh")
 @ApiSort(9)
 @Api(tags = "全宗号接口")
 public class SysDepartmentQzhController extends Authenticator implements BaseController<SysDepartmentQzhFromDto, SysDepartmentQzhQueryDto, SysDepartmentQzh, Integer> {
