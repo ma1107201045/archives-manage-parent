@@ -2,6 +2,8 @@ package com.yintu.rixing.system.impl;
 
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.ObjectId;
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -12,6 +14,8 @@ import com.yintu.rixing.system.SysDepartmentQzh;
 import com.yintu.rixing.system.SysDepartmentQzhMapper;
 
 import org.springframework.stereotype.Service;
+
+import java.util.Locale;
 
 /**
  * <p>
@@ -29,6 +33,7 @@ public class SysDepartmentQzhServiceImpl extends ServiceImpl<SysDepartmentQzhMap
     public void save(SysDepartmentQzhFromDto sysDepartmentQzhFromDto) {
         SysDepartmentQzh sysDepartmentQzh = new SysDepartmentQzh();
         BeanUtil.copyProperties(sysDepartmentQzhFromDto, sysDepartmentQzh);
+        sysDepartmentQzh.setNumber(IdUtil.objectId().toUpperCase(Locale.ROOT));
         this.save(sysDepartmentQzh);
     }
 

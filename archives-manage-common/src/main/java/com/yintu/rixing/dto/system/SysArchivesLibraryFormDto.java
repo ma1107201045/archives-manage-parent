@@ -25,6 +25,10 @@ public class SysArchivesLibraryFormDto extends IdDto {
     @TableField("name")
     private String name;
 
+    @ApiModelProperty(value = "key（定义数据库表名）")
+    @TableField("data_key")
+    private String dataKey;
+
     @ApiModelProperty(value = "档案库分类 1.目录 2.档案库")
     @TableField("type")
     private Integer type;

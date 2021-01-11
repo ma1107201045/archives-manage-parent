@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_archives_library")
-@ApiModel(value="SysArchivesLibrary对象", description="系统档案库表")
+@ApiModel(value = "SysArchivesLibrary对象", description = "系统档案库表")
 public class SysArchivesLibrary extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -28,9 +28,17 @@ public class SysArchivesLibrary extends BaseEntity {
     @TableField("parent_id")
     private Integer parentId;
 
+    @ApiModelProperty(value = "档案库编号")
+    @TableField("number")
+    private Integer number;
+
     @ApiModelProperty(value = "档案库名称")
     @TableField("name")
     private String name;
+
+    @ApiModelProperty(value = "key（定义数据库表名）")
+    @TableField("data_key")
+    private String dataKey;
 
     @ApiModelProperty(value = "档案库分类 1.目录 2.档案库")
     @TableField("type")

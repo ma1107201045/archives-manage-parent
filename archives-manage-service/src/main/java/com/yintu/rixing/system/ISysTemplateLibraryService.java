@@ -29,6 +29,8 @@ public interface ISysTemplateLibraryService extends IService<SysTemplateLibrary>
 
     List<Integer> listByNumber(Integer number);
 
+    List<SysTemplateLibrary> listByType(Short type);
+
     List<TreeUtil> listTree(Integer parentId);
 
 }

@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFormDto;
 import com.yintu.rixing.exception.BaseRuntimeException;
-import com.yintu.rixing.system.ISysTemplateLibraryService;
-import com.yintu.rixing.system.SysTemplateLibrary;
-import com.yintu.rixing.system.SysTemplateLibraryMapper;
-import com.yintu.rixing.system.SysUser;
+import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.TreeUtil;
 import org.springframework.stereotype.Service;
 
@@ -51,10 +48,12 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
     public void removeTree(Integer id) {
         this.removeById(id);
         QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysTemplateLibrary::getParentId, id);
-        List<SysTemplateLibrary> sysDepartments = this.list(queryWrapper);
-        for (SysTemplateLibrary sysTemplateLibrary : sysDepartments) {
-            this.removeTree(sysTemplateLibrary.getId());
+        queryWrapper.lambda()
+                .select(SysTemplateLibrary::getId)
+                .eq(SysTemplateLibrary::getParentId, id);
+        List<Integer> ids = this.listObjs(queryWrapper, obj -> (Integer) obj);
+        for (Integer integer : ids) {
+            this.removeTree(integer);
         }
     }
 
@@ -86,6 +85,14 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
                 .select(SysTemplateLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
                 .eq(SysTemplateLibrary::getNumber, number);
         return this.listObjs(queryWrapper, id -> (Integer) id);
+    }
+
+    @Override
+    public List<SysTemplateLibrary> listByType(Short type) {
+        QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(SysTemplateLibrary::getType, type);
+        return this.list(queryWrapper);
     }
 
     @Override
