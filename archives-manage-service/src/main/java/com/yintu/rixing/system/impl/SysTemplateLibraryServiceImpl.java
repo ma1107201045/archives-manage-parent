@@ -41,7 +41,7 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         if (parentId != -1) {
             sysTemplateLibrary = this.getById(sysTemplateLibraryFormDto.getParentId());
             if (sysTemplateLibrary != null) {
-                if (sysTemplateLibrary.getType() == 2 && type == 1)
+                if (type == 1 && sysTemplateLibrary.getType() == 2)
                     throw new BaseRuntimeException("模板库下边不能添加目录");
 
             } else return;
@@ -78,21 +78,21 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         }
         SysTemplateLibrary sysTemplateLibrary = this.getById(id);
         if (sysTemplateLibrary != null) {
-            //判断当前修改的类型
+            //判断修改的跟当前的类型对比
             if (type == 1 && sysTemplateLibrary.getType() == 2) {
                 sysTemplateLibrary.setNumber(null);
             }
-            //判断上级修改的类型
+            //判断修改跟上级的类型对比
             if (parentId != -1) {
                 SysTemplateLibrary last = this.getById(parentId);
                 if (last != null) {
                     if (type == 1 && last.getType() == 2)
-                        throw new BaseRuntimeException("模板库下边不能修改成目录");
+                        throw new BaseRuntimeException("目录上边不能有模板库");
                 } else return;
             }
-            //判断下级修改的类型
+            //判断修改跟下级的类型对比
             if (type == 2) {
-                List<Integer> ids = this.listByParentIdAndType(sysTemplateLibrary.getId(), (short) 1);
+                List<Integer> ids = this.listByIdAndType(sysTemplateLibrary.getId(), (short) 1);
                 if (!ids.isEmpty())
                     throw new BaseRuntimeException("模板库下边不能有目录");
             }
@@ -110,14 +110,14 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
     }
 
     @Override
-    public List<Integer> listByParentIdAndType(Integer parentId, Short type) {
-        if (parentId == null)
+    public List<Integer> listByIdAndType(Integer id, Short type) {
+        if (id == null)
             throw new BaseRuntimeException("模板库id不能为空");
         QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .eq(SysTemplateLibrary::getParentId, parentId)
+                .eq(SysTemplateLibrary::getParentId, id)
                 .eq(SysTemplateLibrary::getType, type);
-        return this.listObjs(queryWrapper, id -> (Integer) id);
+        return this.listObjs(queryWrapper, integer -> (Integer) integer);
 
     }
 

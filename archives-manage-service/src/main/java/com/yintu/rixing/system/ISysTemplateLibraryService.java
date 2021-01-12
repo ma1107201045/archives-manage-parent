@@ -29,7 +29,7 @@ public interface ISysTemplateLibraryService extends IService<SysTemplateLibrary>
 
     List<Integer> listByNumber(Integer number);
 
-    List<Integer> listByParentIdAndType(Integer parentId, Short type);
+    List<Integer> listByIdAndType(Integer Id, Short type);
 
     List<SysTemplateLibrary> listByType(Short type);
 

@@ -73,7 +73,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         if (parentId != -1) {
             sysArchivesLibrary = this.getById(sysArchivesLibraryFormDto.getParentId());
             if (sysArchivesLibrary != null) {
-                if (sysArchivesLibrary.getType() == 2 && type == 1)
+                if (type == 1 && sysArchivesLibrary.getType() == 2)
                     throw new BaseRuntimeException("档案库下边不能添加目录");
             } else return;
         }
@@ -131,7 +131,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         }
         SysArchivesLibrary sysArchivesLibrary = this.getById(id);
         if (sysArchivesLibrary != null) {
-            //判断当前修改的类型
+            //判断修改的跟当前的类型对比
             if (type == 1 && sysArchivesLibrary.getType() == 2) {
                 sysArchivesLibrary.setNumber(null);
                 sysArchivesLibrary.setDataKey(null);
@@ -140,17 +140,17 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 String oldDataKey = sysArchivesLibrary.getDataKey();
                 iCommTableFieldService.removeTableByTableName(TableNameUtil.getFullTableName(oldDataKey));
             }
-            //判断上级修改的类型
+            //判断修改跟上级的类型对比
             if (parentId != -1) {
                 SysArchivesLibrary last = this.getById(parentId);
                 if (last != null) {
                     if (type == 1 && last.getType() == 2)
-                        throw new BaseRuntimeException("档案库下边不能修改目录");
+                        throw new BaseRuntimeException("目录上边不能有档案库");
                 } else return;
             }
-            //判断下级修改的类型
+            //判断修改跟下级的类型对比
             if (type == 2) {
-                List<Integer> ids = this.listByParentIdAndType(sysArchivesLibrary.getId(), (short) 1);
+                List<Integer> ids = this.listByIdAndType(sysArchivesLibrary.getId(), (short) 1);
                 if (!ids.isEmpty())
                     throw new BaseRuntimeException("档案库下边不能有目录");
             }
@@ -168,13 +168,13 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     }
 
     @Override
-    public List<Integer> listByParentIdAndType(Integer parentId, Short type) {
-        if (parentId == null)
+    public List<Integer> listByIdAndType(Integer id, Short type) {
+        if (id == null)
             throw new BaseRuntimeException("档案库id不能为空");
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .eq(SysArchivesLibrary::getParentId, parentId);
-        return this.listObjs(queryWrapper, id -> (Integer) id);
+                .eq(SysArchivesLibrary::getParentId, id);
+        return this.listObjs(queryWrapper, integer -> (Integer) integer);
     }
 
     @Override
