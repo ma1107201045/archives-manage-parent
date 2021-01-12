@@ -78,10 +78,20 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         SysTemplateLibrary sysTemplateLibrary = this.getById(id);
         if (sysTemplateLibrary != null) {
             if (parentId != -1) {
-                sysTemplateLibrary = this.getById(sysTemplateLibraryFormDto.getParentId());
-                if (sysTemplateLibrary != null) {
-                    if (sysTemplateLibrary.getType() == 2 && type == 1)
-                        throw new BaseRuntimeException("模板库下边不能添加目录");
+                if (sysTemplateLibrary.getType() == 2 && type == 1) {
+                    sysTemplateLibrary.setNumber(null);
+                }
+                SysTemplateLibrary last = this.getById(parentId);
+                if (last != null) {
+
+                    if (last.getType() == 2 && type == 1)
+                        throw new BaseRuntimeException("模板库下边不能修改成目录");
+
+                    List<Short> nextTypes = this.listByParentId(sysTemplateLibrary.getId());
+                    for (Short nextType : nextTypes) {
+                        if (nextType == 1 && type == 2)
+                            throw new BaseRuntimeException("模板库下边不能有目录");
+                    }
 
                 } else return;
             }
@@ -100,6 +110,17 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
     }
 
     @Override
+    public List<Short> listByParentId(Integer parentId) {
+        if (parentId == null)
+            throw new BaseRuntimeException("模板库id不能为空");
+        QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .select(SysTemplateLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("type"))
+                .eq(SysTemplateLibrary::getParentId, parentId);
+        return this.listObjs(queryWrapper, type -> (Short) type);
+    }
+
+    @Override
     public List<SysTemplateLibrary> listByType(Short type) {
         if (type == null)
             throw new BaseRuntimeException("模板库类型不能为空");
@@ -109,6 +130,7 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         queryWrapper.orderByDesc("id");
         return this.list(queryWrapper);
     }
+
 
     @Override
     public List<TreeUtil> listTree(Integer parentId) {

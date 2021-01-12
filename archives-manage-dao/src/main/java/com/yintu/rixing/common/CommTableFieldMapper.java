@@ -12,11 +12,15 @@ import java.util.List;
 @Mapper
 public interface CommTableFieldMapper {
 
-    void createTable(String tableName, List<CommTableField> commTableFields);
+    void createTable(String tableName, String tableComment, List<CommTableField> commTableFields);
 
-    void dropByTableName(String tableName);
+    void dropTableByTableName(String tableName);
 
-    void alterByTableName(String oldTableName, String newTableName);
+    void alterTableNameByTableName(String oldTableName, String newTableName);
 
-    void descByTableName(String tableName);
+    void alterTableCommentByTableName(String tableName, String tableComment);
+
+    List<CommTableField> showByTableName(String tableName);
+
+    long countDataByTableName(String tableName);
 }

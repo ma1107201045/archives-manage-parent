@@ -117,7 +117,6 @@ public class ArchivesManageApplicationTests {
     @Test
     void list1() {
         List<CommTableField> commTableFields = new ArrayList<>();
-        commTableFields.add(CommTableField.getDefault());
         CommTableField commTableField1 = new CommTableField();
         commTableField1.setFieldName("name");
         commTableField1.setDataType("varchar");
@@ -125,6 +124,6 @@ public class ArchivesManageApplicationTests {
         commTableField1.setIsNull((short) 1);
         commTableField1.setComment("姓名");
         commTableFields.add(commTableField1);
-        iCommTableFieldService.addTable("lib_test", commTableFields);
+        iCommTableFieldService.addTable("lib_test", "", commTableFields);
     }
 }

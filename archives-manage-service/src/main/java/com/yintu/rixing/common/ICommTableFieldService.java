@@ -11,12 +11,19 @@ import java.util.List;
  */
 public interface ICommTableFieldService {
 
-    /**
-     * 创建表
-     *
-     * @param tableName       表明
-     * @param commTableFields 字段详情
-     */
     @Transactional(rollbackFor = {Exception.class})
-    void addTable(String tableName, List<CommTableField> commTableFields);
+    void addTable(String tableName, String tableComment, List<CommTableField> commTableFields);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void removeTableByTableName(String tableName);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void editTableNameByTableName(String oldTableName, String newTableName);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void editTableCommentByTableName(String tableName, String tableComment);
+
+    List<CommTableField> findByTableName(String tableName);
+
+    long countDataByTableName(String tableName);
 }

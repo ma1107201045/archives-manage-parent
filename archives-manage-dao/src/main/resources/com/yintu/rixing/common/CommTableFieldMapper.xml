@@ -5,18 +5,20 @@
     <insert id="createTable">
         CREATE TABLE `${tableName}`
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
             <foreach collection="commTableFields" index="index" item="commTableField" separator="," close=",">
-                `${commTableField.fieldName}` ${commTableField.dataType}(${commTableField.length})
+                `${commTableField.fieldName}`
+                ${commTableField.dataType}
+                <if test="commTableField.dataType !='date'">
+                    (${commTableField.length})
+                </if>
                 <if test="commTableField.isNull==1">
                     NULL
                 </if>
                 <if test="commTableField.isNull==0">
                     NOT NULL
                 </if>
-                COMMENT '${commTableField.comment}'
-                <if test="commTableField.fieldName=='id'">
-                    AUTO_INCREMENT
-                </if>
+                COMMENT "${commTableField.comment}"
             </foreach>
             PRIMARY KEY (`id`) USING BTREE,
             <foreach collection="commTableFields" index="index" item="commTableField" separator=",">
@@ -26,9 +28,30 @@
             </foreach>
         </trim>
         ENGINE = InnoDB
-        DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci
-        COMMENT ='${tableName}'
+        COMMENT ="${tableComment}"
         ROW_FORMAT = COMPACT;
     </insert>
+
+    <delete id="dropTableByTableName">
+        DROP TABLE IF EXISTS ${tableName}
+    </delete>
+
+    <update id="alterTableNameByTableName">
+        ALTER TABLE ${oldTableName} RENAME ${newTableName}
+    </update>
+
+    <update id="alterTableCommentByTableName">
+        ALTER TABLE ${tableName}
+            COMMENT ${tableComment}
+    </update>
+
+    <select id="showByTableName">
+        SHOW FULL COLUMNS FROM ${tableName};
+    </select>
+
+    <select id="countDataByTableName" resultType="_long">
+        select count(*)
+        from ${tableName}
+    </select>
 
 </mapper>

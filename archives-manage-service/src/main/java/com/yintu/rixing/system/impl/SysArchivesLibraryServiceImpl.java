@@ -13,6 +13,7 @@ import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.util.TreeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.security.util.Length;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     @Override
     public void save(SysArchivesLibraryFormDto sysArchivesLibraryFormDto) {
         Integer parentId = sysArchivesLibraryFormDto.getParentId();
+        String name = sysArchivesLibraryFormDto.getName();
         Short type = sysArchivesLibraryFormDto.getType();
         Integer number = sysArchivesLibraryFormDto.getNumber();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
@@ -51,6 +53,21 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             List<Integer> ids2 = this.listByDataKey(dataKey);
             if (!ids2.isEmpty())
                 throw new BaseRuntimeException("key不能重复");
+            //动态创建表
+            List<SysTemplateLibraryField> sysTemplateLibraryFields = iSysTemplateLibraryFieldService.listByTemplateLibraryId(templateLibraryId);
+            List<CommTableField> commTableFields = new ArrayList<>();
+            for (SysTemplateLibraryField sysTemplateLibraryField : sysTemplateLibraryFields) {
+                CommTableField commTableField = new CommTableField();
+                commTableField.setFieldName(sysTemplateLibraryField.getDataKey());
+                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(sysTemplateLibraryField.getTemplateLibraryFieldTypeId());
+                commTableField.setDataType(sysTemplateLibraryFieldType.getDataKey());
+                commTableField.setLength(sysTemplateLibraryField.getLength());
+                commTableField.setIsNull(sysTemplateLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
+                commTableField.setIsIndex(sysTemplateLibraryField.getIndex().shortValue());
+                commTableField.setComment(sysTemplateLibraryField.getName());
+                commTableFields.add(commTableField);
+            }
+            iCommTableFieldService.addTable(TableNameUtil.getFullTableName(dataKey), name, commTableFields);
         }
         SysArchivesLibrary sysArchivesLibrary = new SysArchivesLibrary();
         if (parentId != -1) {
@@ -58,22 +75,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             if (sysArchivesLibrary != null) {
                 if (sysArchivesLibrary.getType() == 2 && type == 1)
                     throw new BaseRuntimeException("档案库下边不能添加目录");
-
-                //动态创建表
-                List<SysTemplateLibraryField> sysTemplateLibraryFields = iSysTemplateLibraryFieldService.listByTemplateLibraryId(templateLibraryId);
-                List<CommTableField> commTableFields = new ArrayList<>();
-                for (SysTemplateLibraryField sysTemplateLibraryField : sysTemplateLibraryFields) {
-                    CommTableField commTableField = new CommTableField();
-                    commTableField.setFieldName(sysTemplateLibraryField.getDataKey());
-                    SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(sysTemplateLibraryField.getTemplateLibraryFieldTypeId());
-                    commTableField.setDataType(sysTemplateLibraryFieldType.getDataKey());
-                    commTableField.setLength(sysTemplateLibraryField.getLength());
-                    commTableField.setIsNull(sysTemplateLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
-                    commTableField.setIsIndex(sysTemplateLibraryField.getIndex().shortValue());
-                    commTableFields.add(commTableField);
-                }
-                iCommTableFieldService.addTable(TableNameUtil.getFullTableName(dataKey), commTableFields);
-
             } else return;
         }
         BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
@@ -83,6 +84,11 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     @Override
     public void removeTree(Integer id) {
         this.removeById(id);
+        SysArchivesLibrary sysArchivesLibrary = this.getById(id);
+        if (sysArchivesLibrary != null) {
+            String oldDataKey = sysArchivesLibrary.getDataKey();
+            iCommTableFieldService.removeTableByTableName(TableNameUtil.getFullTableName(oldDataKey));
+        }
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysArchivesLibrary::getId)
@@ -97,6 +103,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     public void updateById(SysArchivesLibraryFormDto sysArchivesLibraryFormDto) {
         Integer id = sysArchivesLibraryFormDto.getId();
         Integer parentId = sysArchivesLibraryFormDto.getParentId();
+        String name = sysArchivesLibraryFormDto.getName();
         Short type = sysArchivesLibraryFormDto.getType();
         Integer number = sysArchivesLibraryFormDto.getNumber();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
@@ -110,14 +117,40 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             List<Integer> ids2 = this.listByDataKey(dataKey);
             if (!ids2.isEmpty() && !ids2.get(0).equals(id))
                 throw new BaseRuntimeException("key不能重复");
+            //只能更新表注释跟表名
+            SysArchivesLibrary sysArchivesLibrary = this.getById(id);
+            if (sysArchivesLibrary != null) {
+                String oldName = sysArchivesLibrary.getName();
+                String oldDataKey = sysArchivesLibrary.getDataKey();
+                ;
+                if (!oldName.equals(name))
+                    iCommTableFieldService.editTableCommentByTableName(oldName, name);
+                if (!oldDataKey.equals(dataKey)) {
+                    iCommTableFieldService.editTableNameByTableName(TableNameUtil.getFullTableName(oldDataKey), TableNameUtil.getFullTableName(dataKey));
+                }
+            }
         }
-        SysArchivesLibrary sysArchivesLibrary = this.getById(sysArchivesLibraryFormDto.getParentId());
+        SysArchivesLibrary sysArchivesLibrary = this.getById(id);
         if (sysArchivesLibrary != null) {
             if (parentId != -1) {
-                sysArchivesLibrary = this.getById(parentId);
-                if (sysArchivesLibrary != null) {
-                    if (sysArchivesLibrary.getType() == 2 && type == 1)
-                        throw new BaseRuntimeException("档案库下边不能添加目录");
+                if (sysArchivesLibrary.getType() == 2 && type == 1) {
+                    sysArchivesLibrary.setNumber(null);
+                    sysArchivesLibrary.setDataKey("");
+                    sysArchivesLibrary.setTemplateLibraryId(null);
+                    //删除表
+                    String oldDataKey = sysArchivesLibrary.getDataKey();
+                    iCommTableFieldService.removeTableByTableName(TableNameUtil.getFullTableName(oldDataKey));
+                }
+                SysArchivesLibrary last = this.getById(parentId);
+                if (last != null) {
+                    if (last.getType() == 2 && type == 1)
+                        throw new BaseRuntimeException("档案库下边不能修改目录");
+
+                    List<Short> nextTypes = this.listByParentId(sysArchivesLibrary.getId());
+                    for (Short nextType : nextTypes) {
+                        if (nextType == 1 && type == 2)
+                            throw new BaseRuntimeException("档案库下边不能有目录");
+                    }
 
                 } else return;
             }
@@ -133,6 +166,17 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 .select(SysArchivesLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
                 .eq(SysArchivesLibrary::getNumber, number);
         return this.listObjs(queryWrapper, id -> (Integer) id);
+    }
+
+    @Override
+    public List<Short> listByParentId(Integer parentId) {
+        if (parentId == null)
+            throw new BaseRuntimeException("档案库id不能为空");
+        QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .select(SysArchivesLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("type"))
+                .eq(SysArchivesLibrary::getParentId, parentId);
+        return this.listObjs(queryWrapper, type -> (Short) type);
     }
 
     @Override

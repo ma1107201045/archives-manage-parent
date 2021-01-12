@@ -7,7 +7,7 @@ package com.yintu.rixing.util;
  */
 public class TableNameUtil {
 
-    public static final String PREFIX = "lib";
+    public static final String PREFIX = "dynamic";
 
     /**
      * @param tName 表名

@@ -46,9 +46,4 @@ public class CommTableField {
      * 注释
      */
     private String comment;
-
-
-    public static CommTableField getDefault() {
-        return new CommTableField("id", "int", 11, (short) 0, (short) 0, (short) 0, "主键id");
-    }
 }
