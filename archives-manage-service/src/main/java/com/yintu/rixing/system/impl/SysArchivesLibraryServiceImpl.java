@@ -131,7 +131,8 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         }
         SysArchivesLibrary sysArchivesLibrary = this.getById(id);
         if (sysArchivesLibrary != null) {
-            if (sysArchivesLibrary.getType() == 2 && type == 1) {
+            //判断当前修改的类型
+            if (type == 1 && sysArchivesLibrary.getType() == 2) {
                 sysArchivesLibrary.setNumber(null);
                 sysArchivesLibrary.setDataKey(null);
                 sysArchivesLibrary.setTemplateLibraryId(null);
@@ -139,13 +140,15 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 String oldDataKey = sysArchivesLibrary.getDataKey();
                 iCommTableFieldService.removeTableByTableName(TableNameUtil.getFullTableName(oldDataKey));
             }
+            //判断上级修改的类型
             if (parentId != -1) {
                 SysArchivesLibrary last = this.getById(parentId);
                 if (last != null) {
-                    if (last.getType() == 2 && type == 1)
+                    if (type == 1 && last.getType() == 2)
                         throw new BaseRuntimeException("档案库下边不能修改目录");
                 } else return;
             }
+            //判断下级修改的类型
             if (type == 2) {
                 List<Integer> ids = this.listByParentIdAndType(sysArchivesLibrary.getId(), (short) 1);
                 if (!ids.isEmpty())

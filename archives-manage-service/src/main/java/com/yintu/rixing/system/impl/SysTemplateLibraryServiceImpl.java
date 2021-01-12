@@ -78,16 +78,19 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         }
         SysTemplateLibrary sysTemplateLibrary = this.getById(id);
         if (sysTemplateLibrary != null) {
-            if (sysTemplateLibrary.getType() == 2 && type == 1) {
+            //判断当前修改的类型
+            if (type == 1 && sysTemplateLibrary.getType() == 2) {
                 sysTemplateLibrary.setNumber(null);
             }
+            //判断上级修改的类型
             if (parentId != -1) {
                 SysTemplateLibrary last = this.getById(parentId);
                 if (last != null) {
-                    if (last.getType() == 2 && type == 1)
+                    if (type == 1 && last.getType() == 2)
                         throw new BaseRuntimeException("模板库下边不能修改成目录");
                 } else return;
             }
+            //判断下级修改的类型
             if (type == 2) {
                 List<Integer> ids = this.listByParentIdAndType(sysTemplateLibrary.getId(), (short) 1);
                 if (!ids.isEmpty())
