@@ -131,6 +131,14 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         }
         SysArchivesLibrary sysArchivesLibrary = this.getById(id);
         if (sysArchivesLibrary != null) {
+            //判断修改跟上级的类型对比
+            if (parentId != -1) {
+                SysArchivesLibrary last = this.getById(parentId);
+                if (last != null) {
+                    if (type == 1 && last.getType() == 2)
+                        throw new BaseRuntimeException("目录上边不能有档案库");
+                } else return;
+            }
             //判断修改的跟当前的类型对比
             if (type == 1 && sysArchivesLibrary.getType() == 2) {
                 sysArchivesLibrary.setNumber(null);
@@ -139,14 +147,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 //删除表
                 String oldDataKey = sysArchivesLibrary.getDataKey();
                 iCommTableFieldService.removeTableByTableName(TableNameUtil.getFullTableName(oldDataKey));
-            }
-            //判断修改跟上级的类型对比
-            if (parentId != -1) {
-                SysArchivesLibrary last = this.getById(parentId);
-                if (last != null) {
-                    if (type == 1 && last.getType() == 2)
-                        throw new BaseRuntimeException("目录上边不能有档案库");
-                } else return;
             }
             //判断修改跟下级的类型对比
             if (type == 2) {

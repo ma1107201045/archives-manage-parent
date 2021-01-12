@@ -78,10 +78,6 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         }
         SysTemplateLibrary sysTemplateLibrary = this.getById(id);
         if (sysTemplateLibrary != null) {
-            //判断修改的跟当前的类型对比
-            if (type == 1 && sysTemplateLibrary.getType() == 2) {
-                sysTemplateLibrary.setNumber(null);
-            }
             //判断修改跟上级的类型对比
             if (parentId != -1) {
                 SysTemplateLibrary last = this.getById(parentId);
@@ -89,6 +85,10 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
                     if (type == 1 && last.getType() == 2)
                         throw new BaseRuntimeException("目录上边不能有模板库");
                 } else return;
+            }
+            //判断修改的跟当前的类型对比
+            if (type == 1 && sysTemplateLibrary.getType() == 2) {
+                sysTemplateLibrary.setNumber(null);
             }
             //判断修改跟下级的类型对比
             if (type == 2) {
