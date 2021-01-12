@@ -1,5 +1,6 @@
 package com.yintu.rixing.system;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.yintu.rixing.BaseEntity;
@@ -28,7 +29,7 @@ public class SysTemplateLibrary extends BaseEntity {
     private Integer parentId;
 
     @ApiModelProperty(value = "模板库编号", position = 7)
-    @TableField("number")
+    @TableField(value = "number", updateStrategy = FieldStrategy.IGNORED)
     private Integer number;
 
     @ApiModelProperty(value = "模板库名称", position = 8)

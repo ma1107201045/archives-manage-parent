@@ -78,7 +78,6 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
             throw new BaseRuntimeException("模板库id或者模板库编号不能为空");
         QueryWrapper<SysTemplateLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .select(SysTemplateLibraryField.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
                 .eq(SysTemplateLibraryField::getTemplateLibraryId, templateLibraryId)
                 .eq(SysTemplateLibraryField::getDataKey, dataKey);
         return this.listObjs(queryWrapper, id -> (Integer) id);

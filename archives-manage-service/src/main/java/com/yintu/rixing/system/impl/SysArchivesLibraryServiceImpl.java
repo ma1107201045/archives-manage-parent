@@ -122,7 +122,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             if (sysArchivesLibrary != null) {
                 String oldName = sysArchivesLibrary.getName();
                 String oldDataKey = sysArchivesLibrary.getDataKey();
-                ;
                 if (!oldName.equals(name))
                     iCommTableFieldService.editTableCommentByTableName(oldName, name);
                 if (!oldDataKey.equals(dataKey)) {
@@ -132,27 +131,25 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         }
         SysArchivesLibrary sysArchivesLibrary = this.getById(id);
         if (sysArchivesLibrary != null) {
+            if (sysArchivesLibrary.getType() == 2 && type == 1) {
+                sysArchivesLibrary.setNumber(null);
+                sysArchivesLibrary.setDataKey(null);
+                sysArchivesLibrary.setTemplateLibraryId(null);
+                //删除表
+                String oldDataKey = sysArchivesLibrary.getDataKey();
+                iCommTableFieldService.removeTableByTableName(TableNameUtil.getFullTableName(oldDataKey));
+            }
             if (parentId != -1) {
-                if (sysArchivesLibrary.getType() == 2 && type == 1) {
-                    sysArchivesLibrary.setNumber(null);
-                    sysArchivesLibrary.setDataKey("");
-                    sysArchivesLibrary.setTemplateLibraryId(null);
-                    //删除表
-                    String oldDataKey = sysArchivesLibrary.getDataKey();
-                    iCommTableFieldService.removeTableByTableName(TableNameUtil.getFullTableName(oldDataKey));
-                }
                 SysArchivesLibrary last = this.getById(parentId);
                 if (last != null) {
                     if (last.getType() == 2 && type == 1)
                         throw new BaseRuntimeException("档案库下边不能修改目录");
-
-                    List<Short> nextTypes = this.listByParentId(sysArchivesLibrary.getId());
-                    for (Short nextType : nextTypes) {
-                        if (nextType == 1 && type == 2)
-                            throw new BaseRuntimeException("档案库下边不能有目录");
-                    }
-
                 } else return;
+            }
+            if (type == 2) {
+                List<Integer> ids = this.listByParentIdAndType(sysArchivesLibrary.getId(), (short) 1);
+                if (!ids.isEmpty())
+                    throw new BaseRuntimeException("档案库下边不能有目录");
             }
             BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
             this.updateById(sysArchivesLibrary);
@@ -163,20 +160,18 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     public List<Integer> listByNumber(Integer number) {
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .select(SysArchivesLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
                 .eq(SysArchivesLibrary::getNumber, number);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
     @Override
-    public List<Short> listByParentId(Integer parentId) {
+    public List<Integer> listByParentIdAndType(Integer parentId, Short type) {
         if (parentId == null)
             throw new BaseRuntimeException("档案库id不能为空");
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .select(SysArchivesLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("type"))
                 .eq(SysArchivesLibrary::getParentId, parentId);
-        return this.listObjs(queryWrapper, type -> (Short) type);
+        return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
     @Override

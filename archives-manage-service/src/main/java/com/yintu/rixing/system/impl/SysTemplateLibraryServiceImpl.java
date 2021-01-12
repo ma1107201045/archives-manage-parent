@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -77,23 +78,20 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         }
         SysTemplateLibrary sysTemplateLibrary = this.getById(id);
         if (sysTemplateLibrary != null) {
+            if (sysTemplateLibrary.getType() == 2 && type == 1) {
+                sysTemplateLibrary.setNumber(null);
+            }
             if (parentId != -1) {
-                if (sysTemplateLibrary.getType() == 2 && type == 1) {
-                    sysTemplateLibrary.setNumber(null);
-                }
                 SysTemplateLibrary last = this.getById(parentId);
                 if (last != null) {
-
                     if (last.getType() == 2 && type == 1)
                         throw new BaseRuntimeException("模板库下边不能修改成目录");
-
-                    List<Short> nextTypes = this.listByParentId(sysTemplateLibrary.getId());
-                    for (Short nextType : nextTypes) {
-                        if (nextType == 1 && type == 2)
-                            throw new BaseRuntimeException("模板库下边不能有目录");
-                    }
-
                 } else return;
+            }
+            if (type == 2) {
+                List<Integer> ids = this.listByParentIdAndType(sysTemplateLibrary.getId(), (short) 1);
+                if (!ids.isEmpty())
+                    throw new BaseRuntimeException("模板库下边不能有目录");
             }
             BeanUtil.copyProperties(sysTemplateLibraryFormDto, sysTemplateLibrary);
             this.updateById(sysTemplateLibrary);
@@ -104,20 +102,20 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
     public List<Integer> listByNumber(Integer number) {
         QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .select(SysTemplateLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
                 .eq(SysTemplateLibrary::getNumber, number);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
     @Override
-    public List<Short> listByParentId(Integer parentId) {
+    public List<Integer> listByParentIdAndType(Integer parentId, Short type) {
         if (parentId == null)
             throw new BaseRuntimeException("模板库id不能为空");
         QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .select(SysTemplateLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("type"))
-                .eq(SysTemplateLibrary::getParentId, parentId);
-        return this.listObjs(queryWrapper, type -> (Short) type);
+                .eq(SysTemplateLibrary::getParentId, parentId)
+                .eq(SysTemplateLibrary::getType, type);
+        return this.listObjs(queryWrapper, id -> (Integer) id);
+
     }
 
     @Override

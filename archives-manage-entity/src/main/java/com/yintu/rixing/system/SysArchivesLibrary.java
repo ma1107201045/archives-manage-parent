@@ -1,5 +1,6 @@
 package com.yintu.rixing.system;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.yintu.rixing.BaseEntity;
@@ -29,7 +30,7 @@ public class SysArchivesLibrary extends BaseEntity {
     private Integer parentId;
 
     @ApiModelProperty(value = "档案库编号")
-    @TableField("number")
+    @TableField(value = "number", updateStrategy = FieldStrategy.IGNORED)
     private Integer number;
 
     @ApiModelProperty(value = "档案库名称")
@@ -37,7 +38,7 @@ public class SysArchivesLibrary extends BaseEntity {
     private String name;
 
     @ApiModelProperty(value = "key（定义数据库表名）")
-    @TableField("data_key")
+    @TableField(value = "data_key", updateStrategy = FieldStrategy.IGNORED)
     private String dataKey;
 
     @ApiModelProperty(value = "档案库分类 1.目录 2.档案库")
@@ -49,7 +50,7 @@ public class SysArchivesLibrary extends BaseEntity {
     private String description;
 
     @ApiModelProperty(value = "模板库id")
-    @TableField("template_library_id")
+    @TableField(value = "template_library_id", updateStrategy = FieldStrategy.IGNORED)
     private Integer templateLibraryId;
 
 

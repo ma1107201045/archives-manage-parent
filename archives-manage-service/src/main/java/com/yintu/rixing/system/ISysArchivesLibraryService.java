@@ -29,7 +29,7 @@ public interface ISysArchivesLibraryService extends IService<SysArchivesLibrary>
 
     List<Integer> listByNumber(Integer number);
 
-    List<Short> listByParentId(Integer parentId);
+    List<Integer> listByParentIdAndType(Integer parentId, Short type);
 
     List<Integer> listByDataKey(String dataKey);
 
