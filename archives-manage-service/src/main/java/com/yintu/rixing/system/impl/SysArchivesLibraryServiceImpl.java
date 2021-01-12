@@ -4,10 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yintu.rixing.common.CommTableField;
+import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFormDto;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
+import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.util.TreeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +28,12 @@ import java.util.List;
 @Service
 public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibraryMapper, SysArchivesLibrary> implements ISysArchivesLibraryService {
 
+    @Autowired
+    private ISysTemplateLibraryFieldService iSysTemplateLibraryFieldService;
+    @Autowired
+    private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
+    @Autowired
+    private ICommTableFieldService iCommTableFieldService;
 
     @Override
     public void save(SysArchivesLibraryFormDto sysArchivesLibraryFormDto) {
@@ -48,6 +58,21 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             if (sysArchivesLibrary != null) {
                 if (sysArchivesLibrary.getType() == 2 && type == 1)
                     throw new BaseRuntimeException("档案库下边不能添加目录");
+
+                //动态创建表
+                List<SysTemplateLibraryField> sysTemplateLibraryFields = iSysTemplateLibraryFieldService.listByTemplateLibraryId(templateLibraryId);
+                List<CommTableField> commTableFields = new ArrayList<>();
+                for (SysTemplateLibraryField sysTemplateLibraryField : sysTemplateLibraryFields) {
+                    CommTableField commTableField = new CommTableField();
+                    commTableField.setFieldName(sysTemplateLibraryField.getDataKey());
+                    SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(sysTemplateLibraryField.getTemplateLibraryFieldTypeId());
+                    commTableField.setDataType(sysTemplateLibraryFieldType.getDataKey());
+                    commTableField.setLength(sysTemplateLibraryField.getLength());
+                    commTableField.setIsNull(sysTemplateLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
+                    commTableField.setIsIndex(sysTemplateLibraryField.getIndex().shortValue());
+                    commTableFields.add(commTableField);
+                }
+                iCommTableFieldService.addTable(TableNameUtil.getFullTableName(dataKey), commTableFields);
 
             } else return;
         }

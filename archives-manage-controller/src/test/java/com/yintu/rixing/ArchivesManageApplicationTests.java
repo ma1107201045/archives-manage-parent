@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yintu.rixing.common.CommTableField;
+import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.demo.DeTest;
 import com.yintu.rixing.demo.DeTestMapper;
 import com.yintu.rixing.enumobject.EnumFlag;
@@ -26,6 +28,9 @@ public class ArchivesManageApplicationTests {
 
     @Autowired
     private ISysPermissionService iSysPermissionService;
+
+    @Autowired
+    private ICommTableFieldService iCommTableFieldService;
 
     @Test
     void contextLoads() {
@@ -107,5 +112,19 @@ public class ArchivesManageApplicationTests {
     void list() {
         List<SysPermissionVo> sysPermissionVos = iSysPermissionService.list(EnumFlag.False.getValue());
         System.out.println(JSONObject.toJSON(sysPermissionVos));
+    }
+
+    @Test
+    void list1() {
+        List<CommTableField> commTableFields = new ArrayList<>();
+        commTableFields.add(CommTableField.getDefault());
+        CommTableField commTableField1 = new CommTableField();
+        commTableField1.setFieldName("name");
+        commTableField1.setDataType("varchar");
+        commTableField1.setLength(200);
+        commTableField1.setIsNull((short) 1);
+        commTableField1.setComment("姓名");
+        commTableFields.add(commTableField1);
+        iCommTableFieldService.addTable("lib_test", commTableFields);
     }
 }

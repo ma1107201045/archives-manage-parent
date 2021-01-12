@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.rixing.common.CommTableFieldMapper">
+
+    <insert id="createTable">
+        CREATE TABLE `${tableName}`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <foreach collection="commTableFields" index="index" item="commTableField" separator="," close=",">
+                `${commTableField.fieldName}` ${commTableField.dataType}(${commTableField.length})
+                <if test="commTableField.isNull==1">
+                    NULL
+                </if>
+                <if test="commTableField.isNull==0">
+                    NOT NULL
+                </if>
+                COMMENT '${commTableField.comment}'
+                <if test="commTableField.fieldName=='id'">
+                    AUTO_INCREMENT
+                </if>
+            </foreach>
+            PRIMARY KEY (`id`) USING BTREE,
+            <foreach collection="commTableFields" index="index" item="commTableField" separator=",">
+                <if test="commTableField.isIndex==1">
+                    INDEX `${commTableField.fieldName}`(`${commTableField.fieldName}`) USING BTREE
+                </if>
+            </foreach>
+        </trim>
+        ENGINE = InnoDB
+        DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci
+        COMMENT ='${tableName}'
+        ROW_FORMAT = COMPACT;
+    </insert>
+
+</mapper>

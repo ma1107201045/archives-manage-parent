@@ -11,5 +11,4 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-12-30
  */
 public interface ISysTemplateLibraryFieldTypeService extends IService<SysTemplateLibraryFieldType> {
-
 }

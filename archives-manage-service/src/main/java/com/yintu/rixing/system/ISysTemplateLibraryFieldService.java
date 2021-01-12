@@ -29,6 +29,8 @@ public interface ISysTemplateLibraryFieldService extends IService<SysTemplateLib
 
     List<Integer> listByDataKey(Integer templateLibraryId, String dataKey);
 
+    List<SysTemplateLibraryField> listByTemplateLibraryId(Integer templateLibraryId);
+
     Page<SysTemplateLibraryField> page(SysTemplateLibraryFieldQueryDto sysTemplateLibraryFieldQueryDto);
 
 

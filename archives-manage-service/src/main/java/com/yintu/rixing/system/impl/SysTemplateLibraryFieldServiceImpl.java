@@ -85,6 +85,16 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
     }
 
     @Override
+    public List<SysTemplateLibraryField> listByTemplateLibraryId(Integer templateLibraryId) {
+        if (templateLibraryId == null)
+            throw new BaseRuntimeException("模板库id不能为空");
+        QueryWrapper<SysTemplateLibraryField> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysTemplateLibraryField::getTemplateLibraryId, templateLibraryId);
+        queryWrapper.lambda().orderByAsc(SysTemplateLibraryField::getOrder);
+        return this.list(queryWrapper);
+    }
+
+    @Override
     public Page<SysTemplateLibraryField> page(SysTemplateLibraryFieldQueryDto sysTemplateLibraryFieldQueryDto) {
         Integer num = sysTemplateLibraryFieldQueryDto.getNum();
         Integer size = sysTemplateLibraryFieldQueryDto.getSize();
