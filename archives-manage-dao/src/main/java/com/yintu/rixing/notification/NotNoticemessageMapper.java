@@ -1,4 +1,4 @@
-package com.yintu.rixing.noticemessage;
+package com.yintu.rixing.notification;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;

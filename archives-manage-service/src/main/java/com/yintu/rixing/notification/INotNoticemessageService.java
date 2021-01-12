@@ -1,4 +1,4 @@
-package com.yintu.rixing.noticemessage;
+package com.yintu.rixing.notification;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 

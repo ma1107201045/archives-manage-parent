@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.rixing.make.MakeBorrowMapper">
+    <resultMap id="BaseResultMap" type="com.yintu.rixing.make.MakeBorrow">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="fileid" jdbcType="INTEGER" property="fileid" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="identity" jdbcType="INTEGER" property="identity" />
+        <result column="certificate_type" jdbcType="INTEGER" property="certificateType" />
+        <result column="certificate_number" jdbcType="VARCHAR" property="certificateNumber" />
+        <result column="college_or_unit" jdbcType="VARCHAR" property="collegeOrUnit" />
+        <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
+        <result column="purpose" jdbcType="VARCHAR" property="purpose" />
+        <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+        <result column="borrow_type" jdbcType="INTEGER" property="borrowType" />
+        <result column="borrow_start_time" jdbcType="TIMESTAMP" property="borrowStartTime" />
+        <result column="borrow_end_time" jdbcType="TIMESTAMP" property="borrowEndTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, fileid, name, identity, certificate_type, certificate_number, college_or_unit,
+    phone_number, purpose, remarks, borrow_type, borrow_start_time, borrow_end_time,
+    create_by, create_time, modified_by, modified_time
+  </sql>
+
+    <!--查询电子借阅表格-->
+    <select id="findElectronicBorrowDatas"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from make_borrow
+        <where>
+            <if test="name!=null">
+                name=#{name}
+            </if>
+            <if test="certificateNumber!=null">
+            and certificate_number=#{certificateNumber}
+            </if>
+            and borrow_type = 1
+        </where>
+        order by id desc
+    </select>
+
+    <!--查询实体借阅表格-->
+    <select id="findEntityBorrowDatas"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from make_borrow
+        <where>
+            <if test="name!=null">
+                name=#{name}
+            </if>
+            <if test="certificateNumber!=null">
+            and certificate_number=#{certificateNumber}
+            </if>
+            and borrow_type = 2
+        </where>
+        order by id desc
+    </select>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from make_borrow
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from make_borrow
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.yintu.rixing.make.MakeBorrow">
+    insert into make_borrow (id, fileid, name,
+      identity, certificate_type, certificate_number,
+      college_or_unit, phone_number, purpose,
+      remarks, borrow_type, borrow_start_time,
+      borrow_end_time, create_by, create_time,
+      modified_by, modified_time)
+    values (#{id,jdbcType=INTEGER}, #{fileid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+      #{identity,jdbcType=INTEGER}, #{certificateType,jdbcType=INTEGER}, #{certificateNumber,jdbcType=VARCHAR},
+      #{collegeOrUnit,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR},
+      #{remarks,jdbcType=VARCHAR}, #{borrowType,jdbcType=INTEGER}, #{borrowStartTime,jdbcType=TIMESTAMP},
+      #{borrowEndTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yintu.rixing.make.MakeBorrow">
+        insert into make_borrow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="fileid != null">
+                fileid,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="identity != null">
+                identity,
+            </if>
+            <if test="certificateType != null">
+                certificate_type,
+            </if>
+            <if test="certificateNumber != null">
+                certificate_number,
+            </if>
+            <if test="collegeOrUnit != null">
+                college_or_unit,
+            </if>
+            <if test="phoneNumber != null">
+                phone_number,
+            </if>
+            <if test="purpose != null">
+                purpose,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+            <if test="borrowType != null">
+                borrow_type,
+            </if>
+            <if test="borrowStartTime != null">
+                borrow_start_time,
+            </if>
+            <if test="borrowEndTime != null">
+                borrow_end_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="fileid != null">
+                #{fileid,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="identity != null">
+                #{identity,jdbcType=INTEGER},
+            </if>
+            <if test="certificateType != null">
+                #{certificateType,jdbcType=INTEGER},
+            </if>
+            <if test="certificateNumber != null">
+                #{certificateNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="collegeOrUnit != null">
+                #{collegeOrUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null">
+                #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="purpose != null">
+                #{purpose,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="borrowType != null">
+                #{borrowType,jdbcType=INTEGER},
+            </if>
+            <if test="borrowStartTime != null">
+                #{borrowStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="borrowEndTime != null">
+                #{borrowEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.rixing.make.MakeBorrow">
+        update make_borrow
+        <set>
+            <if test="fileid != null">
+                fileid = #{fileid,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="identity != null">
+                identity = #{identity,jdbcType=INTEGER},
+            </if>
+            <if test="certificateType != null">
+                certificate_type = #{certificateType,jdbcType=INTEGER},
+            </if>
+            <if test="certificateNumber != null">
+                certificate_number = #{certificateNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="collegeOrUnit != null">
+                college_or_unit = #{collegeOrUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null">
+                phone_number = #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="purpose != null">
+                purpose = #{purpose,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="borrowType != null">
+                borrow_type = #{borrowType,jdbcType=INTEGER},
+            </if>
+            <if test="borrowStartTime != null">
+                borrow_start_time = #{borrowStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="borrowEndTime != null">
+                borrow_end_time = #{borrowEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.rixing.make.MakeBorrow">
+    update make_borrow
+    set fileid = #{fileid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      identity = #{identity,jdbcType=INTEGER},
+      certificate_type = #{certificateType,jdbcType=INTEGER},
+      certificate_number = #{certificateNumber,jdbcType=VARCHAR},
+      college_or_unit = #{collegeOrUnit,jdbcType=VARCHAR},
+      phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      purpose = #{purpose,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      borrow_type = #{borrowType,jdbcType=INTEGER},
+      borrow_start_time = #{borrowStartTime,jdbcType=TIMESTAMP},
+      borrow_end_time = #{borrowEndTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

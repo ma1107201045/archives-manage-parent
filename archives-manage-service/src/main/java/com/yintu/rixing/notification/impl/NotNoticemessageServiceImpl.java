@@ -1,8 +1,8 @@
-package com.yintu.rixing.noticemessage.impl;
+package com.yintu.rixing.notification.impl;
 
-import com.yintu.rixing.noticemessage.INotNoticemessageService;
-import com.yintu.rixing.noticemessage.NotNoticemessage;
-import com.yintu.rixing.noticemessage.NotNoticemessageMapper;
+import com.yintu.rixing.notification.INotNoticemessageService;
+import com.yintu.rixing.notification.NotNoticemessage;
+import com.yintu.rixing.notification.NotNoticemessageMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

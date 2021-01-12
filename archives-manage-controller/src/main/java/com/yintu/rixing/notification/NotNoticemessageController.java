@@ -1,10 +1,9 @@
-package com.yintu.rixing.noticemessage;
+package com.yintu.rixing.notification;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
-import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResponseDataUtil;
 import io.swagger.annotations.Api;
@@ -27,7 +26,7 @@ import java.util.Set;
  * @since 2020-12-30
  */
 @RestController
-@RequestMapping("/noticemessage/noticemessageAll")
+@RequestMapping("/notification/notificationAll")
 @Api("通知公告")
 public class NotNoticemessageController  {
     @Autowired
