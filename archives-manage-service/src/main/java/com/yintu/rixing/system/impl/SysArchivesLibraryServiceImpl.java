@@ -83,12 +83,12 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
     @Override
     public void removeTree(Integer id) {
-        this.removeById(id);
         SysArchivesLibrary sysArchivesLibrary = this.getById(id);
-        if (sysArchivesLibrary != null) {
+        if (sysArchivesLibrary != null && sysArchivesLibrary.getType() == 2) {
             String oldDataKey = sysArchivesLibrary.getDataKey();
             iCommTableFieldService.removeTableByTableName(TableNameUtil.getFullTableName(oldDataKey));
         }
+        this.removeById(id);
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysArchivesLibrary::getId)
