@@ -51,7 +51,7 @@ spring:
 mybatis-plus:
   #config-location: classpath:mybatis-config.xml
   type-aliases-package: com.yintu.rixing
-    #configuration:
+  #configuration:
   #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #api接口配置
 swagger:
@@ -60,7 +60,7 @@ swagger:
   license-url: https://www.apache.org/licenses/LICENSE-2.0.html
   terms-of-service-url: https://github.com/dyc87112/spring-boot-starter-swagger
   contact:
-    name: 马龙飞
+    name: Spring
     url: https://www.baidu.com
     email: 1107201045@qq.com
   docket:
@@ -80,12 +80,26 @@ swagger:
         - /logout
         - /captcha
       exclude-path: [ /error ]
+    make:
+      title: 利用中心模块
+      description: 利用中心有关的接口
+      base-package: com.yintu.rixing.make
+      base-path:
+        - /make/**
+      exclude-path: [ /error ]
     security:
       title: 安全中心模块
       description: 安全中心模块有关的接口
       base-package: com.yintu.rixing.security
       base-path:
         - /security/**
+      exclude-path: [ /error ]
+    notification:
+      title: 通知公告模块
+      description: 通知公告有关的接口
+      base-package: com.yintu.rixing.notification
+      base-path:
+        - /notification/**
       exclude-path: [ /error ]
     system:
       title: 系统管理模块
@@ -94,5 +108,3 @@ swagger:
       base-path:
         - /system/**
       exclude-path: [ /error ]
-
-

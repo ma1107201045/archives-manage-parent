@@ -24,7 +24,6 @@
     </parent>
     <properties>
         <archives-manage-all.version>${project.version}</archives-manage-all.version>
-        <pagehelper-spring-boot-starter.version>1.2.10</pagehelper-spring-boot-starter.version>
         <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
         <mybatis-generator-core.version>1.4.0</mybatis-generator-core.version>
         <mybatis-dynamic-sql.version>1.2.1</mybatis-dynamic-sql.version>
@@ -134,12 +133,6 @@
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>swagger-bootstrap-ui</artifactId>
                 <version>${swagger-bootstrap-ui.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${pagehelper-spring-boot-starter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
