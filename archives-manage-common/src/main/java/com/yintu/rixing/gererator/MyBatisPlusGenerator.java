@@ -40,7 +40,7 @@ public class MyBatisPlusGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/archives-manage-common" + "/src/main/java");
-        gc.setAuthor("mlf");
+        gc.setAuthor("Mr.liu");
         gc.setOpen(false);
         gc.setSwagger2(true);// 实体属性 Swagger2 注解
         gc.setIdType(IdType.AUTO);
@@ -50,11 +50,11 @@ public class MyBatisPlusGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://192.168.68.132/db_dev_rixing?serverTimezone=Asia/Shanghai");
+        dsc.setUrl("jdbc:mysql://127.0.0.1/rixing?serverTimezone=Asia/Shanghai");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("199726Ma.");
+        dsc.setPassword("root");
         mpg.setDataSource(dsc);
 
         // 包配置
