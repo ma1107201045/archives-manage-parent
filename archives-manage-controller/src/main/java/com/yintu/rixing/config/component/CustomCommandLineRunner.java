@@ -19,11 +19,11 @@ public class CustomCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        File file1 = new File(PathUtil.getPhysicalFilePath());
+        File file1 = new File(PathUtil.getFilePath());
         if (!file1.exists())
             if (!file1.mkdirs())
                 throw new BaseRuntimeException("创建文件目录有误");
-        File file2 = new File(PathUtil.getPhysicalBackupPath());
+        File file2 = new File(PathUtil.getBackupPath());
         if (!file2.exists())
             if (!file2.mkdirs())
                 throw new BaseRuntimeException("创建备份目录有误");

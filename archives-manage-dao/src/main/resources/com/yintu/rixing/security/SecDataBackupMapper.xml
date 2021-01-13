@@ -9,7 +9,7 @@
     <select id="selectByIgnoreTableNames" resultMap="BaseResultMap">
         SELECT COUNT(*) AS table_count,
         SUM(TABLE_ROWS) AS record_count,
-        ROUND(MAX((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024), 3) AS record_size
+        ROUND(MAX((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024), 2) AS record_size
         FROM information_schema.TABLES
         WHERE
         TABLE_SCHEMA = DATABASE()

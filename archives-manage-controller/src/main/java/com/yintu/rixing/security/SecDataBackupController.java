@@ -51,7 +51,7 @@ public class SecDataBackupController extends Authenticator {
     @ApiOperation(value = "删除数据备份信息", notes = "删除数据备份信息", position = 2)
     @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids) {
-        iSecDataBackupService.removeByIds(ids);
+        iSecDataBackupService.remove(ids);
         return ResultDataUtil.ok("删除数据备份信息成功");
     }
 

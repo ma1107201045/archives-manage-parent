@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.util.Collection;
@@ -70,9 +72,8 @@ public class SecDataBackupServiceImpl extends ServiceImpl<SecDataBackupMapper, S
         secDataBackup.setName(name);
         secDataBackup.setBackupTime(DateUtil.date());
         secDataBackup.setBackupPath(backupPath.substring(0, backupPath.length() - 1));
-        DecimalFormat df1 = new DecimalFormat("0.000");
         double backFileSize = FileUtil.size(FileUtil.file(backupFile)) / 1024.0 / 1024.0;
-        secDataBackup.setBackupFileSize(Double.valueOf(df1.format(backFileSize)));
+        secDataBackup.setBackupFileSize(new BigDecimal(backFileSize).setScale(2, RoundingMode.HALF_UP).doubleValue());
         secDataBackup.setRequestMapping(AddressUtil.getAddress(request) + PathUtil.getBackupMapping() + name);
 
         SecDataBackupVo secDataBackupVo = this.findByIgnoreTableNames(ignoreTableNames);
