@@ -14,7 +14,7 @@ public class AddressUtil {
      * @param request 请求对象
      * @return 返回请求地址
      */
-    public String getAddress(HttpServletRequest request) {
+    public static String getAddress(HttpServletRequest request) {
         int port = request.getServerPort();
         String portStr = port == 80 || port == 443 ? "" : ":" + port;
         return request.getScheme() + "://" + request.getServerName() + portStr + request.getContextPath();

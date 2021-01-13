@@ -1,7 +1,10 @@
 package com.yintu.rixing.config.component;
 
+import cn.hutool.system.SystemUtil;
+import com.yintu.rixing.util.PathUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -20,6 +23,12 @@ public class CustomWebMvcConfigurer implements WebMvcConfigurer {
                 .allowedMethods("*")
                 .allowCredentials(true)
                 .maxAge(3600);
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler(PathUtil.getGlobbingFileMapping()).addResourceLocations("file:" + PathUtil.getFilePath());
+        registry.addResourceHandler(PathUtil.getGlobbingBackupMapping()).addResourceLocations("file:" + PathUtil.getBackupPath());
     }
 
 }

@@ -2,7 +2,7 @@ package com.yintu.rixing.security;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yintu.rixing.dto.security.SecLogDto;
+import com.yintu.rixing.dto.security.SecLogQueryDto;
 
 /**
  * <p>
@@ -14,6 +14,6 @@ import com.yintu.rixing.dto.security.SecLogDto;
  */
 public interface ISecLogService extends IService<SecLog> {
 
-    Page<SecLog> page(SecLogDto sysLogDto);
+    Page<SecLog> page(SecLogQueryDto sysLogDto);
 
 }

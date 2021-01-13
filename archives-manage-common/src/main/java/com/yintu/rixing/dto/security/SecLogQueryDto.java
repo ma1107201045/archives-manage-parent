@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel
-public class SecLogDto extends PageDto {
+public class SecLogQueryDto extends PageDto {
 
     @ApiModelProperty(value = "操作人", position = 0)
     private String operator;
