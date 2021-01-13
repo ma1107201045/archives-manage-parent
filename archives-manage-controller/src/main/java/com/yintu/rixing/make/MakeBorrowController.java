@@ -1,10 +1,13 @@
 package com.yintu.rixing.make;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.enumobject.EnumLogLevel;
+import com.yintu.rixing.notification.NotNoticemessage;
 import com.yintu.rixing.util.ResponseDataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -71,10 +74,13 @@ public class MakeBorrowController {
             @ApiImplicitParam(name = "certificateNumber", value = "证件号码")
     })
     public Map<String, Object> findElectronicBorrowDatas(@RequestParam Integer num, @RequestParam Integer size, String name,String certificateNumber) {
-        PageHelper.startPage(num, size);
-        List<MakeBorrow> makeBorrowList = iMakeBorrowService.findElectronicBorrowDatas(name,certificateNumber);
-        PageInfo<MakeBorrow> borrowPageInfo=new PageInfo<>(makeBorrowList);
-        return ResponseDataUtil.ok("查询借阅申请的电子借阅信息列表成功", borrowPageInfo);
+        QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().like(MakeBorrow::getName,name==null? "":name);
+        queryWrapper.lambda().like(MakeBorrow::getCertificateNumber,certificateNumber==null? "":certificateNumber);
+        queryWrapper.orderByDesc("id");
+        queryWrapper.eq("borrow_type","1");
+        Page<MakeBorrow> page = iMakeBorrowService.page(new Page<>(num, size), queryWrapper);
+        return ResponseDataUtil.ok("查询借阅申请的电子借阅信息列表成功", page);
     }
 
     @Log(level = EnumLogLevel.DEBUG, module = "借阅申请", context = "查询借阅申请的实体借阅信息列表")
@@ -87,10 +93,13 @@ public class MakeBorrowController {
             @ApiImplicitParam(name = "certificateNumber", value = "证件号码")
     })
     public Map<String, Object> findEntityBorrowDatas(@RequestParam Integer num, @RequestParam Integer size, String name,String certificateNumber) {
-        PageHelper.startPage(num, size);
-        List<MakeBorrow> makeBorrowList = iMakeBorrowService.findEntityBorrowDatas(name,certificateNumber);
-        PageInfo<MakeBorrow> borrowPageInfo=new PageInfo<>(makeBorrowList);
-        return ResponseDataUtil.ok("查询借阅申请的实体借阅信息列表成功", borrowPageInfo);
+        QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().like(MakeBorrow::getName,name==null? "":name);
+        queryWrapper.lambda().like(MakeBorrow::getCertificateNumber,certificateNumber==null? "":certificateNumber);
+        queryWrapper.orderByDesc("id");
+        queryWrapper.eq("borrow_type","1");
+        Page<MakeBorrow> page = iMakeBorrowService.page(new Page<>(num, size), queryWrapper);
+        return ResponseDataUtil.ok("查询借阅申请的实体借阅信息列表成功", page);
     }
 
 
