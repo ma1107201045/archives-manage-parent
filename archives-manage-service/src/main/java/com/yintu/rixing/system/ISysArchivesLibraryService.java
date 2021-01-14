@@ -27,13 +27,11 @@ public interface ISysArchivesLibraryService extends IService<SysArchivesLibrary>
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysArchivesLibraryFormDto sysArchivesLibraryFormDto);
 
-
     List<Integer> listByNumber(Integer number);
 
     List<Integer> listByIdAndType(Integer id, Short type);
 
     List<Integer> listByDataKey(String dataKey);
-
 
     List<TreeUtil> listTree(Integer parentId);
 }
