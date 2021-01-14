@@ -15,7 +15,7 @@ import java.util.Collection;
  * 安全数据备份表 服务类
  * </p>
  *
- * @author Mr.liu
+ * @author mlf
  * @since 2021-01-13
  */
 public interface ISecDataBackupService extends IService<SecDataBackup> {
