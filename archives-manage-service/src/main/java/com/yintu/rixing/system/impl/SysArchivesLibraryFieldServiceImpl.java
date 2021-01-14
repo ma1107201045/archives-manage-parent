@@ -33,7 +33,6 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
     @Autowired
     private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
 
-
     @Autowired
     private ICommTableFieldService iCommTableFieldService;
 

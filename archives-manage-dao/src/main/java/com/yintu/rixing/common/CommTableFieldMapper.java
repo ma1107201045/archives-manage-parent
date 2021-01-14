@@ -27,6 +27,8 @@ public interface CommTableFieldMapper {
 
     void createIndex(String tableName, String fieldName);
 
+    void drop(String tableName, String fieldName);
+
     List<CommTableField> showByTableName(String tableName);
 
 }

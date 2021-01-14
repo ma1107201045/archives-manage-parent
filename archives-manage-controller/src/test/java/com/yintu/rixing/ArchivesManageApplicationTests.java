@@ -138,5 +138,6 @@ public class ArchivesManageApplicationTests {
         commTableField.setComment("姓名");
         iCommTableFieldService.add("dynamic_index", commTableField);
         iCommTableFieldService.addIndex("dynamic_index", commTableField.getFieldName());
+        iCommTableFieldService.drop("dynamic_index", commTableField.getFieldName());
     }
 }

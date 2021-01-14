@@ -65,9 +65,13 @@
         COMMENT #{commTableField.comment,jdbcType=VARCHAR};
     </insert>
     <insert id="createIndex">
-        alter table ${tableName}
+        ALTER TABLE ${tableName}
             ADD INDEX `${fieldName}` (`${fieldName}`) USING BTREE
     </insert>
+    <delete id="drop">
+        ALTER TABLE ${tableName}
+            DROP COLUMN `${fieldName}`;
+    </delete>
 
 
     <select id="showByTableName">

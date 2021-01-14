@@ -30,5 +30,7 @@ public interface ICommTableFieldService {
 
     void addIndex(String tableName, String fieldName);
 
+    void drop(String tableName, String fieldName);
+
     List<CommTableField> findByTableName(String tableName);
 }
