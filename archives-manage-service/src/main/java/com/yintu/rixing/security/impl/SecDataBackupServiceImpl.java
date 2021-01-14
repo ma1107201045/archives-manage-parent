@@ -6,6 +6,7 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RuntimeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.SystemUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.common.PageDto;
@@ -13,6 +14,7 @@ import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.security.ISecDataBackupService;
 import com.yintu.rixing.security.SecDataBackup;
 import com.yintu.rixing.security.SecDataBackupMapper;
+import com.yintu.rixing.security.SecLog;
 import com.yintu.rixing.util.AddressUtil;
 import com.yintu.rixing.util.JdbcInfoUtil;
 import com.yintu.rixing.util.PathUtil;
@@ -130,6 +132,8 @@ public class SecDataBackupServiceImpl extends ServiceImpl<SecDataBackupMapper, S
     public Page<SecDataBackup> page(PageDto pageDto) {
         Integer num = pageDto.getNum();
         Integer size = pageDto.getSize();
-        return this.page(new Page<>(num, size));
+        QueryWrapper<SecDataBackup> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("id");
+        return this.page(new Page<>(num, size), queryWrapper);
     }
 }

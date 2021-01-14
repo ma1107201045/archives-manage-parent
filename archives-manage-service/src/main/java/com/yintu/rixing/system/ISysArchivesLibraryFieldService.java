@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFieldFormDto;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFieldQueryDto;
-import com.yintu.rixing.dto.system.SysTemplateLibraryFieldFormDto;
-import com.yintu.rixing.dto.system.SysTemplateLibraryFieldQueryDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -31,7 +29,7 @@ public interface ISysArchivesLibraryFieldService extends IService<SysArchivesLib
 
     List<Integer> listByDataKey(Integer archivesLibraryId, String dataKey);
 
-    List<SysArchivesLibraryField> listByArchivesLibraryId(Integer archivesLibraryId);
+    List<Integer> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId);
 
     Page<SysArchivesLibraryField> page(SysArchivesLibraryFieldQueryDto sysArchivesLibraryFieldQueryDto);
 

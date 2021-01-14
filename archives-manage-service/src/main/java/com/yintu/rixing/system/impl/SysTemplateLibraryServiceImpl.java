@@ -78,6 +78,7 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
         }
         SysTemplateLibrary sysTemplateLibrary = this.getById(id);
         if (sysTemplateLibrary != null) {
+            Short oldType = sysTemplateLibrary.getType();
             //判断修改跟上级的类型对比
             if (parentId != -1) {
                 SysTemplateLibrary last = this.getById(parentId);
@@ -87,12 +88,12 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
                 } else return;
             }
             //判断修改的跟当前的类型对比
-            if (type == 1 && sysTemplateLibrary.getType() == 2) {
+            if (type == 1 && oldType == 2) {
                 sysTemplateLibrary.setNumber(null);
             }
             //判断修改跟下级的类型对比
             if (type == 2) {
-                List<Integer> ids = this.listByIdAndType(sysTemplateLibrary.getId(), (short) 1);
+                List<Integer> ids = this.listByIdAndType(id, (short) 1);
                 if (!ids.isEmpty())
                     throw new BaseRuntimeException("模板库下边不能有目录");
             }
