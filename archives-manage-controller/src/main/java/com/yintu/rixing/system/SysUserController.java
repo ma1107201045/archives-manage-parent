@@ -41,7 +41,7 @@ public class SysUserController extends Authenticator implements BaseController<S
     @Autowired
     private ISysRoleService iSysRoleService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加用户信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加用户信息")
     @PostMapping
     @ApiOperation(value = "添加用户信息", notes = "添加用户信息", position = 1)
     public ResultDataUtil<Object> add(@Validated SysUserFormDto formDto) {
@@ -49,7 +49,7 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("添加用户信息成功");
     }
 
-    @Log(level = EnumLogLevel.WARN, module = "系统管理", context = "删除用户信息")
+    @Log(level = EnumLogLevel.WARN, module = "系统设置", context = "删除用户信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除用户信息", notes = "删除用户信息", position = 2)
     @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
@@ -58,7 +58,7 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("删除用户信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = " 修改用户信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统设置", context = " 修改用户信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改用户信息", notes = "修改用户信息", position = 3)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")

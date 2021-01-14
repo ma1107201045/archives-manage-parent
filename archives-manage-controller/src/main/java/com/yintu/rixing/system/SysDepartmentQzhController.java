@@ -38,7 +38,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
     @Autowired
     private ISysDepartmentService iSysDepartmentService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加全宗号信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加全宗号信息")
     @PostMapping
     @ApiOperation(value = "添加全宗号信息", notes = "添加全宗号信息", position = 1)
     public ResultDataUtil<Object> add(@Validated SysDepartmentQzhFromDto formDto) {
@@ -46,7 +46,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
         return ResultDataUtil.ok("添加全宗号信息成功");
     }
 
-    @Log(level = EnumLogLevel.WARN, module = "系统管理", context = "删除全宗号信息")
+    @Log(level = EnumLogLevel.WARN, module = "系统设置", context = "删除全宗号信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除全宗号信息", notes = "删除全宗号信息", position = 2)
     @ApiImplicitParam(name = "ids", value = "主键id集合", required = true)
@@ -55,7 +55,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
         return ResultDataUtil.ok("删除全宗号信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = " 修改全宗号信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统设置", context = " 修改全宗号信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改全宗号信息", notes = "修改全宗号信息", position = 3)
     @ApiImplicitParam(name = "id", value = "主键id", required = true)
@@ -64,7 +64,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
         return ResultDataUtil.ok("修改全宗号信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询全宗号信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询全宗号信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询全宗号信息", notes = " 查询全宗号单条信息", position = 4)
     @ApiImplicitParam(name = "id", value = "主键id", required = true)
@@ -73,7 +73,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
         return ResultDataUtil.ok("查询全宗号信息成功", sysQzh);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询全宗号信息列表")
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询全宗号信息列表")
     @GetMapping
     @ApiOperation(value = "查询全宗号信息列表", notes = " 查询全宗号信息列表", position = 5)
     public ResultDataUtil<Page<SysDepartmentQzh>> findPage(SysDepartmentQzhQueryDto queryDto) {
@@ -81,7 +81,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
         return ResultDataUtil.ok("查询全宗号信息列表成功", page);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询全宗号部门列表信息树")
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询全宗号部门列表信息树")
     @GetMapping("/sys-department")
     @ApiOperation(value = "查询全宗号部门列表信息树", notes = "查询全宗号部门列表信息树", position = 6)
     public ResultDataUtil<List<TreeUtil>> findTree() {

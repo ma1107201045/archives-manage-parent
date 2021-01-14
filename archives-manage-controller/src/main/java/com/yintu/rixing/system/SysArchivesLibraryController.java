@@ -37,7 +37,7 @@ public class SysArchivesLibraryController extends Authenticator {
     @Autowired
     private ISysTemplateLibraryService iSysTemplateLibraryService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加模板库信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加模板库信息")
     @PostMapping
     @ApiOperation(value = "添加档案库信息", notes = "添加档案库信息", position = 1)
     public ResultDataUtil<Object> add(@Validated SysArchivesLibraryFormDto formDto) {
@@ -45,7 +45,7 @@ public class SysArchivesLibraryController extends Authenticator {
         return ResultDataUtil.ok("添加档案库信息成功");
     }
 
-    @Log(level = EnumLogLevel.WARN, module = "系统管理", context = "删除模板库信息")
+    @Log(level = EnumLogLevel.WARN, module = "系统设置", context = "删除模板库信息")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除档案库信息", notes = "删除档案库信息", position = 2)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -54,7 +54,7 @@ public class SysArchivesLibraryController extends Authenticator {
         return ResultDataUtil.ok("删除档案库信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "修改档案库信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改档案库信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改档案库信息", notes = "修改档案库信息", position = 3)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -63,7 +63,7 @@ public class SysArchivesLibraryController extends Authenticator {
         return ResultDataUtil.ok("修改档案库信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询模板库单条信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询模板库单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询模板库单条信息", notes = " 查询档案库单条信息", position = 4)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -72,7 +72,7 @@ public class SysArchivesLibraryController extends Authenticator {
         return ResultDataUtil.ok("查询档案库单条信息成功", sysTemplateLibrary);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询档案库列表信息树")
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询档案库列表信息树")
     @GetMapping
     @ApiOperation(value = "查询档案库列表信息树", notes = "查询档案库列表信息树", position = 5)
     public ResultDataUtil<List<TreeUtil>> findTree() {
@@ -80,7 +80,7 @@ public class SysArchivesLibraryController extends Authenticator {
         return ResultDataUtil.ok("查询档案库列表信息树成功", treeNodeUtils);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询档案库模板库列表信息列表")
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询档案库模板库列表信息列表")
     @GetMapping("/sys-template-library")
     @ApiOperation(value = "查询档案库模板库列表信息列表", notes = "查询档案库模板库列表信息列表", position = 6)
     public ResultDataUtil<List<SysTemplateLibrary>> findSysTemplateLibraries() {

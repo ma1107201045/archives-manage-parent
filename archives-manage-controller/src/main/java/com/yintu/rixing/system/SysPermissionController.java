@@ -35,7 +35,7 @@ public class SysPermissionController extends Authenticator {
     @Autowired
     private ISysPermissionService iSysPermissionService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加权限信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加权限信息")
     @PostMapping
     @ApiOperation(value = "添加权限信息", notes = "添加权限信息", position = 1)
     public Map<String, Object> add(@Validated SysPermissionFormDto sysPermissionFomDto) {
@@ -43,7 +43,7 @@ public class SysPermissionController extends Authenticator {
         return ResponseDataUtil.ok("添加权限信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "删除权限信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "删除权限信息")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除权限信息", notes = "删除权限信息", position = 2)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -52,7 +52,7 @@ public class SysPermissionController extends Authenticator {
         return ResponseDataUtil.ok("删除权限信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = " 修改权限信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统设置", context = " 修改权限信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改权限信息", notes = "修改权限信息", position = 3)
     @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
@@ -61,7 +61,7 @@ public class SysPermissionController extends Authenticator {
         return ResponseDataUtil.ok("修改权限信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询权限单条信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询权限单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询权限单条信息", notes = " 查询权限单条信息", position = 4)
     @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
@@ -70,7 +70,7 @@ public class SysPermissionController extends Authenticator {
         return ResponseDataUtil.ok("查询权限单条信息", sysPermission);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询权限列表信息树")
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询权限列表信息树")
     @GetMapping
     @ApiOperation(value = "查询权限列表信息树", notes = "查询权限列表信息树", position = 5)
     public Map<String, Object> findTree() {

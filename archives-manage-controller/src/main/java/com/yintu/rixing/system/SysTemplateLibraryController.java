@@ -34,7 +34,7 @@ public class SysTemplateLibraryController extends Authenticator {
     @Autowired
     private ISysTemplateLibraryService iSysTemplateLibraryService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "系统管理", context = "添加模板库信息")
+    @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加模板库信息")
     @PostMapping
     @ApiOperation(value = "添加模板库信息", notes = "添加模板库信息", position = 1)
     public ResultDataUtil<Object> add(@Validated SysTemplateLibraryFormDto sysDepartmentFormDto) {
@@ -42,7 +42,7 @@ public class SysTemplateLibraryController extends Authenticator {
         return ResultDataUtil.ok("添加模板库信息成功");
     }
 
-    @Log(level = EnumLogLevel.WARN, module = "系统管理", context = "删除模板库信息")
+    @Log(level = EnumLogLevel.WARN, module = "系统设置", context = "删除模板库信息")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除模板库信息", notes = "删除模板库信息", position = 2)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -51,7 +51,7 @@ public class SysTemplateLibraryController extends Authenticator {
         return ResultDataUtil.ok("删除模板库信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "修改模板库信息")
+    @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改模板库信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改模板库信息", notes = "修改模板库信息", position = 3)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -60,7 +60,7 @@ public class SysTemplateLibraryController extends Authenticator {
         return ResultDataUtil.ok("修改模板库信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询模板库单条信息")
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询模板库单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询模板库单条信息", notes = " 查询模板库单条信息", position = 4)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
@@ -69,7 +69,7 @@ public class SysTemplateLibraryController extends Authenticator {
         return ResultDataUtil.ok("查询模板库单条信息成功", sysTemplateLibrary);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询模板库列表信息树")
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询模板库列表信息树")
     @GetMapping
     @ApiOperation(value = "查询模板库列表信息树", notes = "查询模板库列表信息树", position = 5)
     public ResultDataUtil<List<TreeUtil>> findTree() {
