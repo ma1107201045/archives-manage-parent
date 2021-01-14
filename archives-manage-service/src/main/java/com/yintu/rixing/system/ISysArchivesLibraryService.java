@@ -27,7 +27,6 @@ public interface ISysArchivesLibraryService extends IService<SysArchivesLibrary>
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysArchivesLibraryFormDto sysArchivesLibraryFormDto);
 
-    void saveArchivesLibraryField(Integer id, String name, String dataKey, Integer templateLibraryId);
 
     List<Integer> listByNumber(Integer number);
 

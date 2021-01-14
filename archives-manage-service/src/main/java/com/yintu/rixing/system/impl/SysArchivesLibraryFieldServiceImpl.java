@@ -32,7 +32,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
     public void save(SysArchivesLibraryFieldFormDto sysArchivesLibraryFieldFormDto) {
         String dataKey = sysArchivesLibraryFieldFormDto.getDataKey();
         //参数校对
-        List<Integer> ids = this.listByDataKey(sysArchivesLibraryFieldFormDto.getArchivesLibraryId(), dataKey);
+        List<Integer> ids = this.listByArchivesLibraryIdDataKeys(sysArchivesLibraryFieldFormDto.getArchivesLibraryId(), new String[]{dataKey});
         if (!ids.isEmpty())
             throw new BaseRuntimeException("当前档案库中key值不能重复");
         SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
@@ -45,7 +45,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         Integer id = sysArchivesLibraryFieldFormDto.getId();
         String dataKey = sysArchivesLibraryFieldFormDto.getDataKey();
         //参数校对
-        List<Integer> ids = this.listByDataKey(sysArchivesLibraryFieldFormDto.getArchivesLibraryId(), dataKey);
+        List<Integer> ids = this.listByArchivesLibraryIdDataKeys(sysArchivesLibraryFieldFormDto.getArchivesLibraryId(), new String[]{dataKey});
         if (!ids.isEmpty() && !ids.get(0).equals(id))
             throw new BaseRuntimeException("当前模板库中key值不能重复");
         SysArchivesLibraryField sysArchivesLibraryField = this.getById(id);
@@ -69,20 +69,20 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
     }
 
     @Override
-    public List<Integer> listByDataKey(Integer archivesLibraryId, String dataKey) {
-        if (archivesLibraryId == null || StrUtil.isEmpty(dataKey))
-            throw new BaseRuntimeException("档案库id或者档案库编号不能为空");
+    public List<Integer> listByArchivesLibraryIdDataKeys(Integer archivesLibraryId, String[] dataKeys) {
+        if (archivesLibraryId == null || dataKeys == null || dataKeys.length == 0)
+            throw new BaseRuntimeException("档案库id或者key不能为空");
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)
-                .eq(SysArchivesLibraryField::getDataKey, dataKey);
+                .eq(SysArchivesLibraryField::getDataKey, dataKeys[0]);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
     @Override
     public List<Integer> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId) {
         if (archivesLibraryId == null || templateLibraryId == null)
-            throw new BaseRuntimeException("档案库id或者档案库id不能为空");
+            throw new BaseRuntimeException("档案库id或者模板库id不能为空");
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)

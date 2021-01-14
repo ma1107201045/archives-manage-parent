@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.common.CommTableFieldMapper">
-
     <insert id="createTable">
         CREATE TABLE `${tableName}`
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+            `id` int(11) NOT NULL AUTO_INCREMENT COMMENT "主键id",
             <foreach collection="commTableFields" index="index" item="commTableField" separator="," close=",">
                 `${commTableField.fieldName}`
                 ${commTableField.dataType}
@@ -18,7 +17,7 @@
                 <if test="commTableField.isNull==0">
                     NOT NULL
                 </if>
-                COMMENT "${commTableField.comment}"
+                COMMENT #{commTableField.comment,jdbcType=VARCHAR}
             </foreach>
             PRIMARY KEY (`id`) USING BTREE,
             <foreach collection="commTableFields" index="index" item="commTableField" separator=",">
@@ -28,7 +27,7 @@
             </foreach>
         </trim>
         ENGINE = InnoDB
-        COMMENT ="${tableComment}"
+        COMMENT = #{tableComment,jdbcType=VARCHAR}
         ROW_FORMAT = COMPACT;
     </insert>
 
@@ -42,7 +41,7 @@
 
     <update id="alterTableCommentByTableName">
         ALTER TABLE ${tableName}
-            COMMENT ${tableComment}
+            COMMENT #{tableComment,jdbcType=VARCHAR}
     </update>
 
     <select id="showByTableName">
