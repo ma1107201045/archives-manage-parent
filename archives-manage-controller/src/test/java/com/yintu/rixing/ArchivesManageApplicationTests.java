@@ -126,4 +126,17 @@ public class ArchivesManageApplicationTests {
         commTableFields.add(commTableField1);
         iCommTableFieldService.addTable("lib_test", "", commTableFields);
     }
+
+    @Test
+    void list2() {
+        CommTableField commTableField = new CommTableField();
+        commTableField.setFieldName("name");
+        commTableField.setDataType("varchar");
+        commTableField.setLength(200);
+        commTableField.setIsNull((short) 0);
+        commTableField.setIsIndex((short) 1);
+        commTableField.setComment("姓名");
+        iCommTableFieldService.add("dynamic_index", commTableField);
+        iCommTableFieldService.addIndex("dynamic_index", commTableField.getFieldName());
+    }
 }

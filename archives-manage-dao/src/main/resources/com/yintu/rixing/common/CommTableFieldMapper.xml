@@ -28,7 +28,7 @@
         </trim>
         ENGINE = InnoDB
         COMMENT = #{tableComment,jdbcType=VARCHAR}
-        ROW_FORMAT = COMPACT;
+        ROW_FORMAT = DYNAMIC;
     </insert>
 
     <delete id="dropTableByTableName">
@@ -44,13 +44,35 @@
             COMMENT #{tableComment,jdbcType=VARCHAR}
     </update>
 
-    <select id="showByTableName">
-        SHOW FULL COLUMNS FROM ${tableName};
-    </select>
-
     <select id="countDataByTableName" resultType="_long">
         select count(*)
         from ${tableName}
     </select>
+
+    <insert id="create">
+        ALTER TABLE ${tableName}
+        ADD COLUMN `${commTableField.fieldName}`
+        ${commTableField.dataType}
+        <if test="commTableField.dataType !='date'">
+            (${commTableField.length})
+        </if>
+        <if test="commTableField.isNull==1">
+            NULL
+        </if>
+        <if test="commTableField.isNull==0">
+            NOT NULL
+        </if>
+        COMMENT #{commTableField.comment,jdbcType=VARCHAR};
+    </insert>
+    <insert id="createIndex">
+        alter table ${tableName}
+            ADD INDEX `${fieldName}` (`${fieldName}`) USING BTREE
+    </insert>
+
+
+    <select id="showByTableName">
+        SHOW FULL COLUMNS FROM ${tableName};
+    </select>
+
 
 </mapper>

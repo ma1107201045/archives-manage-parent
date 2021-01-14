@@ -51,5 +51,15 @@ public class ICommTableFieldServiceImpl implements ICommTableFieldService {
         return commTableFieldMapper.countDataByTableName(tableName);
     }
 
+    @Override
+    public void add(String tableName, CommTableField commTableField) {
+        commTableFieldMapper.create(tableName, commTableField);
+    }
+
+    @Override
+    public void addIndex(String tableName, String fieldName) {
+        commTableFieldMapper.createIndex(tableName, fieldName);
+    }
+
 
 }

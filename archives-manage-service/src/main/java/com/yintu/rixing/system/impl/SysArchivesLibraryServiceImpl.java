@@ -204,7 +204,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                         //回滚之前的所有操作
                         this.updateById(rollBack);
                         iCommTableFieldService.editTableCommentByTableName(tableName2, rollBack.getName());
-                        iCommTableFieldService.editTableNameByTableName(tableName2, rollBack.getDataKey());
+                        iCommTableFieldService.editTableNameByTableName(tableName2, TableNameUtil.getFullTableName(rollBack.getDataKey()));
                         throw new BaseRuntimeException("key不能重复");
                     }
                     iSysArchivesLibraryFieldService.saveBatch(sysArchivesLibraryFields);

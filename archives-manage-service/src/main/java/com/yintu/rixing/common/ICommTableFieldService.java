@@ -23,7 +23,12 @@ public interface ICommTableFieldService {
     @Transactional(rollbackFor = {Exception.class})
     void editTableCommentByTableName(String tableName, String tableComment);
 
-    List<CommTableField> findByTableName(String tableName);
-
     long countDataByTableName(String tableName);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void add(String tableName, CommTableField commTableField);
+
+    void addIndex(String tableName, String fieldName);
+
+    List<CommTableField> findByTableName(String tableName);
 }

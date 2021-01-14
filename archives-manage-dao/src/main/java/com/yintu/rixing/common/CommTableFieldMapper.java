@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Mapper
 public interface CommTableFieldMapper {
-
+    //对表本身操作
     void createTable(String tableName, String tableComment, List<CommTableField> commTableFields);
 
     void dropTableByTableName(String tableName);
@@ -20,7 +20,13 @@ public interface CommTableFieldMapper {
 
     void alterTableCommentByTableName(String tableName, String tableComment);
 
+    long countDataByTableName(String tableName);
+
+    //对表字段操作
+    void create(String tableName, CommTableField commTableField);
+
+    void createIndex(String tableName, String fieldName);
+
     List<CommTableField> showByTableName(String tableName);
 
-    long countDataByTableName(String tableName);
 }

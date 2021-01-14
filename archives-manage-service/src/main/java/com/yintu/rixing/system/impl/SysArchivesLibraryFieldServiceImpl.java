@@ -5,10 +5,13 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yintu.rixing.common.CommTableField;
+import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFieldFormDto;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFieldQueryDto;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
+import com.yintu.rixing.util.TableNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +29,13 @@ import java.util.List;
 public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesLibraryFieldMapper, SysArchivesLibraryField> implements ISysArchivesLibraryFieldService {
 
     @Autowired
+    private ISysArchivesLibraryService iSysArchivesLibraryService;
+    @Autowired
     private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
+
+
+    @Autowired
+    private ICommTableFieldService iCommTableFieldService;
 
     @Override
     public void save(SysArchivesLibraryFieldFormDto sysArchivesLibraryFieldFormDto) {
@@ -38,6 +47,22 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
         BeanUtil.copyProperties(sysArchivesLibraryFieldFormDto, sysArchivesLibraryField);
         this.save(sysArchivesLibraryField);
+        SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(sysArchivesLibraryField.getArchivesLibraryId());
+        if (sysArchivesLibrary != null) {
+            String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
+            String fieldName = sysArchivesLibraryField.getDataKey();
+            CommTableField commTableField = new CommTableField();
+            commTableField.setFieldName(fieldName);
+            commTableField.setDataType(sysArchivesLibraryField.getSysTemplateLibraryFieldType().getName());
+            commTableField.setLength(sysArchivesLibraryField.getLength());
+            commTableField.setIsNull(sysArchivesLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
+            commTableField.setIsIndex(sysArchivesLibraryField.getIndex().shortValue());
+            commTableField.setComment(sysArchivesLibraryField.getName());
+            iCommTableFieldService.add(tableName, commTableField);
+            if (commTableField.getIsIndex() == 1) {
+                iCommTableFieldService.addIndex(tableName, fieldName);
+            }
+        }
     }
 
     @Override
