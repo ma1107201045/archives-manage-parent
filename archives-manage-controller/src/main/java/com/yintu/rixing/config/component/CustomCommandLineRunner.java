@@ -27,5 +27,9 @@ public class CustomCommandLineRunner implements CommandLineRunner {
         if (!file2.exists())
             if (!file2.mkdirs())
                 throw new BaseRuntimeException("创建备份目录有误");
+        File file3 = new File(PathUtil.getLogPath());
+        if (!file3.exists())
+            if (!file3.mkdirs())
+                throw new BaseRuntimeException("创建日志目录有误");
     }
 }

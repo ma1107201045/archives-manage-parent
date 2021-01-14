@@ -27,6 +27,15 @@ public class PathUtil {
     public final static String BACKUP_LINUX_PATH = "/data/archives-manage/backups/";
 
 
+    public final static String GLOBBING_LOG_MAPPING = "/logs/**";
+
+    public final static String LOG_MAPPING = "/logs/";
+
+    public final static String LOG_WINDOW_PATH = "C:\\data\\archives-manage\\logs\\";
+
+    public final static String LOG_LINUX_PATH = "/data/archives-manage/logs/";
+
+
     public static String getGlobbingFileMapping() {
         return GLOBBING_FILE_MAPPING;
     }
@@ -49,5 +58,17 @@ public class PathUtil {
 
     public static String getBackupPath() {
         return SystemUtil.getOsInfo().isWindows() ? BACKUP_WINDOW_PATH : BACKUP_LINUX_PATH;
+    }
+
+    public static String getGlobbingLogMapping() {
+        return GLOBBING_LOG_MAPPING;
+    }
+
+    public static String getLogMapping() {
+        return LOG_MAPPING;
+    }
+
+    public static String getLogPath() {
+        return SystemUtil.getOsInfo().isWindows() ? LOG_WINDOW_PATH : LOG_LINUX_PATH;
     }
 }

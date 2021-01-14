@@ -29,6 +29,7 @@ public class CustomWebMvcConfigurer implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(PathUtil.getGlobbingFileMapping()).addResourceLocations("file:" + PathUtil.getFilePath());
         registry.addResourceHandler(PathUtil.getGlobbingBackupMapping()).addResourceLocations("file:" + PathUtil.getBackupPath());
+        registry.addResourceHandler(PathUtil.getGlobbingLogMapping()).addResourceLocations("file:" + PathUtil.getLogPath());
     }
 
 }
