@@ -79,19 +79,8 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 BeanUtil.copyProperties(sysTemplateLibraryField, sysArchivesLibraryField, "id");
                 sysArchivesLibraryField.setArchivesLibraryId(sysArchivesLibrary.getId());
                 sysArchivesLibraryFields.add(sysArchivesLibraryField);
-                //动态创建表
-                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(sysTemplateLibraryField.getTemplateLibraryFieldTypeId());
-                String dataType = sysTemplateLibraryFieldType.getDataKey();
 
-                CommTableField commTableField = new CommTableField();
-                commTableField.setFieldName(sysTemplateLibraryField.getDataKey());
-                commTableField.setDataType(dataType);
-                commTableField.setLength(sysTemplateLibraryField.getLength());
-                if ("datetime".equals(dataType))
-                    commTableField.setLength(6);
-                commTableField.setIsNull(sysTemplateLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
-                commTableField.setIsIndex(sysTemplateLibraryField.getIndex());
-                commTableField.setComment(sysTemplateLibraryField.getName());
+                CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(dataKey, sysArchivesLibraryField);
                 commTableFields.add(commTableField);
             }
             iSysArchivesLibraryFieldService.saveBatch(sysArchivesLibraryFields);
@@ -194,20 +183,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                         BeanUtil.copyProperties(sysTemplateLibraryField, sysArchivesLibraryField, "id");
                         sysArchivesLibraryField.setArchivesLibraryId(id);
                         sysArchivesLibraryFields.add(sysArchivesLibraryField);
-
-                        //动态创建表
-                        SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(sysTemplateLibraryField.getTemplateLibraryFieldTypeId());
-                        String dataType = sysTemplateLibraryFieldType.getDataKey();
-
-                        CommTableField commTableField = new CommTableField();
-                        commTableField.setFieldName(sysTemplateLibraryField.getDataKey());
-                        commTableField.setDataType(dataType);
-                        commTableField.setLength(sysTemplateLibraryField.getLength());
-                        if ("datetime".equals(dataType))
-                            commTableField.setLength(6);
-                        commTableField.setIsNull(sysTemplateLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
-                        commTableField.setIsIndex(sysTemplateLibraryField.getIndex());
-                        commTableField.setComment(sysTemplateLibraryField.getName());
+                        CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(dataKey, sysArchivesLibraryField);
                         commTableFields.add(commTableField);
                     }
                     String[] dataKeys = sysArchivesLibraryFields.stream().map(SysArchivesLibraryField::getDataKey).toArray(String[]::new);
