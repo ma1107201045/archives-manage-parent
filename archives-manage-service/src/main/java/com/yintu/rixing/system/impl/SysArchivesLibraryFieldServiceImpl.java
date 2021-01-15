@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -68,6 +71,20 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
                 iCommTableFieldService.addIndex(tableName, fieldName);
             }
 
+        }
+    }
+
+    @Override
+    public void removeByIds(Set<Integer> ids) {
+        List<SysArchivesLibraryField> sysArchivesLibraryFields = this.listByIds(ids);
+        Map<Integer, List<SysArchivesLibraryField>> sysArchivesLibraryFieldGroupMap =
+                sysArchivesLibraryFields.stream().collect(Collectors.groupingBy(SysArchivesLibraryField::getArchivesLibraryId));
+        super.removeByIds(ids);
+        for (Integer archivesLibraryId : sysArchivesLibraryFieldGroupMap.keySet()) {
+            SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
+            String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
+            Set<String> fieldNames = sysArchivesLibraryFieldGroupMap.get(archivesLibraryId).stream().map(SysArchivesLibraryField::getDataKey).collect(Collectors.toSet());
+            iCommTableFieldService.dropByFieldNames(tableName, fieldNames);
         }
     }
 

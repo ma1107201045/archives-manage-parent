@@ -3,6 +3,7 @@ package com.yintu.rixing.common;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: mlf
@@ -28,6 +29,8 @@ public interface CommTableFieldMapper {
     void createIndex(String tableName, String fieldName);
 
     void drop(String tableName, String fieldName);
+
+    void dropByFields(String tableName, Set<String> fieldNames);
 
     List<CommTableField> showByTableName(String tableName);
 

@@ -73,6 +73,15 @@
             DROP COLUMN `${fieldName}`;
     </delete>
 
+    <delete id="dropByFields">
+        <if test="fieldNames.size > 0">
+            ALTER TABLE ${tableName}
+            <foreach collection="fieldNames" item="fieldName" index="index" separator=",">
+                DROP COLUMN `${fieldName}`;
+            </foreach>
+        </if>
+    </delete>
+
 
     <select id="showByTableName">
         SHOW FULL COLUMNS FROM ${tableName};

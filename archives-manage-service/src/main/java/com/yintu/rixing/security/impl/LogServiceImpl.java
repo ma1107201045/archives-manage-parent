@@ -35,7 +35,6 @@ public class LogServiceImpl implements ILogService {
 
     private static final String LOG_DESCRIPTION = "[类名]:%s,[方法]:%s,[参数]:%s,[IP]:%s";
 
-
     @Autowired
     private ISecLogService iSecLogService;
 

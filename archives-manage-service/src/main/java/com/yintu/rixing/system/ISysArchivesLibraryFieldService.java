@@ -6,7 +6,9 @@ import com.yintu.rixing.dto.system.SysArchivesLibraryFieldFormDto;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFieldQueryDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -20,6 +22,9 @@ public interface ISysArchivesLibraryFieldService extends IService<SysArchivesLib
 
     @Transactional(rollbackFor = {Exception.class})
     void save(SysArchivesLibraryFieldFormDto sysArchivesLibraryFieldFormDto);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void removeByIds(Set<Integer> ids);
 
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysArchivesLibraryFieldFormDto sysArchivesLibraryFieldFormDto);

@@ -39,8 +39,6 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
     private ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
     @Autowired
     private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
-    @Autowired
-    private ICommTableFieldService iCommTableFieldService;
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加档案库字段信息")
     @PostMapping

@@ -3,6 +3,7 @@ package com.yintu.rixing.common;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: mlf
@@ -31,6 +32,8 @@ public interface ICommTableFieldService {
     void addIndex(String tableName, String fieldName);
 
     void drop(String tableName, String fieldName);
+
+    void dropByFieldNames(String tableName, Set<String> fieldNames);
 
     List<CommTableField> findByTableName(String tableName);
 }

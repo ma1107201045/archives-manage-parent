@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: mlf
@@ -64,6 +65,11 @@ public class ICommTableFieldServiceImpl implements ICommTableFieldService {
     @Override
     public void drop(String tableName, String fieldName) {
         commTableFieldMapper.drop(tableName, fieldName);
+    }
+
+    @Override
+    public void dropByFieldNames(String tableName, Set<String> fieldNames) {
+        commTableFieldMapper.dropByFields(tableName, fieldNames);
     }
 
 
