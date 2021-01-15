@@ -79,7 +79,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 BeanUtil.copyProperties(sysTemplateLibraryField, sysArchivesLibraryField, "id");
                 sysArchivesLibraryField.setArchivesLibraryId(sysArchivesLibrary.getId());
                 sysArchivesLibraryFields.add(sysArchivesLibraryField);
-
                 CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(dataKey, sysArchivesLibraryField);
                 commTableFields.add(commTableField);
             }

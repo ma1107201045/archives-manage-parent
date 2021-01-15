@@ -109,7 +109,7 @@ public class ICommTableFieldServiceImpl implements ICommTableFieldService {
         commTableField.setIsNull(sysArchivesLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
         commTableField.setIsIndex(sysArchivesLibraryField.getIndex());
         commTableField.setComment(sysArchivesLibraryField.getName());
-        return null;
+        return commTableField;
     }
 
 
