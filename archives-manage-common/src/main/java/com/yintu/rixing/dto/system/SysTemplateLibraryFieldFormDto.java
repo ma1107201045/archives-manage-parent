@@ -36,11 +36,11 @@ public class SysTemplateLibraryFieldFormDto extends IdDto {
 
     @ApiModelProperty(value = "字段是否必填 1.是 0.否", required = true)
     @NotNull
-    private Integer required;
+    private Short required;
 
     @ApiModelProperty(value = "字段是否是索引 1.是 0.否", required = true)
     @NotNull
-    private Integer index;
+    private Short index;
 
     @ApiModelProperty(value = "字段顺序", required = true)
     @NotNull

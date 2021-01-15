@@ -90,7 +90,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 if ("datetime".equals(dataType))
                     commTableField.setLength(6);
                 commTableField.setIsNull(sysTemplateLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
-                commTableField.setIsIndex(sysTemplateLibraryField.getIndex().shortValue());
+                commTableField.setIsIndex(sysTemplateLibraryField.getIndex());
                 commTableField.setComment(sysTemplateLibraryField.getName());
                 commTableFields.add(commTableField);
             }
@@ -205,7 +205,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                         if ("datetime".equals(dataType))
                             commTableField.setLength(6);
                         commTableField.setIsNull(sysTemplateLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
-                        commTableField.setIsIndex(sysTemplateLibraryField.getIndex().shortValue());
+                        commTableField.setIsIndex(sysTemplateLibraryField.getIndex());
                         commTableField.setComment(sysTemplateLibraryField.getName());
                         commTableFields.add(commTableField);
                     }
@@ -215,6 +215,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                         //回滚之前的所有DML操作
                         this.updateById(rollBack);
                         iSysArchivesLibraryFieldService.saveBatch(sysArchivesLibraryFieldList);
+
                         iCommTableFieldService.editTableCommentByTableName(tableName2, rollBack.getName());
                         iCommTableFieldService.editTableNameByTableName(tableName2, TableNameUtil.getFullTableName(rollBack.getDataKey()));
                         throw new BaseRuntimeException("key(字段)不能重复");

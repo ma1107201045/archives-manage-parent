@@ -29,11 +29,20 @@ public interface ICommTableFieldService {
     @Transactional(rollbackFor = {Exception.class})
     void add(String tableName, CommTableField commTableField);
 
+    @Transactional(rollbackFor = {Exception.class})
     void addIndex(String tableName, String fieldName);
 
+    @Transactional(rollbackFor = {Exception.class})
     void drop(String tableName, String fieldName);
 
+    @Transactional(rollbackFor = {Exception.class})
     void dropByFieldNames(String tableName, Set<String> fieldNames);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void dropIndex(String tableName, String fieldName);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void alter(String tableName, String oldTableName, CommTableField commTableField);
 
     List<CommTableField> findByTableName(String tableName);
 }

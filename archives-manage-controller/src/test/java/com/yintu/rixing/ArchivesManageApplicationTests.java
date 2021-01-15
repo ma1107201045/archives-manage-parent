@@ -124,7 +124,7 @@ public class ArchivesManageApplicationTests {
         commTableField1.setIsNull((short) 1);
         commTableField1.setComment("姓名");
         commTableFields.add(commTableField1);
-        iCommTableFieldService.addTable("lib_test", "", commTableFields);
+//        iCommTableFieldService.addTable("lib_test", "", commTableFields);
     }
 
     @Test
@@ -136,8 +136,8 @@ public class ArchivesManageApplicationTests {
         commTableField.setIsNull((short) 0);
         commTableField.setIsIndex((short) 1);
         commTableField.setComment("姓名");
-        iCommTableFieldService.add("dynamic_index", commTableField);
-        iCommTableFieldService.addIndex("dynamic_index", commTableField.getFieldName());
-        iCommTableFieldService.drop("dynamic_index", commTableField.getFieldName());
+//        iCommTableFieldService.add("dynamic_index", commTableField);
+//        iCommTableFieldService.addIndex("dynamic_index", commTableField.getFieldName());
+//        iCommTableFieldService.drop("dynamic_index", commTableField.getFieldName());
     }
 }

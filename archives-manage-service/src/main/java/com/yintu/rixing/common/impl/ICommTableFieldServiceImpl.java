@@ -72,5 +72,15 @@ public class ICommTableFieldServiceImpl implements ICommTableFieldService {
         commTableFieldMapper.dropByFields(tableName, fieldNames);
     }
 
+    @Override
+    public void dropIndex(String tableName, String fieldName) {
+        commTableFieldMapper.dropIndex(tableName, fieldName);
+    }
+
+    @Override
+    public void alter(String tableName, String oldFieldName, CommTableField commTableField) {
+        commTableFieldMapper.alter(tableName, oldFieldName, commTableField);
+    }
+
 
 }

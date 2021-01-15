@@ -23,7 +23,7 @@ public interface CommTableFieldMapper {
 
     long countDataByTableName(String tableName);
 
-    //对表字段操作
+    //对表字段索引操作
     void create(String tableName, CommTableField commTableField);
 
     void createIndex(String tableName, String fieldName);
@@ -31,6 +31,10 @@ public interface CommTableFieldMapper {
     void drop(String tableName, String fieldName);
 
     void dropByFields(String tableName, Set<String> fieldNames);
+
+    void dropIndex(String tableName, String fieldName);
+
+    void alter(String tableName, String oldFieldName, CommTableField commTableField);
 
     List<CommTableField> showByTableName(String tableName);
 
