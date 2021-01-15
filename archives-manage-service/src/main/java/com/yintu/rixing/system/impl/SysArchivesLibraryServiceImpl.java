@@ -187,6 +187,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                         }
                     }
                     iSysArchivesLibraryFieldService.saveBatch(sysArchivesLibraryFields);
+
                     //DDL操作
                     iCommTableFieldService.removeTableByTableName(tableName1);
                     iCommTableFieldService.addTable(TableNameUtil.getFullTableName(dataKey), name, commTableFields);
