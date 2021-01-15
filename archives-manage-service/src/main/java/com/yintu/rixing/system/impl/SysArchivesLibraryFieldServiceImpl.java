@@ -51,19 +51,8 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         this.save(sysArchivesLibraryField);
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(sysArchivesLibraryField.getArchivesLibraryId());
         if (sysArchivesLibrary != null) {
-            String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
-            Integer templateLibraryFieldTypeId = sysArchivesLibraryField.getTemplateLibraryFieldTypeId();
-            SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
-            String dataType = sysTemplateLibraryFieldType.getDataKey();
-            CommTableField commTableField = new CommTableField();
-            commTableField.setFieldName(dataKey);
-            commTableField.setDataType(dataType);
-            commTableField.setLength(sysArchivesLibraryField.getLength());
-            if ("datetime".equals(dataType))
-                commTableField.setLength(6);
-            commTableField.setIsNull(sysArchivesLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
-            commTableField.setIsIndex(sysArchivesLibraryField.getIndex());
-            commTableField.setComment(sysArchivesLibraryField.getName());
+            CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField);
+            String tableName = commTableField.getTableName();
             iCommTableFieldService.add(tableName, commTableField);
             if (commTableField.getIsIndex() == 1) {
                 iCommTableFieldService.addIndex(tableName, dataKey);
@@ -100,22 +89,10 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             BeanUtil.copyProperties(sysArchivesLibraryFieldFormDto, sysArchivesLibraryField);
             Short index = sysArchivesLibraryField.getIndex();
             this.updateById(sysArchivesLibraryField);
-
             SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(sysArchivesLibraryField.getArchivesLibraryId());
             if (sysArchivesLibrary != null) {
-                String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
-                Integer templateLibraryFieldTypeId = sysArchivesLibraryField.getTemplateLibraryFieldTypeId();
-                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
-                String dataType = sysTemplateLibraryFieldType.getDataKey();
-                CommTableField commTableField = new CommTableField();
-                commTableField.setFieldName(dataKey);
-                commTableField.setDataType(dataType);
-                commTableField.setLength(sysArchivesLibraryField.getLength());
-                if ("datetime".equals(dataType))
-                    commTableField.setLength(6);
-                commTableField.setIsNull(sysArchivesLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
-                commTableField.setIsIndex(index);
-                commTableField.setComment(sysArchivesLibraryField.getName());
+                CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField);
+                String tableName = commTableField.getTableName();
                 iCommTableFieldService.alter(tableName, oldDatakey, commTableField);
                 if (oldIndex == 0 && index == 1) { //之前没有现在有
                     iCommTableFieldService.addIndex(tableName, dataKey);
@@ -141,6 +118,10 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             sysArchivesLibraryField2.setOrder(order);
             this.saveOrUpdate(sysArchivesLibraryField1);
             this.saveOrUpdate(sysArchivesLibraryField2);
+            //改变表字段顺序
+            CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibraryField1.getDataKey(), sysArchivesLibraryField1);
+            String tableName = commTableField.getTableName();
+            iCommTableFieldService.alterOrder(tableName, commTableField, sysArchivesLibraryField2.getDataKey());
         }
     }
 

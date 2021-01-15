@@ -170,6 +170,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
             this.updateById(sysArchivesLibrary);
             if (type == 2) {
+                boolean flag = false;
                 String tableName1 = TableNameUtil.getFullTableName(oldDataKey);
                 String tableName2 = TableNameUtil.getFullTableName(dataKey);
                 //更改表的注释

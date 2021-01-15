@@ -13,6 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommTableField {
+
+    /**
+     * 表名
+     */
+    private String tableName;
+
     /**
      * 字段名
      */

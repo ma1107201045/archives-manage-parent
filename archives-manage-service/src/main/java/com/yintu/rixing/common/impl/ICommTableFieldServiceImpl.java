@@ -4,6 +4,10 @@ import com.yintu.rixing.common.CommTableField;
 import com.yintu.rixing.common.CommTableFieldMapper;
 import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.exception.BaseRuntimeException;
+import com.yintu.rixing.system.ISysTemplateLibraryFieldTypeService;
+import com.yintu.rixing.system.SysArchivesLibraryField;
+import com.yintu.rixing.system.SysTemplateLibraryFieldType;
+import com.yintu.rixing.util.TableNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +23,8 @@ import java.util.Set;
 public class ICommTableFieldServiceImpl implements ICommTableFieldService {
     @Autowired
     private CommTableFieldMapper commTableFieldMapper;
-
+    @Autowired
+    private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
 
     public void addTable(String tableName, String tableComment, List<CommTableField> commTableFields) {
         commTableFieldMapper.createTable(tableName, tableComment, commTableFields);
@@ -67,6 +72,7 @@ public class ICommTableFieldServiceImpl implements ICommTableFieldService {
         commTableFieldMapper.drop(tableName, fieldName);
     }
 
+
     @Override
     public void dropByFieldNames(String tableName, Set<String> fieldNames) {
         commTableFieldMapper.dropByFields(tableName, fieldNames);
@@ -80,6 +86,30 @@ public class ICommTableFieldServiceImpl implements ICommTableFieldService {
     @Override
     public void alter(String tableName, String oldFieldName, CommTableField commTableField) {
         commTableFieldMapper.alter(tableName, oldFieldName, commTableField);
+    }
+
+    @Override
+    public void alterOrder(String tableName, CommTableField commTableField, String fieldName) {
+        commTableFieldMapper.alterOrder(tableName, commTableField, fieldName);
+    }
+
+    @Override
+    public CommTableField findByDataKeyAndSysArchivesLibraryField(String dataKey, SysArchivesLibraryField sysArchivesLibraryField) {
+        String tableName = TableNameUtil.getFullTableName(dataKey);
+        Integer templateLibraryFieldTypeId = sysArchivesLibraryField.getTemplateLibraryFieldTypeId();
+        SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+        String dataType = sysTemplateLibraryFieldType.getDataKey();
+        CommTableField commTableField = new CommTableField();
+        commTableField.setTableName(tableName);
+        commTableField.setFieldName(dataKey);
+        commTableField.setDataType(dataType);
+        commTableField.setLength(sysArchivesLibraryField.getLength());
+        if ("datetime".equals(dataType))
+            commTableField.setLength(6);
+        commTableField.setIsNull(sysArchivesLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
+        commTableField.setIsIndex(sysArchivesLibraryField.getIndex());
+        commTableField.setComment(sysArchivesLibraryField.getName());
+        return null;
     }
 
 

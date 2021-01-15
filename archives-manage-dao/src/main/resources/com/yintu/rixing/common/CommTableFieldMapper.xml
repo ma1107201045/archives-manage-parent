@@ -101,6 +101,22 @@
         COMMENT #{commTableField.comment,jdbcType=VARCHAR};
     </update>
 
+    <update id="alterOrder">
+        ALTER TABLE ${tableName}
+        MODIFY `${commTableField.fieldName}`
+        ${commTableField.dataType}
+        <if test="commTableField.dataType !='date'">
+            (${commTableField.length})
+        </if>
+        <if test="commTableField.isNull==1">
+            NULL
+        </if>
+        <if test="commTableField.isNull==0">
+            NOT NULL
+        </if>
+        COMMENT #{commTableField.comment,jdbcType=VARCHAR} AFTER `${fieldName}`;
+    </update>
+
     <select id="showByTableName">
         SHOW FULL COLUMNS FROM ${tableName};
     </select>

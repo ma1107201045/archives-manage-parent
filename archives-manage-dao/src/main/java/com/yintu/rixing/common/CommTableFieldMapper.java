@@ -36,6 +36,8 @@ public interface CommTableFieldMapper {
 
     void alter(String tableName, String oldFieldName, CommTableField commTableField);
 
+    void alterOrder(String tableName, CommTableField commTableField, String fieldName);
+
     List<CommTableField> showByTableName(String tableName);
 
 }

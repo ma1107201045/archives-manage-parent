@@ -2,6 +2,7 @@ package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yintu.rixing.common.CommTableField;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFieldFormDto;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFieldQueryDto;
 import org.springframework.transaction.annotation.Transactional;
