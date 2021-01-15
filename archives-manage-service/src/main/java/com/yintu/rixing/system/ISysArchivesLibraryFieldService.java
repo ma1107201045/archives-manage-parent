@@ -29,7 +29,7 @@ public interface ISysArchivesLibraryFieldService extends IService<SysArchivesLib
 
     List<Integer> listByArchivesLibraryIdDataKeys(Integer archivesLibraryId, String[] dataKeys);
 
-    List<Integer> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId);
+    List<SysArchivesLibraryField> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId);
 
     Page<SysArchivesLibraryField> page(SysArchivesLibraryFieldQueryDto sysArchivesLibraryFieldQueryDto);
 

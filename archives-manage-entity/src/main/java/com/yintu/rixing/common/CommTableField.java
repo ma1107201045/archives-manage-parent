@@ -46,4 +46,11 @@ public class CommTableField {
      * 注释
      */
     private String comment;
+
+
+    public void setDataType(String dataType) {
+        if ("datetime".equals(dataType))
+            this.length = 0;
+        this.dataType = dataType;
+    }
 }

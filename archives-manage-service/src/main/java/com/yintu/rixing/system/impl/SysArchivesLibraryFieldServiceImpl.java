@@ -50,16 +50,20 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         if (sysArchivesLibrary != null) {
             String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
             String fieldName = sysArchivesLibraryField.getDataKey();
-            CommTableField commTableField = new CommTableField();
-            commTableField.setFieldName(fieldName);
-            commTableField.setDataType(sysArchivesLibraryField.getSysTemplateLibraryFieldType().getName());
-            commTableField.setLength(sysArchivesLibraryField.getLength());
-            commTableField.setIsNull(sysArchivesLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
-            commTableField.setIsIndex(sysArchivesLibraryField.getIndex().shortValue());
-            commTableField.setComment(sysArchivesLibraryField.getName());
-            iCommTableFieldService.add(tableName, commTableField);
-            if (commTableField.getIsIndex() == 1) {
-                iCommTableFieldService.addIndex(tableName, fieldName);
+            Integer templateLibraryFieldTypeId = sysArchivesLibraryField.getTemplateLibraryFieldTypeId();
+            SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+            if (sysTemplateLibraryFieldType != null) {
+                CommTableField commTableField = new CommTableField();
+                commTableField.setFieldName(fieldName);
+                commTableField.setDataType(sysTemplateLibraryFieldType.getDataKey());
+                commTableField.setLength(sysArchivesLibraryField.getLength());
+                commTableField.setIsNull(sysArchivesLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
+                commTableField.setIsIndex(sysArchivesLibraryField.getIndex().shortValue());
+                commTableField.setComment(sysArchivesLibraryField.getName());
+                iCommTableFieldService.add(tableName, commTableField);
+                if (commTableField.getIsIndex() == 1) {
+                    iCommTableFieldService.addIndex(tableName, fieldName);
+                }
             }
         }
     }
@@ -103,15 +107,22 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
+    /**
+     * 不返回id的原因被用作回滚
+     *
+     * @param archivesLibraryId 档案库id
+     * @param templateLibraryId 模板库id
+     * @return 档案库字段集
+     */
     @Override
-    public List<Integer> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId) {
+    public List<SysArchivesLibraryField> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId) {
         if (archivesLibraryId == null || templateLibraryId == null)
             throw new BaseRuntimeException("档案库id或者模板库id不能为空");
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)
                 .eq(SysArchivesLibraryField::getTemplateLibraryId, templateLibraryId);
-        return this.listObjs(queryWrapper, id -> (Integer) id);
+        return this.list(queryWrapper);
     }
 
 
