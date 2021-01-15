@@ -5,6 +5,7 @@ import com.yintu.rixing.common.CommMenuMapper;
 import com.yintu.rixing.common.ICommMenuService;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.util.TreeUtil;
+import com.yintu.rixing.vo.common.CommAuthorityVo;
 import com.yintu.rixing.vo.common.CommMenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,11 @@ public class CommMenuServiceImpl implements ICommMenuService {
     @Autowired
     private CommMenuMapper commMenuDao;
 
-
     @Override
     public List<TreeUtil> findMenus(Integer permissionId, Integer userId) {
-        List<CommMenuVo> commMenuVos;
-        commMenuVos = userId == null ? commMenuDao.selectByExample(permissionId, EnumFlag.True.getValue()) :
-                commMenuDao.selectByExampleAndUserId(permissionId, EnumFlag.True.getValue(), userId);
+        Short menu = EnumFlag.True.getValue();
+        List<CommMenuVo> commMenuVos = userId == null ? commMenuDao.selectByExample(permissionId, menu) :
+                commMenuDao.selectByExampleAndUserId(permissionId, menu, userId);
         List<TreeUtil> treeUtils = new ArrayList<>();
         for (CommMenuVo commMenuVo : commMenuVos) {
             TreeUtil treeUtil = new TreeUtil();
@@ -39,5 +39,12 @@ public class CommMenuServiceImpl implements ICommMenuService {
             treeUtils.add(treeUtil);
         }
         return treeUtils;
+    }
+
+    @Override
+    public List<CommAuthorityVo> findAuthorities(Integer userId) {
+        Short menu = EnumFlag.False.getValue();
+        return userId == null ? commMenuDao.selectAuthorityByExample(menu)
+                : commMenuDao.selectAuthorityByExampleAndUserId(menu, userId);
     }
 }

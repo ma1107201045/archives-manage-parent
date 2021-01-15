@@ -1,5 +1,6 @@
 package com.yintu.rixing.common;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumAuthType;
@@ -7,6 +8,7 @@ import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
+import com.yintu.rixing.vo.common.CommAuthorityVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiSort;
@@ -32,19 +34,27 @@ public class CommMenuController extends Authenticator {
     @Autowired
     private ICommMenuService iCommMenuService;
 
-    @Log(level = EnumLogLevel.TRACE, module = "公共模块", context = "查询菜单栏信息")
+    @Log(level = EnumLogLevel.TRACE, module = "公共模块", context = "查询菜单栏以及权限信息")
     @GetMapping
-    @ApiOperation(value = "查询菜单栏信息", notes = " 查询菜单栏信息")
-    public ResultDataUtil<Object> findPage() {
+    @ApiOperation(value = "查询菜单栏以及权限信息", notes = "查询菜单栏以及权限信息")
+    public ResultDataUtil<JSONObject> findPage() {
+        JSONObject jo = new JSONObject();
         SysUser sysUser = Authenticator.getPrincipal();
-        List<TreeUtil> treeUtils = new ArrayList<>();
+        List<TreeUtil> treeUtils = null;
+        List<CommAuthorityVo> commAuthorityVos = null;
         if (sysUser != null) {
-            if (sysUser.getAuthType().equals(EnumAuthType.ADMIN.getValue()))
+            if (sysUser.getAuthType().equals(EnumAuthType.ADMIN.getValue())) {
                 treeUtils = iCommMenuService.findMenus(-1, null);
-            else
-                treeUtils = iCommMenuService.findMenus(-1, sysUser.getId());
+                commAuthorityVos = iCommMenuService.findAuthorities(null);
+            } else {
+                Integer userId = sysUser.getId();
+                treeUtils = iCommMenuService.findMenus(-1, userId);
+                iCommMenuService.findAuthorities(userId);
+            }
         }
-        return ResultDataUtil.ok("查询菜单栏信息成功", treeUtils);
+        jo.put("menu", treeUtils);
+        jo.put("Authorities", commAuthorityVos);
+        return ResultDataUtil.ok("查询菜单栏信息以及权限成功", jo);
     }
 
 }

@@ -7,6 +7,7 @@
         <result column="icon_cls" jdbcType="VARCHAR" property="iconCls"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
     </resultMap>
+
     <select id="selectByExample" resultMap="BaseResultMap">
         SELECT sp.id, sp.name, sp.icon_cls, sp.path
         FROM sys_permission sp
@@ -27,4 +28,30 @@
         GROUP BY sp.id
     </select>
 
+
+    <resultMap id="BaseResultMap1" type="com.yintu.rixing.vo.common.CommAuthorityVo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="authorized_name" jdbcType="VARCHAR" property="authorizedName"/>
+    </resultMap>
+
+    <select id="selectAuthorityByExample" resultMap="BaseResultMap1">
+        SELECT sp.id, sp.name, sp.icon_cls, sp.path
+        FROM sys_permission sp
+        where sp.menu = #{menu,jdbcType=SMALLINT}
+    </select>
+
+    <select id="selectAuthorityByExampleAndUserId" resultMap="BaseResultMap1">
+        SELECT sp.id, sp.name, sp.icon_cls, sp.path
+        FROM sys_user su
+                 INNER JOIN sys_user_role sur ON su.id = sur.user_id
+                 INNER JOIN sys_role sr ON sur.role_id = sr.id
+                 INNER JOIN sys_role_permission srp ON sr.id = srp.role_id
+                 INNER JOIN sys_permission sp ON srp.permission_id = sp.id
+        where su.id = #{userId,jdbcType=INTEGER}
+          and sp.menu = #{menu,jdbcType=SMALLINT}
+        GROUP BY sp.id
+    </select>
 </mapper>
