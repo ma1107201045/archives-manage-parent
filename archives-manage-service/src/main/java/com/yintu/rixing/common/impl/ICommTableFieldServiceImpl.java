@@ -32,8 +32,6 @@ public class ICommTableFieldServiceImpl implements ICommTableFieldService {
 
     @Override
     public void removeTableByTableName(String tableName) {
-        if (this.countDataByTableName(tableName) > 0)
-            throw new BaseRuntimeException("表中有数据，删除失败");
         commTableFieldMapper.dropTableByTableName(tableName);
     }
 
@@ -91,6 +89,12 @@ public class ICommTableFieldServiceImpl implements ICommTableFieldService {
     @Override
     public void alterOrder(String tableName, CommTableField commTableField, String fieldName) {
         commTableFieldMapper.alterOrder(tableName, commTableField, fieldName);
+    }
+
+    @Override
+    public void isHasDataByTableName(String tableName) {
+        if (this.countDataByTableName(tableName) > 0)
+            throw new BaseRuntimeException("档案库中有数据，删除失败");
     }
 
     @Override

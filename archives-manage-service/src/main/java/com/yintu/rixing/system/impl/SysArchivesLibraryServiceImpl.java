@@ -35,8 +35,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     @Autowired
     private ISysTemplateLibraryFieldService iSysTemplateLibraryFieldService;
     @Autowired
-    private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
-    @Autowired
     private ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
     @Autowired
     private ICommTableFieldService iCommTableFieldService;
@@ -67,6 +65,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                     throw new BaseRuntimeException("档案库下边不能添加目录");
             } else return;
         }
+
         BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
         this.save(sysArchivesLibrary);
         if (type == 2) {
@@ -158,9 +157,9 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
             this.updateById(sysArchivesLibrary);
             if (type == 2) {
-                boolean flag = false;
                 String tableName1 = TableNameUtil.getFullTableName(oldDataKey);
                 String tableName2 = TableNameUtil.getFullTableName(dataKey);
+                iCommTableFieldService.isHasDataByTableName(tableName1);
                 //更改表的注释
                 if (!oldName.equals(name))
                     iCommTableFieldService.editTableCommentByTableName(tableName1, name);
@@ -170,31 +169,22 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 }
                 //如果更换模板库则删除属于此模板库的字段以及表，并且重新添加字段跟表结构
                 if (!oldTemplateLibraryId.equals(templateLibraryId)) {
-                    List<SysArchivesLibraryField> sysArchivesLibraryFieldList = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndTemplateLibraryId(id, oldTemplateLibraryId);
-                    if (!sysArchivesLibraryFieldList.isEmpty())
-                        iSysArchivesLibraryFieldService.removeByIds(sysArchivesLibraryFieldList.stream().map(SysArchivesLibraryField::getId).collect(Collectors.toList()));
+                    List<Integer> ids = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndTemplateLibraryId(id, oldTemplateLibraryId);
+                    if (!ids.isEmpty())
+                        iSysArchivesLibraryFieldService.removeByIds(ids);
                     List<SysArchivesLibraryField> sysArchivesLibraryFields = new ArrayList<>();
                     List<CommTableField> commTableFields = new ArrayList<>();
                     List<SysTemplateLibraryField> sysTemplateLibraryFields = iSysTemplateLibraryFieldService.listByTemplateLibraryId(templateLibraryId);
                     for (SysTemplateLibraryField sysTemplateLibraryField : sysTemplateLibraryFields) {
-                        //从模板库中的字段导复制到档案库的字段
-                        SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
-                        BeanUtil.copyProperties(sysTemplateLibraryField, sysArchivesLibraryField, "id");
-                        sysArchivesLibraryField.setArchivesLibraryId(id);
-                        sysArchivesLibraryFields.add(sysArchivesLibraryField);
-                        CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(dataKey, sysArchivesLibraryField);
-                        commTableFields.add(commTableField);
-                    }
-                    String[] dataKeys = sysArchivesLibraryFields.stream().map(SysArchivesLibraryField::getDataKey).toArray(String[]::new);
-                    List<Integer> idList = iSysArchivesLibraryFieldService.listByArchivesLibraryIdDataKeys(id, dataKeys);
-                    if (!idList.isEmpty()) {
-                        //回滚之前的所有DML操作
-                        this.updateById(rollBack);
-                        iSysArchivesLibraryFieldService.saveBatch(sysArchivesLibraryFieldList);
-
-                        iCommTableFieldService.editTableCommentByTableName(tableName2, rollBack.getName());
-                        iCommTableFieldService.editTableNameByTableName(tableName2, TableNameUtil.getFullTableName(rollBack.getDataKey()));
-                        throw new BaseRuntimeException("key(字段)不能重复");
+                        List<Integer> idList = iSysArchivesLibraryFieldService.listByArchivesLibraryIdDataKeys(id, sysTemplateLibraryField.getDataKey());
+                        if (idList.isEmpty()) {
+                            SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
+                            BeanUtil.copyProperties(sysTemplateLibraryField, sysArchivesLibraryField, "id");
+                            sysArchivesLibraryField.setArchivesLibraryId(id);
+                            sysArchivesLibraryFields.add(sysArchivesLibraryField);
+                            CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(dataKey, sysArchivesLibraryField);
+                            commTableFields.add(commTableField);
+                        }
                     }
                     iSysArchivesLibraryFieldService.saveBatch(sysArchivesLibraryFields);
                     //DDL操作

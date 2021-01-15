@@ -1,5 +1,6 @@
 package com.yintu.rixing.common;
 
+import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.SysArchivesLibraryField;
 
 import java.util.List;
@@ -43,6 +44,8 @@ public interface ICommTableFieldService {
 
     void alterOrder(String tableName, CommTableField commTableField, String fieldName);
 
+
+    void isHasDataByTableName(String tableName);
 
     CommTableField findByDataKeyAndSysArchivesLibraryField(String dataKey, SysArchivesLibraryField sysArchivesLibraryField);
 

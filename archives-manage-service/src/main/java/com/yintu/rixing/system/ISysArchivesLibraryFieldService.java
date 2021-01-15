@@ -33,9 +33,9 @@ public interface ISysArchivesLibraryFieldService extends IService<SysArchivesLib
     @Transactional(rollbackFor = {Exception.class})
     void updateOrderByIds(Integer id1, Integer id2);
 
-    List<Integer> listByArchivesLibraryIdDataKeys(Integer archivesLibraryId, String[] dataKeys);
+    List<Integer> listByArchivesLibraryIdDataKeys(Integer archivesLibraryId, String dataKey);
 
-    List<SysArchivesLibraryField> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId);
+    List<Integer> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId);
 
     Page<SysArchivesLibraryField> page(SysArchivesLibraryFieldQueryDto sysArchivesLibraryFieldQueryDto);
 

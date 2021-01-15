@@ -43,7 +43,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
     public void save(SysArchivesLibraryFieldFormDto sysArchivesLibraryFieldFormDto) {
         String dataKey = sysArchivesLibraryFieldFormDto.getDataKey();
         //参数校对
-        List<Integer> ids = this.listByArchivesLibraryIdDataKeys(sysArchivesLibraryFieldFormDto.getArchivesLibraryId(), new String[]{dataKey});
+        List<Integer> ids = this.listByArchivesLibraryIdDataKeys(sysArchivesLibraryFieldFormDto.getArchivesLibraryId(), dataKey);
         if (!ids.isEmpty())
             throw new BaseRuntimeException("当前档案库中key值不能重复");
         SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
@@ -53,6 +53,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         if (sysArchivesLibrary != null) {
             CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField);
             String tableName = commTableField.getTableName();
+            iCommTableFieldService.isHasDataByTableName(tableName);
             iCommTableFieldService.add(tableName, commTableField);
             if (commTableField.getIsIndex() == 1) {
                 iCommTableFieldService.addIndex(tableName, dataKey);
@@ -70,6 +71,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
             String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
             Set<String> fieldNames = sysArchivesLibraryFieldGroupMap.get(archivesLibraryId).stream().map(SysArchivesLibraryField::getDataKey).collect(Collectors.toSet());
+            iCommTableFieldService.isHasDataByTableName(tableName);
             iCommTableFieldService.dropByFieldNames(tableName, fieldNames);
         }
     }
@@ -79,7 +81,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         Integer id = sysArchivesLibraryFieldFormDto.getId();
         String dataKey = sysArchivesLibraryFieldFormDto.getDataKey();
         //参数校对
-        List<Integer> ids = this.listByArchivesLibraryIdDataKeys(sysArchivesLibraryFieldFormDto.getArchivesLibraryId(), new String[]{dataKey});
+        List<Integer> ids = this.listByArchivesLibraryIdDataKeys(sysArchivesLibraryFieldFormDto.getArchivesLibraryId(), dataKey);
         if (!ids.isEmpty() && !ids.get(0).equals(id))
             throw new BaseRuntimeException("当前模板库中key值不能重复");
         SysArchivesLibraryField sysArchivesLibraryField = this.getById(id);
@@ -93,6 +95,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             if (sysArchivesLibrary != null) {
                 CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField);
                 String tableName = commTableField.getTableName();
+                iCommTableFieldService.isHasDataByTableName(tableName);
                 iCommTableFieldService.alter(tableName, oldDatakey, commTableField);
                 if (oldIndex == 0 && index == 1) { //之前没有现在有
                     iCommTableFieldService.addIndex(tableName, dataKey);
@@ -123,19 +126,20 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
                 //改变表字段顺序
                 CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField1);
                 String tableName = commTableField.getTableName();
+                iCommTableFieldService.isHasDataByTableName(tableName);
                 iCommTableFieldService.alterOrder(tableName, commTableField, sysArchivesLibraryField2.getDataKey());
             }
         }
     }
 
     @Override
-    public List<Integer> listByArchivesLibraryIdDataKeys(Integer archivesLibraryId, String[] dataKeys) {
-        if (archivesLibraryId == null || dataKeys == null || dataKeys.length == 0)
+    public List<Integer> listByArchivesLibraryIdDataKeys(Integer archivesLibraryId, String dataKey) {
+        if (archivesLibraryId == null || dataKey == null)
             throw new BaseRuntimeException("档案库id或者key不能为空");
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)
-                .eq(SysArchivesLibraryField::getDataKey, dataKeys[0]);
+                .eq(SysArchivesLibraryField::getDataKey, dataKey);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
@@ -147,14 +151,14 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
      * @return 档案库字段集
      */
     @Override
-    public List<SysArchivesLibraryField> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId) {
+    public List<Integer> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId) {
         if (archivesLibraryId == null || templateLibraryId == null)
             throw new BaseRuntimeException("档案库id或者模板库id不能为空");
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)
                 .eq(SysArchivesLibraryField::getTemplateLibraryId, templateLibraryId);
-        return this.list(queryWrapper);
+        return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
 
