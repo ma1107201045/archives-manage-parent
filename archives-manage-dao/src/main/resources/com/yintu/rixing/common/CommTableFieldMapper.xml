@@ -8,7 +8,7 @@
             <foreach collection="commTableFields" index="index" item="commTableField" separator="," close=",">
                 `${commTableField.fieldName}`
                 ${commTableField.dataType}
-                <if test="${commTableField.dataType} !='date'">
+                <if test="commTableField.dataType !='date'">
                     (${commTableField.length})
                 </if>
                 <if test="commTableField.isNull==1">
@@ -53,7 +53,7 @@
         ALTER TABLE ${tableName}
         ADD COLUMN `${commTableField.fieldName}`
         ${commTableField.dataType}
-        <if test="${commTableField.dataType} !='date'">
+        <if test="commTableField.dataType !='date'">
             (${commTableField.length})
         </if>
         <if test="commTableField.isNull==1">

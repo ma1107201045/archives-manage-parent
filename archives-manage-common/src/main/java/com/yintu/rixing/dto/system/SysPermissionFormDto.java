@@ -27,13 +27,6 @@ public class SysPermissionFormDto extends IdDto {
     @NotBlank
     private String name;
 
-    @ApiModelProperty(value = "优先级")
-    private Integer priority;
-
-    @ApiModelProperty(value = "授权名称", required = true)
-    @NotNull
-    private String authorizedName;
-
     @ApiModelProperty(value = "是否是菜单项 1.是 0.否", required = true)
     @NotNull
     private Short menu;
@@ -44,11 +37,16 @@ public class SysPermissionFormDto extends IdDto {
     @ApiModelProperty(value = "请求方法")
     private String method;
 
+    @ApiModelProperty(value = "授权名称")
+    private String authorizedName;
+
     @ApiModelProperty(value = "菜单项显示的图标")
     private String iconCls;
 
     @ApiModelProperty(value = "前端路由转向")
     private String path;
 
+    @ApiModelProperty(value = "优先级")
+    private Integer priority;
 
 }

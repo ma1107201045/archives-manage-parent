@@ -32,27 +32,24 @@ public class SysPermission extends BaseEntity {
     @TableField("name")
     private String name;
 
-    @ApiModelProperty(value = "优先级", position = 8)
-    @TableField("priority")
-    private Integer priority;
-
-    @ApiModelProperty(value = "授权名称", position = 9)
-    @TableField("authorized_name")
-    private String authorizedName;
-
-    @ApiModelProperty(value = "是否是菜单项 1.是 0.否", position = 10)
+    @ApiModelProperty(value = "是否是菜单项 1.是 0.否", position = 8)
     @TableField("menu")
     private Short menu;
 
-    @ApiModelProperty(value = "相对地址", position = 11)
+    @ApiModelProperty(value = "相对地址", position = 9)
     @TableField("url")
     private String url;
 
-    @ApiModelProperty(value = "请求方法", position = 12)
+    @ApiModelProperty(value = "请求方法", position = 10)
     @TableField("method")
     private String method;
 
-    @ApiModelProperty(value = "菜单项显示的图片地址", position = 14)
+    @ApiModelProperty(value = "授权名称", position = 11)
+    @TableField("authorized_name")
+    private String authorizedName;
+
+
+    @ApiModelProperty(value = "菜单项显示的图片地址", position = 12)
     @TableField("icon_cls")
     private String iconCls;
 
@@ -60,5 +57,8 @@ public class SysPermission extends BaseEntity {
     @TableField("path")
     private String path;
 
+    @ApiModelProperty(value = "优先级", position = 14)
+    @TableField("priority")
+    private Integer priority;
 
 }

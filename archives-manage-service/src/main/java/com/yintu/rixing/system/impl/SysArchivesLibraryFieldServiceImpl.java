@@ -52,19 +52,22 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             String fieldName = sysArchivesLibraryField.getDataKey();
             Integer templateLibraryFieldTypeId = sysArchivesLibraryField.getTemplateLibraryFieldTypeId();
             SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
-            if (sysTemplateLibraryFieldType != null) {
-                CommTableField commTableField = new CommTableField();
-                commTableField.setFieldName(fieldName);
-                commTableField.setDataType(sysTemplateLibraryFieldType.getDataKey());
-                commTableField.setLength(sysArchivesLibraryField.getLength());
-                commTableField.setIsNull(sysArchivesLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
-                commTableField.setIsIndex(sysArchivesLibraryField.getIndex().shortValue());
-                commTableField.setComment(sysArchivesLibraryField.getName());
-                iCommTableFieldService.add(tableName, commTableField);
-                if (commTableField.getIsIndex() == 1) {
-                    iCommTableFieldService.addIndex(tableName, fieldName);
-                }
+            String dataType = sysTemplateLibraryFieldType.getDataKey();
+
+            CommTableField commTableField = new CommTableField();
+            commTableField.setFieldName(fieldName);
+            commTableField.setDataType(dataType);
+            commTableField.setLength(sysArchivesLibraryField.getLength());
+            if ("datetime".equals(dataType))
+                commTableField.setLength(6);
+            commTableField.setIsNull(sysArchivesLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
+            commTableField.setIsIndex(sysArchivesLibraryField.getIndex().shortValue());
+            commTableField.setComment(sysArchivesLibraryField.getName());
+            iCommTableFieldService.add(tableName, commTableField);
+            if (commTableField.getIsIndex() == 1) {
+                iCommTableFieldService.addIndex(tableName, fieldName);
             }
+
         }
     }
 

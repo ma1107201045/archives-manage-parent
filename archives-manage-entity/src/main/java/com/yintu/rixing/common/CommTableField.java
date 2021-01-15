@@ -47,10 +47,4 @@ public class CommTableField {
      */
     private String comment;
 
-
-    public void setDataType(String dataType) {
-        if ("datetime".equals(dataType))
-            this.length = 0;
-        this.dataType = dataType;
-    }
 }
