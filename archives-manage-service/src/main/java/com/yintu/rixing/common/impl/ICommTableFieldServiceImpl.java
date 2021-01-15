@@ -101,7 +101,7 @@ public class ICommTableFieldServiceImpl implements ICommTableFieldService {
         String dataType = sysTemplateLibraryFieldType.getDataKey();
         CommTableField commTableField = new CommTableField();
         commTableField.setTableName(tableName);
-        commTableField.setFieldName(dataKey);
+        commTableField.setFieldName(sysArchivesLibraryField.getDataKey());
         commTableField.setDataType(dataType);
         commTableField.setLength(sysArchivesLibraryField.getLength());
         if ("datetime".equals(dataType))

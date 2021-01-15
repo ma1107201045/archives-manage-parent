@@ -118,10 +118,13 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             sysArchivesLibraryField2.setOrder(order);
             this.saveOrUpdate(sysArchivesLibraryField1);
             this.saveOrUpdate(sysArchivesLibraryField2);
-            //改变表字段顺序
-            CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibraryField1.getDataKey(), sysArchivesLibraryField1);
-            String tableName = commTableField.getTableName();
-            iCommTableFieldService.alterOrder(tableName, commTableField, sysArchivesLibraryField2.getDataKey());
+            SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(sysArchivesLibraryField1.getArchivesLibraryId());
+            if (sysArchivesLibrary != null) {
+                //改变表字段顺序
+                CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField1);
+                String tableName = commTableField.getTableName();
+                iCommTableFieldService.alterOrder(tableName, commTableField, sysArchivesLibraryField2.getDataKey());
+            }
         }
     }
 
