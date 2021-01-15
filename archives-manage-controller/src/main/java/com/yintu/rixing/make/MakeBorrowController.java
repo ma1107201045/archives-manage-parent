@@ -93,7 +93,7 @@ public class MakeBorrowController {
         queryWrapper.lambda().like(MakeBorrow::getName,name==null? "":name);
         queryWrapper.lambda().like(MakeBorrow::getCertificateNumber,certificateNumber==null? "":certificateNumber);
         queryWrapper.orderByDesc("id");
-        queryWrapper.eq("borrow_type","1");
+        queryWrapper.eq("borrow_type","2");
         Page<MakeBorrow> page = iMakeBorrowService.page(new Page<>(num, size), queryWrapper);
         return ResponseDataUtil.ok("查询借阅申请的实体借阅信息列表成功", page);
     }
