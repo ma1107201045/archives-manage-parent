@@ -42,6 +42,7 @@ public class SysApprovalProcessServiceImpl extends ServiceImpl<SysApprovalProces
         SysApprovalProcess sysApprovalProcess = new SysApprovalProcess();
         BeanUtil.copyProperties(sysApprovalProcessFormDto, sysApprovalProcess);
         this.save(sysApprovalProcess);
+        sysApprovalProcessFormDto.setId(sysApprovalProcess.getId());
         this.saveSysApprovalProcessConfigurations(sysApprovalProcessFormDto, true);
 
     }
@@ -138,38 +139,38 @@ public class SysApprovalProcessServiceImpl extends ServiceImpl<SysApprovalProces
 
     @Override
     public List<List<TreeUtil>> treeById(Integer id) {
-        QueryWrapper<SysApprovalProcessConfiguration> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysApprovalProcessConfiguration::getApprovalProcessId, id);
-        List<SysApprovalProcessConfiguration> sysApprovalProcessConfigurations = iSysApprovalProcessConfigurationService.list(queryWrapper);
         List<List<TreeUtil>> lists = new ArrayList<>();
-        //先按照顺序字段分组
-        Map<Integer, List<SysApprovalProcessConfiguration>> groupMapByOrder = sysApprovalProcessConfigurations.stream().collect(Collectors.groupingBy(SysApprovalProcessConfiguration::getOrder));
-        for (Integer sort : groupMapByOrder.keySet()) {
-            List<SysApprovalProcessConfiguration> eachOrder = groupMapByOrder.get(sort);
-
-            List<Integer> roleIds = eachOrder.stream().map(SysApprovalProcessConfiguration::getRoleId).collect(Collectors.toList());
-            List<SysRole> sysRoles = iSysRoleService.listByIds(roleIds);
-            List<TreeUtil> firstTreeNodeUtils = new ArrayList<>();
-            for (SysRole sysRole : sysRoles) {
-                List<Integer> userIds = eachOrder.stream()
-                        .filter(sysApprovalProcessConfiguration -> sysApprovalProcessConfiguration.getRoleId().equals(sysRole.getId()))
-                        .map(SysApprovalProcessConfiguration::getUserId).collect(Collectors.toList());
-                List<SysUser> sysUsers = iSysUserService.listByIds(userIds);
-                List<TreeUtil> secondTreeNodeUtils = new ArrayList<>();
-                TreeUtil firstTreeUtil = new TreeUtil();
-                firstTreeUtil.setId(sysRole.getId().longValue());
-                firstTreeUtil.setLabel(sysRole.getName());
-                firstTreeUtil.setChildren(secondTreeNodeUtils);
-                firstTreeNodeUtils.add(firstTreeUtil);
-                for (SysUser sysUser : sysUsers) {
-                    TreeUtil secondTreeUtil = new TreeUtil();
-                    secondTreeUtil.setId(sysUser.getId().longValue());
-                    secondTreeUtil.setLabel(sysUser.getNickname());
-                    secondTreeUtil.setA_attr(BeanUtil.beanToMap(sysRole));
-                    secondTreeNodeUtils.add(secondTreeUtil);
+        SysApprovalProcess sysApprovalProcess = this.getById(id);
+        if (sysApprovalProcess != null && sysApprovalProcess.getApprovalModel() == 1) {
+            QueryWrapper<SysApprovalProcessConfiguration> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(SysApprovalProcessConfiguration::getApprovalProcessId, id);
+            List<SysApprovalProcessConfiguration> sysApprovalProcessConfigurations = iSysApprovalProcessConfigurationService.list(queryWrapper);
+            //1.先按照顺序字段分组
+            Map<Integer, List<SysApprovalProcessConfiguration>> groupMapByOrder = sysApprovalProcessConfigurations.stream().collect(Collectors.groupingBy(SysApprovalProcessConfiguration::getOrder));
+            for (Integer sort : groupMapByOrder.keySet()) {
+                List<SysApprovalProcessConfiguration> eachOrder = groupMapByOrder.get(sort);
+                List<Integer> roleIds = eachOrder.stream().map(SysApprovalProcessConfiguration::getRoleId).collect(Collectors.toList());
+                List<SysRole> sysRoles = iSysRoleService.listByIds(roleIds);
+                List<TreeUtil> firstTreeNodeUtils = new ArrayList<>();
+                for (SysRole sysRole : sysRoles) {
+                    List<Integer> userIds = eachOrder.stream().filter(sysApprovalProcessConfiguration -> sysApprovalProcessConfiguration.getRoleId().equals(sysRole.getId())).map(SysApprovalProcessConfiguration::getUserId).collect(Collectors.toList());
+                    List<SysUser> sysUsers = iSysUserService.listByIds(userIds);
+                    List<TreeUtil> secondTreeNodeUtils = new ArrayList<>();
+                    TreeUtil firstTreeUtil = new TreeUtil();
+                    firstTreeUtil.setId(sysRole.getId().longValue());
+                    firstTreeUtil.setLabel(sysRole.getName());
+                    firstTreeUtil.setChildren(secondTreeNodeUtils);
+                    firstTreeNodeUtils.add(firstTreeUtil);
+                    for (SysUser sysUser : sysUsers) {
+                        TreeUtil secondTreeUtil = new TreeUtil();
+                        secondTreeUtil.setId(sysUser.getId().longValue());
+                        secondTreeUtil.setLabel(sysUser.getNickname());
+                        secondTreeUtil.setA_attr(BeanUtil.beanToMap(sysRole));
+                        secondTreeNodeUtils.add(secondTreeUtil);
+                    }
                 }
+                lists.add(firstTreeNodeUtils);
             }
-            lists.add(firstTreeNodeUtils);
         }
         return lists;
     }

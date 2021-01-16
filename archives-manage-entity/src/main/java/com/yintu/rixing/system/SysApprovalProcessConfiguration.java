@@ -37,7 +37,7 @@ public class SysApprovalProcessConfiguration extends BaseEntity {
     private Integer userId;
 
     @ApiModelProperty(value = "顺序")
-    @TableField("order")
+    @TableField("`order`")
     private Integer order;
 
 
