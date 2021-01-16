@@ -12,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IWareTemplateLibraryFieldService extends IService<WareTemplateLibraryField> {
 
+    void updateOrderByIds(Integer id1, Integer id2);
 }

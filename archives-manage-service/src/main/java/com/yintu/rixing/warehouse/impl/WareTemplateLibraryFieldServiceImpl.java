@@ -19,4 +19,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplateLibraryFiledMapper, WareTemplateLibraryField> implements IWareTemplateLibraryFieldService {
 
+    @Override
+    public void updateOrderByIds(Integer id1, Integer id2) {
+        WareTemplateLibraryField libraryField1 = this.getById(id1);
+        WareTemplateLibraryField libraryField2 = this.getById(id2);
+        if (libraryField1!=null&&libraryField2!=null){
+            Integer order1 = libraryField1.getOrder();
+            Integer order2 = libraryField2.getOrder();
+            libraryField1.setOrder(order2);
+            libraryField2.setOrder(order1);
+            this.updateById(libraryField1);
+            this.updateById(libraryField2);
+        }
+    }
 }

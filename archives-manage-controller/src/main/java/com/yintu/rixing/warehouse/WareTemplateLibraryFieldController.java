@@ -39,7 +39,7 @@ public class WareTemplateLibraryFieldController {
 
     @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "查询模板库字段类型列表信息")
     @GetMapping("/findTemplateLibraryFieldType")
-    @ApiOperation(value = "查询模板库字段类型列表信息", notes = "查询模板库字段类型列表信息", position = 7)
+    @ApiOperation(value = "查询模板库字段类型列表信息", notes = "查询模板库字段类型列表信息")
     public ResultDataUtil<List<SysTemplateLibraryFieldType>> findSysTemplateLibraryFieldTypes() {
         List<SysTemplateLibraryFieldType> sysTemplateLibraryFieldTypes = iSysTemplateLibraryFieldTypeService.list(new QueryWrapper<SysTemplateLibraryFieldType>().orderByDesc("id"));
         return ResultDataUtil.ok("查询模板库字段类型列表信息成功", sysTemplateLibraryFieldTypes);
@@ -74,15 +74,27 @@ public class WareTemplateLibraryFieldController {
     }
 
     @GetMapping
+    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "查询库房管理实体表字段列表信息")
     @ApiOperation(value = "库房管理实体表字段列表信息", notes = " 库房管理实体表字段列表信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10")
     })
-    public Map<String,Object>find(@RequestParam Integer num, @RequestParam Integer size){
+    public Map<String,Object>findWareTemplateLibraryFieldDatas(@RequestParam Integer num, @RequestParam Integer size){
         Page<WareTemplateLibraryField> wareTemplateLibraryFieldPage=iWareTemplateLibraryFieldService.page(new Page<>(num,size));
         return ResponseDataUtil.ok("查询库房管理实体表字段列表信息成功",wareTemplateLibraryFieldPage);
     }
 
+    @Log(level = EnumLogLevel.INFO, module = "库房管理", context = "修改库房管理实体表字段顺序")
+    @PatchMapping("/{id1}/{id2}")
+    @ApiOperation(value = "修改库房管理实体表字段顺序", notes = "修改库房管理实体表字段顺序")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id1", dataType = "int", value = "主键id1", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "id2", dataType = "int", value = "主键id2", required = true, paramType = "path")
+    })
+    public ResultDataUtil<Object> editOrder(@PathVariable Integer id1, @PathVariable Integer id2) {
+        iWareTemplateLibraryFieldService.updateOrderByIds(id1, id2);
+        return ResultDataUtil.ok("修改库房管理实体表字段顺序成功");
+    }
 
 }

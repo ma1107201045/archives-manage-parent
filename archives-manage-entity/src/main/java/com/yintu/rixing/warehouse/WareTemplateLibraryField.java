@@ -44,11 +44,11 @@ public class WareTemplateLibraryField extends BaseEntity {
     private Integer required;
 
     @ApiModelProperty(value = "字段是否是索引 1.是 0.否")
-    @TableField("index")
+    @TableField("`index`")
     private Integer index;
 
     @ApiModelProperty(value = "字段顺序")
-    @TableField("order")
+    @TableField("`order`")
     private Integer order;
 
     @ApiModelProperty(value = "模板库字段类型id")
