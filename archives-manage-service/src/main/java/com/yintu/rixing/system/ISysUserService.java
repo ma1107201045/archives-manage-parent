@@ -34,10 +34,10 @@ public interface ISysUserService extends IService<SysUser>, UserDetailsService {
     void changeAccountEnabledOrDisabled(Integer id, Short accountEnabled);
 
     @Transactional(rollbackFor = {Exception.class})
-    void saveRolesById(Integer id, Set<Integer> roleIds);
+    void saveSysUserRolesById(Integer id, Set<Integer> roleIds);
 
     @Transactional(rollbackFor = {Exception.class})
-    void saveDepartmentsById(Integer id, Set<Integer> departmentIds);
+    void saveSysUserDepartmentsById(Integer id, Set<Integer> departmentIds);
 
     List<Integer> listByUsername(String username);
 

@@ -1,8 +1,7 @@
-package com.yintu.rixing.system.controller;
+package com.yintu.rixing.system;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 /**

@@ -180,7 +180,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter out = response.getWriter();
-            ResultDataUtil<Object> resultDataUtil = ResultDataUtil.error("您已在另一台设备登录，本次登录已下线");
+            ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noAuthentication("您已在另一台设备登录，本次登录已下线");
             JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
             out.write(jo.toJSONString());
             out.flush();

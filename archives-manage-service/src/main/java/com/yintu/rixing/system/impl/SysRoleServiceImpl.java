@@ -25,18 +25,22 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
-
+    @Autowired
+    private ISysUserRoleService iSysUserRoleService;
+    @Autowired
+    private ISysUserService iSysUserService;
     @Autowired
     private ISysRolePermissionService iSysRolePermissionService;
     @Autowired
     private ISysPermissionService iSysPermissionService;
+
 
     @Override
     public void save(SysRoleFormDto sysRoleFormDto) {
         SysRole sysRole = new SysRole();
         BeanUtil.copyProperties(sysRoleFormDto, sysRole);
         this.save(sysRole);
-        this.savePermissionsById(sysRole.getId(), sysRoleFormDto.getPermissionIds());
+        this.saveSysRolePermissionsById(sysRole.getId(), sysRoleFormDto.getPermissionIds());
     }
 
     @Override
@@ -48,12 +52,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             QueryWrapper<SysRolePermission> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().eq(SysRolePermission::getRoleId, sysRole.getId());
             iSysRolePermissionService.remove(queryWrapper);
-            this.savePermissionsById(sysRole.getId(), sysRoleFormDto.getPermissionIds());
+            this.saveSysRolePermissionsById(sysRole.getId(), sysRoleFormDto.getPermissionIds());
         }
     }
 
     @Override
-    public void savePermissionsById(Integer id, Set<Integer> permissionIds) {
+    public void saveSysRolePermissionsById(Integer id, Set<Integer> permissionIds) {
         Collection<SysRolePermission> sysRolePermissions = new LinkedHashSet<>();
         for (Integer permissionId : permissionIds) {
             SysRolePermission sysRolePermission = new SysRolePermission();
@@ -75,6 +79,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return this.page(new Page<>(num, size), queryWrapper);
     }
 
+    @Override
+    public List<SysUser> sysUsersById(Integer id) {
+        QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().select(SysUserRole::getUserId).eq(SysUserRole::getRoleId, id);
+        List<Integer> userIds = iSysUserRoleService.list(queryWrapper).stream().map(SysUserRole::getUserId).collect(Collectors.toList());
+        return userIds.isEmpty() ? new ArrayList<>() : iSysUserService.listByIds(userIds);
+    }
 
 
     @Override

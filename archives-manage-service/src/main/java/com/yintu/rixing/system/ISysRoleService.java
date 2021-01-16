@@ -27,9 +27,11 @@ public interface ISysRoleService extends IService<SysRole> {
     void updateById(SysRoleFormDto sysRoleFormDto);
 
     @Transactional(rollbackFor = {Exception.class})
-    void savePermissionsById(Integer id, Set<Integer> permissionIds);
+    void saveSysRolePermissionsById(Integer id, Set<Integer> permissionIds);
 
     Page<SysRole> page(SysRoleQueryDto sysRoleQueryDto);
+
+    List<SysUser> sysUsersById(Integer id);
 
     List<SysPermission> sysPermissionsByIdAndPermissionId(Integer id, Integer permissionId);
 

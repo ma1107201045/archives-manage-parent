@@ -90,7 +90,7 @@ public class SysUserController extends Authenticator implements BaseController<S
 
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询用户单条信息")
     @GetMapping("/{id}")
-    @ApiOperation(value = "查询用户单条信息", notes = " 查询用户单条信息", position = 6, response = SysUser.class)
+    @ApiOperation(value = "查询用户单条信息", notes = " 查询用户单条信息", position = 6)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<SysUser> findById(@PathVariable Integer id) {
         SysUser sysUser = iSysUserService.getById(id);

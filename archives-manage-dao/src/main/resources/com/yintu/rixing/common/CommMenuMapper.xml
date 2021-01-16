@@ -13,6 +13,7 @@
         FROM sys_permission sp
         where sp.parent_id = #{permissionId,jdbcType=INTEGER}
           and sp.menu = #{menu,jdbcType=SMALLINT}
+        ORDER BY sp.priority
     </select>
 
     <select id="selectByExampleAndUserId" resultMap="BaseResultMap">
@@ -26,6 +27,7 @@
           and sp.parent_id = #{permissionId,jdbcType=INTEGER}
           and sp.menu = #{menu,jdbcType=SMALLINT}
         GROUP BY sp.id
+        ORDER BY sp.priority
     </select>
 
 

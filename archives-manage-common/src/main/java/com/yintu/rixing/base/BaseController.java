@@ -17,7 +17,7 @@ public interface BaseController<F extends IdDto, Q extends PageDto, E, PK extend
 
     ResultDataUtil<Object> add(F formDto);
 
-    ResultDataUtil<Object> remove(Set<PK> id);
+    ResultDataUtil<Object> remove(Set<PK> ids);
 
     ResultDataUtil<Object> edit(PK id, F formDto);
 

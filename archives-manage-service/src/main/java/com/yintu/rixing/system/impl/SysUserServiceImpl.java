@@ -62,8 +62,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUser.setAccountEnabled(EnumFlag.True.getValue());
         BeanUtil.copyProperties(sysUserFormDto, sysUser);
         this.save(sysUser);
-        this.saveRolesById(sysUser.getId(), sysUserFormDto.getRoleIds());
-        this.saveDepartmentsById(sysUser.getId(), sysUserFormDto.getDepartmentIds());
+        this.saveSysUserRolesById(sysUser.getId(), sysUserFormDto.getRoleIds());
+        this.saveSysUserDepartmentsById(sysUser.getId(), sysUserFormDto.getDepartmentIds());
     }
 
     @Override
@@ -81,12 +81,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             QueryWrapper<SysUserRole> queryWrapper1 = new QueryWrapper<>();
             queryWrapper1.lambda().eq(SysUserRole::getUserId, id);
             iSysUserRoleService.remove(queryWrapper1);
-            this.saveRolesById(sysUser.getId(), sysUserFormDto.getRoleIds());
+            this.saveSysUserRolesById(sysUser.getId(), sysUserFormDto.getRoleIds());
 
             QueryWrapper<SysUserDepartment> queryWrapper2 = new QueryWrapper<>();
             queryWrapper2.lambda().eq(SysUserDepartment::getUserId, id);
             iSysUserDepartmentService.remove(queryWrapper2);
-            this.saveDepartmentsById(sysUser.getId(), sysUserFormDto.getDepartmentIds());
+            this.saveSysUserDepartmentsById(sysUser.getId(), sysUserFormDto.getDepartmentIds());
         }
     }
 
@@ -117,7 +117,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void saveRolesById(Integer id, Set<Integer> roleIds) {
+    public void saveSysUserRolesById(Integer id, Set<Integer> roleIds) {
         Collection<SysUserRole> sysUserRoles = new LinkedHashSet<>();
         for (Integer roleId : roleIds) {
             SysUserRole sysUserRole = new SysUserRole();
@@ -129,7 +129,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void saveDepartmentsById(Integer id, Set<Integer> departmentIds) {
+    public void saveSysUserDepartmentsById(Integer id, Set<Integer> departmentIds) {
         Collection<SysUserDepartment> sysUserDepartments = new LinkedHashSet<>();
         for (Integer departmentId : departmentIds) {
             SysUserDepartment sysUserDepartment = new SysUserDepartment();

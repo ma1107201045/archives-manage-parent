@@ -12,4 +12,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysApprovalProcessConfigurationService extends IService<SysApprovalProcessConfiguration> {
 
+
+
+
+
+
 }
