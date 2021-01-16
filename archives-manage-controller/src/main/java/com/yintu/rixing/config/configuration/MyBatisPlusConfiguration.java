@@ -36,4 +36,5 @@ public class MyBatisPlusConfiguration {
         return interceptor;
     }
 
+
 }

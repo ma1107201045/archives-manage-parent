@@ -1,7 +1,5 @@
 package com.yintu.rixing.enumobject;
 
-import io.swagger.annotations.ApiModelProperty;
-
 /**
  * @Author: mlf
  * @Date: 2020/11/27 16:29

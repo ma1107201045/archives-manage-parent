@@ -121,13 +121,17 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             sysArchivesLibraryField2.setOrder(order);
             this.saveOrUpdate(sysArchivesLibraryField1);
             this.saveOrUpdate(sysArchivesLibraryField2);
-            SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(sysArchivesLibraryField1.getArchivesLibraryId());
-            if (sysArchivesLibrary != null) {
-                //改变表字段顺序
-                CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField1);
-                String tableName = commTableField.getTableName();
-                iCommTableFieldService.isHasDataByTableName(tableName);
-                iCommTableFieldService.alterOrder(tableName, commTableField, sysArchivesLibraryField2.getDataKey());
+            Integer archivesLibraryId1 = sysArchivesLibraryField1.getArchivesLibraryId();
+            Integer archivesLibraryId2 = sysArchivesLibraryField2.getArchivesLibraryId();
+            if (archivesLibraryId1.equals(archivesLibraryId2)) {//判断两个字段是否在同一个档案库
+                SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(sysArchivesLibraryField1.getArchivesLibraryId());
+                if (sysArchivesLibrary != null) {
+                    //改变表字段顺序
+                    CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField1);
+                    String tableName = commTableField.getTableName();
+                    iCommTableFieldService.isHasDataByTableName(tableName);
+                    iCommTableFieldService.alterOrder(tableName, commTableField, sysArchivesLibraryField2.getDataKey());
+                }
             }
         }
     }
