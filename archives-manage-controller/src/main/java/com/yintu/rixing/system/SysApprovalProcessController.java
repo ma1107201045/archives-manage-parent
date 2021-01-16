@@ -87,8 +87,16 @@ public class SysApprovalProcessController extends Authenticator implements BaseC
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询审批流程配置树信息")
     @GetMapping("/sys-configuration")
     @ApiOperation(value = "查询审批流程配置树信息", notes = "查询审批流程配置树信息", position = 6)
-    public ResultDataUtil<List<TreeUtil>> finTree() {
-        List<TreeUtil> treeUtils = iSysApprovalProcessService.tree(this.getLoginUserId());
+    public ResultDataUtil<List<TreeUtil>> findTree() {
+        List<TreeUtil> treeUtils = iSysApprovalProcessService.tree();
         return ResultDataUtil.ok("查询审批流程配置树信息成功", treeUtils);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询审批流程所需配置树信息")
+    @GetMapping("/{id}/sys-configuration")
+    @ApiOperation(value = "查询审批流程所需配置树信息", notes = "查询审批流程所需配置树信息", position = 6)
+    public ResultDataUtil<List<List<TreeUtil>>> findTreeById(@PathVariable Integer id) {
+        List<List<TreeUtil>> treeUtils = iSysApprovalProcessService.treeById(id);
+        return ResultDataUtil.ok("查询审批流程所需配置树信息成功", treeUtils);
     }
 }

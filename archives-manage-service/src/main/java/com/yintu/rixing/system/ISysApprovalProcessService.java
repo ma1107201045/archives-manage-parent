@@ -32,6 +32,8 @@ public interface ISysApprovalProcessService extends IService<SysApprovalProcess>
 
     Page<SysApprovalProcess> page(SysApprovalProcessQueryDto sysApprovalProcessQueryDto);
 
-    List<TreeUtil> tree(Integer loginUserId);
+    List<TreeUtil> tree();
+
+    List<List<TreeUtil>> treeById(Integer id);
 
 }
