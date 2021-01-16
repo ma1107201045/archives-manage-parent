@@ -21,16 +21,5 @@ import java.util.List;
 @Service
 public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBorrow> implements IMakeBorrowService {
 
-    @Autowired
-    private MakeBorrowMapper makeBorrowMapper;
 
-    @Override
-    public List<MakeBorrow> findEntityBorrowDatas(String name, String certificateNumber) {
-        return makeBorrowMapper.findEntityBorrowDatas(name,certificateNumber);
-    }
-
-    @Override
-    public List<MakeBorrow> findElectronicBorrowDatas(String name, String certificateNumber) {
-        return makeBorrowMapper.findElectronicBorrowDatas(name,certificateNumber);
-    }
 }

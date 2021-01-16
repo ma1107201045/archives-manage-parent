@@ -14,7 +14,4 @@ import java.util.List;
  */
 public interface IMakeBorrowService extends IService<MakeBorrow> {
 
-    List<MakeBorrow> findElectronicBorrowDatas(String name, String certificateNumber);
-
-    List<MakeBorrow> findEntityBorrowDatas(String name, String certificateNumber);
 }
