@@ -44,15 +44,17 @@ public class Data01ArchivesCollectionController extends Authenticator {
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除档案收集信息", notes = "删除档案收集信息", position = 2)
     @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
-    public ResultDataUtil<Object> remove(@RequestParam Integer archivesId, @PathVariable Set<Integer> ids) {
-        iDataArchivesCollectionService.removeByIds(archivesId, ids);
+    public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesId) {
+        iDataArchivesCollectionService.removeByIds(ids, archivesId);
         return ResultDataUtil.ok("删除档案收集信息成功");
     }
 
     @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "修改档案收集信息")
-    @PutMapping
+    @PutMapping("/{id}")
     @ApiOperation(value = "修改档案收集信息", notes = "修改档案收集信息", position = 3)
-    public ResultDataUtil<Object> edit(@RequestParam Map<String, String> params) {
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    public ResultDataUtil<Object> edit(@PathVariable Integer id, @RequestParam Map<String, String> params) {
+        params.put(ObjectConvertUtil.ID, id.toString());
         iDataArchivesCollectionService.updateById(ObjectConvertUtil.getEditDto(params));
         return ResultDataUtil.ok("修改档案收集信息成功");
     }

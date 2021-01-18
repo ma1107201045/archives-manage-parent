@@ -16,7 +16,7 @@ public interface IDataArchivesCollectionService {
     void save(DataCommonDto dataCommonDto);
 
     @Transactional(rollbackFor = {Exception.class})
-    void removeByIds(Integer archivesId, Set<Integer> ids);
+    void removeByIds(Set<Integer> ids, Integer archivesId);
 
     @Transactional(rollbackFor = {Exception.class})
     void updateById(DataCommonDto dataCommonDto);

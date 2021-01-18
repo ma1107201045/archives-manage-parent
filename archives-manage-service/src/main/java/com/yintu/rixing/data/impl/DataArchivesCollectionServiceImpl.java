@@ -4,9 +4,11 @@ import com.yintu.rixing.data.DataArchivesCollectionMapper;
 import com.yintu.rixing.data.DataCommonAll;
 import com.yintu.rixing.data.IDataArchivesCollectionService;
 import com.yintu.rixing.dto.data.DataCommonDto;
+import com.yintu.rixing.exception.BaseRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,13 +28,15 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
     }
 
     @Override
-    public void removeByIds(Integer archivesId, Set<Integer> ids) {
+    public void removeByIds(Set<Integer> ids, Integer archivesId) {
 
     }
 
     @Override
     public void updateById(DataCommonDto dataCommonDto) {
-
+        DataCommonAll dataCommonAll = this.parametersToProofread(dataCommonDto);
+        Map<String, Object> map = dataArchivesCollectionMapper.selectByPrimaryKey(dataCommonAll);
+        dataArchivesCollectionMapper.updateByPrimaryKeySelective(dataCommonAll);
     }
 
     @Override

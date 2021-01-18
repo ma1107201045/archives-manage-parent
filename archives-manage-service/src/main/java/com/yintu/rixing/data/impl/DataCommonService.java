@@ -11,10 +11,9 @@ import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.system.SysArchivesLibraryField;
 import com.yintu.rixing.util.AssertUtil;
+import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.TableNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class DataCommonService {
             switch (EnumDataType.get(dataType)) {
                 case VARCHAR:
                 case TEXT:
-                    if (value.length() > length)
+                    if (value != null && value.length() > length)
                         throw new BaseRuntimeException(dataType + "长度超过定义的长度");
                     break;
                 case INT:
@@ -77,6 +76,7 @@ public class DataCommonService {
             dataCommons.add(dataCommon);
         }
         dataCommonAll.setTableName(tableName);
+        dataCommonAll.setId(dataCommonDto.getId());
         dataCommonAll.setDataCommons(dataCommons);
         return dataCommonAll;
     }

@@ -20,4 +20,23 @@
             1
         </trim>
     </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.rixing.data.DataCommonAll">
+        update `${tableName}`
+        <set>
+            <foreach collection="dataCommons" index="index" item="dataCommon" separator=",">
+                <if test="dataCommon.fieldValue != null">
+                    `${dataCommon.fieldName}` = #{dataCommon.fieldValue}
+                </if>
+            </foreach>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="java.util.Map">
+        select *
+        from `${tableName}`
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
 </mapper>

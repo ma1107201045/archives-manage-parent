@@ -2,7 +2,7 @@ package com.yintu.rixing.data;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: mlf
@@ -13,4 +13,9 @@ import java.util.List;
 public interface DataArchivesCollectionMapper {
 
     void insertSelective(DataCommonAll dataCommonAll);
+
+    void updateByPrimaryKeySelective(DataCommonAll dataCommonAll);
+
+    Map<String, Object> selectByPrimaryKey(DataCommonAll dataCommonAll);
+
 }

@@ -14,5 +14,7 @@ public class DataCommonAll {
 
     private String tableName;
 
+    private Integer id;
+
     private List<DataCommon> dataCommons;
 }
