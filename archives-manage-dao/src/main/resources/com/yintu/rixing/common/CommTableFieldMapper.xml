@@ -3,7 +3,7 @@
 <mapper namespace="com.yintu.rixing.common.CommTableFieldMapper">
     <insert id="createTable">
         CREATE TABLE `${tableName}`
-        <trim prefix="(" suffix=")" suffixOverrides=",">
+        <trim prefix="(" suffix=")">
             `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT "主键id",
             <foreach collection="commTableFields" index="index" item="commTableField" separator="," close=",">
                 `${commTableField.fieldName}`
@@ -19,6 +19,7 @@
                 </if>
                 COMMENT #{commTableField.comment,jdbcType=VARCHAR}
             </foreach>
+            `status` SMALLINT(6) NOT NULL COMMENT "档案状态：1.档案收集 2.临时库 3.整理库 4.正式库 5.回收站 6.销毁库 7.回退管理 8.病档管理 9.档案销毁"
             PRIMARY KEY (`id`) USING BTREE,
             <foreach collection="commTableFields" index="index" item="commTableField" separator=",">
                 <if test="commTableField.isIndex==1">
@@ -32,25 +33,25 @@
     </insert>
 
     <delete id="dropTableByTableName">
-        DROP TABLE IF EXISTS ${tableName}
+        DROP TABLE IF EXISTS `${tableName}`
     </delete>
 
     <update id="alterTableNameByTableName">
-        ALTER TABLE ${oldTableName} RENAME ${newTableName}
+        ALTER TABLE `${oldTableName}` RENAME `${newTableName}`
     </update>
 
     <update id="alterTableCommentByTableName">
-        ALTER TABLE ${tableName}
+        ALTER TABLE `${tableName}`
             COMMENT #{tableComment,jdbcType=VARCHAR}
     </update>
 
     <select id="countDataByTableName" resultType="_long">
         SELECT count(*)
-        FROM ${tableName}
+        FROM `${tableName}`
     </select>
 
     <insert id="create">
-        ALTER TABLE ${tableName}
+        ALTER TABLE `${tableName}`
         ADD COLUMN `${commTableField.fieldName}`
         ${commTableField.dataType}
         <if test="commTableField.dataType !='date'">
@@ -65,29 +66,29 @@
         COMMENT #{commTableField.comment,jdbcType=VARCHAR};
     </insert>
     <insert id="createIndex">
-        ALTER TABLE ${tableName}
+        ALTER TABLE `${tableName}`
             ADD INDEX `${fieldName}` (`${fieldName}`) USING BTREE
     </insert>
     <delete id="drop">
-        ALTER TABLE ${tableName}
+        ALTER TABLE `${tableName}`
             DROP COLUMN `${fieldName}`;
     </delete>
 
     <delete id="dropByFields">
         <if test="fieldNames.size > 0">
-            ALTER TABLE ${tableName}
+            ALTER TABLE `${tableName}`
             <foreach collection="fieldNames" item="fieldName" index="index" separator=",">
                 DROP COLUMN `${fieldName}`
             </foreach>
         </if>
     </delete>
     <delete id="dropIndex">
-        ALTER TABLE ${tableName}
+        ALTER TABLE `${tableName}`
             DROP INDEX `${fieldName}`;
     </delete>
 
     <update id="alter">
-        ALTER TABLE ${tableName} CHANGE `${oldFieldName}` `${commTableField.fieldName}`
+        ALTER TABLE `${tableName}` CHANGE `${oldFieldName}` `${commTableField.fieldName}`
         ${commTableField.dataType}
         <if test="commTableField.dataType !='date'">
             (${commTableField.length})
@@ -102,7 +103,7 @@
     </update>
 
     <update id="alterOrder">
-        ALTER TABLE ${tableName}
+        ALTER TABLE `${tableName}`
         MODIFY `${commTableField.fieldName}`
         ${commTableField.dataType}
         <if test="commTableField.dataType !='date'">
@@ -118,6 +119,6 @@
     </update>
 
     <select id="showByTableName">
-        SHOW FULL COLUMNS FROM ${tableName};
+        SHOW FULL COLUMNS FROM `${tableName}`;
     </select>
 </mapper>

@@ -18,10 +18,10 @@ import java.util.Date;
 @ApiModel
 public class SecLogQueryDto extends PageDto {
 
-    @ApiModelProperty(value = "操作人", position = 0)
+    @ApiModelProperty(value = "操作人")
     private String operator;
 
-    @ApiModelProperty(value = "登录ip", position = 1)
+    @ApiModelProperty(value = "登录ip")
     private String loginId;
 
     @ApiModelProperty(value = "日志级别")

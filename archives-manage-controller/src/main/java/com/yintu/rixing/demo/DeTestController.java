@@ -5,9 +5,7 @@ import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.ResponseDataUtil;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -32,5 +30,10 @@ public class DeTestController {
     @GetMapping("/test1")
     public ResultDataUtil<SysUser> test1() {
         return ResultDataUtil.ok("", new SysUser());
+    }
+
+    @GetMapping("/test2/{archivesId}")
+    public ResultDataUtil<Map<String, Object>> test2(@PathVariable Integer archivesId, @RequestParam Map<String, Object> params) {
+        return ResultDataUtil.ok("", null);
     }
 }

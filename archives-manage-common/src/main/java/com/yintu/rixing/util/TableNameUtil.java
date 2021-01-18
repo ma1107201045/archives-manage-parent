@@ -7,13 +7,14 @@ package com.yintu.rixing.util;
  */
 public class TableNameUtil {
 
-    public static final String PREFIX = "dynamic";
+    public static final String PREFIX = "data";
 
     /**
      * @param tName 表名
      * @return 获取表全名
      */
     public static String getFullTableName(String tName) {
+        AssertUtil.notEmpty(tName, "key不能为空");
         return PREFIX + "_" + tName;
     }
 }

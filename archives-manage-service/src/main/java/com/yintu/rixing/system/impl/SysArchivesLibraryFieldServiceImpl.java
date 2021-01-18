@@ -147,13 +147,6 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
-    /**
-     * 不返回id的原因被用作回滚
-     *
-     * @param archivesLibraryId 档案库id
-     * @param templateLibraryId 模板库id
-     * @return 档案库字段集
-     */
     @Override
     public List<Integer> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId) {
         if (archivesLibraryId == null || templateLibraryId == null)
@@ -163,6 +156,18 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
                 .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)
                 .eq(SysArchivesLibraryField::getTemplateLibraryId, templateLibraryId);
         return this.listObjs(queryWrapper, id -> (Integer) id);
+    }
+
+    @Override
+    public List<SysArchivesLibraryField> listByArchivesLibraryId(Integer archivesLibraryId) {
+        if (archivesLibraryId == null)
+            throw new BaseRuntimeException("档案库id不能为空");
+        QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId);
+        queryWrapper.lambda().orderByAsc(SysArchivesLibraryField::getOrder);
+        List<SysArchivesLibraryField> sysArchivesLibraryFields = this.list(queryWrapper);
+        sysArchivesLibraryFields.forEach(sysArchivesLibraryField -> sysArchivesLibraryField.setSysTemplateLibraryFieldType(iSysTemplateLibraryFieldTypeService.getById(sysArchivesLibraryField.getTemplateLibraryFieldTypeId())));
+        return sysArchivesLibraryFields;
     }
 
 

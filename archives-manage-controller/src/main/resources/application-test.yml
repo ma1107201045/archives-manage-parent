@@ -87,6 +87,13 @@ swagger:
       base-path:
         - /make/**
       exclude-path: [ /error ]
+    data:
+      title: 数据中心模块
+      description: 数据中心有关的接口
+      base-package: com.yintu.rixing.data
+      base-path:
+        - /data/**
+      exclude-path: [ /error ]
     security:
       title: 安全中心模块
       description: 安全中心模块有关的接口

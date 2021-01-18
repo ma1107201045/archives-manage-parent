@@ -37,6 +37,8 @@ public interface ISysArchivesLibraryFieldService extends IService<SysArchivesLib
 
     List<Integer> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId);
 
+    List<SysArchivesLibraryField> listByArchivesLibraryId(Integer archivesLibraryId);
+
     Page<SysArchivesLibraryField> page(SysArchivesLibraryFieldQueryDto sysArchivesLibraryFieldQueryDto);
 
 }

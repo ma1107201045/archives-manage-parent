@@ -54,7 +54,7 @@ public class SysApprovalProcessServiceImpl extends ServiceImpl<SysApprovalProces
             List<Integer> roleIds = sysApprovalProcessFormDto.getRoleIds();
             List<Integer> userIds = sysApprovalProcessFormDto.getUserIds();
             List<Integer> orders = sysApprovalProcessFormDto.getOrders();
-            if (roleIds == null || userIds == null || orders == null)
+            if (roleIds == null || userIds == null || orders == null || roleIds.size() == 0 || userIds.size() == 0 || orders.size() == 0)
                 throw new BaseRuntimeException("角色或者用户或者顺序不能为空");
             if (roleIds.size() != userIds.size() || userIds.size() != orders.size())
                 throw new BaseRuntimeException("角色或者用户或者顺序长度不一致");

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.rixing.data.DataArchivesCollectionMapper">
+    <insert id="insertSelective" parameterType="com.yintu.rixing.data.DataCommonAll">
+        insert into `${tableName}`
+        <trim prefix="(" suffix=")">
+            <foreach collection="dataCommons" index="index" item="dataCommon" separator="," close=",">
+                <if test="dataCommon.fieldValue != null">
+                    `${dataCommon.fieldName}`
+                </if>
+            </foreach>
+            `status`
+        </trim>
+        <trim prefix="values (" suffix=")">
+            <foreach collection="dataCommons" index="index" item="dataCommon" separator="," close=",">
+                <if test="dataCommon.fieldValue != null">
+                    #{dataCommon.fieldValue}
+                </if>
+            </foreach>
+            1
+        </trim>
+    </insert>
+</mapper>
