@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.make.MakeBorrow;
 import com.yintu.rixing.system.ISysTemplateLibraryFieldTypeService;
 import com.yintu.rixing.system.SysTemplateLibraryFieldType;
 import com.yintu.rixing.util.ResponseDataUtil;
@@ -81,7 +80,12 @@ public class WareTemplateLibraryFieldController {
             @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10")
     })
     public Map<String,Object>findWareTemplateLibraryFieldDatas(@RequestParam Integer num, @RequestParam Integer size){
-        Page<WareTemplateLibraryField> wareTemplateLibraryFieldPage=iWareTemplateLibraryFieldService.page(new Page<>(num,size));
+        QueryWrapper<WareTemplateLibraryField> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("`order`");
+        Page<WareTemplateLibraryField> wareTemplateLibraryFieldPage=iWareTemplateLibraryFieldService.page(new Page<>(num,size),queryWrapper);
+        for (WareTemplateLibraryField record : wareTemplateLibraryFieldPage.getRecords()) {
+           record.setSysTemplateLibraryFieldType(iSysTemplateLibraryFieldTypeService.getById( record.getTemplateLibraryFieldTypeId()));
+        }
         return ResponseDataUtil.ok("查询库房管理实体表字段列表信息成功",wareTemplateLibraryFieldPage);
     }
 
