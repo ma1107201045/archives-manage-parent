@@ -86,7 +86,9 @@ public class DataCommonService {
             DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
             dataCommonTitleVo.setProp(sysArchivesLibraryField.getDataKey());
             dataCommonTitleVo.setLabel(sysArchivesLibraryField.getName());
+            dataCommonTitleVo.setShow(true);
             SysTemplateLibraryFieldType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysTemplateLibraryFieldType();
+            dataCommonTitleVo.setTypeId(sysTemplateLibraryFieldType.getId());
             dataCommonTitleVo.setTypeProp(sysTemplateLibraryFieldType.getDataKey());
             dataCommonTitleVo.setTypeLabel(sysTemplateLibraryFieldType.getName());
             dataCommonTitleVos.add(dataCommonTitleVo);
@@ -99,8 +101,10 @@ public class DataCommonService {
         DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
         dataCommonTitleVo.setProp("id");
         dataCommonTitleVo.setLabel("主键id");
+        dataCommonTitleVo.setShow(false);
+        dataCommonTitleVo.setTypeId(EnumDataType.INT.getValue());
         dataCommonTitleVo.setTypeProp("int");
-        dataCommonTitleVo.setTypeLabel("文本框(数值)");
+        dataCommonTitleVo.setTypeLabel(EnumDataType.INT.getName());
         return dataCommonTitleVo;
     }
 
@@ -108,8 +112,11 @@ public class DataCommonService {
         DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
         dataCommonTitleVo.setProp("status");
         dataCommonTitleVo.setLabel("档案状态");
+
+        dataCommonTitleVo.setShow(false);
+        dataCommonTitleVo.setTypeId(EnumDataType.SMALLINT.getValue());
         dataCommonTitleVo.setTypeProp("smallint");
-        dataCommonTitleVo.setTypeLabel("文本框(状态数值)");
+        dataCommonTitleVo.setTypeLabel(EnumDataType.SMALLINT.getName());
         return dataCommonTitleVo;
     }
 

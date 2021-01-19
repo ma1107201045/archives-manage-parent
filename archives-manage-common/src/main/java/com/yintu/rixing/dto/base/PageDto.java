@@ -1,4 +1,4 @@
-package com.yintu.rixing.dto.common;
+package com.yintu.rixing.dto.base;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

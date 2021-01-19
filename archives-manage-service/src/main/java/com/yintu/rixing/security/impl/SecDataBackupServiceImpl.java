@@ -9,7 +9,7 @@ import cn.hutool.system.SystemUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yintu.rixing.dto.common.PageDto;
+import com.yintu.rixing.dto.base.PageDto;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.security.ISecDataBackupService;
 import com.yintu.rixing.security.SecDataBackup;

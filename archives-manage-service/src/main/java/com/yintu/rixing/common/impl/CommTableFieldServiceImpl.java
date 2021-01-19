@@ -20,7 +20,7 @@ import java.util.Set;
  * @Version: 1.0
  */
 @Service
-public class ICommTableFieldServiceImpl implements ICommTableFieldService {
+public class CommTableFieldServiceImpl implements ICommTableFieldService {
     @Autowired
     private CommTableFieldMapper commTableFieldMapper;
     @Autowired

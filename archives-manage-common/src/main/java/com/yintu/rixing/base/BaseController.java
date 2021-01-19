@@ -1,8 +1,8 @@
 package com.yintu.rixing.base;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yintu.rixing.dto.common.IdDto;
-import com.yintu.rixing.dto.common.PageDto;
+import com.yintu.rixing.dto.base.IdDto;
+import com.yintu.rixing.dto.base.PageDto;
 import com.yintu.rixing.util.ResultDataUtil;
 
 import java.io.Serializable;

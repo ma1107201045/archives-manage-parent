@@ -18,8 +18,15 @@ public class DataCommonTitleVo {
     @ApiModelProperty(value = "表头属性名")
     private String label;
 
+    @ApiModelProperty(value = "表头是否显示")
+    private Boolean show;
+
+    @ApiModelProperty(value = "表单数据类型id")
+    private Integer typeId;
     @ApiModelProperty(value = "表单数据类型值")
     private String typeProp;
     @ApiModelProperty(value = "表单数据类型名")
     private String typeLabel;
+
+
 }

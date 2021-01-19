@@ -1,6 +1,6 @@
 package com.yintu.rixing.dto.security;
 
-import com.yintu.rixing.dto.common.PageDto;
+import com.yintu.rixing.dto.base.PageDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

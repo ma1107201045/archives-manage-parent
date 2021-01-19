@@ -4,14 +4,17 @@ import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
+import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
+import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,6 +34,8 @@ import java.util.Set;
 public class Data01ArchivesCollectionController extends Authenticator {
     @Autowired
     private IDataArchivesCollectionService iDataArchivesCollectionService;
+    @Autowired
+    private ISysArchivesLibraryService iSysArchivesLibraryService;
 
     @Log(level = EnumLogLevel.DEBUG, module = "数据中心", context = "添加档案收集信息")
     @PostMapping
@@ -74,11 +79,21 @@ public class Data01ArchivesCollectionController extends Authenticator {
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案收集列表信息")
     @GetMapping
-    @ApiOperation(value = "查询档案收集列表信息", notes = "查询档案收集列表信息", position = 6)
+    @ApiOperation(value = "查询档案收集列表信息", notes = "查询档案收集列表信息")
     @ApiOperationSupport(order = 5)
     public ResultDataUtil<DataCommonVo> findPage(@Validated DataCommonQueryDto dataCommonQueryDto) {
         DataCommonVo dataCommonVo = iDataArchivesCollectionService.getPage(dataCommonQueryDto);
         return ResultDataUtil.ok("查询档案收集列表信息成功", dataCommonVo);
     }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案收集档案库列表信息树")
+    @GetMapping("/sys-archives-library")
+    @ApiOperation(value = "查询档案收集档案库列表信息树", notes = "查询档案收集档案库列表信息树")
+    @ApiOperationSupport(order = 6)
+    public ResultDataUtil<List<TreeUtil>> findTree() {
+        List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
+        return ResultDataUtil.ok("查询档案收集档案库列表信息树成功", treeNodeUtils);
+    }
+
 
 }

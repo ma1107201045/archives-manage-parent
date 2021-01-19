@@ -1,7 +1,7 @@
 package com.yintu.rixing.dto.system;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.yintu.rixing.dto.common.IdDto;
+import com.yintu.rixing.dto.base.IdDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

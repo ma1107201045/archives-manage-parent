@@ -3,7 +3,7 @@
 <mapper namespace="com.yintu.rixing.common.CommTableFieldMapper">
     <insert id="createTable">
         CREATE TABLE `${tableName}`
-        <trim prefix="(" suffix=")">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT "主键id",
             <foreach collection="commTableFields" index="index" item="commTableField" separator="," close=",">
                 `${commTableField.fieldName}`
@@ -19,7 +19,7 @@
                 </if>
                 COMMENT #{commTableField.comment,jdbcType=VARCHAR}
             </foreach>
-            `status` SMALLINT(6) NOT NULL COMMENT "档案状态：1.档案收集 2.临时库 3.整理库 4.正式库 5.回收站 6.销毁库 7.回退管理 8.病档管理 9.档案销毁"
+            `status` SMALLINT(6) NOT NULL COMMENT "档案状态：1.档案收集 2.临时库 3.整理库 4.正式库 5.回收站 6.销毁库 7.回退管理 8.病档管理 9.档案销毁",
             PRIMARY KEY (`id`) USING BTREE,
             <foreach collection="commTableFields" index="index" item="commTableField" separator=",">
                 <if test="commTableField.isIndex==1">

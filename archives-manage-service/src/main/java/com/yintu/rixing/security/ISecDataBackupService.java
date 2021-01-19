@@ -2,7 +2,7 @@ package com.yintu.rixing.security;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yintu.rixing.dto.common.PageDto;
+import com.yintu.rixing.dto.base.PageDto;
 import com.yintu.rixing.pojo.SecDataBackupPojo;
 import org.springframework.transaction.annotation.Transactional;
 
