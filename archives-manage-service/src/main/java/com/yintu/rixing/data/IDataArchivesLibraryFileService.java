@@ -2,6 +2,9 @@ package com.yintu.rixing.data;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.data.DataArchivesLibraryFile;
+import com.yintu.rixing.dto.data.DataArchivesLibraryFileFormDto;
+import com.yintu.rixing.dto.system.SysRoleFormDto;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -13,4 +16,9 @@ import com.yintu.rixing.data.DataArchivesLibraryFile;
  */
 public interface IDataArchivesLibraryFileService extends IService<DataArchivesLibraryFile> {
 
+    @Transactional(rollbackFor = {Exception.class})
+    void save(DataArchivesLibraryFileFormDto dataArchivesLibraryFileFormDto);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void updateById(DataArchivesLibraryFileFormDto dataArchivesLibraryFileFormDto);
 }

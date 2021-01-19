@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>
  * 数据档案库文件表
@@ -63,5 +65,8 @@ public class DataArchivesLibraryFile extends BaseEntity {
     @TableField("data_id")
     private Integer dataId;
 
+    @ApiModelProperty(value = "动态表状态", position = 15)
+    @TableField("status")
+    private Short status;
 
 }
