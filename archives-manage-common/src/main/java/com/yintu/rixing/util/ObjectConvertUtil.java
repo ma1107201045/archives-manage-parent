@@ -2,6 +2,7 @@ package com.yintu.rixing.util;
 
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
+import com.yintu.rixing.exception.BaseRuntimeException;
 
 import java.util.Map;
 
@@ -19,7 +20,10 @@ public class ObjectConvertUtil {
 
     public static DataCommonFormDto getAddFormDto(Map<String, String> params) {
         DataCommonFormDto dataCommonFormDto = new DataCommonFormDto();
-        dataCommonFormDto.setArchivesId(Integer.valueOf(params.get(ARCHIVES_ID)));
+        String archivesId = params.get(ARCHIVES_ID);
+        if (archivesId == null || archivesId.isEmpty())
+            throw new BaseRuntimeException("档案库Id不能为空");
+        dataCommonFormDto.setArchivesId(Integer.valueOf(archivesId));
         dataCommonFormDto.setParams(params);
         return dataCommonFormDto;
     }

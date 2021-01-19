@@ -142,13 +142,13 @@ public class ArchivesManageApplicationTests {
 //        iCommTableFieldService.drop("dynamic_index", commTableField.getFieldName());
     }
 
-    @Test
-    void list3() {
-        DataCommonFormDto dataCommonDto = new DataCommonFormDto();
-        dataCommonDto.setId(41);
-        dataCommonDto.setArchivesId(91);
-        Map<String, Object> d = iDataArchivesCollectionService.getById(dataCommonDto);
-        System.out.println(d);
-    }
+//    @Test
+//    void list3() {
+//        DataCommonFormDto dataCommonDto = new DataCommonFormDto();
+//        dataCommonDto.setId(41);
+//        dataCommonDto.setArchivesId(91);
+//        Map<String, Object> d = iDataArchivesCollectionService.getById(dataCommonDto);
+//        System.out.println(d);
+//    }
 
 }

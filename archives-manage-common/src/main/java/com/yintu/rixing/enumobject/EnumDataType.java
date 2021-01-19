@@ -9,11 +9,12 @@ public enum EnumDataType {
 
     VARCHAR("文本框(文本)", 1, ""),
     TEXT("文本域", 2, ""),
-    SMALLINT("文本框(状态值)", 3, ""),
-    TINYINT("单选框", 4, ""),
+    TINYINT("单选框", 3, ""),
+    SMALLINT("文本框(状态值)", 4, ""),
     INT("文本框(数值)", 5, ""),
-    DATE("日期框", 6, ""),
-    DATETIME("日期时间框", 7, "");
+    DATETIME("日期时间框", 6, ""),
+    DATE("日期框", 7, "");
+
 
     private final String name;
     private final Integer value;

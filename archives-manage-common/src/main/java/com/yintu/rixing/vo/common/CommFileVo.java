@@ -13,13 +13,16 @@ import lombok.Data;
 @ApiModel
 public class CommFileVo {
 
-    @ApiModelProperty(value = "文件名", position = 1)
-    private String fileName;
+    @ApiModelProperty(value = "原始文件名", position = 1)
+    private String fileOriginalName;
     @ApiModelProperty(value = "文件路径", position = 2)
     private String filePath;
     @ApiModelProperty(value = "文件大小", position = 3)
-    private String fileSize;
+    private Double fileSize;
+
+    @ApiModelProperty(value = "文件名", position = 1)
+    private String fileName;
     @ApiModelProperty(value = "请求映射", position = 4)
-    private String requestMapping;
+    private String fileRequestMapping;
 
 }

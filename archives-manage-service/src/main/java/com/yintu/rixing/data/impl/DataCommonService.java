@@ -30,7 +30,6 @@ public class DataCommonService {
 
     protected DataCommonAll parametersToProofread(DataCommonFormDto dataCommonDto) {
         Integer archivesId = dataCommonDto.getArchivesId();
-        AssertUtil.notNull(archivesId, "档案库id不能为空");
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesId);
         if (sysArchivesLibrary == null)
             throw new BaseRuntimeException("档案库不存在");
@@ -54,17 +53,20 @@ public class DataCommonService {
                     if (value != null && value.length() > length)
                         throw new BaseRuntimeException(dataType + "长度超过定义的长度");
                     break;
-                case INT:
-                    newValue = Integer.valueOf(value);
+                case TINYINT:
+                    newValue = Byte.valueOf(value);
                     break;
                 case SMALLINT:
                     newValue = Short.valueOf(value);
                     break;
-                case DATE:
-                    newValue = DateUtil.parseDate(value);
+                case INT:
+                    newValue = Integer.valueOf(value);
                     break;
                 case DATETIME:
                     newValue = DateUtil.parseDateTime(value);
+                    break;
+                case DATE:
+                    newValue = DateUtil.parseDate(value);
                     break;
             }
             DataCommon dataCommon = new DataCommon();

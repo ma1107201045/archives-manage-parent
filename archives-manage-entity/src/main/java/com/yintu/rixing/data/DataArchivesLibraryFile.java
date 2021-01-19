@@ -24,25 +24,28 @@ public class DataArchivesLibraryFile extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "文件名", position = 6)
-    @TableField("name")
-    private String name;
+    @ApiModelProperty(value = "原始文件名", position = 7)
+    @TableField("original_name")
+    private String originalName;
 
     @ApiModelProperty(value = "文件路径", position = 7)
     @TableField("path")
     private String path;
 
-    @ApiModelProperty(value = "文件大小（MB）", position = 8)
+    @ApiModelProperty(value = "文件大小（MB）", position = 7)
     @TableField("size")
     private Double size;
 
+    @ApiModelProperty(value = "文件名", position = 8)
+    @TableField("name")
+    private String name;
     @ApiModelProperty(value = "请求映射", position = 9)
     @TableField("request_mapping")
     private String requestMapping;
 
     @ApiModelProperty(value = "文件类型 1.电子文件 2.扫描文件", position = 10)
     @TableField("type")
-    private Integer type;
+    private Short type;
 
     @ApiModelProperty(value = "备注", position = 11)
     @TableField("remark")

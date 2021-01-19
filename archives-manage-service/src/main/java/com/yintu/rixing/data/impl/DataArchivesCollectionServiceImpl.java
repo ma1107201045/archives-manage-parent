@@ -2,7 +2,6 @@ package com.yintu.rixing.data.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataArchivesCollectionMapper;
-import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonAll;
 import com.yintu.rixing.data.IDataArchivesCollectionService;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
@@ -52,7 +51,6 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
 
     @Override
     public Map<String, Object> getById(DataCommonFormDto dataCommonFormDto) {
-        AssertUtil.notNull(dataCommonFormDto.getArchivesId(), "档案库id不能为空");
         SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(dataCommonFormDto.getArchivesId());
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
 
