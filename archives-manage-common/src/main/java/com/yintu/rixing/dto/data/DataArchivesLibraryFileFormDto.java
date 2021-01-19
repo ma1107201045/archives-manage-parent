@@ -23,8 +23,11 @@ public class DataArchivesLibraryFileFormDto extends IdDto {
     @ApiModelProperty(value = "文件路径")
     private String path;
 
-    @ApiModelProperty(value = "文件大小（MB）")
+    @ApiModelProperty(value = "文件大小")
     private Double size;
+
+    @ApiModelProperty(value = "文件大小单位（B、KB、MB、GB）")
+    private String unit;
 
     @ApiModelProperty(value = "文件名")
     private String name;

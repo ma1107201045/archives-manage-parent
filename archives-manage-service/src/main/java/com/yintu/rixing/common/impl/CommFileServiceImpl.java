@@ -2,11 +2,13 @@ package com.yintu.rixing.common.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.yintu.rixing.common.ICommFileService;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.util.AddressUtil;
 import com.yintu.rixing.util.AssertUtil;
+import com.yintu.rixing.util.FileSizeUtil;
 import com.yintu.rixing.util.PathUtil;
 import com.yintu.rixing.vo.common.CommFileVo;
 import org.springframework.stereotype.Service;
@@ -46,7 +48,8 @@ public class CommFileServiceImpl implements ICommFileService {
         CommFileVo commFileVo = new CommFileVo();
         commFileVo.setFileOriginalName(originalName);
         commFileVo.setFilePath(path.substring(0, path.length() - 1));
-        commFileVo.setFileSize(new BigDecimal(size / 1024.0 / 1024.0).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        commFileVo.setFileSize(FileSizeUtil.getSize(size));
+        commFileVo.setFileUnit(FileSizeUtil.getUnit(size));
         commFileVo.setFileName(name);
         commFileVo.setFileRequestMapping(requestMapping);
         return commFileVo;

@@ -19,10 +19,12 @@ public class CommFileVo {
     private String filePath;
     @ApiModelProperty(value = "文件大小", position = 3)
     private Double fileSize;
+    @ApiModelProperty(value = "文件大小单位（B、KB、MB、GB）", position = 4)
+    private String fileUnit;
 
-    @ApiModelProperty(value = "文件名", position = 1)
+    @ApiModelProperty(value = "文件名", position = 5)
     private String fileName;
-    @ApiModelProperty(value = "请求映射", position = 4)
+    @ApiModelProperty(value = "请求映射", position = 6)
     private String fileRequestMapping;
 
 }
