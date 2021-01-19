@@ -27,6 +27,9 @@ public class DataCommonTitleVo {
     private String typeProp;
     @ApiModelProperty(value = "表单数据类型名")
     private String typeLabel;
+    
+    @ApiModelProperty(value = "表单是否为空")
+    private Boolean notNull;
 
 
 }

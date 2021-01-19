@@ -46,7 +46,7 @@ public class CommFileServiceImpl implements ICommFileService {
         CommFileVo commFileVo = new CommFileVo();
         commFileVo.setFileOriginalName(originalName);
         commFileVo.setFilePath(path.substring(0, path.length() - 1));
-        commFileVo.setFileSize(new BigDecimal(size).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        commFileVo.setFileSize(new BigDecimal(size / 1024.0 / 1024.0).setScale(2, RoundingMode.HALF_UP).doubleValue());
         commFileVo.setFileName(name);
         commFileVo.setFileRequestMapping(requestMapping);
         return commFileVo;

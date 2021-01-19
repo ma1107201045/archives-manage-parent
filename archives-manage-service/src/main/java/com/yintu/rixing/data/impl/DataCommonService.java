@@ -93,6 +93,7 @@ public class DataCommonService {
             dataCommonTitleVo.setTypeId(sysTemplateLibraryFieldType.getId());
             dataCommonTitleVo.setTypeProp(sysTemplateLibraryFieldType.getDataKey());
             dataCommonTitleVo.setTypeLabel(sysTemplateLibraryFieldType.getName());
+            dataCommonTitleVo.setNotNull(sysArchivesLibraryField.getRequired() == 1);
             dataCommonTitleVos.add(dataCommonTitleVo);
         }
         dataCommonTitleVos.add(this.getStatusTitle());
@@ -103,10 +104,12 @@ public class DataCommonService {
         DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
         dataCommonTitleVo.setProp("id");
         dataCommonTitleVo.setLabel("主键id");
+
         dataCommonTitleVo.setShow(false);
         dataCommonTitleVo.setTypeId(EnumDataType.INT.getValue());
         dataCommonTitleVo.setTypeProp("int");
         dataCommonTitleVo.setTypeLabel(EnumDataType.INT.getName());
+        dataCommonTitleVo.setNotNull(false);
         return dataCommonTitleVo;
     }
 
@@ -119,6 +122,7 @@ public class DataCommonService {
         dataCommonTitleVo.setTypeId(EnumDataType.SMALLINT.getValue());
         dataCommonTitleVo.setTypeProp("smallint");
         dataCommonTitleVo.setTypeLabel(EnumDataType.SMALLINT.getName());
+        dataCommonTitleVo.setNotNull(false);
         return dataCommonTitleVo;
     }
 
