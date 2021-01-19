@@ -7,10 +7,7 @@ import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiSort;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +33,8 @@ public class Data01ArchivesCollectionController extends Authenticator {
 
     @Log(level = EnumLogLevel.DEBUG, module = "数据中心", context = "添加档案收集信息")
     @PostMapping
-    @ApiOperation(value = "添加档案收集信息", notes = "添加档案收集信息", position = 1)
+    @ApiOperation(value = "添加档案收集信息", notes = "添加档案收集信息")
+    @ApiOperationSupport(order = 1)
     public ResultDataUtil<Object> add(@RequestParam Map<String, String> params) {
         iDataArchivesCollectionService.save(ObjectConvertUtil.getAddFormDto(params));
         return ResultDataUtil.ok("添加档案收集信息成功");
@@ -44,8 +42,9 @@ public class Data01ArchivesCollectionController extends Authenticator {
 
     @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "删除档案收集信息")
     @DeleteMapping("/{ids}")
-    @ApiOperation(value = "删除档案收集信息", notes = "删除档案收集信息", position = 2)
+    @ApiOperation(value = "删除档案收集信息", notes = "删除档案收集信息")
     @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
+    @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesId) {
         iDataArchivesCollectionService.removeByIds(ids, archivesId);
         return ResultDataUtil.ok("删除档案收集信息成功");
@@ -53,8 +52,9 @@ public class Data01ArchivesCollectionController extends Authenticator {
 
     @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "修改档案收集信息")
     @PutMapping("/{id}")
-    @ApiOperation(value = "修改档案收集信息", notes = "修改档案收集信息", position = 3)
+    @ApiOperation(value = "修改档案收集信息", notes = "修改档案收集信息")
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    @ApiOperationSupport(order = 3)
     public ResultDataUtil<Object> edit(@PathVariable Integer id, @RequestParam Map<String, String> params) {
         params.put(ObjectConvertUtil.ID, id.toString());
         iDataArchivesCollectionService.updateById(ObjectConvertUtil.getNotAddFormDto(params));
@@ -63,7 +63,8 @@ public class Data01ArchivesCollectionController extends Authenticator {
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案收集单条信息")
     @GetMapping("/{id}")
-    @ApiOperation(value = "查询档案收集单条信息", notes = "查询档案收集单条信息", position = 4)
+    @ApiOperation(value = "查询档案收集单条信息", notes = "查询档案收集单条信息")
+    @ApiOperationSupport(order = 4)
     public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Map<String, String> params) {
         params.put(ObjectConvertUtil.ID, id.toString());
         iDataArchivesCollectionService.getById(ObjectConvertUtil.getNotAddFormDto(params));
@@ -72,7 +73,8 @@ public class Data01ArchivesCollectionController extends Authenticator {
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案收集列表信息")
     @GetMapping
-    @ApiOperation(value = "查询档案收集列表信息", notes = "查询档案收集列表信息", position = 5)
+    @ApiOperation(value = "查询档案收集列表信息", notes = "查询档案收集列表信息", position = 6)
+    @ApiOperationSupport(order = 5)
     public ResultDataUtil<DataCommonVo> findPage(DataCommonQueryDto dataCommonQueryDto) {
         DataCommonVo dataCommonVo = iDataArchivesCollectionService.getPage(dataCommonQueryDto);
         return ResultDataUtil.ok("查询档案收集列表信息成功", dataCommonVo);

@@ -34,7 +34,6 @@ public class CaptchaController {
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
         response.setStatus(HttpServletResponse.SC_OK);
         CircleCaptcha circleCaptcha = CaptchaUtil.createCircleCaptcha(150, 40, 4, 10);
-        System.out.println(circleCaptcha.getCode());
         session.setAttribute("captcha", circleCaptcha.getCode());
         OutputStream os = response.getOutputStream();
         circleCaptcha.write(os);
