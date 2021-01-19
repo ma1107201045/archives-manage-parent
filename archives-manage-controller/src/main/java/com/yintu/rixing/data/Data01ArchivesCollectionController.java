@@ -2,9 +2,11 @@ package com.yintu.rixing.data;
 
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
+import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
+import com.yintu.rixing.vo.data.DataCommonVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +38,7 @@ public class Data01ArchivesCollectionController extends Authenticator {
     @PostMapping
     @ApiOperation(value = "添加档案收集信息", notes = "添加档案收集信息", position = 1)
     public ResultDataUtil<Object> add(@RequestParam Map<String, String> params) {
-        iDataArchivesCollectionService.save(ObjectConvertUtil.getAddDto(params));
+        iDataArchivesCollectionService.save(ObjectConvertUtil.getAddFormDto(params));
         return ResultDataUtil.ok("添加档案收集信息成功");
     }
 
@@ -55,16 +57,25 @@ public class Data01ArchivesCollectionController extends Authenticator {
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<Object> edit(@PathVariable Integer id, @RequestParam Map<String, String> params) {
         params.put(ObjectConvertUtil.ID, id.toString());
-        iDataArchivesCollectionService.updateById(ObjectConvertUtil.getEditDto(params));
+        iDataArchivesCollectionService.updateById(ObjectConvertUtil.getNotAddFormDto(params));
         return ResultDataUtil.ok("修改档案收集信息成功");
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案收集单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询档案收集单条信息", notes = "查询档案收集单条信息", position = 4)
-    public ResultDataUtil<Object> findById(@RequestParam Integer archivesId, @PathVariable Integer id) {
-        iDataArchivesCollectionService.getById(archivesId, id);
+    public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Map<String, String> params) {
+        params.put(ObjectConvertUtil.ID, id.toString());
+        iDataArchivesCollectionService.getById(ObjectConvertUtil.getNotAddFormDto(params));
         return ResultDataUtil.ok("查询档案收集单条信息成功");
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案收集列表信息")
+    @GetMapping
+    @ApiOperation(value = "查询档案收集列表信息", notes = "查询档案收集列表信息", position = 5)
+    public ResultDataUtil<DataCommonVo> findPage(DataCommonQueryDto dataCommonQueryDto) {
+        DataCommonVo dataCommonVo = iDataArchivesCollectionService.getPage(dataCommonQueryDto);
+        return ResultDataUtil.ok("查询档案收集列表信息成功", dataCommonVo);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.yintu.rixing.vo.system;
+package com.yintu.rixing.pojo;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import lombok.Data;
  * @Version: 1.0
  */
 @Data
-public class SysRoleVo {
+public class SysRolePojo {
 
     private String name;
 }

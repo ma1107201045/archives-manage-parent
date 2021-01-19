@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysPermissionFormDto;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.TreeUtil;
-import com.yintu.rixing.vo.system.SysPermissionVo;
+import com.yintu.rixing.pojo.SysPermissionPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +74,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public List<SysPermissionVo> list(Short menu) {
+    public List<SysPermissionPojo> list(Short menu) {
         return sysPermissionMapper.selectAllPermission(menu);
     }
 }

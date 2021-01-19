@@ -1,4 +1,4 @@
-package com.yintu.rixing.vo.system;
+package com.yintu.rixing.pojo;
 
 import lombok.Data;
 
@@ -10,11 +10,11 @@ import java.util.List;
  * @Version: 1.0
  */
 @Data
-public class SysPermissionVo {
+public class SysPermissionPojo {
 
     private String url;
 
     private String method;
 
-    List<SysRoleVo> sysRoleVos;
+    List<SysRolePojo> sysRoleVos;
 }

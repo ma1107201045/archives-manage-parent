@@ -1,10 +1,16 @@
 package com.yintu.rixing.data.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataArchivesCollectionMapper;
+import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonAll;
 import com.yintu.rixing.data.IDataArchivesCollectionService;
-import com.yintu.rixing.dto.data.DataCommonDto;
-import com.yintu.rixing.exception.BaseRuntimeException;
+import com.yintu.rixing.dto.data.DataCommonFormDto;
+import com.yintu.rixing.dto.data.DataCommonQueryDto;
+import com.yintu.rixing.system.SysArchivesLibrary;
+import com.yintu.rixing.util.AssertUtil;
+import com.yintu.rixing.util.TableNameUtil;
+import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,27 +28,53 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
     private DataArchivesCollectionMapper dataArchivesCollectionMapper;
 
     @Override
-    public void save(DataCommonDto dataCommonDto) {
-        DataCommonAll dataCommonAll = this.parametersToProofread(dataCommonDto);
+    public void save(DataCommonFormDto dataCommonFormDto) {
+        DataCommonAll dataCommonAll = this.parametersToProofread(dataCommonFormDto);
         dataArchivesCollectionMapper.insertSelective(dataCommonAll);
     }
 
     @Override
     public void removeByIds(Set<Integer> ids, Integer archivesId) {
-
+        AssertUtil.notNull(archivesId, "档案库id不能为空");
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesId);
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
+        dataArchivesCollectionMapper.deleteByPrimaryKeys(ids, TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey()));
     }
 
     @Override
-    public void updateById(DataCommonDto dataCommonDto) {
-        DataCommonAll dataCommonAll = this.parametersToProofread(dataCommonDto);
+    public void updateById(DataCommonFormDto dataCommonFormDto) {
+        DataCommonAll dataCommonAll = this.parametersToProofread(dataCommonFormDto);
         Map<String, Object> map = dataArchivesCollectionMapper.selectByPrimaryKey(dataCommonAll);
-        dataArchivesCollectionMapper.updateByPrimaryKeySelective(dataCommonAll);
+        if (map != null) {
+            dataArchivesCollectionMapper.updateByPrimaryKeySelective(dataCommonAll);
+        }
     }
 
     @Override
-    public void getById(Integer archivesId, Integer id) {
+    public Map<String, Object> getById(DataCommonFormDto dataCommonFormDto) {
+        AssertUtil.notNull(dataCommonFormDto.getArchivesId(), "档案库id不能为空");
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(dataCommonFormDto.getArchivesId());
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
 
+        DataCommonAll dataCommonAll = new DataCommonAll();
+        dataCommonAll.setId(dataCommonFormDto.getId());
+        dataCommonAll.setTableName(TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey()));
+        return dataArchivesCollectionMapper.selectByPrimaryKey(dataCommonAll);
     }
 
+
+    @Override
+    public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
+        Integer archivesId = dataCommonPageDto.getArchivesId();
+        Integer num = dataCommonPageDto.getNum();
+        Integer size = dataCommonPageDto.getSize();
+        AssertUtil.notNull(archivesId, "档案库id不能为空");
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesId);
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
+        DataCommonVo dataCommonVo = new DataCommonVo();
+        dataCommonVo.setDataCommonTitleVos(this.getDataCommonTitles(archivesId));
+        dataCommonVo.setPage(dataArchivesCollectionMapper.selectPage(new Page<>(num, size), TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey())));
+        return dataCommonVo;
+    }
 
 }

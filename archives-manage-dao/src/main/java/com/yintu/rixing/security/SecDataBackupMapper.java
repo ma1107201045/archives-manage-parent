@@ -1,7 +1,7 @@
 package com.yintu.rixing.security;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yintu.rixing.vo.security.SecDataBackupVo;
+import com.yintu.rixing.pojo.SecDataBackupPojo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface SecDataBackupMapper extends BaseMapper<SecDataBackup> {
 
 
-    SecDataBackupVo selectByIgnoreTableNames(String... ignoreTableNames);
+    SecDataBackupPojo selectByIgnoreTableNames(String... ignoreTableNames);
 
 
 }

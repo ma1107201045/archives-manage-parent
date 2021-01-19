@@ -3,16 +3,13 @@ package com.yintu.rixing.data.impl;
 import cn.hutool.core.date.DateUtil;
 import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonAll;
-import com.yintu.rixing.dto.data.DataCommonDto;
+import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.enumobject.EnumDataType;
 import com.yintu.rixing.exception.BaseRuntimeException;
-import com.yintu.rixing.system.ISysArchivesLibraryFieldService;
-import com.yintu.rixing.system.ISysArchivesLibraryService;
-import com.yintu.rixing.system.SysArchivesLibrary;
-import com.yintu.rixing.system.SysArchivesLibraryField;
+import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.AssertUtil;
-import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.TableNameUtil;
+import com.yintu.rixing.vo.data.DataCommonTitleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -31,7 +28,7 @@ public class DataCommonService {
     @Autowired
     protected ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
 
-    protected DataCommonAll parametersToProofread(DataCommonDto dataCommonDto) {
+    protected DataCommonAll parametersToProofread(DataCommonFormDto dataCommonDto) {
         Integer archivesId = dataCommonDto.getArchivesId();
         AssertUtil.notNull(archivesId, "档案库id不能为空");
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesId);
@@ -79,6 +76,31 @@ public class DataCommonService {
         dataCommonAll.setId(dataCommonDto.getId());
         dataCommonAll.setDataCommons(dataCommons);
         return dataCommonAll;
+    }
+
+    protected List<DataCommonTitleVo> getDataCommonTitles(Integer archivesId) {
+        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesId);
+        List<DataCommonTitleVo> dataCommonTitleVos = new ArrayList<>();
+        dataCommonTitleVos.add(getIdTitle());
+        for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
+            DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
+            dataCommonTitleVo.setProp(sysArchivesLibraryField.getDataKey());
+            dataCommonTitleVo.setLabel(sysArchivesLibraryField.getName());
+            SysTemplateLibraryFieldType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysTemplateLibraryFieldType();
+            dataCommonTitleVo.setTypeProp(sysTemplateLibraryFieldType.getDataKey());
+            dataCommonTitleVo.setTypeLabel(sysTemplateLibraryFieldType.getName());
+        }
+
+        return dataCommonTitleVos;
+    }
+
+    protected DataCommonTitleVo getIdTitle() {
+        DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
+        dataCommonTitleVo.setProp("id");
+        dataCommonTitleVo.setLabel("主键id");
+        dataCommonTitleVo.setTypeProp("int");
+        dataCommonTitleVo.setTypeLabel("文本框(数值)");
+        return dataCommonTitleVo;
     }
 
 

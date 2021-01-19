@@ -1,6 +1,7 @@
 package com.yintu.rixing.util;
 
-import com.yintu.rixing.dto.data.DataCommonDto;
+import com.yintu.rixing.dto.data.DataCommonFormDto;
+import com.yintu.rixing.dto.data.DataCommonQueryDto;
 
 import java.util.Map;
 
@@ -10,26 +11,31 @@ import java.util.Map;
  * @Version: 1.0
  */
 public class ObjectConvertUtil {
-
-    public static final String ID = "id";
     public static final String ARCHIVES_ID = "archivesId";
+    public static final String ID = "id";
+    public static final String NUM = "num";
+    public static final String SIZE = "size";
 
-    public static DataCommonDto getAddDto(Map<String, String> params) {
-        DataCommonDto dataCommonDto = new DataCommonDto();
-        dataCommonDto.setArchivesId(Integer.valueOf(params.get(ARCHIVES_ID)));
-        dataCommonDto.setParams(params);
-        return dataCommonDto;
+
+    public static DataCommonFormDto getAddFormDto(Map<String, String> params) {
+        DataCommonFormDto dataCommonFormDto = new DataCommonFormDto();
+        dataCommonFormDto.setArchivesId(Integer.valueOf(params.get(ARCHIVES_ID)));
+        dataCommonFormDto.setParams(params);
+        return dataCommonFormDto;
     }
 
-    public static DataCommonDto getRemoveDto(Map<String, String> params) {
-        DataCommonDto dataCommonDto = getAddDto(params);
-        dataCommonDto.setId(Integer.valueOf(params.get(ID)));
-        return dataCommonDto;
+    public static DataCommonFormDto getNotAddFormDto(Map<String, String> params) {
+        DataCommonFormDto dataCommonFormDto = getAddFormDto(params);
+        dataCommonFormDto.setId(Integer.valueOf(params.get(ID)));
+        return dataCommonFormDto;
     }
 
-    public static DataCommonDto getEditDto(Map<String, String> params) {
-        return getRemoveDto(params);
+    public static DataCommonQueryDto getQueryDto(Map<String, String> params) {
+        DataCommonQueryDto dataCommonQueryDto = new DataCommonQueryDto();
+        dataCommonQueryDto.setArchivesId(Integer.valueOf(params.get(ARCHIVES_ID)));
+        dataCommonQueryDto.setNum(Integer.valueOf(params.get(NUM)));
+        dataCommonQueryDto.setSize(Integer.valueOf(params.get(SIZE)));
+        return dataCommonQueryDto;
     }
-
 
 }

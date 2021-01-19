@@ -3,7 +3,7 @@ package com.yintu.rixing.system;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.system.SysPermissionFormDto;
 import com.yintu.rixing.util.TreeUtil;
-import com.yintu.rixing.vo.system.SysPermissionVo;
+import com.yintu.rixing.pojo.SysPermissionPojo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public interface ISysPermissionService extends IService<SysPermission> {
 
     List<TreeUtil> listTree(Integer id);
 
-    List<SysPermissionVo> list(Short menu);
+    List<SysPermissionPojo> list(Short menu);
 
 
 }

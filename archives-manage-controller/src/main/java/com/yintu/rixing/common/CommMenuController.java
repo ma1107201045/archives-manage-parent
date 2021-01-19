@@ -9,6 +9,7 @@ import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.common.CommAuthorityVo;
+import com.yintu.rixing.vo.common.CommPermissionVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiSort;
@@ -37,8 +38,8 @@ public class CommMenuController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "公共模块", context = "查询菜单栏以及权限信息")
     @GetMapping
     @ApiOperation(value = "查询菜单栏以及权限信息", notes = "查询菜单栏以及权限信息")
-    public ResultDataUtil<JSONObject> findPage() {
-        JSONObject jo = new JSONObject();
+    public ResultDataUtil<CommPermissionVo> findPage() {
+        CommPermissionVo commPermissionVo = new CommPermissionVo();
         SysUser sysUser = Authenticator.getPrincipal();
         List<TreeUtil> treeUtils = null;
         List<CommAuthorityVo> commAuthorityVos = null;
@@ -52,9 +53,9 @@ public class CommMenuController extends Authenticator {
                 iCommMenuService.findAuthorities(userId);
             }
         }
-        jo.put("menu", treeUtils);
-        jo.put("Authorities", commAuthorityVos);
-        return ResultDataUtil.ok("查询菜单栏信息以及权限成功", jo);
+        commPermissionVo.setMenu(treeUtils);
+        commPermissionVo.setAuthorities(commAuthorityVos);
+        return ResultDataUtil.ok("查询菜单栏信息以及权限成功", commPermissionVo);
     }
 
 }

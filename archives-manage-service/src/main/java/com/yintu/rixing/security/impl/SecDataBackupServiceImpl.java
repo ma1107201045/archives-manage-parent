@@ -14,11 +14,10 @@ import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.security.ISecDataBackupService;
 import com.yintu.rixing.security.SecDataBackup;
 import com.yintu.rixing.security.SecDataBackupMapper;
-import com.yintu.rixing.security.SecLog;
 import com.yintu.rixing.util.AddressUtil;
 import com.yintu.rixing.util.JdbcInfoUtil;
 import com.yintu.rixing.util.PathUtil;
-import com.yintu.rixing.vo.security.SecDataBackupVo;
+import com.yintu.rixing.pojo.SecDataBackupPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +27,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.Charset;
-import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.List;
 
@@ -78,10 +76,10 @@ public class SecDataBackupServiceImpl extends ServiceImpl<SecDataBackupMapper, S
         secDataBackup.setBackupFileSize(new BigDecimal(backFileSize).setScale(2, RoundingMode.HALF_UP).doubleValue());
         secDataBackup.setRequestMapping(AddressUtil.getAddress(request) + PathUtil.getBackupMapping() + name);
 
-        SecDataBackupVo secDataBackupVo = this.findByIgnoreTableNames(ignoreTableNames);
-        secDataBackup.setTableCount(secDataBackupVo.getTableCount().intValue());
-        secDataBackup.setRecordCount(secDataBackupVo.getRecordCount().intValue());
-        secDataBackup.setRecordSize(secDataBackupVo.getRecordSize());
+        SecDataBackupPojo secDataBackupPojo = this.findByIgnoreTableNames(ignoreTableNames);
+        secDataBackup.setTableCount(secDataBackupPojo.getTableCount().intValue());
+        secDataBackup.setRecordCount(secDataBackupPojo.getRecordCount().intValue());
+        secDataBackup.setRecordSize(secDataBackupPojo.getRecordSize());
         this.save(secDataBackup);
 
     }
@@ -124,7 +122,7 @@ public class SecDataBackupServiceImpl extends ServiceImpl<SecDataBackupMapper, S
     }
 
     @Override
-    public SecDataBackupVo findByIgnoreTableNames(String... ignoreTableNames) {
+    public SecDataBackupPojo findByIgnoreTableNames(String... ignoreTableNames) {
         return secDataBackupMapper.selectByIgnoreTableNames(ignoreTableNames);
     }
 

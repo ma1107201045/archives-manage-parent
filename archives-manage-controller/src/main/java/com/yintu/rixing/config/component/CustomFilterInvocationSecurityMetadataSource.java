@@ -2,8 +2,8 @@ package com.yintu.rixing.config.component;
 
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.system.ISysPermissionService;
-import com.yintu.rixing.vo.system.SysPermissionVo;
-import com.yintu.rixing.vo.system.SysRoleVo;
+import com.yintu.rixing.pojo.SysPermissionPojo;
+import com.yintu.rixing.pojo.SysRolePojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -34,12 +34,12 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
         FilterInvocation filterInvocation = (FilterInvocation) object;
         String requestUrl = filterInvocation.getRequestUrl().split("[?]")[0];//url后边的参数去掉（？号后边的）
         String requestMethod = filterInvocation.getRequest().getMethod();
-        List<SysPermissionVo> sysPermissionVos = iSysPermissionService.list(EnumFlag.False.getValue());
+        List<SysPermissionPojo> sysPermissionVos = iSysPermissionService.list(EnumFlag.False.getValue());
         List<ConfigAttribute> configAttributes = new ArrayList<>();
-        for (SysPermissionVo sysPermissionVo : sysPermissionVos) {
+        for (SysPermissionPojo sysPermissionVo : sysPermissionVos) {
             if (antPathMatcher.match(sysPermissionVo.getUrl(), requestUrl) && requestMethod.toUpperCase().equals(sysPermissionVo.getMethod())) {
-                List<SysRoleVo> sysRoleVos = sysPermissionVo.getSysRoleVos();
-                for (SysRoleVo sysRoleVo : sysRoleVos) {
+                List<SysRolePojo> sysRoleVos = sysPermissionVo.getSysRoleVos();
+                for (SysRolePojo sysRoleVo : sysRoleVos) {
                     configAttributes.add(new SecurityConfig(sysRoleVo.getName().trim()));
                 }
             }

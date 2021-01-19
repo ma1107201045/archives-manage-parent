@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.system.SysPermissionMapper">
-    <resultMap id="selectAllPermissionMap" type="com.yintu.rixing.vo.system.SysPermissionVo">
+    <resultMap id="selectAllPermissionMap" type="com.yintu.rixing.pojo.SysPermissionPojo">
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="method" jdbcType="VARCHAR" property="method"/>
-        <collection property="sysRoleVos" ofType="com.yintu.rixing.vo.system.SysRoleVo">
+        <collection property="sysRoleVos" ofType="com.yintu.rixing.pojo.SysRolePojo">
             <result column="name" jdbcType="VARCHAR" property="name"/>
         </collection>
     </resultMap>

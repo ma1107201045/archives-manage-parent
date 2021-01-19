@@ -1,8 +1,11 @@
 package com.yintu.rixing.data;
 
-import com.yintu.rixing.dto.data.DataCommonDto;
+import com.yintu.rixing.dto.data.DataCommonFormDto;
+import com.yintu.rixing.dto.data.DataCommonQueryDto;
+import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -13,14 +16,15 @@ import java.util.Set;
 public interface IDataArchivesCollectionService {
 
     @Transactional(rollbackFor = {Exception.class})
-    void save(DataCommonDto dataCommonDto);
+    void save(DataCommonFormDto dataCommonDto);
 
     @Transactional(rollbackFor = {Exception.class})
     void removeByIds(Set<Integer> ids, Integer archivesId);
 
     @Transactional(rollbackFor = {Exception.class})
-    void updateById(DataCommonDto dataCommonDto);
+    void updateById(DataCommonFormDto dataCommonDto);
 
-    @Transactional(rollbackFor = {Exception.class})
-    void getById(Integer archivesId, Integer id);
+    Map<String, Object> getById(DataCommonFormDto dataCommonDto);
+
+    DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
 }

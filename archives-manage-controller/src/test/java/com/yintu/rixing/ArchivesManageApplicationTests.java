@@ -1,17 +1,18 @@
 package com.yintu.rixing;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.common.CommTableField;
 import com.yintu.rixing.common.ICommTableFieldService;
+import com.yintu.rixing.data.IDataArchivesCollectionService;
 import com.yintu.rixing.demo.DeTest;
 import com.yintu.rixing.demo.DeTestMapper;
+import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.system.ISysPermissionService;
-import com.yintu.rixing.vo.system.SysPermissionVo;
+import com.yintu.rixing.pojo.SysPermissionPojo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,12 +26,12 @@ import java.util.Map;
 public class ArchivesManageApplicationTests {
     @Autowired
     private DeTestMapper deTestMapper;
-
     @Autowired
     private ISysPermissionService iSysPermissionService;
-
     @Autowired
     private ICommTableFieldService iCommTableFieldService;
+    @Autowired
+    private IDataArchivesCollectionService iDataArchivesCollectionService;
 
     @Test
     void contextLoads() {
@@ -110,7 +111,7 @@ public class ArchivesManageApplicationTests {
 
     @Test
     void list() {
-        List<SysPermissionVo> sysPermissionVos = iSysPermissionService.list(EnumFlag.False.getValue());
+        List<SysPermissionPojo> sysPermissionVos = iSysPermissionService.list(EnumFlag.False.getValue());
         System.out.println(JSONObject.toJSON(sysPermissionVos));
     }
 
@@ -140,4 +141,14 @@ public class ArchivesManageApplicationTests {
 //        iCommTableFieldService.addIndex("dynamic_index", commTableField.getFieldName());
 //        iCommTableFieldService.drop("dynamic_index", commTableField.getFieldName());
     }
+
+    @Test
+    void list3() {
+        DataCommonFormDto dataCommonDto = new DataCommonFormDto();
+        dataCommonDto.setId(41);
+        dataCommonDto.setArchivesId(91);
+        Map<String, Object> d = iDataArchivesCollectionService.getById(dataCommonDto);
+        System.out.println(d);
+    }
+
 }

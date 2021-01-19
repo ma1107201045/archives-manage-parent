@@ -20,7 +20,20 @@
             1
         </trim>
     </insert>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from `${tableName}`
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
 
+    <delete id="deleteByPrimaryKeys" parameterType="java.lang.Integer">
+        delete
+        from `${tableName}`
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id,jdbcType=INTEGER}
+        </foreach>
+    </delete>
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.rixing.data.DataCommonAll">
         update `${tableName}`
         <set>

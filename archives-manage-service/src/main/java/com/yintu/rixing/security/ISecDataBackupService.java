@@ -3,7 +3,7 @@ package com.yintu.rixing.security;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.common.PageDto;
-import com.yintu.rixing.vo.security.SecDataBackupVo;
+import com.yintu.rixing.pojo.SecDataBackupPojo;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ public interface ISecDataBackupService extends IService<SecDataBackup> {
     @Transactional(rollbackFor = {Exception.class})
     void restore(Integer id);
 
-    SecDataBackupVo findByIgnoreTableNames(String... ignoreTableNames);
+    SecDataBackupPojo findByIgnoreTableNames(String... ignoreTableNames);
 
     Page<SecDataBackup> page(PageDto pageDto);
 
