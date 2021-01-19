@@ -24,6 +24,6 @@ public interface DataArchivesCollectionMapper {
 
     Map<String, Object> selectByPrimaryKey(DataCommonAll dataCommonAll);
 
-    Page<Map<String, Object>> selectPage(Page<?> page, String tableName);
+    Page<Map<String, Object>> selectPage(Page<Map<String, Object>> page, String tableName);
 
 }

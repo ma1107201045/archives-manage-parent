@@ -81,7 +81,7 @@ public class DataCommonService {
     protected List<DataCommonTitleVo> getDataCommonTitles(Integer archivesId) {
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesId);
         List<DataCommonTitleVo> dataCommonTitleVos = new ArrayList<>();
-        dataCommonTitleVos.add(getIdTitle());
+        dataCommonTitleVos.add(this.getIdTitle());
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
             DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
             dataCommonTitleVo.setProp(sysArchivesLibraryField.getDataKey());
@@ -89,8 +89,9 @@ public class DataCommonService {
             SysTemplateLibraryFieldType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysTemplateLibraryFieldType();
             dataCommonTitleVo.setTypeProp(sysTemplateLibraryFieldType.getDataKey());
             dataCommonTitleVo.setTypeLabel(sysTemplateLibraryFieldType.getName());
+            dataCommonTitleVos.add(dataCommonTitleVo);
         }
-
+        dataCommonTitleVos.add(this.getStatusTitle());
         return dataCommonTitleVos;
     }
 
@@ -103,5 +104,13 @@ public class DataCommonService {
         return dataCommonTitleVo;
     }
 
+    protected DataCommonTitleVo getStatusTitle() {
+        DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
+        dataCommonTitleVo.setProp("status");
+        dataCommonTitleVo.setLabel("档案状态");
+        dataCommonTitleVo.setTypeProp("smallint");
+        dataCommonTitleVo.setTypeLabel("文本框(状态数值)");
+        return dataCommonTitleVo;
+    }
 
 }

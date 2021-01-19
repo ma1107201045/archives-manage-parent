@@ -68,11 +68,10 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
         Integer archivesId = dataCommonPageDto.getArchivesId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
-        AssertUtil.notNull(archivesId, "档案库id不能为空");
         SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
         DataCommonVo dataCommonVo = new DataCommonVo();
-        dataCommonVo.setDataCommonTitleVos(this.getDataCommonTitles(archivesId));
+        dataCommonVo.setTitles(this.getDataCommonTitles(archivesId));
         dataCommonVo.setPage(dataArchivesCollectionMapper.selectPage(new Page<>(num, size), TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey())));
         return dataCommonVo;
     }

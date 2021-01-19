@@ -8,11 +8,12 @@ package com.yintu.rixing.enumobject;
 public enum EnumDataType {
 
     VARCHAR("文本框(文本)", 1, ""),
-    INT("文本框(数值)", 2, ""),
-    TEXT("文本域", 3, ""),
-    SMALLINT("单选框", 4, ""),
-    DATE("日期框", 5, ""),
-    DATETIME("日期时间框", 6, "");
+    TEXT("文本域", 2, ""),
+    SMALLINT("文本框(状态值)", 3, ""),
+    TINYINT("单选框", 4, ""),
+    INT("文本框(数值)", 5, ""),
+    DATE("日期框", 6, ""),
+    DATETIME("日期时间框", 7, "");
 
     private final String name;
     private final Integer value;

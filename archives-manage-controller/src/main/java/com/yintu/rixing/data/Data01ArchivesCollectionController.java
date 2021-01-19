@@ -9,6 +9,7 @@ import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -75,7 +76,7 @@ public class Data01ArchivesCollectionController extends Authenticator {
     @GetMapping
     @ApiOperation(value = "查询档案收集列表信息", notes = "查询档案收集列表信息", position = 6)
     @ApiOperationSupport(order = 5)
-    public ResultDataUtil<DataCommonVo> findPage(DataCommonQueryDto dataCommonQueryDto) {
+    public ResultDataUtil<DataCommonVo> findPage(@Validated DataCommonQueryDto dataCommonQueryDto) {
         DataCommonVo dataCommonVo = iDataArchivesCollectionService.getPage(dataCommonQueryDto);
         return ResultDataUtil.ok("查询档案收集列表信息成功", dataCommonVo);
     }

@@ -51,5 +51,10 @@
         from `${tableName}`
         where id = #{id,jdbcType=INTEGER}
     </select>
-
+    <select id="selectPage" resultType="java.util.Map">
+        select *
+        from `${tableName}`
+        where `status` = 1
+        order by `id` DESC
+    </select>
 </mapper>
