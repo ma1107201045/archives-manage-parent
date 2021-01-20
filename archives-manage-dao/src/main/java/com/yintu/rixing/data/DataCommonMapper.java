@@ -2,7 +2,9 @@ package com.yintu.rixing.data;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author: mlf
@@ -13,4 +15,6 @@ import java.util.Map;
 public interface DataCommonMapper {
 
     Map<String, Object> selectByPrimaryKey(DataCommonAll dataCommonAll);
+
+    List<Map<String, Object>> selectByPrimaryKeys(String tableName, Set<Integer> ids);
 }

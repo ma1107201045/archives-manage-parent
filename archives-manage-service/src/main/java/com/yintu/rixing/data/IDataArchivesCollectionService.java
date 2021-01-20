@@ -32,5 +32,5 @@ public interface IDataArchivesCollectionService {
 
     void exportExcelTemplateFile(HttpServletResponse response, String fileName, Integer archivesLibraryId) throws IOException;
 
-    void exportExcelDataFile(HttpServletResponse response, String fileName, Integer archivesLibraryId) throws IOException;
+    void exportExcelRecordFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException;
 }

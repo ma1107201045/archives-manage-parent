@@ -78,12 +78,12 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
 
     @Override
     public void exportExcelTemplateFile(HttpServletResponse response, String fileName, Integer archivesLibraryId) throws IOException {
-        this.exportExcelFile(response, fileName, archivesLibraryId, true);
+        this.exportExcelFile(response, fileName, null, archivesLibraryId);
     }
 
     @Override
-    public void exportExcelDataFile(HttpServletResponse response, String fileName, Integer archivesLibraryId) throws IOException {
-        this.exportExcelFile(response, fileName, archivesLibraryId, false);
+    public void exportExcelRecordFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException {
+        this.exportExcelFile(response, fileName, ids, archivesLibraryId);
     }
 
 

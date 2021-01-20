@@ -8,4 +8,13 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="selectPortionByPrimaryKeys" resultType="java.util.Map">
+        select *
+        from `${tableName}`
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id,jdbcType=INTEGER}
+        </foreach>
+        order by `id` DESC
+    </select>
 </mapper>

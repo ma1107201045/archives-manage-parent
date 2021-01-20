@@ -97,12 +97,20 @@ public class Data01ArchivesCollectionController extends Authenticator {
         return ResultDataUtil.ok("查询档案收集档案库列表信息树成功", treeNodeUtils);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "导出档案收集信息模板")
-    @GetMapping("/export")
-    @ApiOperation(value = "导出档案收集信息模板", notes = "导出档案收集信息模板")
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "下载档案收集信息模板")
+    @GetMapping("/download-template")
+    @ApiOperation(value = "下载档案收集信息模板", notes = "下载档案收集信息模板")
     @ApiOperationSupport(order = 7)
     public void exportExcelTemplateFile(HttpServletResponse response, @RequestParam Integer archivesLibraryId) throws IOException {
-        iDataArchivesCollectionService.exportExcelTemplateFile(response, "档案收集-模板.xlsx", archivesLibraryId);
+        iDataArchivesCollectionService.exportExcelTemplateFile(response, "档案收集-模板", archivesLibraryId);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出档案收集信息")
+    @GetMapping("/export/{ids}")
+    @ApiOperation(value = "批量导出档案收集信息", notes = "批量导出档案收集信息")
+    @ApiOperationSupport(order = 8)
+    public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
+        iDataArchivesCollectionService.exportExcelRecordFile(response, "档案收集-记录", ids, archivesLibraryId);
     }
 
 }

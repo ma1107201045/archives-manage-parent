@@ -3,7 +3,6 @@ package com.yintu.rixing.data.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.http.server.HttpServerRequest;
-import cn.hutool.http.server.HttpServerResponse;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.yintu.rixing.data.DataCommon;
@@ -22,8 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -99,10 +96,9 @@ public class DataCommonService {
         return dataCommonAll;
     }
 
-    protected List<DataCommonTitleVo> getDataCommonTitles(Integer archivesLibraryId) {
+    private List<DataCommonTitleVo> getDefaultDataCommonTitles(Integer archivesLibraryId) {
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
         List<DataCommonTitleVo> dataCommonTitleVos = new ArrayList<>();
-        dataCommonTitleVos.add(this.getIdTitle());
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
             DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
             dataCommonTitleVo.setProp(sysArchivesLibraryField.getDataKey());
@@ -115,6 +111,12 @@ public class DataCommonService {
             dataCommonTitleVo.setNotNull(sysArchivesLibraryField.getRequired() == 1);
             dataCommonTitleVos.add(dataCommonTitleVo);
         }
+        return dataCommonTitleVos;
+    }
+
+    protected List<DataCommonTitleVo> getDataCommonTitles(Integer archivesLibraryId) {
+        List<DataCommonTitleVo> dataCommonTitleVos = this.getDefaultDataCommonTitles(archivesLibraryId);
+        dataCommonTitleVos.add(this.getIdTitle());
         dataCommonTitleVos.add(this.getStatusTitle());
         return dataCommonTitleVos;
     }
@@ -145,18 +147,43 @@ public class DataCommonService {
         return dataCommonTitleVo;
     }
 
+    protected List<Map<String, Object>> getDataCommonRecord(Integer archivesLibraryId, Set<Integer> ids) {
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
+        String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
+        // 表头
+        List<DataCommonTitleVo> dataCommonTitleVos = this.getDefaultDataCommonTitles(archivesLibraryId);
+        List<String> props = dataCommonTitleVos.stream().map(DataCommonTitleVo::getProp).collect(Collectors.toList());
+        //记录数
+        List<Map<String, Object>> records = this.dataCommonMapper.selectByPrimaryKeys(tableName, ids);
+        List<Map<String, Object>> finalRecords = new ArrayList<>();
+        props.forEach(prop -> records.forEach(map -> {
+            if (map.containsKey(prop))
+                finalRecords.add(map);
+        }));
+        return finalRecords;
+    }
+
+
     protected void importExcelFile(HttpServerRequest request) {
 
     }
 
-    protected void exportExcelFile(HttpServletResponse response, String fileName, Integer archivesLibraryId, Boolean isTemplate) throws IOException {
-        List<DataCommonTitleVo> dataCommonTitleVos = this.getDataCommonTitles(archivesLibraryId);
-        List<String> labels = dataCommonTitleVos.stream().filter(DataCommonTitleVo::getShow).map(DataCommonTitleVo::getLabel).collect(Collectors.toList());
+    protected void exportExcelFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException {
+        String fullName = fileName + ".xlsx";
+        //表头
+        List<DataCommonTitleVo> dataCommonTitleVos = this.getDefaultDataCommonTitles(archivesLibraryId);
+        List<String> titles = dataCommonTitleVos.stream().map(DataCommonTitleVo::getLabel).collect(Collectors.toList());
         ExcelWriter excelWriter = ExcelUtil.getWriter(true);
-        excelWriter.merge(labels.size() - 1, fileName);
-        excelWriter.writeHeadRow(labels);
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=ISO8859-1");
-        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        excelWriter.merge(titles.size() - 1, fileName);
+        excelWriter.writeHeadRow(titles);
+        //表数据
+        if (ids != null) {
+            List<Map<String, Object>> records = this.getDataCommonRecord(archivesLibraryId, ids);
+            excelWriter.write(records);
+        }
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
         ServletOutputStream out = response.getOutputStream();
         excelWriter.flush(out, true);
         excelWriter.close();
