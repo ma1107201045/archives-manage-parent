@@ -2,6 +2,7 @@ package com.yintu.rixing.data.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.net.URLEncoder;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
@@ -21,10 +22,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.nio.charset.Charset;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -147,7 +146,7 @@ public class DataCommonService {
         return dataCommonTitleVo;
     }
 
-    protected List<Map<String, Object>> getDataCommonRecord(Integer archivesLibraryId, Set<Integer> ids) {
+    protected List<List<Object>> getDataCommonRecord(Integer archivesLibraryId, Set<Integer> ids) {
         SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
@@ -156,11 +155,16 @@ public class DataCommonService {
         List<String> props = dataCommonTitleVos.stream().map(DataCommonTitleVo::getProp).collect(Collectors.toList());
         //记录数
         List<Map<String, Object>> records = this.dataCommonMapper.selectByPrimaryKeys(tableName, ids);
-        List<Map<String, Object>> finalRecords = new ArrayList<>();
-        props.forEach(prop -> records.forEach(map -> {
-            if (map.containsKey(prop))
-                finalRecords.add(map);
-        }));
+        List<List<Object>> finalRecords = new ArrayList<>();
+        for (Map<String, Object> record : records) {
+            List<Object> objects = new ArrayList<>();
+            for (String prop : props) {
+                if (record.containsKey(prop)) {
+                    objects.add(record.get(prop));
+                }
+            }
+            finalRecords.add(objects);
+        }
         return finalRecords;
     }
 
@@ -179,11 +183,11 @@ public class DataCommonService {
         excelWriter.writeHeadRow(titles);
         //表数据
         if (ids != null) {
-            List<Map<String, Object>> records = this.getDataCommonRecord(archivesLibraryId, ids);
+            List<List<Object>> records = this.getDataCommonRecord(archivesLibraryId, ids);
             excelWriter.write(records);
         }
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.createAll().encode(fullName, Charset.defaultCharset()));
         ServletOutputStream out = response.getOutputStream();
         excelWriter.flush(out, true);
         excelWriter.close();

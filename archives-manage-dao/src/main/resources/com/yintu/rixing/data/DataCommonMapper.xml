@@ -8,7 +8,7 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="selectPortionByPrimaryKeys" resultType="java.util.Map">
+    <select id="selectByPrimaryKeys" resultType="java.util.Map">
         select *
         from `${tableName}`
         where id in
