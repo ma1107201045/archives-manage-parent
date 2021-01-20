@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.common.CommTableField;
 import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.data.IDataArchivesCollectionService;
+import com.yintu.rixing.data.impl.DataCommonService;
 import com.yintu.rixing.demo.DeTest;
 import com.yintu.rixing.demo.DeTestMapper;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
@@ -32,6 +33,9 @@ public class ArchivesManageApplicationTests {
     private ICommTableFieldService iCommTableFieldService;
     @Autowired
     private IDataArchivesCollectionService iDataArchivesCollectionService;
+
+    @Autowired
+    private DataCommonService dataCommonService;
 
     @Test
     void contextLoads() {
@@ -142,7 +146,7 @@ public class ArchivesManageApplicationTests {
 //        iCommTableFieldService.drop("dynamic_index", commTableField.getFieldName());
     }
 
-//    @Test
+    //    @Test
 //    void list3() {
 //        DataCommonFormDto dataCommonDto = new DataCommonFormDto();
 //        dataCommonDto.setId(41);
@@ -150,5 +154,9 @@ public class ArchivesManageApplicationTests {
 //        Map<String, Object> d = iDataArchivesCollectionService.getById(dataCommonDto);
 //        System.out.println(d);
 //    }
+    @Test
+    void list4() {
+        System.out.println("11");
+    }
 
 }

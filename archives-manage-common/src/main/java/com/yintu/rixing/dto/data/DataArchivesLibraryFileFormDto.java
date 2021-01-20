@@ -53,7 +53,7 @@ public class DataArchivesLibraryFileFormDto extends IdDto {
 
     @ApiModelProperty(value = "档案库id", required = true)
     @NotNull
-    private String archivesLibraryId;
+    private Integer archivesLibraryId;
 
     @ApiModelProperty(value = "动态表id", required = true)
     @NotNull

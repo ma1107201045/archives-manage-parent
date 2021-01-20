@@ -66,8 +66,4 @@ public class DataArchivesLibraryFile extends BaseEntity {
     @TableField("data_id")
     private Integer dataId;
 
-    @ApiModelProperty(value = "动态表状态", position = 15)
-    @TableField("status")
-    private Short status;
-
 }

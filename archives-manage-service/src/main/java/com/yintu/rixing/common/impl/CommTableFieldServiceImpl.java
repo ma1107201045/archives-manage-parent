@@ -94,7 +94,7 @@ public class CommTableFieldServiceImpl implements ICommTableFieldService {
     @Override
     public void isHasDataByTableName(String tableName) {
         if (this.countDataByTableName(tableName) > 0)
-            throw new BaseRuntimeException("档案库中有数据，删除失败");
+            throw new BaseRuntimeException("档案库中有数据，操作失败");
     }
 
     @Override

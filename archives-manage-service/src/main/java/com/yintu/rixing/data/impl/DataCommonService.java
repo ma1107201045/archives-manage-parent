@@ -3,6 +3,7 @@ package com.yintu.rixing.data.impl;
 import cn.hutool.core.date.DateUtil;
 import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonAll;
+import com.yintu.rixing.data.DataCommonMapper;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.enumobject.EnumDataType;
 import com.yintu.rixing.exception.BaseRuntimeException;
@@ -11,6 +12,7 @@ import com.yintu.rixing.util.AssertUtil;
 import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.data.DataCommonTitleVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,18 +23,23 @@ import java.util.Map;
  * @Date: 2021/1/18 18:35:49
  * @Version: 1.0
  */
+@Service
 public class DataCommonService {
-
+    @Autowired
+    private DataCommonMapper dataCommonMapper;
     @Autowired
     protected ISysArchivesLibraryService iSysArchivesLibraryService;
     @Autowired
     protected ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
 
+    public Map<String, Object> getById(DataCommonAll dataCommonAll) {
+        return dataCommonMapper.abc(dataCommonAll);
+    }
+
     protected DataCommonAll parametersToProofread(DataCommonFormDto dataCommonDto) {
         Integer archivesId = dataCommonDto.getArchivesId();
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesId);
-        if (sysArchivesLibrary == null)
-            throw new BaseRuntimeException("档案库不存在");
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
         DataCommonAll dataCommonAll = new DataCommonAll();
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesId);
