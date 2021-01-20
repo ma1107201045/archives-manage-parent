@@ -1,6 +1,5 @@
 package com.yintu.rixing.dto.data;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.yintu.rixing.dto.base.IdDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -47,7 +46,7 @@ public class DataArchivesLibraryFileFormDto extends IdDto {
 
     @ApiModelProperty(value = "文件类型 1.电子文件 2.扫描文件", required = true)
     @NotNull
-    private Integer type;
+    private Short type;
 
     @ApiModelProperty(value = "备注")
     private String remark;
@@ -59,9 +58,5 @@ public class DataArchivesLibraryFileFormDto extends IdDto {
     @ApiModelProperty(value = "动态表id", required = true)
     @NotNull
     private Integer dataId;
-
-    @ApiModelProperty(value = "动态表状态", required = true)
-    @NotNull
-    private Short status;
 
 }

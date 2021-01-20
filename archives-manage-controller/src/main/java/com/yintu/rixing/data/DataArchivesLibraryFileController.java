@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiSort;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -29,7 +30,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/data/data-archives-library-file")
 @Api(tags = "档案文件接口")
-@ApiSort(9)
+@ApiSort(10)
 public class DataArchivesLibraryFileController extends Authenticator implements BaseController<DataArchivesLibraryFileFormDto, PageDto, DataArchivesLibraryFile, Integer> {
 
     @Autowired
@@ -38,7 +39,7 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
     @Log(level = EnumLogLevel.DEBUG, module = "数据中心", context = "添加档案文件信息")
     @PostMapping
     @ApiOperation(value = "添加档案文件信息", notes = "添加档案文件信息", position = 1)
-    public ResultDataUtil<Object> add(DataArchivesLibraryFileFormDto formDto) {
+    public ResultDataUtil<Object> add(@Validated DataArchivesLibraryFileFormDto formDto) {
         iDataArchivesLibraryFileService.save(formDto);
         return ResultDataUtil.ok("添加档案文件信息成功");
     }
@@ -52,18 +53,29 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
         return ResultDataUtil.ok("删除档案文件信息成功");
     }
 
-    @Override
-    public ResultDataUtil<Object> edit(Integer id, DataArchivesLibraryFileFormDto formDto) {
-        return null;
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "修改档案文件信息")
+    @PutMapping("/{id}")
+    @ApiOperation(value = "修改档案文件信息", notes = "修改档案文件信息", position = 3)
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    public ResultDataUtil<Object> edit(@PathVariable Integer id, @Validated DataArchivesLibraryFileFormDto formDto) {
+        iDataArchivesLibraryFileService.updateById(formDto);
+        return ResultDataUtil.ok("修改档案文件信息成功");
     }
 
-    @Override
-    public ResultDataUtil<DataArchivesLibraryFile> findById(Integer id) {
-        return null;
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案文件单条信息")
+    @GetMapping("/{id}")
+    @ApiOperation(value = "查询档案文件单条信息", notes = " 查询档案文件单条信息", position = 4)
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    public ResultDataUtil<DataArchivesLibraryFile> findById(@PathVariable Integer id) {
+        DataArchivesLibraryFile dataArchivesLibraryFile = iDataArchivesLibraryFileService.getById(id);
+        return ResultDataUtil.ok("查询档案文件单条信息成功", dataArchivesLibraryFile);
     }
 
-    @Override
-    public ResultDataUtil<Page<DataArchivesLibraryFile>> findPage(PageDto queryDto) {
-        return null;
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案文件列表信息")
+    @GetMapping
+    @ApiOperation(value = "查询档案文件列表信息", notes = " 查询档案文件列表信息", position = 5)
+    public ResultDataUtil<Page<DataArchivesLibraryFile>> findPage(@Validated PageDto queryDto) {
+        Page<DataArchivesLibraryFile> page = iDataArchivesLibraryFileService.page(queryDto);
+        return ResultDataUtil.ok("查询档案文件列表信息成功", page);
     }
 }

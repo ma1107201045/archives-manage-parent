@@ -45,6 +45,7 @@ public class DataArchivesLibraryFile extends BaseEntity {
     @ApiModelProperty(value = "文件名", position = 9)
     @TableField("name")
     private String name;
+
     @ApiModelProperty(value = "请求映射", position = 10)
     @TableField("request_mapping")
     private String requestMapping;
