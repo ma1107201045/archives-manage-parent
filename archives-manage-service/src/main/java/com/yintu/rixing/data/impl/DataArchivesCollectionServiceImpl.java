@@ -79,7 +79,7 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
 
     @Override
     public void importExcelRecord(HttpServletRequest request, Integer archivesLibraryId) throws IOException {
-        this.importExcelFile(request, archivesLibraryId);
+        this.importExcelFile(request, archivesLibraryId,(short)1);
     }
 
     @Override

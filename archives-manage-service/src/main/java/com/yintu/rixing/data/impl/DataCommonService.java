@@ -36,6 +36,12 @@ import java.util.stream.Collectors;
  */
 @Service
 public class DataCommonService {
+
+    protected static final String ID_PROP = "id";
+    protected static final String ID_LABEL = "主键id";
+    protected static final String STATUS_PROP = "status";
+    protected static final String STATUS_LABEL = "档案状态";
+
     @Autowired
     private DataCommonMapper dataCommonMapper;
     @Autowired
@@ -125,8 +131,8 @@ public class DataCommonService {
 
     protected DataCommonTitleVo getIdTitle() {
         DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
-        dataCommonTitleVo.setProp("id");
-        dataCommonTitleVo.setLabel("主键id");
+        dataCommonTitleVo.setProp(ID_PROP);
+        dataCommonTitleVo.setLabel(ID_LABEL);
 
         dataCommonTitleVo.setShow(false);
         dataCommonTitleVo.setTypeId(EnumDataType.INT.getValue());
@@ -138,8 +144,8 @@ public class DataCommonService {
 
     protected DataCommonTitleVo getStatusTitle() {
         DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
-        dataCommonTitleVo.setProp("status");
-        dataCommonTitleVo.setLabel("档案状态");
+        dataCommonTitleVo.setProp(STATUS_PROP);
+        dataCommonTitleVo.setLabel(STATUS_LABEL);
 
         dataCommonTitleVo.setShow(false);
         dataCommonTitleVo.setTypeId(EnumDataType.SMALLINT.getValue());
@@ -149,64 +155,57 @@ public class DataCommonService {
         return dataCommonTitleVo;
     }
 
-    protected List<List<Object>> getDataCommonRecord(Integer archivesLibraryId, Set<Integer> ids) {
+    protected List<Map<String, Object>> getDataCommonRecord(Integer archivesLibraryId, Set<Integer> ids) {
         SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
-        // 表头
-        List<DataCommonTitleVo> dataCommonTitleVos = this.getDefaultDataCommonTitles(archivesLibraryId);
-        List<String> props = dataCommonTitleVos.stream().map(DataCommonTitleVo::getProp).collect(Collectors.toList());
-        //记录数
-        List<Map<String, Object>> records = this.dataCommonMapper.selectByPrimaryKeys(tableName, ids);
-        List<List<Object>> finalRecords = new ArrayList<>();
-        for (Map<String, Object> record : records) {
-            List<Object> objects = new ArrayList<>();
-            for (String prop : props) {
-                if (record.containsKey(prop)) {
-                    objects.add(record.get(prop));
-                }
-            }
-            finalRecords.add(objects);
-        }
-        return finalRecords;
+        return this.dataCommonMapper.selectByPrimaryKeys(tableName, ids);
     }
 
 
-    protected void importExcelFile(HttpServletRequest request, Integer archivesLibraryId) throws IOException {
-        List<Map<String, Object>> maps = new ArrayList<>();
+    protected void importExcelFile(HttpServletRequest request, Integer archivesLibraryId, Short status) throws IOException {
+        List<DataCommonTitleVo> dataCommonTitleVos = this.getDefaultDataCommonTitles(archivesLibraryId);
         ServletInputStream in = request.getInputStream();
         ExcelReader excelReader = ExcelUtil.getReader(in, true);
-        List<List<Object>> records = excelReader.read();
-
-
-
+        List<Map<String, Object>> records = excelReader.readAll();
+        List<Map<String, Object>> finalRecords = new ArrayList<>();
+        for (Map<String, Object> record : records) {
+            for (DataCommonTitleVo dataCommonTitleVo : dataCommonTitleVos) {
+                if (record.containsKey(dataCommonTitleVo.getLabel())) {
+                    record.put(STATUS_PROP, status);
+                    finalRecords.add(record);
+                }
+            }
+        }
         excelReader.close();
         IoUtil.close(in);
+        dataCommonMapper.insertBatch(finalRecords);
     }
 
     protected void exportExcelFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException {
-        String fullName = fileName + ".xlsx";
-        //表头
         List<DataCommonTitleVo> dataCommonTitleVos = this.getDefaultDataCommonTitles(archivesLibraryId);
-        List<String> titles = dataCommonTitleVos.stream().map(DataCommonTitleVo::getLabel).collect(Collectors.toList());
         ExcelWriter excelWriter = ExcelUtil.getWriter(true);
-        excelWriter.merge(titles.size() - 1, fileName);
-        excelWriter.writeHeadRow(titles);
-        //表数据
-        if (ids != null) {
-            List<List<Object>> records = this.getDataCommonRecord(archivesLibraryId, ids);
-            excelWriter.write(records);
+        excelWriter.merge(dataCommonTitleVos.size() - 1, fileName);
+        if (ids == null) { //下载模板
+            List<String> titles = dataCommonTitleVos.stream().map(DataCommonTitleVo::getLabel).collect(Collectors.toList());
+            excelWriter.writeHeadRow(titles);
+        } else { //导出数据
+            for (DataCommonTitleVo dataCommonTitleVo : dataCommonTitleVos) {
+                String prop = dataCommonTitleVo.getProp();
+                String label = dataCommonTitleVo.getLabel();
+                excelWriter.addHeaderAlias(prop, label);
+            }
+            excelWriter.setOnlyAlias(true);//仅仅显示表头的数据，则可以过滤掉无用的字段
+            List<Map<String, Object>> records = this.getDataCommonRecord(archivesLibraryId, ids);
+            excelWriter.write(records, true);
         }
+        String fullName = fileName + ".xlsx";
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.createAll().encode(fullName, Charset.defaultCharset()));
         ServletOutputStream out = response.getOutputStream();
         excelWriter.flush(out, true);
         excelWriter.close();
         IoUtil.close(out);
-        //response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        //response.setHeader("Content-Disposition","attachment;filename=test.xls");
-        //response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
-        //response.setHeader("Content-Disposition", "attachment;filename=test.xlsx");
     }
 
 
