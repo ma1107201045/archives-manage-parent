@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8090
   tomcat:
     protocol-header: X-Forwarded-Proto
     remote-ip-header: X-Forwarded-For
@@ -15,9 +15,14 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://192.168.68.132/db_dev_rixing?serverTimezone=Asia/Shanghai
+      #本地
+      url: jdbc:mysql://127.0.0.1/rixing?serverTimezone=Asia/Shanghai
       username: root
-      password: 199726Ma.
+      password: root
+      #线上
+      #url: jdbc:mysql://121.89.223.9/rixing?serverTimezone=Asia/Shanghai
+      #username: rixing
+      #password: J2m6hNsY2rDnhkc5
       initial-size: 5  #默认值0。初始化时建立物理连接的个数，初始化发生在显示调用init方法，或者第一次getConnection时。
       max-active: 20 #默认值8。最大连接池数量。
       min-idle: 5 #最小连接池数量。 #spring.datasource.druid.maxIdle: 已经不再使用，配置了也没效果，可忽略。说明：maxIdle是Druid为了方便DBCP用户迁移而增加的，maxIdle是一个混乱的概念。连接池只应该有maxPoolSize和minPoolSize，druid只保留了maxActive和minIdle，分别相当于maxPoolSize和minPoolSize。
@@ -60,9 +65,9 @@ swagger:
   license-url: https://www.apache.org/licenses/LICENSE-2.0.html
   terms-of-service-url: https://github.com/dyc87112/spring-boot-starter-swagger
   contact:
-    name: Spring
+    name: Mr.刘
     url: https://www.baidu.com
-    email: 1107201045@qq.com
+    email: 852933072@qq.com
   docket:
     demo:
       title: demo模块
@@ -121,6 +126,28 @@ swagger:
       base-package: com.yintu.rixing.system
       base-path:
         - /system/**
+      exclude-path: [ /error ]
+    Noticemessage:
+      title: 通知公告模块
+      description: 通知公告模块有关的接口
+      base-package: com.yintu.rixing.notification
+      base-path:
+        - /notification/**
+      exclude-path: [ /error ]
+
+    MakeBorrow:
+      title: 利用中心
+      description: 借阅申请有关的接口
+      base-package: com.yintu.rixing.make
+      base-path:
+        - /make/**
+      exclude-path: [ /error ]
+    Warehouse:
+      title: 库房管理
+      description: 库房管理有关的接口
+      base-package: com.yintu.rixing.warehouse
+      base-path:
+        - /warehouse/**
       exclude-path: [ /error ]
 
 
