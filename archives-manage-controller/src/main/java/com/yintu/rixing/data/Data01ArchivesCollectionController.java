@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -97,10 +98,19 @@ public class Data01ArchivesCollectionController extends Authenticator {
         return ResultDataUtil.ok("查询档案收集档案库列表信息树成功", treeNodeUtils);
     }
 
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导入档案收集信息")
+    @PostMapping("/import}")
+    @ApiOperation(value = "批量导入档案收集信息", notes = "批量导入档案收集信息")
+    @ApiOperationSupport(order = 7)
+    public ResultDataUtil<Object> importExcelData(HttpServletRequest request, @RequestParam Integer archivesLibraryId) throws IOException {
+        iDataArchivesCollectionService.importExcelRecord(request, archivesLibraryId);
+        return ResultDataUtil.ok("批量导入档案收集信息成功");
+    }
+
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "下载档案收集信息模板")
     @GetMapping("/download-template")
     @ApiOperation(value = "下载档案收集信息模板", notes = "下载档案收集信息模板")
-    @ApiOperationSupport(order = 7)
+    @ApiOperationSupport(order = 8)
     public void exportExcelTemplateFile(HttpServletResponse response, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataArchivesCollectionService.exportExcelTemplateFile(response, "档案收集-模板", archivesLibraryId);
     }
@@ -108,7 +118,7 @@ public class Data01ArchivesCollectionController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出档案收集信息")
     @GetMapping("/export/{ids}")
     @ApiOperation(value = "批量导出档案收集信息", notes = "批量导出档案收集信息")
-    @ApiOperationSupport(order = 8)
+    @ApiOperationSupport(order = 9)
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataArchivesCollectionService.exportExcelRecordFile(response, "档案收集-记录", ids, archivesLibraryId);
     }

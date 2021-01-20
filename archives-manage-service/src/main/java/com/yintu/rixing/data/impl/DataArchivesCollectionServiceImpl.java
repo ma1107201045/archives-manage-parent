@@ -13,6 +13,7 @@ import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
@@ -74,6 +75,11 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
         dataCommonVo.setTitles(this.getDataCommonTitles(archivesLibraryId));
         dataCommonVo.setPage(dataArchivesCollectionMapper.selectPage(new Page<>(num, size), TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey())));
         return dataCommonVo;
+    }
+
+    @Override
+    public void importExcelRecord(HttpServletRequest request, Integer archivesLibraryId) throws IOException {
+        this.importExcelFile(request, archivesLibraryId);
     }
 
     @Override

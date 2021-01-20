@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.net.URLEncoder;
 import cn.hutool.http.server.HttpServerRequest;
+import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.yintu.rixing.data.DataCommon;
@@ -19,7 +20,9 @@ import com.yintu.rixing.vo.data.DataCommonTitleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -169,8 +172,16 @@ public class DataCommonService {
     }
 
 
-    protected void importExcelFile(HttpServerRequest request) {
+    protected void importExcelFile(HttpServletRequest request, Integer archivesLibraryId) throws IOException {
+        List<Map<String, Object>> maps = new ArrayList<>();
+        ServletInputStream in = request.getInputStream();
+        ExcelReader excelReader = ExcelUtil.getReader(in, true);
+        List<List<Object>> records = excelReader.read();
 
+
+
+        excelReader.close();
+        IoUtil.close(in);
     }
 
     protected void exportExcelFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException {
