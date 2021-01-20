@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.base.PageDto;
 import com.yintu.rixing.dto.data.DataArchivesLibraryFileFormDto;
+import com.yintu.rixing.dto.data.DataArchivesLibraryFileQueryDto;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -22,5 +23,5 @@ public interface IDataArchivesLibraryFileService extends IService<DataArchivesLi
     @Transactional(rollbackFor = {Exception.class})
     void updateById(DataArchivesLibraryFileFormDto dataArchivesLibraryFileFormDto);
 
-    Page<DataArchivesLibraryFile> page(PageDto pageDto);
+    Page<DataArchivesLibraryFile> page(DataArchivesLibraryFileQueryDto dataArchivesLibraryFileQueryDto);
 }

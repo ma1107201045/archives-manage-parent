@@ -12,7 +12,7 @@ import java.util.Map;
  * @Version: 1.0
  */
 public class ObjectConvertUtil {
-    public static final String ARCHIVES_ID = "archivesId";
+    public static final String ARCHIVES_LIBRARY_ID = "archivesLibraryId";
     public static final String ID = "id";
     public static final String NUM = "num";
     public static final String SIZE = "size";
@@ -20,10 +20,10 @@ public class ObjectConvertUtil {
 
     public static DataCommonFormDto getAddFormDto(Map<String, String> params) {
         DataCommonFormDto dataCommonFormDto = new DataCommonFormDto();
-        String archivesId = params.get(ARCHIVES_ID);
-        if (archivesId == null || archivesId.isEmpty())
+        String archivesLibraryId = params.get(ARCHIVES_LIBRARY_ID);
+        if (archivesLibraryId == null || archivesLibraryId.isEmpty())
             throw new BaseRuntimeException("档案库Id不能为空");
-        dataCommonFormDto.setArchivesId(Integer.valueOf(archivesId));
+        dataCommonFormDto.setArchivesLibraryId(Integer.valueOf(archivesLibraryId));
         dataCommonFormDto.setParams(params);
         return dataCommonFormDto;
     }
@@ -36,7 +36,7 @@ public class ObjectConvertUtil {
 
     public static DataCommonQueryDto getQueryDto(Map<String, String> params) {
         DataCommonQueryDto dataCommonQueryDto = new DataCommonQueryDto();
-        dataCommonQueryDto.setArchivesId(Integer.valueOf(params.get(ARCHIVES_ID)));
+        dataCommonQueryDto.setArchivesLibraryId(Integer.valueOf(params.get(ARCHIVES_LIBRARY_ID)));
         dataCommonQueryDto.setNum(Integer.valueOf(params.get(NUM)));
         dataCommonQueryDto.setSize(Integer.valueOf(params.get(SIZE)));
         return dataCommonQueryDto;

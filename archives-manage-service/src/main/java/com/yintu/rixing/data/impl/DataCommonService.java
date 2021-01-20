@@ -1,6 +1,11 @@
 package com.yintu.rixing.data.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.http.server.HttpServerRequest;
+import cn.hutool.http.server.HttpServerResponse;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
 import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonAll;
 import com.yintu.rixing.data.DataCommonMapper;
@@ -14,9 +19,16 @@ import com.yintu.rixing.vo.data.DataCommonTitleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @Author: mlf
@@ -37,12 +49,12 @@ public class DataCommonService {
     }
 
     protected DataCommonAll parametersToProofread(DataCommonFormDto dataCommonDto) {
-        Integer archivesId = dataCommonDto.getArchivesId();
-        SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesId);
+        Integer archivesLibraryId = dataCommonDto.getArchivesLibraryId();
+        SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
         DataCommonAll dataCommonAll = new DataCommonAll();
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
-        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesId);
+        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
         Map<String, String> params = dataCommonDto.getParams();
         List<DataCommon> dataCommons = new ArrayList<>();
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
@@ -87,8 +99,8 @@ public class DataCommonService {
         return dataCommonAll;
     }
 
-    protected List<DataCommonTitleVo> getDataCommonTitles(Integer archivesId) {
-        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesId);
+    protected List<DataCommonTitleVo> getDataCommonTitles(Integer archivesLibraryId) {
+        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
         List<DataCommonTitleVo> dataCommonTitleVos = new ArrayList<>();
         dataCommonTitleVos.add(this.getIdTitle());
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
@@ -132,5 +144,28 @@ public class DataCommonService {
         dataCommonTitleVo.setNotNull(false);
         return dataCommonTitleVo;
     }
+
+    protected void importExcelFile(HttpServerRequest request) {
+
+    }
+
+    protected void exportExcelFile(HttpServletResponse response, String fileName, Integer archivesLibraryId, Boolean isTemplate) throws IOException {
+        List<DataCommonTitleVo> dataCommonTitleVos = this.getDataCommonTitles(archivesLibraryId);
+        List<String> labels = dataCommonTitleVos.stream().filter(DataCommonTitleVo::getShow).map(DataCommonTitleVo::getLabel).collect(Collectors.toList());
+        ExcelWriter excelWriter = ExcelUtil.getWriter(true);
+        excelWriter.merge(labels.size() - 1, fileName);
+        excelWriter.writeHeadRow(labels);
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=ISO8859-1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        ServletOutputStream out = response.getOutputStream();
+        excelWriter.flush(out, true);
+        excelWriter.close();
+        IoUtil.close(out);
+        //response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        //response.setHeader("Content-Disposition","attachment;filename=test.xls");
+        //response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+        //response.setHeader("Content-Disposition", "attachment;filename=test.xlsx");
+    }
+
 
 }

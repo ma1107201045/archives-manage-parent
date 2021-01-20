@@ -7,6 +7,7 @@ import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.base.PageDto;
 import com.yintu.rixing.dto.data.DataArchivesLibraryFileFormDto;
+import com.yintu.rixing.dto.data.DataArchivesLibraryFileQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
@@ -31,7 +32,7 @@ import java.util.Set;
 @RequestMapping("/data/data-archives-library-file")
 @Api(tags = "档案文件接口")
 @ApiSort(10)
-public class DataArchivesLibraryFileController extends Authenticator implements BaseController<DataArchivesLibraryFileFormDto, PageDto, DataArchivesLibraryFile, Integer> {
+public class DataArchivesLibraryFileController extends Authenticator implements BaseController<DataArchivesLibraryFileFormDto, DataArchivesLibraryFileQueryDto, DataArchivesLibraryFile, Integer> {
 
     @Autowired
     private IDataArchivesLibraryFileService iDataArchivesLibraryFileService;
@@ -74,7 +75,7 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案文件列表信息")
     @GetMapping
     @ApiOperation(value = "查询档案文件列表信息", notes = " 查询档案文件列表信息", position = 5)
-    public ResultDataUtil<Page<DataArchivesLibraryFile>> findPage(@Validated PageDto queryDto) {
+    public ResultDataUtil<Page<DataArchivesLibraryFile>> findPage(@Validated DataArchivesLibraryFileQueryDto queryDto) {
         Page<DataArchivesLibraryFile> page = iDataArchivesLibraryFileService.page(queryDto);
         return ResultDataUtil.ok("查询档案文件列表信息成功", page);
     }

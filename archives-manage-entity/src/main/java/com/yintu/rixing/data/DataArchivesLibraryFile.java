@@ -53,16 +53,19 @@ public class DataArchivesLibraryFile extends BaseEntity {
     @ApiModelProperty(value = "文件类型 1.电子文件 2.扫描文件", position = 11)
     @TableField("type")
     private Short type;
+    @ApiModelProperty(value = "顺序", position = 12)
+    @TableField("`type`")
+    private Integer order;
 
-    @ApiModelProperty(value = "备注", position = 12)
+    @ApiModelProperty(value = "备注", position = 13)
     @TableField("remark")
     private String remark;
 
-    @ApiModelProperty(value = "档案库id", position = 13)
+    @ApiModelProperty(value = "档案库id", position = 14)
     @TableField("archives_library_id")
     private Integer archivesLibraryId;
 
-    @ApiModelProperty(value = "动态表id", position = 14)
+    @ApiModelProperty(value = "动态表id", position = 15)
     @TableField("data_id")
     private Integer dataId;
 

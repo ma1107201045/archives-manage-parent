@@ -20,5 +20,5 @@ public class DataCommonQueryDto extends PageDto {
 
     @ApiModelProperty(value = "档案库id", required = true)
     @NotNull
-    private Integer archivesId;
+    private Integer archivesLibraryId;
 }

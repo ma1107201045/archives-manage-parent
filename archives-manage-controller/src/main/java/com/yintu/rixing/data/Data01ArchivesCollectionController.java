@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,8 +53,8 @@ public class Data01ArchivesCollectionController extends Authenticator {
     @ApiOperation(value = "删除档案收集信息", notes = "删除档案收集信息")
     @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
     @ApiOperationSupport(order = 2)
-    public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesId) {
-        iDataArchivesCollectionService.removeByIds(ids, archivesId);
+    public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
+        iDataArchivesCollectionService.removeByIds(ids, archivesLibraryId);
         return ResultDataUtil.ok("删除档案收集信息成功");
     }
 
@@ -95,5 +97,12 @@ public class Data01ArchivesCollectionController extends Authenticator {
         return ResultDataUtil.ok("查询档案收集档案库列表信息树成功", treeNodeUtils);
     }
 
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "导出档案收集信息模板")
+    @GetMapping("/export")
+    @ApiOperation(value = "导出档案收集信息模板", notes = "导出档案收集信息模板")
+    @ApiOperationSupport(order = 7)
+    public void exportExcelTemplateFile(HttpServletResponse response, @RequestParam Integer archivesLibraryId) throws IOException {
+        iDataArchivesCollectionService.exportExcelTemplateFile(response, "档案收集-模板.xlsx", archivesLibraryId);
+    }
 
 }

@@ -13,6 +13,8 @@ import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,7 +53,7 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
 
     @Override
     public Map<String, Object> getById(DataCommonFormDto dataCommonFormDto) {
-        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(dataCommonFormDto.getArchivesId());
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(dataCommonFormDto.getArchivesLibraryId());
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
 
         DataCommonAll dataCommonAll = new DataCommonAll();
@@ -63,15 +65,26 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
 
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
-        Integer archivesId = dataCommonPageDto.getArchivesId();
+        Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
-        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesId);
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
         DataCommonVo dataCommonVo = new DataCommonVo();
-        dataCommonVo.setTitles(this.getDataCommonTitles(archivesId));
+        dataCommonVo.setTitles(this.getDataCommonTitles(archivesLibraryId));
         dataCommonVo.setPage(dataArchivesCollectionMapper.selectPage(new Page<>(num, size), TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey())));
         return dataCommonVo;
     }
+
+    @Override
+    public void exportExcelTemplateFile(HttpServletResponse response, String fileName, Integer archivesLibraryId) throws IOException {
+        this.exportExcelFile(response, fileName, archivesLibraryId, true);
+    }
+
+    @Override
+    public void exportExcelDataFile(HttpServletResponse response, String fileName, Integer archivesLibraryId) throws IOException {
+        this.exportExcelFile(response, fileName, archivesLibraryId, false);
+    }
+
 
 }
