@@ -33,7 +33,7 @@ public class DataCommonService {
     protected ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
 
     public Map<String, Object> getById(DataCommonAll dataCommonAll) {
-        return dataCommonMapper.abc(dataCommonAll);
+        return dataCommonMapper.selectByPrimaryKey(dataCommonAll);
     }
 
     protected DataCommonAll parametersToProofread(DataCommonFormDto dataCommonDto) {

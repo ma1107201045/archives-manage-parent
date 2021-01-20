@@ -1,7 +1,6 @@
 package com.yintu.rixing.data;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 
@@ -13,5 +12,5 @@ import java.util.Map;
 @Mapper
 public interface DataCommonMapper {
 
-    Map<String, Object> abc(@Param("data") DataCommonAll dataCommonAll);
+    Map<String, Object> selectByPrimaryKey(DataCommonAll dataCommonAll);
 }
