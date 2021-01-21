@@ -3,6 +3,7 @@ package com.yintu.rixing.data;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
+import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.util.ObjectConvertUtil;
@@ -36,6 +37,7 @@ import java.util.Set;
 @Api(tags = "档案收集接口")
 @ApiSort(1)
 public class Data01ArchivesCollectionController extends Authenticator {
+
     @Autowired
     private IDataArchivesCollectionService iDataArchivesCollectionService;
     @Autowired
@@ -117,7 +119,7 @@ public class Data01ArchivesCollectionController extends Authenticator {
     @ApiOperation(value = "下载档案收集信息模板", notes = "下载档案收集信息模板")
     @ApiOperationSupport(order = 8)
     public void exportExcelTemplateFile(HttpServletResponse response, @RequestParam Integer archivesLibraryId) throws IOException {
-        iDataArchivesCollectionService.exportExcelTemplateFile(response, "档案收集-模板", archivesLibraryId);
+        iDataArchivesCollectionService.exportExcelTemplateFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), archivesLibraryId);
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出档案收集信息")
@@ -125,7 +127,7 @@ public class Data01ArchivesCollectionController extends Authenticator {
     @ApiOperation(value = "批量导出档案收集信息", notes = "批量导出档案收集信息")
     @ApiOperationSupport(order = 9)
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
-        iDataArchivesCollectionService.exportExcelRecordFile(response, "档案收集-记录", ids, archivesLibraryId);
+        iDataArchivesCollectionService.exportExcelRecordFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), ids, archivesLibraryId);
     }
 
 }

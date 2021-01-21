@@ -44,6 +44,10 @@ public class DataCommonService {
     protected static final String STATUS_PROP = "status";
     protected static final String STATUS_LABEL = "档案状态";
 
+    protected static final String TEMPLATE = "模板";
+    protected static final String RECORD = "记录";
+    protected static final String SUFFIX = ".xlsx";
+
     @Autowired
     private DataCommonMapper dataCommonMapper;
     @Autowired
@@ -109,7 +113,6 @@ public class DataCommonService {
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
         List<List<DataCommon>> lists = new ArrayList<>();
-
         InputStream in = multipartFile.getInputStream();
         ExcelReader excelReader = ExcelUtil.getReader(in, true);
         List<Map<String, Object>> records = excelReader.readAll();
@@ -229,12 +232,18 @@ public class DataCommonService {
 
 
     protected void exportExcelFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException {
+        SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
+        String name = sysArchivesLibrary.getName();
+        long timestamp = DateUtil.date().getTime();
         List<DataCommonTitleVo> dataCommonTitleVos = this.getDefaultDataCommonTitles(archivesLibraryId);
         ExcelWriter excelWriter = ExcelUtil.getWriter(true);
         // excelWriter.merge(dataCommonTitleVos.size() - 1, fileName);
+        String fullName = null;
         if (ids == null) { //下载模板
             List<String> titles = dataCommonTitleVos.stream().map(DataCommonTitleVo::getLabel).collect(Collectors.toList());
             excelWriter.writeHeadRow(titles);
+            fullName = fileName + TEMPLATE + name + timestamp + SUFFIX;
         } else { //导出数据
             for (DataCommonTitleVo dataCommonTitleVo : dataCommonTitleVos) {
                 String prop = dataCommonTitleVo.getProp();
@@ -244,8 +253,8 @@ public class DataCommonService {
             excelWriter.setOnlyAlias(true);//仅仅显示表头的数据，则可以过滤掉无用的字段
             List<Map<String, Object>> records = this.getDataCommonRecord(archivesLibraryId, ids);
             excelWriter.write(records, true);
+            fullName = fileName + RECORD + name + timestamp + SUFFIX;
         }
-        String fullName = fileName + ".xlsx";
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.createAll().encode(fullName, Charset.defaultCharset()));
         ServletOutputStream out = response.getOutputStream();
