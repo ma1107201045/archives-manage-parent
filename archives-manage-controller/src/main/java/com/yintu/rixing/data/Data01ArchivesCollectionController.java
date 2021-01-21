@@ -100,7 +100,7 @@ public class Data01ArchivesCollectionController extends Authenticator {
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导入档案收集信息")
-    @PostMapping("/import}")
+    @PostMapping("/import")
     @ApiOperation(value = "批量导入档案收集信息", notes = "批量导入档案收集信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "文件对象", required = true, dataType = "__file", paramType = "form"),

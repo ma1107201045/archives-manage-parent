@@ -23,27 +23,30 @@
 
     <insert id="insertSelectiveBatch" parameterType="com.yintu.rixing.data.DataCommonAll">
         insert into `${tableName}`
-        <trim prefix="(" suffix=")">
-            <foreach collection="lists" index="index" item="list" separator="," close=",">
-                <if test="index==1">
-                    <if test="list.index.dataCommon.fieldValue != null">
-                        `${dataCommon.fieldName}`
-                    </if>
-                </if>
-            </foreach>
-            `status`
-        </trim>
-        values
-        <foreach collection="lists" index="index" item="dataCommons" close=",">
+        <foreach collection="lists" index="index" item="dataCommons">
             <trim prefix="(" suffix=")">
-                <foreach collection="dataCommons" index="index" item="dataCommon" separator="," close=",">
-                    <if test="dataCommon.fieldValue != null">
-                        #{dataCommon.fieldValue}
-                    </if>
-                </foreach>
-                1
+                <if test="index == 0">
+                    <foreach collection="dataCommons" index="index" item="dataCommon" separator="," close=",">
+                        <if test="dataCommon.fieldValue != null">
+                            `${dataCommon.fieldName}`
+                        </if>
+                    </foreach>
+                    `status`
+                </if>
             </trim>
         </foreach>
+        <trim prefix="values">
+            <foreach collection="lists" index="index" item="dataCommons">
+                <trim prefix="(" suffix=")">
+                    <foreach collection="dataCommons" index="index" item="dataCommon" separator="," close=",">
+                        <if test="dataCommon.fieldValue != null">
+                            #{dataCommon.fieldValue}
+                        </if>
+                    </foreach>
+                    1
+                </trim>
+            </foreach>
+        </trim>
     </insert>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
