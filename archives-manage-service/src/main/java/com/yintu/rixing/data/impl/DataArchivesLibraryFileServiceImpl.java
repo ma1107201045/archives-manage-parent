@@ -1,6 +1,7 @@
 package com.yintu.rixing.data.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.io.FileUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -61,6 +63,21 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
             dataArchivesLibraryFiles.add(dataArchivesLibraryFile);
         }
         this.saveBatch(dataArchivesLibraryFiles);
+    }
+
+    @Override
+    public void removeByIds(Set<Integer> ids) {
+        List<DataArchivesLibraryFile> dataArchivesLibraryFiles = this.listByIds(ids);
+        for (DataArchivesLibraryFile dataArchivesLibraryFile : dataArchivesLibraryFiles) {
+            String path = dataArchivesLibraryFile.getPath();
+            String name = dataArchivesLibraryFile.getName();
+            String newPath = path + "\\" + name;
+            if (path.contains("/")) {
+                newPath = path + "/" + name;
+            }
+            FileUtil.del(newPath);
+        }
+        super.removeByIds(ids);
     }
 
     public void parametersToProofread(DataArchivesLibraryFileFormDto dataArchivesLibraryFileFormDto) {

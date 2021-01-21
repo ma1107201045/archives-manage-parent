@@ -6,6 +6,8 @@ import com.yintu.rixing.dto.data.DataArchivesLibraryFileFormDto;
 import com.yintu.rixing.dto.data.DataArchivesLibraryFileQueryDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 /**
  * <p>
  * 数据档案库文件表 服务类
@@ -18,6 +20,9 @@ public interface IDataArchivesLibraryFileService extends IService<DataArchivesLi
 
     @Transactional(rollbackFor = {Exception.class})
     void save(DataArchivesLibraryFileFormDto dataArchivesLibraryFileFormDto);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void removeByIds(Set<Integer> ids);
 
     @Transactional(rollbackFor = {Exception.class})
     void updateById(DataArchivesLibraryFileFormDto dataArchivesLibraryFileFormDto);
