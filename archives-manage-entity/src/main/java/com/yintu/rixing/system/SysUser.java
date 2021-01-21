@@ -2,6 +2,7 @@ package com.yintu.rixing.system;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yintu.rixing.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -89,6 +90,9 @@ public class SysUser extends BaseEntity implements UserDetails {
     @ApiModelProperty(value = "用户类型 0.普通用户 1.管理员用户", position = 18)
     @TableField("auth_type")
     private Short authType;
+
+    @Version
+    private Integer version;
 
     @ApiModelProperty(value = "用户拥有角色集", position = 19)
     @TableField(exist = false)

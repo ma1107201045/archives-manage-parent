@@ -10,10 +10,13 @@ import com.yintu.rixing.data.IDataArchivesCollectionService;
 import com.yintu.rixing.data.impl.DataCommonService;
 import com.yintu.rixing.demo.DeTest;
 import com.yintu.rixing.demo.DeTestMapper;
+import com.yintu.rixing.demo.IDeTestService;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.system.ISysPermissionService;
 import com.yintu.rixing.pojo.SysPermissionPojo;
+import com.yintu.rixing.system.ISysUserService;
+import com.yintu.rixing.system.SysUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +28,8 @@ import java.util.Map;
 
 @SpringBootTest
 public class ArchivesManageApplicationTests {
+    @Autowired
+    private ISysUserService iSysUserService;
     @Autowired
     private DeTestMapper deTestMapper;
     @Autowired
@@ -159,4 +164,11 @@ public class ArchivesManageApplicationTests {
         System.out.println("11");
     }
 
+    @Test
+    void list5() {
+        QueryWrapper<DeTest> q = new QueryWrapper<>();
+        DeTest deTest = new DeTest();
+        deTest.setEmail("11");
+        deTestMapper.update(deTest, q);
+    }
 }
