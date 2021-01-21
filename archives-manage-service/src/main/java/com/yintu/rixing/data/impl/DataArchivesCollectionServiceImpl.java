@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
@@ -57,7 +56,6 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
     public Map<String, Object> getById(DataCommonFormDto dataCommonFormDto) {
         SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(dataCommonFormDto.getArchivesLibraryId());
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
-
         DataCommonAll dataCommonAll = new DataCommonAll();
         dataCommonAll.setId(dataCommonFormDto.getId());
         dataCommonAll.setTableName(TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey()));

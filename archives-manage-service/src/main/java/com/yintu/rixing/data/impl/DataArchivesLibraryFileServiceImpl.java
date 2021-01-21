@@ -25,10 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <p>
@@ -113,7 +110,7 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
     }
 
     @Override
-    public void updateOrderByIds(Integer id1, Integer id2) {
+    public void moveById(Integer id1, Integer id2) {
         DataArchivesLibraryFile dataArchivesLibraryFile1 = this.getById(id1);
         DataArchivesLibraryFile dataArchivesLibraryFile2 = this.getById(id2);
         if (dataArchivesLibraryFile1 != null && dataArchivesLibraryFile2 != null) {
@@ -129,12 +126,33 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
     }
 
     @Override
+    public void resetByIds(Set<Integer> ids) {
+        if (ids.size() > 1) {
+            List<DataArchivesLibraryFile> oldDataArchivesLibraryFiles = this.listByIds(ids);
+            if (oldDataArchivesLibraryFiles.size() > 1) {
+                int size = oldDataArchivesLibraryFiles.size();
+                Integer order = oldDataArchivesLibraryFiles.get(0).getOrder();
+                List<DataArchivesLibraryFile> newDataArchivesLibraryFiles = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    DataArchivesLibraryFile dataArchivesLibraryFile = oldDataArchivesLibraryFiles.get(i);
+                    if (i == size - 1) {
+                        dataArchivesLibraryFile.setOrder(order);
+                    } else {
+                        dataArchivesLibraryFile.setOrder(oldDataArchivesLibraryFiles.get(i + 1).getOrder());
+                    }
+                    newDataArchivesLibraryFiles.add(dataArchivesLibraryFile);
+                }
+                this.saveBatch(newDataArchivesLibraryFiles);
+            }
+        }
+    }
+
+    @Override
     public void updateRemark(Integer id, String remark) {
         DataArchivesLibraryFile dataArchivesLibraryFile = this.getById(id);
         if (dataArchivesLibraryFile != null) {
-            if (remark != null && remark.equals(dataArchivesLibraryFile.getRemark())) {
-                this.saveOrUpdate(dataArchivesLibraryFile);
-            }
+            dataArchivesLibraryFile.setRemark(remark);
+            this.saveOrUpdate(dataArchivesLibraryFile);
         }
     }
 
@@ -146,6 +164,7 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
         Integer dataId = dataArchivesLibraryFileQueryDto.getDataId();
         QueryWrapper<DataArchivesLibraryFile> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(DataArchivesLibraryFile::getArchivesLibraryId, archivesLibraryId).eq(DataArchivesLibraryFile::getDataId, dataId);
+        queryWrapper.lambda().orderByAsc(DataArchivesLibraryFile::getOrder);
         return this.page(new Page<>(num, size), queryWrapper);
     }
 

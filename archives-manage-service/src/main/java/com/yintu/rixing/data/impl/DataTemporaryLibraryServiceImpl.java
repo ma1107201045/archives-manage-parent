@@ -1,7 +1,9 @@
 package com.yintu.rixing.data.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataArchivesCollectionMapper;
 import com.yintu.rixing.data.DataCommonAll;
+import com.yintu.rixing.data.DataTemporaryLibraryMapper;
 import com.yintu.rixing.data.IDataTemporaryLibraryService;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
@@ -26,12 +28,12 @@ import java.util.Set;
 @Service
 public class DataTemporaryLibraryServiceImpl extends DataCommonService implements IDataTemporaryLibraryService {
     @Autowired
-    private DataArchivesCollectionMapper dataArchivesCollectionMapper;
+    private DataTemporaryLibraryMapper dataTemporaryLibraryMapper;
 
     @Override
     public void save(DataCommonFormDto dataCommonFormDto) {
         DataCommonAll dataCommonAll = this.parametersToProofread(dataCommonFormDto);
-        dataArchivesCollectionMapper.insertSelective(dataCommonAll);
+        dataTemporaryLibraryMapper.insertSelective(dataCommonAll);
     }
 
     @Override
@@ -39,36 +41,54 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
         AssertUtil.notNull(archivesLibraryId, "档案库id不能为空");
         SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
-        dataArchivesCollectionMapper.deleteByPrimaryKeys(ids, TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey()));
+        dataTemporaryLibraryMapper.deleteByPrimaryKeys(ids, TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey()));
     }
 
     @Override
-    public void updateById(DataCommonFormDto dataCommonDto) {
-
+    public void updateById(DataCommonFormDto dataCommonFormDto) {
+        DataCommonAll dataCommonAll = this.parametersToProofread(dataCommonFormDto);
+        Map<String, Object> map = dataTemporaryLibraryMapper.selectByPrimaryKey(dataCommonAll);
+        if (map != null) {
+            dataTemporaryLibraryMapper.updateByPrimaryKeySelective(dataCommonAll);
+        }
     }
 
     @Override
-    public Map<String, Object> getById(DataCommonFormDto dataCommonDto) {
-        return null;
+    public Map<String, Object> getById(DataCommonFormDto dataCommonFormDto) {
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(dataCommonFormDto.getArchivesLibraryId());
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
+        DataCommonAll dataCommonAll = new DataCommonAll();
+        dataCommonAll.setId(dataCommonFormDto.getId());
+        dataCommonAll.setTableName(TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey()));
+        return dataTemporaryLibraryMapper.selectByPrimaryKey(dataCommonAll);
     }
 
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
-        return null;
+        Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
+        Integer num = dataCommonPageDto.getNum();
+        Integer size = dataCommonPageDto.getSize();
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
+        DataCommonVo dataCommonVo = new DataCommonVo();
+        dataCommonVo.setTitles(this.getDataCommonTitles(archivesLibraryId));
+        dataCommonVo.setPage(dataTemporaryLibraryMapper.selectPage(new Page<>(num, size), TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey())));
+        return dataCommonVo;
     }
 
     @Override
     public void importExcelRecord(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
-
+        DataCommonAll dataCommonAll = this.importExcelFile(multipartFile, archivesLibraryId);
+        dataTemporaryLibraryMapper.insertSelectiveBatch(dataCommonAll);
     }
 
     @Override
     public void exportExcelTemplateFile(HttpServletResponse response, String fileName, Integer archivesLibraryId) throws IOException {
-
+        this.exportExcelFile(response, fileName, null, archivesLibraryId);
     }
 
     @Override
     public void exportExcelRecordFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException {
-
+        this.exportExcelFile(response, fileName, ids, archivesLibraryId);
     }
 }

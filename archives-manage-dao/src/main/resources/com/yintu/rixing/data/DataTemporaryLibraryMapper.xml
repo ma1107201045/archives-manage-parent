@@ -18,7 +18,7 @@
                     #{dataCommon.fieldValue}
                 </if>
             </foreach>
-            1
+            2
         </trim>
     </insert>
 
@@ -44,7 +44,7 @@
                             #{dataCommon.fieldValue}
                         </if>
                     </foreach>
-                    1
+                    2
                 </trim>
             </foreach>
         </trim>
@@ -84,7 +84,7 @@
     <select id="selectPage" resultType="java.util.Map">
         select *
         from `${tableName}`
-        where `status` = 1
+        where `status` = 2
         order by `id` DESC
     </select>
 </mapper>

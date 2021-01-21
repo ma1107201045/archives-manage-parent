@@ -60,21 +60,30 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
         return ResultDataUtil.ok("修改档案文件信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改档案文件顺序")
-    @PatchMapping("/{id1}/{id2}")
+    @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改档案文件上移下移顺序")
+    @PatchMapping("/move/{id1}/{id2}")
     @ApiOperation(value = "修改档案文件顺序", notes = "修改档案文件顺序", position = 4)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id1", dataType = "int", value = "主键id1", required = true, paramType = "path"),
             @ApiImplicitParam(name = "id2", dataType = "int", value = "主键id2", required = true, paramType = "path")
     })
-    public ResultDataUtil<Object> editOrder(@PathVariable Integer id1, @PathVariable Integer id2) {
-        iDataArchivesLibraryFileService.updateOrderByIds(id1, id2);
-        return ResultDataUtil.ok("修改档案文件顺序成功");
+    public ResultDataUtil<Object> move(@PathVariable Integer id1, @PathVariable Integer id2) {
+        iDataArchivesLibraryFileService.moveById(id1, id2);
+        return ResultDataUtil.ok("修改档案文件上移下移顺序成功");
+    }
+
+    @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改档案文件置顶置底顺序")
+    @PatchMapping("/reset/{ids}")
+    @ApiOperation(value = "修改档案文件置顶置底顺序", notes = "修改档案文件置顶置底顺序", position = 5)
+    @ApiImplicitParam(name = "ids", dataType = "int", value = "主键id集", required = true, paramType = "path")
+    public ResultDataUtil<Object> reset(@PathVariable Set<Integer> ids) {
+        iDataArchivesLibraryFileService.resetByIds(ids);
+        return ResultDataUtil.ok("修改档案文件置顶置底顺序成功");
     }
 
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改档案文件备注")
     @PatchMapping("/{id}")
-    @ApiOperation(value = "修改档案文件备注", notes = "修改档案文件备注", position = 5)
+    @ApiOperation(value = "修改档案文件备注", notes = "修改档案文件备注", position = 6)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<Object> editRemark(@PathVariable Integer id, @RequestParam(required = false) String remark) {
         iDataArchivesLibraryFileService.updateRemark(id, remark);
@@ -83,7 +92,7 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案文件单条信息")
     @GetMapping("/{id}")
-    @ApiOperation(value = "查询档案文件单条信息", notes = " 查询档案文件单条信息", position = 6)
+    @ApiOperation(value = "查询档案文件单条信息", notes = " 查询档案文件单条信息", position = 7)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<DataArchivesLibraryFile> findById(@PathVariable Integer id) {
         DataArchivesLibraryFile dataArchivesLibraryFile = iDataArchivesLibraryFileService.getById(id);
@@ -92,7 +101,7 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案文件列表信息")
     @GetMapping
-    @ApiOperation(value = "查询档案文件列表信息", notes = " 查询档案文件列表信息", position = 7)
+    @ApiOperation(value = "查询档案文件列表信息", notes = " 查询档案文件列表信息", position = 8)
     public ResultDataUtil<Page<DataArchivesLibraryFile>> findPage(@Validated DataArchivesLibraryFileQueryDto queryDto) {
         Page<DataArchivesLibraryFile> page = iDataArchivesLibraryFileService.page(queryDto);
         return ResultDataUtil.ok("查询档案文件列表信息成功", page);
