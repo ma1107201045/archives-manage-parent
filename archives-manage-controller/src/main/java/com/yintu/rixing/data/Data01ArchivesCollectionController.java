@@ -13,6 +13,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -101,9 +102,13 @@ public class Data01ArchivesCollectionController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导入档案收集信息")
     @PostMapping("/import}")
     @ApiOperation(value = "批量导入档案收集信息", notes = "批量导入档案收集信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", value = "文件对象", required = true, dataType = "__file", paramType = "form"),
+            @ApiImplicitParam(name = "archivesLibraryId", value = "档案库id", required = true, dataType = "int", paramType = "form")
+    })
     @ApiOperationSupport(order = 7)
-    public ResultDataUtil<Object> importExcelData(HttpServletRequest request, @RequestParam Integer archivesLibraryId) throws IOException {
-        iDataArchivesCollectionService.importExcelRecord(request, archivesLibraryId);
+    public ResultDataUtil<Object> importExcelData(@RequestParam("file") MultipartFile multipartFile, @RequestParam Integer archivesLibraryId) throws IOException {
+        iDataArchivesCollectionService.importExcelRecord(multipartFile, archivesLibraryId);
         return ResultDataUtil.ok("批量导入档案收集信息成功");
     }
 

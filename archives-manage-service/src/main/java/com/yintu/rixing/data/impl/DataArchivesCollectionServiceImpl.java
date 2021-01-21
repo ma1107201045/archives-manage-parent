@@ -12,6 +12,7 @@ import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -78,8 +79,9 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
     }
 
     @Override
-    public void importExcelRecord(HttpServletRequest request, Integer archivesLibraryId) throws IOException {
-        this.importExcelFile(request, archivesLibraryId,(short)1);
+    public void importExcelRecord(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
+        DataCommonAll dataCommonAll = this.importExcelFile(multipartFile, archivesLibraryId);
+        dataArchivesCollectionMapper.insertSelectiveBatch(dataCommonAll);
     }
 
     @Override

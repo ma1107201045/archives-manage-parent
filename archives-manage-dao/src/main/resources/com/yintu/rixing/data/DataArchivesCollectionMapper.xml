@@ -20,6 +20,32 @@
             1
         </trim>
     </insert>
+
+    <insert id="insertSelectiveBatch" parameterType="com.yintu.rixing.data.DataCommonAll">
+        insert into `${tableName}`
+        <trim prefix="(" suffix=")">
+            <foreach collection="lists" index="index" item="list" separator="," close=",">
+                <if test="index==1">
+                    <if test="list.index.dataCommon.fieldValue != null">
+                        `${dataCommon.fieldName}`
+                    </if>
+                </if>
+            </foreach>
+            `status`
+        </trim>
+        values
+        <foreach collection="lists" index="index" item="dataCommons" close=",">
+            <trim prefix="(" suffix=")">
+                <foreach collection="dataCommons" index="index" item="dataCommon" separator="," close=",">
+                    <if test="dataCommon.fieldValue != null">
+                        #{dataCommon.fieldValue}
+                    </if>
+                </foreach>
+                1
+            </trim>
+        </foreach>
+    </insert>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from `${tableName}`

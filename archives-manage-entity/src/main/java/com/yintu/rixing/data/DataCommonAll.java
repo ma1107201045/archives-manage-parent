@@ -17,4 +17,6 @@ public class DataCommonAll {
     private Integer id;
 
     private List<DataCommon> dataCommons;
+
+    private List<List<DataCommon>> lists;
 }

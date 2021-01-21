@@ -16,6 +16,8 @@ public interface DataArchivesCollectionMapper {
 
     void insertSelective(DataCommonAll dataCommonAll);
 
+    void insertSelectiveBatch(DataCommonAll dataCommonAll);
+
     void deleteByPrimaryKey(DataCommonAll dataCommonAll);
 
     void deleteByPrimaryKeys(Set<Integer> ids, String tableName);

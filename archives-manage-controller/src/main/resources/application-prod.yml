@@ -80,6 +80,13 @@ swagger:
         - /logout
         - /captcha
       exclude-path: [ /error ]
+    common:
+      title: 公共模块
+      description: 无需授权有关的接口
+      base-package: com.yintu.rixing.common
+      base-path:
+        - /common/**
+      exclude-path: [ /error ]
     make:
       title: 利用中心模块
       description: 利用中心有关的接口
@@ -93,6 +100,13 @@ swagger:
       base-package: com.yintu.rixing.data
       base-path:
         - /data/**
+      exclude-path: [ /error ]
+    wrehouse:
+      title: 库房管理
+      description: 库房管理有关的接口
+      base-package: com.yintu.rixing.warehouse
+      base-path:
+        - /warehouse/**
       exclude-path: [ /error ]
     security:
       title: 安全中心模块
@@ -109,11 +123,10 @@ swagger:
         - /notification/**
       exclude-path: [ /error ]
     system:
-      title: 系统管理模块
+      title: 系统设置模块
       description: 系统管理模块有关的接口
       base-package: com.yintu.rixing.system
       base-path:
         - /system/**
       exclude-path: [ /error ]
-
 

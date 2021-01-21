@@ -19,12 +19,14 @@ import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.data.DataCommonTitleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -49,20 +51,16 @@ public class DataCommonService {
     @Autowired
     protected ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
 
-    public Map<String, Object> getById(DataCommonAll dataCommonAll) {
-        return dataCommonMapper.selectByPrimaryKey(dataCommonAll);
-    }
 
     protected DataCommonAll parametersToProofread(DataCommonFormDto dataCommonDto) {
         Integer archivesLibraryId = dataCommonDto.getArchivesLibraryId();
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
-        DataCommonAll dataCommonAll = new DataCommonAll();
-        String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
         Map<String, String> params = dataCommonDto.getParams();
         List<DataCommon> dataCommons = new ArrayList<>();
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
+            String name = sysArchivesLibraryField.getName();
             String dataKey = sysArchivesLibraryField.getDataKey();
             Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
             Integer length = sysArchivesLibraryField.getLength();
@@ -70,7 +68,7 @@ public class DataCommonService {
             String value = params.get(dataKey);
             Object newValue = value;
             if (required == 1 && (value == null || value.isEmpty()))
-                throw new BaseRuntimeException(dataType + "不能为空");
+                throw new BaseRuntimeException(name + "不能为空");
             switch (EnumDataType.get(dataType)) {
                 case VARCHAR:
                 case TEXT:
@@ -98,10 +96,77 @@ public class DataCommonService {
             dataCommon.setFieldValue(newValue);
             dataCommons.add(dataCommon);
         }
+        DataCommonAll dataCommonAll = new DataCommonAll();
+        String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
         dataCommonAll.setTableName(tableName);
         dataCommonAll.setId(dataCommonDto.getId());
         dataCommonAll.setDataCommons(dataCommons);
         return dataCommonAll;
+    }
+
+    protected DataCommonAll importExcelFile(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
+        SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
+        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
+        List<List<DataCommon>> lists = new ArrayList<>();
+
+        InputStream in = multipartFile.getInputStream();
+        ExcelReader excelReader = ExcelUtil.getReader(in, true);
+        List<Map<String, Object>> records = excelReader.readAll();
+        for (Map<String, Object> record : records) {
+            List<DataCommon> dataCommons = new ArrayList<>();
+            for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
+                String name = sysArchivesLibraryField.getName();
+                String dataKey = sysArchivesLibraryField.getDataKey();
+                Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
+                Integer length = sysArchivesLibraryField.getLength();
+                Short required = sysArchivesLibraryField.getRequired();
+                Object obj = record.get(name);
+                if (required == 1 && (obj == null || (obj instanceof String && ((String) obj).isEmpty())))
+                    throw new BaseRuntimeException(name + "不能为空");
+                String value = String.valueOf(obj);
+                Object newValue = value;
+                switch (EnumDataType.get(dataType)) {
+                    case VARCHAR:
+                    case TEXT:
+                        if (value != null && value.length() > length)
+                            throw new BaseRuntimeException(dataType + "长度超过定义的长度");
+                        break;
+                    case TINYINT:
+                        newValue = Byte.valueOf(value);
+                        break;
+                    case SMALLINT:
+                        newValue = Short.valueOf(value);
+                        break;
+                    case INT:
+                        newValue = Integer.valueOf(value);
+                        break;
+                    case DATETIME:
+                        newValue = DateUtil.parseDateTime(value);
+                        break;
+                    case DATE:
+                        newValue = DateUtil.parseDate(value);
+                        break;
+                }
+                DataCommon dataCommon = new DataCommon();
+                dataCommon.setFieldName(dataKey);
+                dataCommon.setFieldValue(newValue);
+                dataCommons.add(dataCommon);
+            }
+            lists.add(dataCommons);
+        }
+        excelReader.close();
+        IoUtil.close(in);
+
+        DataCommonAll dataCommonAll = new DataCommonAll();
+        String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
+        dataCommonAll.setTableName(tableName);
+        dataCommonAll.setLists(lists);
+        return dataCommonAll;
+    }
+
+    public Map<String, Object> getById(DataCommonAll dataCommonAll) {
+        return dataCommonMapper.selectByPrimaryKey(dataCommonAll);
     }
 
     private List<DataCommonTitleVo> getDefaultDataCommonTitles(Integer archivesLibraryId) {
@@ -163,29 +228,10 @@ public class DataCommonService {
     }
 
 
-    protected void importExcelFile(HttpServletRequest request, Integer archivesLibraryId, Short status) throws IOException {
-        List<DataCommonTitleVo> dataCommonTitleVos = this.getDefaultDataCommonTitles(archivesLibraryId);
-        ServletInputStream in = request.getInputStream();
-        ExcelReader excelReader = ExcelUtil.getReader(in, true);
-        List<Map<String, Object>> records = excelReader.readAll();
-        List<Map<String, Object>> finalRecords = new ArrayList<>();
-        for (Map<String, Object> record : records) {
-            for (DataCommonTitleVo dataCommonTitleVo : dataCommonTitleVos) {
-                if (record.containsKey(dataCommonTitleVo.getLabel())) {
-                    record.put(STATUS_PROP, status);
-                    finalRecords.add(record);
-                }
-            }
-        }
-        excelReader.close();
-        IoUtil.close(in);
-        dataCommonMapper.insertBatch(finalRecords);
-    }
-
     protected void exportExcelFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException {
         List<DataCommonTitleVo> dataCommonTitleVos = this.getDefaultDataCommonTitles(archivesLibraryId);
         ExcelWriter excelWriter = ExcelUtil.getWriter(true);
-        excelWriter.merge(dataCommonTitleVos.size() - 1, fileName);
+        // excelWriter.merge(dataCommonTitleVos.size() - 1, fileName);
         if (ids == null) { //下载模板
             List<String> titles = dataCommonTitleVos.stream().map(DataCommonTitleVo::getLabel).collect(Collectors.toList());
             excelWriter.writeHeadRow(titles);

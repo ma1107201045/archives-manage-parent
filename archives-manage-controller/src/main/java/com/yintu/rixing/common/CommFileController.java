@@ -40,7 +40,7 @@ public class CommFileController extends Authenticator {
      * @return 返回信息
      */
     @Log(level = EnumLogLevel.DEBUG, module = "公共模块", context = "上传文件")
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping
     @ApiOperation(value = "上传文件", notes = "上传文件")
     @ApiImplicitParam(name = "file", value = "文件对象", required = true, dataType = "__file", paramType = "form")
     @ApiOperationSupport(order = 1)
