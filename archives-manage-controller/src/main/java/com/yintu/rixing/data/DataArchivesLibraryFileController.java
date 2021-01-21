@@ -62,7 +62,7 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
 
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改档案文件上移下移顺序")
     @PatchMapping("/move/{id1}/{id2}")
-    @ApiOperation(value = "修改档案文件顺序", notes = "修改档案文件顺序", position = 4)
+    @ApiOperation(value = "修改档案文件上移下移顺序", notes = "修改档案文件上移下移顺序", position = 4)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id1", dataType = "int", value = "主键id1", required = true, paramType = "path"),
             @ApiImplicitParam(name = "id2", dataType = "int", value = "主键id2", required = true, paramType = "path")
