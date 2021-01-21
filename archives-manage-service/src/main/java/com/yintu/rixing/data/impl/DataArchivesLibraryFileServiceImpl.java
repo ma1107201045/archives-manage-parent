@@ -128,7 +128,10 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
     @Override
     public void resetByIds(Set<Integer> ids) {
         if (ids.size() > 1) {
-            List<DataArchivesLibraryFile> oldDataArchivesLibraryFiles = this.listByIds(ids);
+            QueryWrapper<DataArchivesLibraryFile> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().in(DataArchivesLibraryFile::getId, ids);
+            queryWrapper.lambda().orderByAsc(DataArchivesLibraryFile::getOrder);
+            List<DataArchivesLibraryFile> oldDataArchivesLibraryFiles = this.list(queryWrapper);
             if (oldDataArchivesLibraryFiles.size() > 1) {
                 int size = oldDataArchivesLibraryFiles.size();
                 Integer order = oldDataArchivesLibraryFiles.get(0).getOrder();
@@ -142,7 +145,7 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
                     }
                     newDataArchivesLibraryFiles.add(dataArchivesLibraryFile);
                 }
-                this.saveBatch(newDataArchivesLibraryFiles);
+                this.updateBatchById(newDataArchivesLibraryFiles);
             }
         }
     }

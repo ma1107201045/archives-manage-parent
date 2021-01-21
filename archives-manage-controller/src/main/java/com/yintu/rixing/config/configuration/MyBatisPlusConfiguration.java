@@ -36,7 +36,7 @@ public class MyBatisPlusConfiguration {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));//分页插件
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());//乐观锁的实现
-        interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());//防止全表更新跟删除
+       // interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());//防止全表更新跟删除
         return interceptor;
     }
 
