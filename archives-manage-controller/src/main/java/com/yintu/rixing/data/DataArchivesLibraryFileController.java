@@ -10,10 +10,7 @@ import com.yintu.rixing.dto.data.DataArchivesLibraryFileFormDto;
 import com.yintu.rixing.dto.data.DataArchivesLibraryFileQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResultDataUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiSort;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -63,9 +60,21 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
         return ResultDataUtil.ok("修改档案文件信息成功");
     }
 
+    @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改档案文件顺序")
+    @PatchMapping("/{id1}/{id2}")
+    @ApiOperation(value = "修改档案文件顺序", notes = "修改档案文件顺序", position = 4)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id1", dataType = "int", value = "主键id1", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "id2", dataType = "int", value = "主键id2", required = true, paramType = "path")
+    })
+    public ResultDataUtil<Object> editOrder(@PathVariable Integer id1, @PathVariable Integer id2) {
+        iDataArchivesLibraryFileService.updateOrderByIds(id1, id2);
+        return ResultDataUtil.ok("修改档案文件顺序成功");
+    }
+
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案文件单条信息")
     @GetMapping("/{id}")
-    @ApiOperation(value = "查询档案文件单条信息", notes = " 查询档案文件单条信息", position = 4)
+    @ApiOperation(value = "查询档案文件单条信息", notes = " 查询档案文件单条信息", position = 5)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<DataArchivesLibraryFile> findById(@PathVariable Integer id) {
         DataArchivesLibraryFile dataArchivesLibraryFile = iDataArchivesLibraryFileService.getById(id);
@@ -74,7 +83,7 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案文件列表信息")
     @GetMapping
-    @ApiOperation(value = "查询档案文件列表信息", notes = " 查询档案文件列表信息", position = 5)
+    @ApiOperation(value = "查询档案文件列表信息", notes = " 查询档案文件列表信息", position = 6)
     public ResultDataUtil<Page<DataArchivesLibraryFile>> findPage(@Validated DataArchivesLibraryFileQueryDto queryDto) {
         Page<DataArchivesLibraryFile> page = iDataArchivesLibraryFileService.page(queryDto);
         return ResultDataUtil.ok("查询档案文件列表信息成功", page);

@@ -22,5 +22,8 @@ public interface IDataArchivesLibraryFileService extends IService<DataArchivesLi
     @Transactional(rollbackFor = {Exception.class})
     void updateById(DataArchivesLibraryFileFormDto dataArchivesLibraryFileFormDto);
 
+    @Transactional(rollbackFor = {Exception.class})
+    void updateOrderByIds(Integer id1, Integer id2);
+
     Page<DataArchivesLibraryFile> page(DataArchivesLibraryFileQueryDto dataArchivesLibraryFileQueryDto);
 }

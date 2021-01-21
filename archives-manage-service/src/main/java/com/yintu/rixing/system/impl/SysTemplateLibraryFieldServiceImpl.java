@@ -64,11 +64,14 @@ public class SysTemplateLibraryFieldServiceImpl extends ServiceImpl<SysTemplateL
         SysTemplateLibraryField sysTemplateLibraryField1 = this.getById(id1);
         SysTemplateLibraryField sysTemplateLibraryField2 = this.getById(id2);
         if (sysTemplateLibraryField1 != null && sysTemplateLibraryField2 != null) {
-            Integer order = sysTemplateLibraryField1.getOrder();
-            sysTemplateLibraryField1.setOrder(sysTemplateLibraryField2.getOrder());
-            sysTemplateLibraryField2.setOrder(order);
-            this.saveOrUpdate(sysTemplateLibraryField1);
-            this.saveOrUpdate(sysTemplateLibraryField2);
+            Integer order1 = sysTemplateLibraryField1.getOrder();
+            Integer order2 = sysTemplateLibraryField2.getOrder();
+            if (!order1.equals(order2)) {//如果顺序不相同需要修改
+                sysTemplateLibraryField1.setOrder(order1);
+                sysTemplateLibraryField2.setOrder(order2);
+                this.saveOrUpdate(sysTemplateLibraryField1);
+                this.saveOrUpdate(sysTemplateLibraryField2);
+            }
         }
     }
 

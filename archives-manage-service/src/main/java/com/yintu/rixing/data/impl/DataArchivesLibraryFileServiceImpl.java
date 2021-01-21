@@ -96,6 +96,22 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
     }
 
     @Override
+    public void updateOrderByIds(Integer id1, Integer id2) {
+        DataArchivesLibraryFile dataArchivesLibraryFile1 = this.getById(id1);
+        DataArchivesLibraryFile dataArchivesLibraryFile2 = this.getById(id2);
+        if (dataArchivesLibraryFile1 != null && dataArchivesLibraryFile2 != null) {
+            Integer order1 = dataArchivesLibraryFile1.getOrder();
+            Integer order2 = dataArchivesLibraryFile2.getOrder();
+            if (!order1.equals(order2)) { //如果顺序不相同需要修改
+                dataArchivesLibraryFile1.setOrder(order2);
+                dataArchivesLibraryFile2.setOrder(order1);
+                this.saveOrUpdate(dataArchivesLibraryFile1);
+                this.saveOrUpdate(dataArchivesLibraryFile2);
+            }
+        }
+    }
+
+    @Override
     public Page<DataArchivesLibraryFile> page(DataArchivesLibraryFileQueryDto dataArchivesLibraryFileQueryDto) {
         Integer num = dataArchivesLibraryFileQueryDto.getNum();
         Integer size = dataArchivesLibraryFileQueryDto.getSize();
