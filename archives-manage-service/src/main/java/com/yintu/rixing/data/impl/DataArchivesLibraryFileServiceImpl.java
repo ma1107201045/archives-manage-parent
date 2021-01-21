@@ -112,6 +112,16 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
     }
 
     @Override
+    public void updateRemark(Integer id, String remark) {
+        DataArchivesLibraryFile dataArchivesLibraryFile = this.getById(id);
+        if (dataArchivesLibraryFile != null) {
+            if (remark != null && remark.equals(dataArchivesLibraryFile.getRemark())) {
+                this.saveOrUpdate(dataArchivesLibraryFile);
+            }
+        }
+    }
+
+    @Override
     public Page<DataArchivesLibraryFile> page(DataArchivesLibraryFileQueryDto dataArchivesLibraryFileQueryDto) {
         Integer num = dataArchivesLibraryFileQueryDto.getNum();
         Integer size = dataArchivesLibraryFileQueryDto.getSize();
