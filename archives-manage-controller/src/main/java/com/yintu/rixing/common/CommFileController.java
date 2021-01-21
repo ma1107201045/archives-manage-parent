@@ -36,7 +36,7 @@ public class CommFileController extends Authenticator {
     /**
      * 上传文件
      *
-     * @param multipartFiles 单个文件
+     * @param multipartFile 单个文件
      * @return 返回信息
      */
     @Log(level = EnumLogLevel.DEBUG, module = "公共模块", context = "上传文件")
@@ -44,8 +44,8 @@ public class CommFileController extends Authenticator {
     @ApiOperation(value = "上传文件", notes = "上传文件")
     @ApiImplicitParam(name = "file", value = "文件对象", required = true, dataType = "__file", paramType = "form")
     @ApiOperationSupport(order = 1)
-    public ResultDataUtil<CommFileVo> fileUpload(@RequestParam("file") MultipartFile multipartFiles, HttpServletRequest request) throws IOException {
-        CommFileVo CommFileVo = iCommFileService.save(multipartFiles, request);
+    public ResultDataUtil<CommFileVo> fileUpload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+        CommFileVo CommFileVo = iCommFileService.save(multipartFile, request);
         return ResultDataUtil.ok("上传文件成功", CommFileVo);
     }
 

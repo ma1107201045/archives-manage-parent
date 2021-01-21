@@ -1,9 +1,12 @@
 package com.yintu.rixing.data.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.net.URLEncoder;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.server.HttpServerRequest;
+import cn.hutool.poi.excel.ExcelFileUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
@@ -28,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -109,13 +113,19 @@ public class DataCommonService {
     }
 
     protected DataCommonAll importExcelFile(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
+        //浅层次判断此文件是否是excel文件
+        String ext = FileUtil.extName(multipartFile.getOriginalFilename());
+        if (!("xls".equals(ext) || "xlsx".equals(ext)))
+            throw new BaseRuntimeException("此文件类型不支持批量导入");
+        InputStream in = multipartFile.getInputStream();
+        ExcelReader excelReader = ExcelUtil.getReader(in, true);
+        List<Map<String, Object>> records = excelReader.readAll();
+
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
         List<List<DataCommon>> lists = new ArrayList<>();
-        InputStream in = multipartFile.getInputStream();
-        ExcelReader excelReader = ExcelUtil.getReader(in, true);
-        List<Map<String, Object>> records = excelReader.readAll();
+
         for (Map<String, Object> record : records) {
             List<DataCommon> dataCommons = new ArrayList<>();
             for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
@@ -158,13 +168,13 @@ public class DataCommonService {
             }
             lists.add(dataCommons);
         }
-        excelReader.close();
-        IoUtil.close(in);
-
         DataCommonAll dataCommonAll = new DataCommonAll();
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
         dataCommonAll.setTableName(tableName);
         dataCommonAll.setLists(lists);
+
+        excelReader.close();
+        IoUtil.close(in);
         return dataCommonAll;
     }
 
@@ -255,8 +265,8 @@ public class DataCommonService {
             excelWriter.write(records, true);
             fullName = fileName + RECORD + name + timestamp + SUFFIX;
         }
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.createAll().encode(fullName, Charset.defaultCharset()));
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=ISO8859-1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fullName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
         ServletOutputStream out = response.getOutputStream();
         excelWriter.flush(out, true);
         excelWriter.close();
