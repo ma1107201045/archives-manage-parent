@@ -73,7 +73,7 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
     }
 
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改档案文件备注")
-    @PatchMapping("/remark/{id}")
+    @PatchMapping("/{id}")
     @ApiOperation(value = "修改档案文件备注", notes = "修改档案文件备注", position = 5)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<Object> editRemark(@PathVariable Integer id, @RequestParam(required = false) String remark) {

@@ -37,9 +37,9 @@ public class DataArchivesCollectionServiceImpl extends DataCommonService impleme
     }
 
     @Override
-    public void removeByIds(Set<Integer> ids, Integer archivesId) {
-        AssertUtil.notNull(archivesId, "档案库id不能为空");
-        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesId);
+    public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
+        AssertUtil.notNull(archivesLibraryId, "档案库id不能为空");
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
         dataArchivesCollectionMapper.deleteByPrimaryKeys(ids, TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey()));
     }

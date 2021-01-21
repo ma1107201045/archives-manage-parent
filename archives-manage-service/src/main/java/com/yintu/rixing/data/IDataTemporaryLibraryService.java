@@ -6,7 +6,6 @@ import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
@@ -14,10 +13,10 @@ import java.util.Set;
 
 /**
  * @Author: mlf
- * @Date: 2021/1/18 11:08:44
+ * @Date: 2021/1/21 16:06:12
  * @Version: 1.0
  */
-public interface IDataArchivesCollectionService {
+public interface IDataTemporaryLibraryService {
 
     @Transactional(rollbackFor = {Exception.class})
     void save(DataCommonFormDto dataCommonFormDto);
@@ -26,7 +25,7 @@ public interface IDataArchivesCollectionService {
     void removeByIds(Set<Integer> ids, Integer archivesLibraryId);
 
     @Transactional(rollbackFor = {Exception.class})
-    void updateById(DataCommonFormDto dataCommonFormDto);
+    void updateById(DataCommonFormDto dataCommonDto);
 
     Map<String, Object> getById(DataCommonFormDto dataCommonFormDto);
 
@@ -37,4 +36,5 @@ public interface IDataArchivesCollectionService {
     void exportExcelTemplateFile(HttpServletResponse response, String fileName, Integer archivesLibraryId) throws IOException;
 
     void exportExcelRecordFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException;
+
 }
