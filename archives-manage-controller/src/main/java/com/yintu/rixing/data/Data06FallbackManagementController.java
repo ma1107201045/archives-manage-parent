@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 数据整理库 前端控制器
+ * 数据回退管理 前端控制器
  * </p>
  *
  * @Author: mlf
- * @Date: 2021/1/18 10:16:08
+ * @Date: 2021/1/18 10:21:11
  * @Version: 1.0
  */
 @RestController
-@RequestMapping("/data/data-temporary-library")
-@Api(tags = "整理库接口")
-@ApiSort(3)
-public class Data03SortingLibraryController extends Authenticator {
+@RequestMapping("/data/data-fallback-management")
+@Api(tags = "回退管理接口")
+@ApiSort(6)
+public class Data06FallbackManagementController extends Authenticator {
 }

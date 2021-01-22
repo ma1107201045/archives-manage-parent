@@ -36,7 +36,7 @@ import java.util.Set;
 @RequestMapping("/data/data-temporary-library")
 @Api(tags = "临时库接口")
 @ApiSort(2)
-public class Data02TemporaryLibraryController extends Authenticator {
+public class Data01TemporaryLibraryController extends Authenticator {
 
     @Autowired
     private IDataTemporaryLibraryService iDataTemporaryLibraryService;

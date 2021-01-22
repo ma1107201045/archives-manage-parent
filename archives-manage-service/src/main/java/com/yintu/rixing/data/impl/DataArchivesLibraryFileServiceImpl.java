@@ -126,11 +126,13 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
     }
 
     @Override
-    public void resetByIds(Set<Integer> ids) {
+    public void resetByIds(Set<Integer> ids, String by) {
         if (ids.size() > 1) {
             QueryWrapper<DataArchivesLibraryFile> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().in(DataArchivesLibraryFile::getId, ids);
-            queryWrapper.lambda().orderByAsc(DataArchivesLibraryFile::getOrder);
+            if ("top".equals(by))
+                queryWrapper.lambda().orderByAsc(DataArchivesLibraryFile::getOrder);
+            else queryWrapper.lambda().orderByDesc(DataArchivesLibraryFile::getOrder);
             List<DataArchivesLibraryFile> oldDataArchivesLibraryFiles = this.list(queryWrapper);
             if (oldDataArchivesLibraryFiles.size() > 1) {
                 int size = oldDataArchivesLibraryFiles.size();

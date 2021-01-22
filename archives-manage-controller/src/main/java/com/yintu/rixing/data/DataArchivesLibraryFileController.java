@@ -75,16 +75,22 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改档案文件置顶置底顺序")
     @PatchMapping("/reset/{ids}")
     @ApiOperation(value = "修改档案文件置顶置底顺序", notes = "修改档案文件置顶置底顺序", position = 5)
-    @ApiImplicitParam(name = "ids", dataType = "int", value = "主键id集", required = true, paramType = "path")
-    public ResultDataUtil<Object> reset(@PathVariable Set<Integer> ids) {
-        iDataArchivesLibraryFileService.resetByIds(ids);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", dataType = "int", value = "主键id集", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "by", dataType = "string", value = "置顶或置底", required = true, paramType = "query")
+    })
+    public ResultDataUtil<Object> reset(@PathVariable Set<Integer> ids, @RequestParam String by) {
+        iDataArchivesLibraryFileService.resetByIds(ids, by);
         return ResultDataUtil.ok("修改档案文件置顶置底顺序成功");
     }
 
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改档案文件备注")
     @PatchMapping("/{id}")
     @ApiOperation(value = "修改档案文件备注", notes = "修改档案文件备注", position = 6)
-    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "remark", dataType = "string", value = "备注", paramType = "query")
+    })
     public ResultDataUtil<Object> editRemark(@PathVariable Integer id, @RequestParam(required = false) String remark) {
         iDataArchivesLibraryFileService.updateRemark(id, remark);
         return ResultDataUtil.ok("修改档案文件备注成功");

@@ -7,15 +7,15 @@ package com.yintu.rixing.enumobject;
  */
 public enum EnumArchivesOrder {
 
-    ARCHIVES_COLLECTION("档案收集", (short) 1, ""),
-    TEMPORARY_LIBRARY("临时库", (short) 2, ""),
-    SORTING_LIBRARY("整理库", (short) 3, ""),
-    FORMAL_LIBRARY("正式库", (short) 4, ""),
-    RECYCLE_BIN("回收站", (short) 5, ""),
-    DESTRUCTION_LIBRARY("销毁库", (short) 6, ""),
-    FALLBACK_MANAGEMENT("回退管理", (short) 7, ""),
-    DISEASE_ARCHIVES("病档管理", (short) 8, ""),
-    ARCHIVES_DESTRUCTION("档案销毁", (short) 9, "");
+    ARCHIVES_COLLECTION("档案收集", (short) 0, ""),
+    TEMPORARY_LIBRARY("临时库", (short) 1, ""),
+    SORTING_LIBRARY("整理库", (short) 2, ""),
+    FORMAL_LIBRARY("正式库", (short) 3, ""),
+    RECYCLE_BIN("回收站", (short) 4, ""),
+    DESTRUCTION_LIBRARY("销毁库", (short) 5, ""),
+    FALLBACK_MANAGEMENT("回退管理", (short) 6, ""),
+    DISEASE_ARCHIVES("病档管理", (short) 7, ""),
+    ARCHIVES_DESTRUCTION("档案销毁", (short) 8, "");
 
     private final String name;
     private final Short value;

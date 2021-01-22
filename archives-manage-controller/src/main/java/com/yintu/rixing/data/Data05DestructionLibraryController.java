@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 数据正式库 前端控制器
+ * 数据销毁库 前端控制器
  * </p>
  *
  * @Author: mlf
- * @Date: 2021/1/18 10:14:15
+ * @Date: 2021/1/18 10:19:48
  * @Version: 1.0
  */
 @RestController
-@RequestMapping("/data/data-formal-library")
-@Api(tags = "正式库接口")
-@ApiSort(4)
-public class Data04FormalLibraryController extends Authenticator {
+@RequestMapping("/data/data-destruction-library")
+@Api(tags = "销毁库接口")
+@ApiSort(5)
+public class Data05DestructionLibraryController extends Authenticator {
 }

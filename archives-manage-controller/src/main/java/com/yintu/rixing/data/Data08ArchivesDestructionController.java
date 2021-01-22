@@ -18,6 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/data/data-archives-destruction")
 @Api(tags = "档案销毁接口")
-@ApiSort(9)
-public class Data09ArchivesDestructionController extends Authenticator {
+@ApiSort(8)
+public class Data08ArchivesDestructionController extends Authenticator {
 }

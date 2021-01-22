@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 数据回收站 前端控制器
+ * 数据整理库 前端控制器
  * </p>
  *
  * @Author: mlf
- * @Date: 2021/1/18 10:18:27
+ * @Date: 2021/1/18 10:16:08
  * @Version: 1.0
  */
 @RestController
-@RequestMapping("/data/data-recycle-bin")
-@Api(tags = "回收站接口")
-@ApiSort(5)
-public class Data05RecycleBinController extends Authenticator {
+@RequestMapping("/data/data-temporary-library")
+@Api(tags = "整理库接口")
+@ApiSort(3)
+public class Data02SortingLibraryController extends Authenticator {
 }
