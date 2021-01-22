@@ -11,11 +11,12 @@ import com.yintu.rixing.data.DataCommonAll;
 import com.yintu.rixing.data.DataCommonMapper;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.enumobject.EnumDataType;
+import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.AssertUtil;
 import com.yintu.rixing.util.TableNameUtil;
-import com.yintu.rixing.vo.data.DataCommonTitleVo;
+import com.yintu.rixing.vo.data.DataCommonFieldVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,10 +40,6 @@ import java.util.stream.Collectors;
 @Service
 public class DataCommonService {
 
-    protected static final String ID_PROP = "id";
-    protected static final String ID_LABEL = "主键id";
-    protected static final String STATUS_PROP = "status";
-    protected static final String STATUS_LABEL = "档案状态";
 
     protected static final String TEMPLATE = "模板";
     protected static final String RECORD = "记录";
@@ -178,55 +175,50 @@ public class DataCommonService {
         return dataCommonMapper.selectByPrimaryKey(dataCommonAll);
     }
 
-    private List<DataCommonTitleVo> getDefaultDataCommonTitles(Integer archivesLibraryId) {
+    protected List<DataCommonFieldVo> getDataCommonFields(Integer archivesLibraryId) {
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
-        List<DataCommonTitleVo> dataCommonTitleVos = new ArrayList<>();
+        List<DataCommonFieldVo> dataCommonFieldVos = new ArrayList<>();
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
-            DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
-            dataCommonTitleVo.setProp(sysArchivesLibraryField.getDataKey());
-            dataCommonTitleVo.setLabel(sysArchivesLibraryField.getName());
-            dataCommonTitleVo.setShow(true);
+
+            String dataKey = sysArchivesLibraryField.getDataKey();
+            String name = sysArchivesLibraryField.getName();
+
             SysTemplateLibraryFieldType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysTemplateLibraryFieldType();
-            dataCommonTitleVo.setTypeId(sysTemplateLibraryFieldType.getId());
-            dataCommonTitleVo.setTypeProp(sysTemplateLibraryFieldType.getDataKey());
-            dataCommonTitleVo.setTypeLabel(sysTemplateLibraryFieldType.getName());
+            Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
+            String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
+            String fieldTypeName = sysTemplateLibraryFieldType.getName();
+
+            Short query = sysArchivesLibraryField.getQuery();
+            Short title = sysArchivesLibraryField.getTitle();
+            Short form = sysArchivesLibraryField.getForm();
+
+            DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
+            dataCommonTitleVo.setProp(dataKey);
+            dataCommonTitleVo.setLabel(name);
+
+            dataCommonTitleVo.setTypeId(fieldTypeId);
+            dataCommonTitleVo.setTypeProp(fieldTypeDataKey);
+            dataCommonTitleVo.setTypeLabel(fieldTypeName);
             dataCommonTitleVo.setNotNull(sysArchivesLibraryField.getRequired() == 1);
-            dataCommonTitleVos.add(dataCommonTitleVo);
+
+            dataCommonTitleVo.setQuery(query.equals(EnumFlag.True.getValue()));
+            dataCommonTitleVo.setTitle(title.equals(EnumFlag.True.getValue()));
+            dataCommonTitleVo.setForm(form.equals(EnumFlag.True.getValue()));
+            dataCommonFieldVos.add(dataCommonTitleVo);
         }
-        return dataCommonTitleVos;
+        return dataCommonFieldVos;
     }
 
-    protected List<DataCommonTitleVo> getDataCommonTitles(Integer archivesLibraryId) {
-        List<DataCommonTitleVo> dataCommonTitleVos = this.getDefaultDataCommonTitles(archivesLibraryId);
-        dataCommonTitleVos.add(this.getIdTitle());
-        dataCommonTitleVos.add(this.getStatusTitle());
-        return dataCommonTitleVos;
+    private List<DataCommonFieldVo> getDataCommonQueryFields(Integer archivesLibraryId) {
+        return this.getDataCommonFields(archivesLibraryId).stream().filter(DataCommonFieldVo::getQuery).collect(Collectors.toList());
     }
 
-    protected DataCommonTitleVo getIdTitle() {
-        DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
-        dataCommonTitleVo.setProp(ID_PROP);
-        dataCommonTitleVo.setLabel(ID_LABEL);
-
-        dataCommonTitleVo.setShow(false);
-        dataCommonTitleVo.setTypeId(EnumDataType.INT.getValue());
-        dataCommonTitleVo.setTypeProp(EnumDataType.INT.getDataKey());
-        dataCommonTitleVo.setTypeLabel(EnumDataType.INT.getName());
-        dataCommonTitleVo.setNotNull(false);
-        return dataCommonTitleVo;
+    private List<DataCommonFieldVo> getDataCommonTitleFields(Integer archivesLibraryId) {
+        return this.getDataCommonFields(archivesLibraryId).stream().filter(DataCommonFieldVo::getTitle).collect(Collectors.toList());
     }
 
-    protected DataCommonTitleVo getStatusTitle() {
-        DataCommonTitleVo dataCommonTitleVo = new DataCommonTitleVo();
-        dataCommonTitleVo.setProp(STATUS_PROP);
-        dataCommonTitleVo.setLabel(STATUS_LABEL);
-
-        dataCommonTitleVo.setShow(false);
-        dataCommonTitleVo.setTypeId(EnumDataType.SMALLINT.getValue());
-        dataCommonTitleVo.setTypeProp(EnumDataType.SMALLINT.getDataKey());
-        dataCommonTitleVo.setTypeLabel(EnumDataType.SMALLINT.getName());
-        dataCommonTitleVo.setNotNull(false);
-        return dataCommonTitleVo;
+    private List<DataCommonFieldVo> getDataCommonFormFields(Integer archivesLibraryId) {
+        return this.getDataCommonFields(archivesLibraryId).stream().filter(DataCommonFieldVo::getForm).collect(Collectors.toList());
     }
 
     protected List<Map<String, Object>> getDataCommonRecord(Integer archivesLibraryId, Set<Integer> ids) {
@@ -242,19 +234,21 @@ public class DataCommonService {
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
         String name = sysArchivesLibrary.getName();
         long timestamp = DateUtil.date().getTime();
-        List<DataCommonTitleVo> dataCommonTitleVos = this.getDefaultDataCommonTitles(archivesLibraryId);
+        List<DataCommonFieldVo> dataCommonFieldVos = this.getDataCommonTitleFields(archivesLibraryId);
         ExcelWriter excelWriter = ExcelUtil.getWriter(true);
-        // excelWriter.merge(dataCommonTitleVos.size() - 1, fileName);
+        // excelWriter.merge(dataCommonFieldVos.size() - 1, fileName);
         String fullName = null;
         if (ids == null) { //下载模板
-            List<String> titles = dataCommonTitleVos.stream().map(DataCommonTitleVo::getLabel).collect(Collectors.toList());
+            List<String> titles = dataCommonFieldVos.stream().map(DataCommonFieldVo::getLabel).collect(Collectors.toList());
             excelWriter.writeHeadRow(titles);
             fullName = fileName + TEMPLATE + name + timestamp + SUFFIX;
         } else { //导出数据
-            for (DataCommonTitleVo dataCommonTitleVo : dataCommonTitleVos) {
-                String prop = dataCommonTitleVo.getProp();
-                String label = dataCommonTitleVo.getLabel();
-                excelWriter.addHeaderAlias(prop, label);
+            for (DataCommonFieldVo dataCommonFieldVo : dataCommonFieldVos) {
+                if (dataCommonFieldVo.getTitle()) {
+                    String prop = dataCommonFieldVo.getProp();
+                    String label = dataCommonFieldVo.getLabel();
+                    excelWriter.addHeaderAlias(prop, label);
+                }
             }
             excelWriter.setOnlyAlias(true);//仅仅显示表头的数据，则可以过滤掉无用的字段
             List<Map<String, Object>> records = this.getDataCommonRecord(archivesLibraryId, ids);

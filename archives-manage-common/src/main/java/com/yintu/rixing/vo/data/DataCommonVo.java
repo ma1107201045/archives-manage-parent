@@ -17,7 +17,7 @@ import java.util.Map;
 @ApiModel
 public class DataCommonVo {
     @ApiModelProperty(value = "表头", position = 1)
-    private List<DataCommonTitleVo> titles;
+    private List<DataCommonFieldVo> titles;
 
     @ApiModelProperty(value = "分页信息", position = 2)
     private Page<Map<String, Object>> page;

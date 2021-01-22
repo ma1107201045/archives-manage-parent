@@ -70,7 +70,7 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
         SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
         DataCommonVo dataCommonVo = new DataCommonVo();
-        dataCommonVo.setTitles(this.getDataCommonTitles(archivesLibraryId));
+        dataCommonVo.setTitles(this.getDataCommonFields(archivesLibraryId));
         dataCommonVo.setPage(dataTemporaryLibraryMapper.selectPage(new Page<>(num, size), TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey())));
         return dataCommonVo;
     }
