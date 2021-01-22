@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -22,6 +23,7 @@ import javax.validation.constraints.Pattern;
 public class SysTemplateLibraryFieldFormDto extends IdDto {
 
     @ApiModelProperty(value = "字段名称（注释或者描述）")
+    @NotBlank
     private String name;
 
     @ApiModelProperty(value = "key（用于添加表的字段名）", required = true)
