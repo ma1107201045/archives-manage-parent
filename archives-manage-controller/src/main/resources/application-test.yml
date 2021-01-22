@@ -1,8 +1,6 @@
 server:
-  port: 8080
+  port: 8090
   tomcat:
-    protocol-header: X-Forwarded-Proto
-    remote-ip-header: X-Forwarded-For
     accept-count: 1000
     max-threads: 400
     min-spare-threads: 1000
