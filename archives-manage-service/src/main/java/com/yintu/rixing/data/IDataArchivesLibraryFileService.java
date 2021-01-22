@@ -31,7 +31,7 @@ public interface IDataArchivesLibraryFileService extends IService<DataArchivesLi
     void moveById(Integer id1, Integer id2);
 
     @Transactional(rollbackFor = {Exception.class})
-    void resetByIds(Set<Integer> ids);
+    void resetByIds(Set<Integer> ids, String by);
 
     @Transactional(rollbackFor = {Exception.class})
     void updateRemark(Integer id, String remark);
