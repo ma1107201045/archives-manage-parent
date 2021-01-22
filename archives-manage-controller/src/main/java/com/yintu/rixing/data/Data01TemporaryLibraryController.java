@@ -35,7 +35,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/data/data-temporary-library")
 @Api(tags = "临时库接口")
-@ApiSort(2)
+@ApiSort(1)
 public class Data01TemporaryLibraryController extends Authenticator {
 
     @Autowired

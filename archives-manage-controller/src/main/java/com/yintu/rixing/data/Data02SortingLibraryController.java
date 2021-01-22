@@ -18,6 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/data/data-temporary-library")
 @Api(tags = "整理库接口")
-@ApiSort(3)
+@ApiSort(2)
 public class Data02SortingLibraryController extends Authenticator {
 }

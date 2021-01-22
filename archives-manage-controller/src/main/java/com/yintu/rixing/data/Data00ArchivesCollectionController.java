@@ -31,7 +31,6 @@ public class Data00ArchivesCollectionController extends Authenticator {
 
     @Autowired
     private IDataTemporaryLibraryService iDataTemporaryLibraryService;
-
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
 
@@ -49,13 +48,13 @@ public class Data00ArchivesCollectionController extends Authenticator {
     }
 
 
-    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库档案库列表信息树")
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案收集档案库列表信息树")
     @GetMapping("/sys-archives-library")
-    @ApiOperation(value = "查询临时库档案库列表信息树", notes = "查询临时库档案库列表信息树")
+    @ApiOperation(value = "查询档案收集档案库列表信息树", notes = "查询档案收集档案库列表信息树")
     @ApiOperationSupport(order = 2)
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
-        return ResultDataUtil.ok("查询临时库档案库列表信息树成功", treeNodeUtils);
+        return ResultDataUtil.ok("查询档案收集档案库列表信息树成功", treeNodeUtils);
     }
 
 }
