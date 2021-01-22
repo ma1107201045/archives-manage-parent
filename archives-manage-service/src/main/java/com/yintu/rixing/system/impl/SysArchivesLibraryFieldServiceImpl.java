@@ -9,6 +9,7 @@ import com.yintu.rixing.common.CommTableField;
 import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFieldFormDto;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFieldQueryDto;
+import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.TableNameUtil;
@@ -48,6 +49,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             throw new BaseRuntimeException("当前档案库中key值不能重复");
         SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
         BeanUtil.copyProperties(sysArchivesLibraryFieldFormDto, sysArchivesLibraryField);
+        sysArchivesLibraryField.setSystem(EnumFlag.False.getValue());
         this.save(sysArchivesLibraryField);
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(sysArchivesLibraryField.getArchivesLibraryId());
         if (sysArchivesLibrary != null) {
@@ -86,7 +88,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             throw new BaseRuntimeException("当前模板库中key值不能重复");
         SysArchivesLibraryField sysArchivesLibraryField = this.getById(id);
         if (sysArchivesLibraryField != null) {
-            String oldDatakey = sysArchivesLibraryField.getDataKey();
+            String oldDataKey = sysArchivesLibraryField.getDataKey();
             Short oldIndex = sysArchivesLibraryField.getIndex();
             BeanUtil.copyProperties(sysArchivesLibraryFieldFormDto, sysArchivesLibraryField);
             Short index = sysArchivesLibraryField.getIndex();
@@ -96,14 +98,14 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
                 CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField);
                 String tableName = commTableField.getTableName();
                 iCommTableFieldService.isHasDataByTableName(tableName);
-                iCommTableFieldService.alter(tableName, oldDatakey, commTableField);
+                iCommTableFieldService.alter(tableName, oldDataKey, commTableField);
                 if (oldIndex == 0 && index == 1) { //之前没有现在有
                     iCommTableFieldService.addIndex(tableName, dataKey);
                 } else if (oldIndex == 1 && index == 0) {//之前有现在没有
                     iCommTableFieldService.dropIndex(tableName, dataKey);
                 } else if (oldIndex == 1 && index == 1) {//之前有现在也有
-                    if (!oldDatakey.equals(dataKey)) {//再次判断字段名是否一样（索引名跟字段名保持一致）
-                        iCommTableFieldService.dropIndex(tableName, oldDatakey);
+                    if (!oldDataKey.equals(dataKey)) {//再次判断字段名是否一样（索引名跟字段名保持一致）
+                        iCommTableFieldService.dropIndex(tableName, oldDataKey);
                         iCommTableFieldService.addIndex(tableName, dataKey);
                     }
                 }

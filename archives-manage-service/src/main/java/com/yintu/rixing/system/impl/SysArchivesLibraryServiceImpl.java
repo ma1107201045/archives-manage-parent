@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.common.CommTableField;
 import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFormDto;
+import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.TableNameUtil;
@@ -33,6 +34,8 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     @Autowired
     private ISysTemplateLibraryFieldService iSysTemplateLibraryFieldService;
     @Autowired
+    private ISysArchivesLibraryFieldDefaultService iSysArchivesLibraryFieldDefaultService;
+    @Autowired
     private ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
     @Autowired
     private ICommTableFieldService iCommTableFieldService;
@@ -51,8 +54,11 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             List<Integer> ids1 = this.listByNumber(number);
             if (!ids1.isEmpty())
                 throw new BaseRuntimeException("档案编号不能重复");
-            List<Integer> ids2 = this.listByDataKey(dataKey);
+            List<Integer> ids2 = this.iSysArchivesLibraryFieldDefaultService.listByDataKey(dataKey);
             if (!ids2.isEmpty())
+                throw new BaseRuntimeException("key不能与系统默认重复");
+            List<Integer> ids3 = this.listByDataKey(dataKey);
+            if (!ids3.isEmpty())
                 throw new BaseRuntimeException("key不能重复");
         }
         SysArchivesLibrary sysArchivesLibrary = new SysArchivesLibrary();
@@ -69,13 +75,27 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         if (type == 2) {
             List<SysArchivesLibraryField> sysArchivesLibraryFields = new ArrayList<>();
             List<CommTableField> commTableFields = new ArrayList<>();
+
+            List<SysArchivesLibraryFieldDefault> sysArchivesLibraryFieldDefaults = iSysArchivesLibraryFieldDefaultService.list();
+            for (SysArchivesLibraryFieldDefault sysArchivesLibraryFieldDefault : sysArchivesLibraryFieldDefaults) {
+                //从系统默认中的字段复制到档案库的字段
+                SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
+                BeanUtil.copyProperties(sysArchivesLibraryFieldDefault, sysArchivesLibraryField, "id");
+                sysArchivesLibraryField.setArchivesLibraryId(sysArchivesLibrary.getId());
+                sysArchivesLibraryField.setSystem(EnumFlag.True.getValue());
+                sysArchivesLibraryFields.add(sysArchivesLibraryField);
+                CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(dataKey, sysArchivesLibraryField);
+                commTableFields.add(commTableField);
+            }
+
             List<SysTemplateLibraryField> sysTemplateLibraryFields = iSysTemplateLibraryFieldService.listByTemplateLibraryId(templateLibraryId);
             for (SysTemplateLibraryField sysTemplateLibraryField : sysTemplateLibraryFields) {
-                //从模板库中的字段导复制到档案库的字段
+                //从模板库中的字段复制到档案库的字段
                 SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
                 BeanUtil.copyProperties(sysTemplateLibraryField, sysArchivesLibraryField, "id");
                 sysArchivesLibraryField.setArchivesLibraryId(sysArchivesLibrary.getId());
                 sysArchivesLibraryFields.add(sysArchivesLibraryField);
+                sysArchivesLibraryField.setSystem(EnumFlag.False.getValue());
                 CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(dataKey, sysArchivesLibraryField);
                 commTableFields.add(commTableField);
             }
@@ -117,8 +137,11 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             List<Integer> ids1 = this.listByNumber(number);
             if (!ids1.isEmpty() && !ids1.get(0).equals(id))
                 throw new BaseRuntimeException("档案编号不能重复");
-            List<Integer> ids2 = this.listByDataKey(dataKey);
-            if (!ids2.isEmpty() && !ids2.get(0).equals(id))
+            List<Integer> ids2 = this.iSysArchivesLibraryFieldDefaultService.listByDataKey(dataKey);
+            if (!ids2.isEmpty())
+                throw new BaseRuntimeException("key不能与系统默认重复");
+            List<Integer> ids3 = this.listByDataKey(dataKey);
+            if (!ids3.isEmpty() && !ids3.get(0).equals(id))
                 throw new BaseRuntimeException("key不能重复");
         }
 
@@ -179,6 +202,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                             SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
                             BeanUtil.copyProperties(sysTemplateLibraryField, sysArchivesLibraryField, "id");
                             sysArchivesLibraryField.setArchivesLibraryId(id);
+                            sysArchivesLibraryField.setSystem(EnumFlag.False.getValue());
                             sysArchivesLibraryFields.add(sysArchivesLibraryField);
                             CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(dataKey, sysArchivesLibraryField);
                             commTableFields.add(commTableField);
@@ -219,7 +243,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             throw new BaseRuntimeException("key不能为空");
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .select(SysArchivesLibrary.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
                 .eq(SysArchivesLibrary::getDataKey, dataKey);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
