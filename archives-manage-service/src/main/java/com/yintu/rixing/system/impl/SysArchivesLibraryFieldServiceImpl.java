@@ -66,6 +66,10 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
     @Override
     public void removeByIds(Set<Integer> ids) {
         List<SysArchivesLibraryField> sysArchivesLibraryFields = this.listByIds(ids);
+        sysArchivesLibraryFields.forEach(sysArchivesLibraryField -> {
+            if (sysArchivesLibraryField.getSystem().equals(EnumFlag.True.getValue()))
+                throw new BaseRuntimeException("系统默认key不能删除");
+        });
         Map<Integer, List<SysArchivesLibraryField>> sysArchivesLibraryFieldGroupMap =
                 sysArchivesLibraryFields.stream().collect(Collectors.groupingBy(SysArchivesLibraryField::getArchivesLibraryId));
         super.removeByIds(ids);
@@ -88,6 +92,8 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             throw new BaseRuntimeException("当前模板库中key值不能重复");
         SysArchivesLibraryField sysArchivesLibraryField = this.getById(id);
         if (sysArchivesLibraryField != null) {
+            if (sysArchivesLibraryField.getSystem().equals(EnumFlag.True.getValue()))
+                throw new BaseRuntimeException("系统默认key不能修改");
             String oldDataKey = sysArchivesLibraryField.getDataKey();
             Short oldIndex = sysArchivesLibraryField.getIndex();
             BeanUtil.copyProperties(sysArchivesLibraryFieldFormDto, sysArchivesLibraryField);
@@ -162,6 +168,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
                 .eq(SysArchivesLibraryField::getTemplateLibraryId, templateLibraryId);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
+
 
     @Override
     public List<SysArchivesLibraryField> listByArchivesLibraryId(Integer archivesLibraryId) {
