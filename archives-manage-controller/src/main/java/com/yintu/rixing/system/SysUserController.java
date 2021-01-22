@@ -52,7 +52,7 @@ public class SysUserController extends Authenticator implements BaseController<S
     @Log(level = EnumLogLevel.WARN, module = "系统设置", context = "删除用户信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除用户信息", notes = "删除用户信息", position = 2)
-    @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
+    @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path")
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids) {
         iSysUserService.removeByIds(ids);
         return ResultDataUtil.ok("删除用户信息成功");

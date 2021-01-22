@@ -47,6 +47,7 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @PostMapping
     @ApiOperation(value = "添加临时库信息", notes = "添加临时库信息")
     @ApiOperationSupport(order = 1)
+    @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<Object> add(@RequestParam Map<String, String> params) {
         iDataTemporaryLibraryService.save(ObjectConvertUtil.getAddFormDto(params));
         return ResultDataUtil.ok("添加临时库信息成功");
@@ -55,11 +56,11 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "删除临时库信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除临时库信息", notes = "删除临时库信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path"),
-            @ApiImplicitParam(name = "archivesLibraryId", value = "档案库id", required = true, paramType = "query")
-    })
     @ApiOperationSupport(order = 2)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
+    })
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
         iDataTemporaryLibraryService.removeByIds(ids, archivesLibraryId);
         return ResultDataUtil.ok("删除临时库信息成功");
@@ -68,7 +69,10 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "修改临时库信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改临时库信息", notes = "修改临时库信息")
-    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
+    })
     @ApiOperationSupport(order = 3)
     public ResultDataUtil<Object> edit(@PathVariable Integer id, @RequestParam Map<String, String> params) {
         params.put(ObjectConvertUtil.ID, id.toString());
@@ -80,8 +84,8 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @GetMapping("/{id}")
     @ApiOperation(value = "查询临时库单条信息", notes = "查询临时库单条信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path"),
-            @ApiImplicitParam(name = "archivesLibraryId", value = "档案库id", required = true, paramType = "query")
+            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
     @ApiOperationSupport(order = 4)
     public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
@@ -93,10 +97,14 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @GetMapping
     @ApiOperation(value = "查询临时库列表信息", notes = "查询临时库列表信息")
     @ApiOperationSupport(order = 5)
+    @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
         DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
         return ResultDataUtil.ok("查询临时库列表信息成功", dataCommonVo);
     }
+
+
+
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库档案库列表信息树")
     @GetMapping("/sys-archives-library")
@@ -111,8 +119,8 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @PostMapping("/import")
     @ApiOperation(value = "批量导入临时库信息", notes = "批量导入临时库信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "file", value = "文件对象", required = true, dataType = "__file", paramType = "form"),
-            @ApiImplicitParam(name = "archivesLibraryId", value = "档案库id", required = true, dataType = "int", paramType = "form")
+            @ApiImplicitParam(name = "file", dataType = "__file", value = "文件对象", required = true, paramType = "form"),
+            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "form")
     })
     @ApiOperationSupport(order = 7)
     public ResultDataUtil<Object> importExcelData(@RequestParam("file") MultipartFile multipartFile, @RequestParam Integer archivesLibraryId) throws IOException {
