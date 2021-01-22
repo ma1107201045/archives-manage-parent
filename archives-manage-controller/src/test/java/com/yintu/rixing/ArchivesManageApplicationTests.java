@@ -6,17 +6,13 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.common.CommTableField;
 import com.yintu.rixing.common.ICommTableFieldService;
-import com.yintu.rixing.data.IDataArchivesCollectionService;
 import com.yintu.rixing.data.impl.DataCommonService;
 import com.yintu.rixing.demo.DeTest;
 import com.yintu.rixing.demo.DeTestMapper;
-import com.yintu.rixing.demo.IDeTestService;
-import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.enumobject.EnumFlag;
-import com.yintu.rixing.system.ISysPermissionService;
 import com.yintu.rixing.pojo.SysPermissionPojo;
+import com.yintu.rixing.system.ISysPermissionService;
 import com.yintu.rixing.system.ISysUserService;
-import com.yintu.rixing.system.SysUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,8 +32,6 @@ public class ArchivesManageApplicationTests {
     private ISysPermissionService iSysPermissionService;
     @Autowired
     private ICommTableFieldService iCommTableFieldService;
-    @Autowired
-    private IDataArchivesCollectionService iDataArchivesCollectionService;
 
     @Autowired
     private DataCommonService dataCommonService;
