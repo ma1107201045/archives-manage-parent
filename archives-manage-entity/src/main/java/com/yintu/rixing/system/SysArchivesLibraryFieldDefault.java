@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- *
+ * 系统档案库字段默认表
  * </p>
  *
  * @author mlf
