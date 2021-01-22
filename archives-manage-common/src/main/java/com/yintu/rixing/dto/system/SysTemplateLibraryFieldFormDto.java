@@ -1,5 +1,6 @@
 package com.yintu.rixing.dto.system;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.yintu.rixing.dto.base.IdDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -43,6 +44,18 @@ public class SysTemplateLibraryFieldFormDto extends IdDto {
     @ApiModelProperty(value = "字段顺序", required = true)
     @NotNull
     private Integer order;
+
+    @ApiModelProperty(value = "字段是否在页面查询 1.是 0.否", required = true)
+    @NotNull
+    private Short query;
+
+    @ApiModelProperty(value = "字段是否在页面表头是否显示 1.是 0.否", required = true)
+    @NotNull
+    private Short title;
+
+    @ApiModelProperty(value = "字段是否在页面表单是否显示 1.是 0.否", required = true)
+    @NotNull
+    private Short form;
 
     @ApiModelProperty(value = "模板库id", required = true)
     @NotNull

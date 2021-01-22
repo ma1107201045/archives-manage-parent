@@ -47,7 +47,6 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @PostMapping
     @ApiOperation(value = "添加临时库信息", notes = "添加临时库信息")
     @ApiOperationSupport(order = 1)
-    @ApiIgnore
     public ResultDataUtil<Object> add(@RequestParam Map<String, String> params) {
         iDataTemporaryLibraryService.save(ObjectConvertUtil.getAddFormDto(params));
         return ResultDataUtil.ok("添加临时库信息成功");
@@ -115,13 +114,7 @@ public class Data01TemporaryLibraryController extends Authenticator {
         return ResultDataUtil.ok("批量导入临时库信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "下载临时库信息模板")
-    @GetMapping("/download-template")
-    @ApiOperation(value = "下载临时库信息模板", notes = "下载临时库信息模板")
-    @ApiOperationSupport(order = 8)
-    public void exportExcelTemplateFile(HttpServletResponse response, @RequestParam Integer archivesLibraryId) throws IOException {
-        iDataTemporaryLibraryService.exportExcelTemplateFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), archivesLibraryId);
-    }
+
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出临时库信息")
     @GetMapping("/export/{ids}")

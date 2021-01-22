@@ -49,20 +49,36 @@ public class SysArchivesLibraryField extends BaseEntity {
     @TableField("`order`")
     private Integer order;
 
-    @ApiModelProperty(value = "档案库id", position = 12)
+    @ApiModelProperty(value = "字段是否在页面查询", position = 12)
+    @TableField("query")
+    private Short query;
+
+    @ApiModelProperty(value = "字段是否在页面表头是否显示", position = 13)
+    @TableField("title")
+    private Short title;
+
+    @ApiModelProperty(value = "字段是否在页面表单是否显示", position = 14)
+    @TableField("form")
+    private Short form;
+
+    @ApiModelProperty(value = "字段是否默认", position = 15)
+    @TableField("system")
+    private Short system;
+
+    @ApiModelProperty(value = "档案库id", position = 16)
     @TableField("archives_library_id")
     private Integer archivesLibraryId;
 
-    @ApiModelProperty(value = "模板库id", position = 13)
+    @ApiModelProperty(value = "模板库id", position = 17)
     @TableField("template_library_id")
     private Integer templateLibraryId;
 
 
-    @ApiModelProperty(value = "模板库字段类型id", position = 14)
+    @ApiModelProperty(value = "模板库字段类型id", position = 18)
     @TableField("template_library_field_type_id")
     private Integer templateLibraryFieldTypeId;
 
-    @ApiModelProperty(value = "模板库字段对应类型", position = 15)
+    @ApiModelProperty(value = "模板库字段对应类型", position = 19)
     @TableField(exist = false)
     private SysTemplateLibraryFieldType sysTemplateLibraryFieldType;
 

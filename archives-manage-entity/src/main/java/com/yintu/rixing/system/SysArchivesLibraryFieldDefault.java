@@ -8,21 +8,19 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * <p>
- * 系统模板库字段表
+ *
  * </p>
  *
  * @author mlf
- * @since 2020-12-30
+ * @since 2021-01-22
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_template_library_field")
-@ApiModel(value = "SysTemplateLibraryField对象", description = "系统模板库字段表")
-public class SysTemplateLibraryField extends BaseEntity {
+@TableName("sys_archives_library_field_default")
+@ApiModel(value = "SysArchivesLibraryFieldDefault对象", description = "系统档案库字段默认表")
+public class SysArchivesLibraryFieldDefault extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,7 +32,7 @@ public class SysTemplateLibraryField extends BaseEntity {
     @TableField("data_key")
     private String dataKey;
 
-    @ApiModelProperty(value = "字段长度", required = true, position = 8)
+    @ApiModelProperty(value = "字段长度", position = 8)
     @TableField("length")
     private Integer length;
 
@@ -50,27 +48,21 @@ public class SysTemplateLibraryField extends BaseEntity {
     @TableField("`order`")
     private Integer order;
 
-    @ApiModelProperty(value = "字段是否在页面查询 1.是 0.否", position = 12)
+    @ApiModelProperty(value = "字段是否在页面查询", position = 12)
     @TableField("query")
     private Short query;
 
-    @ApiModelProperty(value = "字段是否在页面表头是否显示 1.是 0.否", position = 13)
+    @ApiModelProperty(value = "字段是否在页面表头是否显示", position = 13)
     @TableField("title")
     private Short title;
 
-    @ApiModelProperty(value = "字段是否在页面表单是否显示 1.是 0.否", position = 14)
-    @TableField("form")
+    @ApiModelProperty(value = "字段是否在页面表单是否显示", position = 14)
+    @TableField("Short")
     private Short form;
 
-    @ApiModelProperty(value = "模板库id", position = 15)
-    @TableField("template_library_id")
-    private Integer templateLibraryId;
-
-    @ApiModelProperty(value = "模板库字段类型id", position = 16)
+    @ApiModelProperty(value = "模板库字段类型id", position = 15)
     @TableField("template_library_field_type_id")
     private Integer templateLibraryFieldTypeId;
 
-    @ApiModelProperty(value = "模板库字段对应类型", position = 17)
-    @TableField(exist = false)
-    private SysTemplateLibraryFieldType sysTemplateLibraryFieldType;
+
 }

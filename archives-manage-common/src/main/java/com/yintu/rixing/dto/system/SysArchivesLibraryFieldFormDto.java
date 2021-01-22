@@ -43,6 +43,18 @@ public class SysArchivesLibraryFieldFormDto extends IdDto {
     @NotNull
     private Integer order;
 
+    @ApiModelProperty(value = "字段是否在页面查询 1.是 0.否", required = true)
+    @NotNull
+    private Short query;
+
+    @ApiModelProperty(value = "字段是否在页面表头是否显示 1.是 0.否", required = true)
+    @NotNull
+    private Short title;
+
+    @ApiModelProperty(value = "字段是否在页面表单是否显示 1.是 0.否", required = true)
+    @NotNull
+    private Short form;
+
     @ApiModelProperty(value = "档案库id", required = true)
     @NotNull
     private Integer archivesLibraryId;

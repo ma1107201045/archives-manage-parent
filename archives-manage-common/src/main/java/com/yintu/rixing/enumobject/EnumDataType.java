@@ -7,22 +7,24 @@ package com.yintu.rixing.enumobject;
  */
 public enum EnumDataType {
 
-    VARCHAR("文本框(文本)", 1, ""),
-    TEXT("文本域", 2, ""),
-    TINYINT("单选框", 3, ""),
-    SMALLINT("文本框(状态值)", 4, ""),
-    INT("文本框(数值)", 5, ""),
-    DATETIME("日期时间框", 6, ""),
-    DATE("日期框", 7, "");
+    VARCHAR("文本框(文本)", 1, "varchar", ""),
+    TEXT("文本域", 2, "text", ""),
+    TINYINT("单选框", 3, "tinyint", ""),
+    SMALLINT("文本框(状态值)", 4, "smallint", ""),
+    INT("文本框(数值)", 5, "int", ""),
+    DATETIME("日期时间框", 6, "datetime", ""),
+    DATE("日期框", 7, "date", "");
 
 
     private final String name;
     private final Integer value;
+    private final String dataKey;
     private final String description;
 
-    EnumDataType(String name, Integer value, String description) {
+    EnumDataType(String name, Integer value, String dataKey, String description) {
         this.name = name;
         this.value = value;
+        this.dataKey = dataKey;
         this.description = description;
     }
 
@@ -32,6 +34,10 @@ public enum EnumDataType {
 
     public Integer getValue() {
         return value;
+    }
+
+    public String getDataKey() {
+        return dataKey;
     }
 
     public String getDescription() {

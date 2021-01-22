@@ -210,7 +210,7 @@ public class DataCommonService {
 
         dataCommonTitleVo.setShow(false);
         dataCommonTitleVo.setTypeId(EnumDataType.INT.getValue());
-        dataCommonTitleVo.setTypeProp("int");
+        dataCommonTitleVo.setTypeProp(EnumDataType.INT.getDataKey());
         dataCommonTitleVo.setTypeLabel(EnumDataType.INT.getName());
         dataCommonTitleVo.setNotNull(false);
         return dataCommonTitleVo;
@@ -223,7 +223,7 @@ public class DataCommonService {
 
         dataCommonTitleVo.setShow(false);
         dataCommonTitleVo.setTypeId(EnumDataType.SMALLINT.getValue());
-        dataCommonTitleVo.setTypeProp("smallint");
+        dataCommonTitleVo.setTypeProp(EnumDataType.SMALLINT.getDataKey());
         dataCommonTitleVo.setTypeLabel(EnumDataType.SMALLINT.getName());
         dataCommonTitleVo.setNotNull(false);
         return dataCommonTitleVo;
