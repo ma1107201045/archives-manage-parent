@@ -6,6 +6,7 @@ import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
+import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -44,8 +46,8 @@ public class Data00ArchivesCollectionController extends Authenticator {
     @GetMapping
     @ApiOperation(value = "查询档案收集列表信息", notes = "查询档案收集列表信息")
     @ApiOperationSupport(order = 1)
-    public ResultDataUtil<DataCommonVo> findPage(@Validated DataCommonQueryDto dataCommonQueryDto) {
-        DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPage(dataCommonQueryDto);
+    public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
         return ResultDataUtil.ok("查询档案收集列表信息成功", dataCommonVo);
     }
 

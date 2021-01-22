@@ -2,7 +2,9 @@ package com.yintu.rixing.data;
 
 import lombok.Data;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: mlf
@@ -19,4 +21,6 @@ public class DataCommonAll {
     private List<DataCommon> dataCommons;
 
     private List<List<DataCommon>> lists;
+
+
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 /**
  * @Author: mlf
@@ -21,4 +22,7 @@ public class DataCommonQueryDto extends PageDto {
     @ApiModelProperty(value = "档案库id", required = true)
     @NotNull
     private Integer archivesLibraryId;
+
+    @ApiModelProperty(value = "档案库参数集")
+    private Map<String, String> params;
 }

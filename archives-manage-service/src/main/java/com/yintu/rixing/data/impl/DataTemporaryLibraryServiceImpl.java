@@ -31,47 +31,44 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
 
     @Override
     public void save(DataCommonFormDto dataCommonFormDto) {
-        DataCommonAll dataCommonAll = this.parametersToProofread(dataCommonFormDto);
+        DataCommonAll dataCommonAll = this.saveOrUpdateHandler(dataCommonFormDto);
         dataTemporaryLibraryMapper.insertSelective(dataCommonAll);
     }
 
     @Override
     public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
-        AssertUtil.notNull(archivesLibraryId, "档案库id不能为空");
-        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
-        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
-        dataTemporaryLibraryMapper.deleteByPrimaryKeys(ids, TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey()));
+        DataCommonAll dataCommonAll = this.removeOrGetHandler(archivesLibraryId);
+        dataTemporaryLibraryMapper.deleteByPrimaryKeys(ids, dataCommonAll.getTableName());
     }
 
     @Override
     public void updateById(DataCommonFormDto dataCommonFormDto) {
-        DataCommonAll dataCommonAll = this.parametersToProofread(dataCommonFormDto);
-        Map<String, Object> map = dataTemporaryLibraryMapper.selectByPrimaryKey(dataCommonAll);
+        DataCommonAll dataCommonAll = this.saveOrUpdateHandler(dataCommonFormDto);
+        Integer id = dataCommonAll.getId();
+        String tableName = dataCommonAll.getTableName();
+        Map<String, Object> map = dataTemporaryLibraryMapper.selectByPrimaryKey(id, tableName);
         if (map != null) {
             dataTemporaryLibraryMapper.updateByPrimaryKeySelective(dataCommonAll);
         }
     }
 
     @Override
-    public Map<String, Object> getById(DataCommonFormDto dataCommonFormDto) {
-        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(dataCommonFormDto.getArchivesLibraryId());
-        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
-        DataCommonAll dataCommonAll = new DataCommonAll();
-        dataCommonAll.setId(dataCommonFormDto.getId());
-        dataCommonAll.setTableName(TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey()));
-        return dataTemporaryLibraryMapper.selectByPrimaryKey(dataCommonAll);
+    public Map<String, Object> getById(Integer id, Integer archivesLibraryId) {
+        DataCommonAll dataCommonAll = this.removeOrGetHandler(archivesLibraryId);
+        return dataTemporaryLibraryMapper.selectByPrimaryKey(id, dataCommonAll.getTableName());
     }
+
 
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
+        DataCommonAll dataCommonAll = this.page(dataCommonPageDto);
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
-        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
-        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
+        
         DataCommonVo dataCommonVo = new DataCommonVo();
-        dataCommonVo.setTitles(this.getDataCommonFields(archivesLibraryId));
-        dataCommonVo.setPage(dataTemporaryLibraryMapper.selectPage(new Page<>(num, size), TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey())));
+        dataCommonVo.setFields(this.getDataCommonFields(archivesLibraryId));
+        dataCommonVo.setPage(dataTemporaryLibraryMapper.selectPage(new Page<>(num, size), dataCommonAll));
         return dataCommonVo;
     }
 

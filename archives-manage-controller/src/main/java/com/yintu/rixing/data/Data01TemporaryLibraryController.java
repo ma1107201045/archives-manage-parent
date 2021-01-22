@@ -55,7 +55,10 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "删除临时库信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除临时库信息", notes = "删除临时库信息")
-    @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "archivesLibraryId", value = "档案库id", required = true, paramType = "query")
+    })
     @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
         iDataTemporaryLibraryService.removeByIds(ids, archivesLibraryId);
@@ -76,10 +79,13 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询临时库单条信息", notes = "查询临时库单条信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "archivesLibraryId", value = "档案库id", required = true, paramType = "query")
+    })
     @ApiOperationSupport(order = 4)
-    public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Map<String, String> params) {
-        params.put(ObjectConvertUtil.ID, id.toString());
-        iDataTemporaryLibraryService.getById(ObjectConvertUtil.getNotAddFormDto(params));
+    public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
+        iDataTemporaryLibraryService.getById(id, archivesLibraryId);
         return ResultDataUtil.ok("查询临时库单条信息成功");
     }
 
@@ -87,8 +93,8 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @GetMapping
     @ApiOperation(value = "查询临时库列表信息", notes = "查询临时库列表信息")
     @ApiOperationSupport(order = 5)
-    public ResultDataUtil<DataCommonVo> findPage(@Validated DataCommonQueryDto dataCommonQueryDto) {
-        DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPage(dataCommonQueryDto);
+    public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
         return ResultDataUtil.ok("查询临时库列表信息成功", dataCommonVo);
     }
 
@@ -113,7 +119,6 @@ public class Data01TemporaryLibraryController extends Authenticator {
         iDataTemporaryLibraryService.importExcelRecord(multipartFile, archivesLibraryId);
         return ResultDataUtil.ok("批量导入临时库信息成功");
     }
-
 
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出临时库信息")

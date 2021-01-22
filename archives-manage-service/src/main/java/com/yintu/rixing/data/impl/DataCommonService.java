@@ -10,6 +10,7 @@ import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonAll;
 import com.yintu.rixing.data.DataCommonMapper;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
+import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumDataType;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
@@ -40,7 +41,6 @@ import java.util.stream.Collectors;
 @Service
 public class DataCommonService {
 
-
     protected static final String TEMPLATE = "模板";
     protected static final String RECORD = "记录";
     protected static final String SUFFIX = ".xlsx";
@@ -53,85 +53,24 @@ public class DataCommonService {
     protected ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
 
 
-    protected DataCommonAll parametersToProofread(DataCommonFormDto dataCommonDto) {
-        Integer archivesLibraryId = dataCommonDto.getArchivesLibraryId();
+    protected DataCommonAll saveOrUpdateHandler(DataCommonFormDto dataCommonFormDto) {
+        Integer archivesLibraryId = dataCommonFormDto.getArchivesLibraryId();
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
-        Map<String, String> params = dataCommonDto.getParams();
+        Map<String, String> params = dataCommonFormDto.getParams();
         List<DataCommon> dataCommons = new ArrayList<>();
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
-            String name = sysArchivesLibraryField.getName();
-            String dataKey = sysArchivesLibraryField.getDataKey();
-            Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
-            Integer length = sysArchivesLibraryField.getLength();
-            Short required = sysArchivesLibraryField.getRequired();
-            String value = params.get(dataKey);
-            Object newValue = value;
-            if (required == 1 && (value == null || value.isEmpty()))
-                throw new BaseRuntimeException(name + "不能为空");
-            switch (EnumDataType.get(dataType)) {
-                case VARCHAR:
-                case TEXT:
-                    if (value != null && value.length() > length)
-                        throw new BaseRuntimeException(dataType + "长度超过定义的长度");
-                    break;
-                case TINYINT:
-                    newValue = Byte.valueOf(value);
-                    break;
-                case SMALLINT:
-                    newValue = Short.valueOf(value);
-                    break;
-                case INT:
-                    newValue = Integer.valueOf(value);
-                    break;
-                case DATETIME:
-                    newValue = DateUtil.parseDateTime(value);
-                    break;
-                case DATE:
-                    newValue = DateUtil.parseDate(value);
-                    break;
-            }
-            DataCommon dataCommon = new DataCommon();
-            dataCommon.setFieldName(dataKey);
-            dataCommon.setFieldValue(newValue);
-            dataCommons.add(dataCommon);
-        }
-        DataCommonAll dataCommonAll = new DataCommonAll();
-        String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
-        dataCommonAll.setTableName(tableName);
-        dataCommonAll.setId(dataCommonDto.getId());
-        dataCommonAll.setDataCommons(dataCommons);
-        return dataCommonAll;
-    }
-
-    protected DataCommonAll importExcelFile(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
-        //浅层次判断此文件是否是excel文件
-        String ext = FileUtil.extName(multipartFile.getOriginalFilename());
-        if (!("xls".equals(ext) || "xlsx".equals(ext)))
-            throw new BaseRuntimeException("此文件类型不支持批量导入");
-        InputStream in = multipartFile.getInputStream();
-        ExcelReader excelReader = ExcelUtil.getReader(in, true);
-        List<Map<String, Object>> records = excelReader.readAll();
-
-        SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
-        AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
-        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
-        List<List<DataCommon>> lists = new ArrayList<>();
-
-        for (Map<String, Object> record : records) {
-            List<DataCommon> dataCommons = new ArrayList<>();
-            for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
+            if (sysArchivesLibraryField.getQuery().equals(EnumFlag.True.getValue())) {
                 String name = sysArchivesLibraryField.getName();
                 String dataKey = sysArchivesLibraryField.getDataKey();
                 Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
                 Integer length = sysArchivesLibraryField.getLength();
                 Short required = sysArchivesLibraryField.getRequired();
-                Object obj = record.get(name);
-                if (required == 1 && (obj == null || (obj instanceof String && ((String) obj).isEmpty())))
-                    throw new BaseRuntimeException(name + "不能为空");
-                String value = String.valueOf(obj);
+                String value = params.get(dataKey);
                 Object newValue = value;
+                if (required == 1 && (value == null || value.isEmpty()))
+                    throw new BaseRuntimeException(name + "不能为空");
                 switch (EnumDataType.get(dataType)) {
                     case VARCHAR:
                     case TEXT:
@@ -159,7 +98,130 @@ public class DataCommonService {
                 dataCommon.setFieldValue(newValue);
                 dataCommons.add(dataCommon);
             }
-            lists.add(dataCommons);
+        }
+        DataCommonAll dataCommonAll = new DataCommonAll();
+        String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
+        dataCommonAll.setTableName(tableName);
+        dataCommonAll.setId(dataCommonFormDto.getId());
+        dataCommonAll.setDataCommons(dataCommons);
+        return dataCommonAll;
+    }
+
+    protected DataCommonAll removeOrGetHandler(Integer archivesLibraryId) {
+        AssertUtil.notNull(archivesLibraryId, "档案库id不能为空");
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
+        String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
+        DataCommonAll dataCommonAll = new DataCommonAll();
+        dataCommonAll.setTableName(tableName);
+        return dataCommonAll;
+    }
+
+    protected DataCommonAll page(DataCommonQueryDto dataCommonQueryDto) {
+        Integer archivesLibraryId = dataCommonQueryDto.getArchivesLibraryId();
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
+        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
+        Map<String, String> params = dataCommonQueryDto.getParams();
+        List<DataCommon> dataCommons = new ArrayList<>();
+        for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
+            if (sysArchivesLibraryField.getQuery().equals(EnumFlag.True.getValue())) {
+                String dataKey = sysArchivesLibraryField.getDataKey();
+                Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
+                String value = params.get(dataKey);
+                if (value == null || value.equals(""))
+                    continue;
+                Object newValue = value;
+                switch (EnumDataType.get(dataType)) {
+                    case VARCHAR:
+                    case TEXT:
+                        break;
+                    case TINYINT:
+                        newValue = Byte.valueOf(value);
+                        break;
+                    case SMALLINT:
+                        newValue = Short.valueOf(value);
+                        break;
+                    case INT:
+                        newValue = Integer.valueOf(value);
+                        break;
+                    case DATETIME:
+                        newValue = DateUtil.parseDateTime(value);
+                        break;
+                    case DATE:
+                        newValue = DateUtil.parseDate(value);
+                        break;
+                }
+                DataCommon dataCommon = new DataCommon();
+                dataCommon.setFieldName(dataKey);
+                dataCommon.setFieldValue(newValue);
+                dataCommons.add(dataCommon);
+            }
+        }
+        DataCommonAll dataCommonAll = new DataCommonAll();
+        String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
+        dataCommonAll.setTableName(tableName);
+        dataCommonAll.setDataCommons(dataCommons);
+        return dataCommonAll;
+    }
+
+    protected DataCommonAll importExcelFile(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
+        //浅层次判断此文件是否是excel文件
+        String ext = FileUtil.extName(multipartFile.getOriginalFilename());
+        if (!("xls".equals(ext) || "xlsx".equals(ext)))
+            throw new BaseRuntimeException("此文件类型不支持批量导入");
+        InputStream in = multipartFile.getInputStream();
+        ExcelReader excelReader = ExcelUtil.getReader(in, true);
+        List<Map<String, Object>> records = excelReader.readAll();
+
+        SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
+        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
+        List<List<DataCommon>> lists = new ArrayList<>();
+
+        for (Map<String, Object> record : records) {
+            List<DataCommon> dataCommons = new ArrayList<>();
+            for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
+                if (sysArchivesLibraryField.getQuery().equals(EnumFlag.True.getValue())) {
+                    String name = sysArchivesLibraryField.getName();
+                    String dataKey = sysArchivesLibraryField.getDataKey();
+                    Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
+                    Integer length = sysArchivesLibraryField.getLength();
+                    Short required = sysArchivesLibraryField.getRequired();
+                    Object obj = record.get(name);
+                    if (required == 1 && (obj == null || (obj instanceof String && ((String) obj).isEmpty())))
+                        throw new BaseRuntimeException(name + "不能为空");
+                    String value = String.valueOf(obj);
+                    Object newValue = value;
+                    switch (EnumDataType.get(dataType)) {
+                        case VARCHAR:
+                        case TEXT:
+                            if (value != null && value.length() > length)
+                                throw new BaseRuntimeException(dataType + "长度超过定义的长度");
+                            break;
+                        case TINYINT:
+                            newValue = Byte.valueOf(value);
+                            break;
+                        case SMALLINT:
+                            newValue = Short.valueOf(value);
+                            break;
+                        case INT:
+                            newValue = Integer.valueOf(value);
+                            break;
+                        case DATETIME:
+                            newValue = DateUtil.parseDateTime(value);
+                            break;
+                        case DATE:
+                            newValue = DateUtil.parseDate(value);
+                            break;
+                    }
+                    DataCommon dataCommon = new DataCommon();
+                    dataCommon.setFieldName(dataKey);
+                    dataCommon.setFieldValue(newValue);
+                    dataCommons.add(dataCommon);
+                }
+                lists.add(dataCommons);
+            }
         }
         DataCommonAll dataCommonAll = new DataCommonAll();
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());

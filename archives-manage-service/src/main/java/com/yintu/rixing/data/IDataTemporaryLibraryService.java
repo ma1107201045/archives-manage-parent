@@ -27,7 +27,7 @@ public interface IDataTemporaryLibraryService {
     @Transactional(rollbackFor = {Exception.class})
     void updateById(DataCommonFormDto dataCommonDto);
 
-    Map<String, Object> getById(DataCommonFormDto dataCommonFormDto);
+    Map<String, Object> getById(Integer id, Integer archivesLibraryId);
 
     DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
 

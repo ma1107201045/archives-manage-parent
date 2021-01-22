@@ -81,10 +81,17 @@
         from `${tableName}`
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+
     <select id="selectPage" resultType="java.util.Map">
         select *
         from `${tableName}`
-        where `status` = 1
+        <where>
+            <foreach collection="dataCommons" index="index" item="dataCommon" separator="and">
+                `${dataCommon.fieldName}`= #{dataCommon.fieldValue}
+            </foreach>
+            `status` = 1
+        </where>
         order by `id` DESC
     </select>
 </mapper>

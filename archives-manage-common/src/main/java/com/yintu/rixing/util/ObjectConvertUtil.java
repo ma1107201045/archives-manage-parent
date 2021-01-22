@@ -39,6 +39,7 @@ public class ObjectConvertUtil {
         dataCommonQueryDto.setArchivesLibraryId(Integer.valueOf(params.get(ARCHIVES_LIBRARY_ID)));
         dataCommonQueryDto.setNum(Integer.valueOf(params.get(NUM)));
         dataCommonQueryDto.setSize(Integer.valueOf(params.get(SIZE)));
+        dataCommonQueryDto.setParams(params);
         return dataCommonQueryDto;
     }
 
