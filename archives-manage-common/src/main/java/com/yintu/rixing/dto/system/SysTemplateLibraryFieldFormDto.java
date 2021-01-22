@@ -49,11 +49,11 @@ public class SysTemplateLibraryFieldFormDto extends IdDto {
     @NotNull
     private Short query;
 
-    @ApiModelProperty(value = "字段是否在页面表头是否显示 1.是 0.否", required = true)
+    @ApiModelProperty(value = "字段是否在页面表头显示 1.是 0.否", required = true)
     @NotNull
     private Short title;
 
-    @ApiModelProperty(value = "字段是否在页面表单是否显示 1.是 0.否", required = true)
+    @ApiModelProperty(value = "字段是否在页面表单显示 1.是 0.否", required = true)
     @NotNull
     private Short form;
 

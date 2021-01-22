@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/system/sys-template-library")
 @ApiSort(5)
-@Api(tags = "模块库接口")
+@Api(tags = "模板库接口")
 public class SysTemplateLibraryController extends Authenticator {
 
     @Autowired

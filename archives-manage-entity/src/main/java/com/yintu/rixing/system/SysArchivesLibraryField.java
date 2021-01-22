@@ -49,15 +49,15 @@ public class SysArchivesLibraryField extends BaseEntity {
     @TableField("`order`")
     private Integer order;
 
-    @ApiModelProperty(value = "字段是否在页面查询", position = 12)
+    @ApiModelProperty(value = "字段是否在页面查询 1.是 0.否", position = 12)
     @TableField("query")
     private Short query;
 
-    @ApiModelProperty(value = "字段是否在页面表头是否显示", position = 13)
+    @ApiModelProperty(value = "字段是否在页面表头显示 1.是 0.否", position = 13)
     @TableField("title")
     private Short title;
 
-    @ApiModelProperty(value = "字段是否在页面表单是否显示", position = 14)
+    @ApiModelProperty(value = "字段是否在页面表单显示 1.是 0.否", position = 14)
     @TableField("form")
     private Short form;
 
