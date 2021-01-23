@@ -3,6 +3,7 @@ package com.yintu.rixing.common;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,8 +22,6 @@ public interface CommTableFieldMapper {
 
     void alterTableCommentByTableName(String tableName, String tableComment);
 
-    List<CommTableField> showByTableName(String tableName);
-
     long countDataByTableName(String tableName);
 
     //对表字段索引操作
@@ -40,5 +39,6 @@ public interface CommTableFieldMapper {
 
     void alterOrder(String tableName, CommTableField commTableField, String fieldName);
 
+    List<Map<String, String>> showByTableName(String tableName);
 
 }

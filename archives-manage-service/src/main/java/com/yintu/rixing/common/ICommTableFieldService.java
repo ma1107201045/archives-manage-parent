@@ -25,7 +25,6 @@ public interface ICommTableFieldService {
 
     void editTableCommentByTableName(String tableName, String tableComment);
 
-    List<CommTableField> findByTableName(String tableName);
 
     long countDataByTableName(String tableName);
 
@@ -45,6 +44,9 @@ public interface ICommTableFieldService {
     void alter(String tableName, String oldTableName, CommTableField commTableField);
 
     void alterOrder(String tableName, CommTableField commTableField, String fieldName);
+
+
+    List<CommTableField> findByTableName(String tableName);
 
 
     void isHasDataByTableName(String tableName);

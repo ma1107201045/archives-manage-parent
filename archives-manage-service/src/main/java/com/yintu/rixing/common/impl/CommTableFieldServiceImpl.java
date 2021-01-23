@@ -1,5 +1,6 @@
 package com.yintu.rixing.common.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.yintu.rixing.common.CommTableField;
 import com.yintu.rixing.common.CommTableFieldMapper;
 import com.yintu.rixing.common.ICommTableFieldService;
@@ -11,7 +12,9 @@ import com.yintu.rixing.util.TableNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -45,10 +48,6 @@ public class CommTableFieldServiceImpl implements ICommTableFieldService {
         commTableFieldMapper.alterTableCommentByTableName(tableName, tableComment);
     }
 
-    @Override
-    public List<CommTableField> findByTableName(String tableName) {
-        return commTableFieldMapper.showByTableName(tableName);
-    }
 
     @Override
     public long countDataByTableName(String tableName) {
@@ -89,6 +88,34 @@ public class CommTableFieldServiceImpl implements ICommTableFieldService {
     @Override
     public void alterOrder(String tableName, CommTableField commTableField, String fieldName) {
         commTableFieldMapper.alterOrder(tableName, commTableField, fieldName);
+    }
+
+
+    @Override
+    public List<CommTableField> findByTableName(String tableName) {
+        List<Map<String, String>> maps = commTableFieldMapper.showByTableName(tableName);
+        List<CommTableField> commTableFields = new ArrayList<>();
+        for (Map<String, String> map : maps) {
+            CommTableField commTableField = new CommTableField();
+            commTableField.setTableName(tableName);
+            commTableField.setFieldName(map.get("Field"));
+            String type = map.get("Type");
+            List<String> list = StrUtil.split(type, '(');
+            if (!list.isEmpty()) {
+                commTableField.setDataType(list.get(0));
+                if (list.size() == 1) {
+                    commTableField.setLength(0);
+                } else {
+                    String length = list.get(1);
+                    commTableField.setLength(Integer.valueOf(length.substring(0, length.length() - 1)));
+                }
+            }
+            commTableField.setIsIndex("MUL".equals(map.get("Key")) ? (short) 1 : (short) 0);
+            commTableField.setIsNull("YES".equals(map.get("Null")) ? (short) 1 : (short) 0);
+            commTableField.setComment(map.get("Comment"));
+            commTableFields.add(commTableField);
+        }
+        return commTableFields;
     }
 
     @Override
