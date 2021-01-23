@@ -59,7 +59,7 @@ public class DataCommonService {
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndForm(archivesLibraryId);
         Map<String, String> params = dataCommonFormDto.getParams();
-        List<DataCommonKV> dataCommons = new ArrayList<>();
+        List<DataCommonKV> dataCommonKVS = new ArrayList<>();
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
             String name = sysArchivesLibraryField.getName();
             String dataKey = sysArchivesLibraryField.getDataKey();
@@ -92,17 +92,17 @@ public class DataCommonService {
                     newValue = DateUtil.parseDate(value);
                     break;
             }
-            DataCommonKV dataCommon = new DataCommonKV();
-            dataCommon.setFieldName(dataKey);
-            dataCommon.setFieldValue(newValue);
-            dataCommons.add(dataCommon);
+            DataCommonKV dataCommonKV = new DataCommonKV();
+            dataCommonKV.setFieldName(dataKey);
+            dataCommonKV.setFieldValue(newValue);
+            dataCommonKVS.add(dataCommonKV);
         }
-        DataCommon dataCommonAll = new DataCommon();
+        DataCommon dataCommon = new DataCommon();
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
-        dataCommonAll.setTableName(tableName);
-        dataCommonAll.setId(dataCommonFormDto.getId());
-        dataCommonAll.setDataCommons(dataCommons);
-        return dataCommonAll;
+        dataCommon.setTableName(tableName);
+        dataCommon.setId(dataCommonFormDto.getId());
+        dataCommon.setDataCommonKVs(dataCommonKVS);
+        return dataCommon;
     }
 
     protected DataCommon removeOrGetHandler(Integer archivesLibraryId) {
@@ -110,9 +110,9 @@ public class DataCommonService {
         SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
-        DataCommon dataCommonAll = new DataCommon();
-        dataCommonAll.setTableName(tableName);
-        return dataCommonAll;
+        DataCommon dataCommon = new DataCommon();
+        dataCommon.setTableName(tableName);
+        return dataCommon;
     }
 
     protected DataCommon page(DataCommonQueryDto dataCommonQueryDto) {
@@ -121,7 +121,7 @@ public class DataCommonService {
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndQuery(archivesLibraryId);
         Map<String, String> params = dataCommonQueryDto.getParams();
-        List<DataCommonKV> dataCommons = new ArrayList<>();
+        List<DataCommonKV> dataCommonKVS = new ArrayList<>();
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
             String dataKey = sysArchivesLibraryField.getDataKey();
             Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
@@ -149,16 +149,16 @@ public class DataCommonService {
                     newValue = DateUtil.parseDate(value);
                     break;
             }
-            DataCommonKV dataCommon = new DataCommonKV();
-            dataCommon.setFieldName(dataKey);
-            dataCommon.setFieldValue(newValue);
-            dataCommons.add(dataCommon);
+            DataCommonKV dataCommonKV = new DataCommonKV();
+            dataCommonKV.setFieldName(dataKey);
+            dataCommonKV.setFieldValue(newValue);
+            dataCommonKVS.add(dataCommonKV);
         }
-        DataCommon dataCommonAll = new DataCommon();
+        DataCommon dataCommon = new DataCommon();
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
-        dataCommonAll.setTableName(tableName);
-        dataCommonAll.setDataCommons(dataCommons);
-        return dataCommonAll;
+        dataCommon.setTableName(tableName);
+        dataCommon.setDataCommonKVs(dataCommonKVS);
+        return dataCommon;
     }
 
     protected DataCommon importExcelFile(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
@@ -219,18 +219,18 @@ public class DataCommonService {
                 lists.add(dataCommons);
             }
         }
-        DataCommon dataCommonAll = new DataCommon();
+        DataCommon dataCommon = new DataCommon();
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
-        dataCommonAll.setTableName(tableName);
-        dataCommonAll.setLists(lists);
+        dataCommon.setTableName(tableName);
+        dataCommon.setLists(lists);
 
         excelReader.close();
         IoUtil.close(in);
-        return dataCommonAll;
+        return dataCommon;
     }
 
-    public Map<String, Object> getById(DataCommon dataCommonAll) {
-        return dataCommonMapper.selectByPrimaryKey(dataCommonAll);
+    public Map<String, Object> getById(DataCommon dataCommon) {
+        return dataCommonMapper.selectByPrimaryKey(dataCommon);
     }
 
     protected List<DataCommonFieldVo> getDataCommonVos(Integer archivesLibraryId) {
