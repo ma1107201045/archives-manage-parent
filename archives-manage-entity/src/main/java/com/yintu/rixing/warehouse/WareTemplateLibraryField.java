@@ -55,6 +55,22 @@ public class WareTemplateLibraryField extends BaseEntity {
     @TableField("template_library_field_type_id")
     private Integer templateLibraryFieldTypeId;
 
+    @ApiModelProperty(value = "类型区分 0：未选  1：已选")
+    @TableField("typeid")
+    private Integer typeId;
+
+    @ApiModelProperty(value = "字段是否在页面查询 1.是 0.否" )
+    @TableField("query")
+    private Short query;
+
+    @ApiModelProperty(value = "字段是否在页面表头显示 1.是 0.否" )
+    @TableField("title")
+    private Short title;
+
+    @ApiModelProperty(value = "字段是否在页面表单显示 1.是 0.否" )
+    @TableField("form")
+    private Short form;
+
     @ApiModelProperty(value = "模板库字段对应类型")
     @TableField(exist = false)
     private SysTemplateLibraryFieldType sysTemplateLibraryFieldType;

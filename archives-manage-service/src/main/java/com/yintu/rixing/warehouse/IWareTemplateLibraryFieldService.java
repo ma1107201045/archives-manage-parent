@@ -1,5 +1,6 @@
 package com.yintu.rixing.warehouse;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -13,4 +14,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IWareTemplateLibraryFieldService extends IService<WareTemplateLibraryField> {
 
     void updateOrderByIds(Integer id1, Integer id2);
+
+    void creatTable(JSONObject jsonObject,Integer times);
+
+    Integer findTable(String tableName);
 }

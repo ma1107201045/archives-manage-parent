@@ -20,4 +20,10 @@
     create_by, create_time, modified_by, modified_time
   </sql>
 
+  <!--查询表是否存在-->
+  <select id="findTable" parameterType="string" resultType="int">
+        select count(*)
+        from information_schema.TABLES
+        where table_name = #{tableName}
+    </select>
 </mapper>
