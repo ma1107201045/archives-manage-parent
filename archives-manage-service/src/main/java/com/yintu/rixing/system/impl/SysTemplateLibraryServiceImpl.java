@@ -106,6 +106,7 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
     public List<Integer> listByNumber(Integer number) {
         QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
+                .select(SysTemplateLibrary::getId)
                 .eq(SysTemplateLibrary::getNumber, number);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
@@ -116,6 +117,7 @@ public class SysTemplateLibraryServiceImpl extends ServiceImpl<SysTemplateLibrar
             throw new BaseRuntimeException("模板库id不能为空");
         QueryWrapper<SysTemplateLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
+                .select(SysTemplateLibrary::getId)
                 .eq(SysTemplateLibrary::getParentId, id)
                 .eq(SysTemplateLibrary::getType, type);
         return this.listObjs(queryWrapper, integer -> (Integer) integer);

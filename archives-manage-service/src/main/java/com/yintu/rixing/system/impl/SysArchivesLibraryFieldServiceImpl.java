@@ -153,6 +153,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             throw new BaseRuntimeException("档案库id或者key不能为空");
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
+                .select(SysArchivesLibraryField::getId)
                 .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)
                 .eq(SysArchivesLibraryField::getDataKey, dataKey);
         return this.listObjs(queryWrapper, id -> (Integer) id);
@@ -164,6 +165,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             throw new BaseRuntimeException("档案库id或者模板库id不能为空");
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
+                .select(SysArchivesLibraryField::getId)
                 .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)
                 .eq(SysArchivesLibraryField::getTemplateLibraryId, templateLibraryId);
         return this.listObjs(queryWrapper, id -> (Integer) id);
