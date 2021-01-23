@@ -2,34 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.data.DataTemporaryLibraryMapper">
 
-    <insert id="insertSelective" parameterType="com.yintu.rixing.data.DataCommonAll">
+    <insert id="insertSelective" parameterType="com.yintu.rixing.data.dataCommonKV">
         insert into `${tableName}`
         <trim prefix="(" suffix=")">
-            <foreach collection="dataCommons" index="index" item="dataCommon" separator="," close=",">
-                <if test="dataCommon.fieldValue != null">
-                    `${dataCommon.fieldName}`
+            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator="," close=",">
+                <if test="dataCommonKV.fieldValue != null">
+                    `${dataCommonKV.fieldName}`
                 </if>
             </foreach>
             `status`
         </trim>
         <trim prefix="values (" suffix=")">
-            <foreach collection="dataCommons" index="index" item="dataCommon" separator="," close=",">
-                <if test="dataCommon.fieldValue != null">
-                    #{dataCommon.fieldValue}
+            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator="," close=",">
+                <if test="dataCommonKV.fieldValue != null">
+                    #{dataCommonKV.fieldValue}
                 </if>
             </foreach>
             1
         </trim>
     </insert>
 
-    <insert id="insertSelectiveBatch" parameterType="com.yintu.rixing.data.DataCommonAll">
+    <insert id="insertSelectiveBatch" parameterType="com.yintu.rixing.data.dataCommonKV">
         insert into `${tableName}`
-        <foreach collection="lists" index="index" item="dataCommons">
+        <foreach collection="lists" index="index" item="dataCommonKVs">
             <trim prefix="(" suffix=")">
                 <if test="index == 0">
-                    <foreach collection="dataCommons" index="index" item="dataCommon" separator="," close=",">
-                        <if test="dataCommon.fieldValue != null">
-                            `${dataCommon.fieldName}`
+                    <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator="," close=",">
+                        <if test="dataCommonKV.fieldValue != null">
+                            `${dataCommonKV.fieldName}`
                         </if>
                     </foreach>
                     `status`
@@ -37,11 +37,11 @@
             </trim>
         </foreach>
         <trim prefix="values">
-            <foreach collection="lists" index="index" item="dataCommons" separator=",">
+            <foreach collection="lists" index="index" item="dataCommonKVs" separator=",">
                 <trim prefix="(" suffix=")">
-                    <foreach collection="dataCommons" index="index" item="dataCommon" separator="," close=",">
-                        <if test="dataCommon.fieldValue != null">
-                            #{dataCommon.fieldValue}
+                    <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator="," close=",">
+                        <if test="dataCommonKV.fieldValue != null">
+                            #{dataCommonKV.fieldValue}
                         </if>
                     </foreach>
                     1
@@ -64,12 +64,12 @@
             #{id,jdbcType=INTEGER}
         </foreach>
     </delete>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.rixing.data.DataCommonAll">
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.rixing.data.dataCommonKV">
         update `${tableName}`
         <set>
-            <foreach collection="dataCommons" index="index" item="dataCommon" separator=",">
-                <if test="dataCommon.fieldValue != null">
-                    `${dataCommon.fieldName}` = #{dataCommon.fieldValue}
+            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator=",">
+                <if test="dataCommonKV.fieldValue != null">
+                    `${dataCommonKV.fieldName}` = #{dataCommonKV.fieldValue}
                 </if>
             </foreach>
         </set>
@@ -85,10 +85,10 @@
 
     <select id="selectPage" resultType="java.util.Map">
         select *
-        from `${tableName}`
+        from `${dataCommon.tableName}`
         <where>
-            <foreach collection="dataCommons" index="index" item="dataCommon" separator="and">
-                `${dataCommon.fieldName}`= #{dataCommon.fieldValue}
+            <foreach collection="dataCommon.dataCommonKVs" index="index" item="dataCommonKV" separator="and">
+                `${dataCommonKV.fieldName}`= #{dataCommonKV.fieldValue}
             </foreach>
             `status` = 1
         </where>

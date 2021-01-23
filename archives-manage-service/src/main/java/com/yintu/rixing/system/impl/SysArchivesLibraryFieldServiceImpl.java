@@ -182,6 +182,30 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         return sysArchivesLibraryFields;
     }
 
+    @Override
+    public List<SysArchivesLibraryField> listByArchivesLibraryIdAndQuery(Integer archivesLibraryId) {
+        return this.listByArchivesLibraryId(archivesLibraryId)
+                .stream()
+                .filter(sysArchivesLibraryField -> sysArchivesLibraryField.getQuery().equals(EnumFlag.True.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SysArchivesLibraryField> listByArchivesLibraryIdAndTitle(Integer archivesLibraryId) {
+        return this.listByArchivesLibraryId(archivesLibraryId)
+                .stream()
+                .filter(sysArchivesLibraryField -> sysArchivesLibraryField.getTitle().equals(EnumFlag.True.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SysArchivesLibraryField> listByArchivesLibraryIdAndForm(Integer archivesLibraryId) {
+        return this.listByArchivesLibraryId(archivesLibraryId)
+                .stream()
+                .filter(sysArchivesLibraryField -> sysArchivesLibraryField.getForm().equals(EnumFlag.True.getValue()))
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public Page<SysArchivesLibraryField> page(SysArchivesLibraryFieldQueryDto sysArchivesLibraryFieldQueryDto) {

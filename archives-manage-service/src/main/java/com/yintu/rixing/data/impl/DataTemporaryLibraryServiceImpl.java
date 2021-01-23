@@ -1,14 +1,11 @@
 package com.yintu.rixing.data.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yintu.rixing.data.DataCommonAll;
+import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataTemporaryLibraryMapper;
 import com.yintu.rixing.data.IDataTemporaryLibraryService;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
-import com.yintu.rixing.system.SysArchivesLibrary;
-import com.yintu.rixing.util.AssertUtil;
-import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,19 +28,19 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
 
     @Override
     public void save(DataCommonFormDto dataCommonFormDto) {
-        DataCommonAll dataCommonAll = this.saveOrUpdateHandler(dataCommonFormDto);
+        DataCommon dataCommonAll = this.saveOrUpdateHandler(dataCommonFormDto);
         dataTemporaryLibraryMapper.insertSelective(dataCommonAll);
     }
 
     @Override
     public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
-        DataCommonAll dataCommonAll = this.removeOrGetHandler(archivesLibraryId);
+        DataCommon dataCommonAll = this.removeOrGetHandler(archivesLibraryId);
         dataTemporaryLibraryMapper.deleteByPrimaryKeys(ids, dataCommonAll.getTableName());
     }
 
     @Override
     public void updateById(DataCommonFormDto dataCommonFormDto) {
-        DataCommonAll dataCommonAll = this.saveOrUpdateHandler(dataCommonFormDto);
+        DataCommon dataCommonAll = this.saveOrUpdateHandler(dataCommonFormDto);
         Integer id = dataCommonAll.getId();
         String tableName = dataCommonAll.getTableName();
         Map<String, Object> map = dataTemporaryLibraryMapper.selectByPrimaryKey(id, tableName);
@@ -54,27 +51,27 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
 
     @Override
     public Map<String, Object> getById(Integer id, Integer archivesLibraryId) {
-        DataCommonAll dataCommonAll = this.removeOrGetHandler(archivesLibraryId);
+        DataCommon dataCommonAll = this.removeOrGetHandler(archivesLibraryId);
         return dataTemporaryLibraryMapper.selectByPrimaryKey(id, dataCommonAll.getTableName());
     }
 
 
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
-        DataCommonAll dataCommonAll = this.page(dataCommonPageDto);
+        DataCommon dataCommonAll = this.page(dataCommonPageDto);
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
-        
+
         DataCommonVo dataCommonVo = new DataCommonVo();
-        dataCommonVo.setFields(this.getDataCommonFields(archivesLibraryId));
+        dataCommonVo.setFields(this.getDataCommonVos(archivesLibraryId));
         dataCommonVo.setPage(dataTemporaryLibraryMapper.selectPage(new Page<>(num, size), dataCommonAll));
         return dataCommonVo;
     }
 
     @Override
     public void importExcelRecord(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
-        DataCommonAll dataCommonAll = this.importExcelFile(multipartFile, archivesLibraryId);
+        DataCommon dataCommonAll = this.importExcelFile(multipartFile, archivesLibraryId);
         dataTemporaryLibraryMapper.insertSelectiveBatch(dataCommonAll);
     }
 
