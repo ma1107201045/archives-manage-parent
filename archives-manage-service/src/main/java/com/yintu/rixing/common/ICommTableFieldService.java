@@ -1,6 +1,5 @@
 package com.yintu.rixing.common;
 
-import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.SysArchivesLibraryField;
 
 import java.util.List;
