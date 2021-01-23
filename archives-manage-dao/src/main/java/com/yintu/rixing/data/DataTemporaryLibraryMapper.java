@@ -25,6 +25,7 @@ public interface DataTemporaryLibraryMapper {
 
     void updateByPrimaryKeySelective(DataCommon dataCommon);
 
+
     Map<String, Object> selectByPrimaryKey(Integer id, String tableName);
 
     Page<Map<String, Object>> selectPage(Page<Map<String, Object>> page, DataCommon dataCommon);

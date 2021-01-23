@@ -27,10 +27,14 @@ public interface IDataTemporaryLibraryService {
     @Transactional(rollbackFor = {Exception.class})
     void updateById(DataCommonFormDto dataCommonDto);
 
+    @Transactional(rollbackFor = {Exception.class})
+    void updateStatusById(Integer id, Integer archivesLibraryId);
+
     Map<String, Object> getById(Integer id, Integer archivesLibraryId);
 
     DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
 
+    @Transactional(rollbackFor = {Exception.class})
     void importExcelRecord(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException;
 
     void exportExcelTemplateFile(HttpServletResponse response, String fileName, Integer archivesLibraryId) throws IOException;

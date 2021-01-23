@@ -25,6 +25,8 @@ public interface ICommTableFieldService {
 
     void editTableCommentByTableName(String tableName, String tableComment);
 
+    List<CommTableField> findByTableName(String tableName);
+
     long countDataByTableName(String tableName);
 
 
@@ -50,5 +52,4 @@ public interface ICommTableFieldService {
     CommTableField findByDataKeyAndSysArchivesLibraryField(String dataKey, SysArchivesLibraryField sysArchivesLibraryField);
 
 
-    List<CommTableField> findByTableName(String tableName);
 }

@@ -2,6 +2,7 @@ package com.yintu.rixing.data.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataCommon;
+import com.yintu.rixing.data.DataCommonKV;
 import com.yintu.rixing.data.DataTemporaryLibraryMapper;
 import com.yintu.rixing.data.IDataTemporaryLibraryService;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
@@ -13,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,6 +49,22 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
         String tableName = dataCommon.getTableName();
         Map<String, Object> map = dataTemporaryLibraryMapper.selectByPrimaryKey(id, tableName);
         if (map != null) {
+            dataTemporaryLibraryMapper.updateByPrimaryKeySelective(dataCommon);
+        }
+    }
+
+    @Override
+    public void updateStatusById(Integer id, Integer archivesLibraryId) {
+        DataCommon dataCommon = this.removeOrGetHandler(archivesLibraryId);
+        String tableName = dataCommon.getTableName();
+        Map<String, Object> map = dataTemporaryLibraryMapper.selectByPrimaryKey(id, tableName);
+        if (map != null) {
+            List<DataCommonKV> dataCommonKVS = new ArrayList<>();
+            DataCommonKV dataCommonKV = new DataCommonKV();
+            dataCommonKV.setFieldName("status");
+            dataCommonKV.setFieldValue(2);
+            dataCommonKVS.add(dataCommonKV);
+            dataCommon.setDataCommonKVs(dataCommonKVS);
             dataTemporaryLibraryMapper.updateByPrimaryKeySelective(dataCommon);
         }
     }

@@ -21,6 +21,8 @@ public interface CommTableFieldMapper {
 
     void alterTableCommentByTableName(String tableName, String tableComment);
 
+    List<CommTableField> showByTableName(String tableName);
+
     long countDataByTableName(String tableName);
 
     //对表字段索引操作
@@ -38,6 +40,5 @@ public interface CommTableFieldMapper {
 
     void alterOrder(String tableName, CommTableField commTableField, String fieldName);
 
-    List<CommTableField> showByTableName(String tableName);
 
 }
