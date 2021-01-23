@@ -113,9 +113,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         }
         this.removeById(id);
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda()
-                .select(SysArchivesLibrary::getId)
-                .eq(SysArchivesLibrary::getParentId, id);
+        queryWrapper.lambda().eq(SysArchivesLibrary::getParentId, id);
         List<Integer> ids = this.listObjs(queryWrapper, obj -> (Integer) obj);
         for (Integer integer : ids) {
             this.removeTree(integer);
@@ -223,6 +221,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     public List<Integer> listByNumber(Integer number) {
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
+                .select(SysArchivesLibrary::getId)
                 .eq(SysArchivesLibrary::getNumber, number);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
@@ -233,6 +232,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             throw new BaseRuntimeException("档案库id不能为空");
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
+                .select(SysArchivesLibrary::getId)
                 .eq(SysArchivesLibrary::getParentId, id);
         return this.listObjs(queryWrapper, integer -> (Integer) integer);
     }
@@ -243,6 +243,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             throw new BaseRuntimeException("key不能为空");
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
+                .select(SysArchivesLibrary::getId)
                 .eq(SysArchivesLibrary::getDataKey, dataKey);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }

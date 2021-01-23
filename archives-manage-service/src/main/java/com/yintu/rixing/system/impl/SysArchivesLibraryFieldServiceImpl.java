@@ -153,6 +153,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             throw new BaseRuntimeException("档案库id或者key不能为空");
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
+                .select(SysArchivesLibraryField::getId)
                 .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)
                 .eq(SysArchivesLibraryField::getDataKey, dataKey);
         return this.listObjs(queryWrapper, id -> (Integer) id);
@@ -164,6 +165,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             throw new BaseRuntimeException("档案库id或者模板库id不能为空");
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
+                .select(SysArchivesLibraryField::getId)
                 .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)
                 .eq(SysArchivesLibraryField::getTemplateLibraryId, templateLibraryId);
         return this.listObjs(queryWrapper, id -> (Integer) id);
@@ -180,6 +182,30 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         List<SysArchivesLibraryField> sysArchivesLibraryFields = this.list(queryWrapper);
         sysArchivesLibraryFields.forEach(sysArchivesLibraryField -> sysArchivesLibraryField.setSysTemplateLibraryFieldType(iSysTemplateLibraryFieldTypeService.getById(sysArchivesLibraryField.getTemplateLibraryFieldTypeId())));
         return sysArchivesLibraryFields;
+    }
+
+    @Override
+    public List<SysArchivesLibraryField> listByArchivesLibraryIdAndQuery(Integer archivesLibraryId) {
+        return this.listByArchivesLibraryId(archivesLibraryId)
+                .stream()
+                .filter(sysArchivesLibraryField -> sysArchivesLibraryField.getQuery().equals(EnumFlag.True.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SysArchivesLibraryField> listByArchivesLibraryIdAndTitle(Integer archivesLibraryId) {
+        return this.listByArchivesLibraryId(archivesLibraryId)
+                .stream()
+                .filter(sysArchivesLibraryField -> sysArchivesLibraryField.getTitle().equals(EnumFlag.True.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SysArchivesLibraryField> listByArchivesLibraryIdAndForm(Integer archivesLibraryId) {
+        return this.listByArchivesLibraryId(archivesLibraryId)
+                .stream()
+                .filter(sysArchivesLibraryField -> sysArchivesLibraryField.getForm().equals(EnumFlag.True.getValue()))
+                .collect(Collectors.toList());
     }
 
 

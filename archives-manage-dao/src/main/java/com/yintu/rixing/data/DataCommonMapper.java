@@ -14,9 +14,8 @@ import java.util.Set;
 @Mapper
 public interface DataCommonMapper {
 
-    void insertBatch(List<Map<String, Object>> maps);
 
-    Map<String, Object> selectByPrimaryKey(DataCommonAll dataCommonAll);
+    Map<String, Object> selectByPrimaryKey(DataCommon dataCommon);
 
     List<Map<String, Object>> selectByPrimaryKeys(String tableName, Set<Integer> ids);
 }

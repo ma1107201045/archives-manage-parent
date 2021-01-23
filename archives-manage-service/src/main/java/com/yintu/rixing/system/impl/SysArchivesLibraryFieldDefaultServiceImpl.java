@@ -29,6 +29,7 @@ public class SysArchivesLibraryFieldDefaultServiceImpl extends ServiceImpl<SysAr
             throw new BaseRuntimeException("key不能为空");
         QueryWrapper<SysArchivesLibraryFieldDefault> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
+                .select(SysArchivesLibraryFieldDefault::getId)
                 .eq(SysArchivesLibraryFieldDefault::getDataKey, dataKey);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }

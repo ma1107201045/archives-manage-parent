@@ -1,6 +1,5 @@
 package com.yintu.rixing.common;
 
-import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.SysArchivesLibraryField;
 
 import java.util.List;
@@ -25,6 +24,7 @@ public interface ICommTableFieldService {
 
     void editTableCommentByTableName(String tableName, String tableComment);
 
+
     long countDataByTableName(String tableName);
 
 
@@ -45,10 +45,12 @@ public interface ICommTableFieldService {
     void alterOrder(String tableName, CommTableField commTableField, String fieldName);
 
 
+    List<CommTableField> findByTableName(String tableName);
+
+
     void isHasDataByTableName(String tableName);
 
     CommTableField findByDataKeyAndSysArchivesLibraryField(String dataKey, SysArchivesLibraryField sysArchivesLibraryField);
 
 
-    List<CommTableField> findByTableName(String tableName);
 }

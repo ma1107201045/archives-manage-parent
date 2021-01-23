@@ -7,23 +7,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.data.DataArchivesLibraryFileMapper;
 import com.yintu.rixing.data.DataArchivesLibraryFile;
-import com.yintu.rixing.data.DataCommonAll;
+import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.IDataArchivesLibraryFileService;
-import com.yintu.rixing.dto.base.PageDto;
 import com.yintu.rixing.dto.data.DataArchivesLibraryFileFormDto;
 import com.yintu.rixing.dto.data.DataArchivesLibraryFileQueryDto;
-import com.yintu.rixing.dto.system.SysRoleFormDto;
-import com.yintu.rixing.dto.system.SysUserQueryDto;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.system.SysArchivesLibrary;
-import com.yintu.rixing.system.SysArchivesLibraryField;
-import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.AssertUtil;
 import com.yintu.rixing.util.TableNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -92,7 +86,7 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
-        DataCommonAll dataCommonAll = new DataCommonAll();
+        DataCommon dataCommonAll = new DataCommon();
         dataCommonAll.setTableName(tableName);
         dataCommonAll.setId(dataId);
         Map<String, Object> map = dataCommonService.getById(dataCommonAll);

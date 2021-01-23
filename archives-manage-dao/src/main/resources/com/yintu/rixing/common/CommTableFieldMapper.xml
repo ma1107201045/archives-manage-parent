@@ -119,7 +119,8 @@
         COMMENT #{commTableField.comment,jdbcType=VARCHAR} AFTER `${fieldName}`;
     </update>
 
-    <select id="showByTableName">
+    <select id="showByTableName" parameterType="java.lang.String" resultType="java.util.Map">
         SHOW FULL COLUMNS FROM `${tableName}`;
     </select>
+
 </mapper>

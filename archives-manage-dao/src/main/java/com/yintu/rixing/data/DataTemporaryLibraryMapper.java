@@ -15,18 +15,19 @@ import java.util.Set;
 public interface DataTemporaryLibraryMapper {
 
 
-    void insertSelective(DataCommonAll dataCommonAll);
+    void insertSelective(DataCommon dataCommon);
 
-    void insertSelectiveBatch(DataCommonAll dataCommonAll);
+    void insertSelectiveBatch(DataCommon dataCommon);
 
-    void deleteByPrimaryKey(DataCommonAll dataCommonAll);
+    void deleteByPrimaryKey(DataCommon dataCommon);
 
     void deleteByPrimaryKeys(Set<Integer> ids, String tableName);
 
-    void updateByPrimaryKeySelective(DataCommonAll dataCommonAll);
+    void updateByPrimaryKeySelective(DataCommon dataCommon);
+
 
     Map<String, Object> selectByPrimaryKey(Integer id, String tableName);
 
-    Page<Map<String, Object>> selectPage(Page<Map<String, Object>> page, DataCommonAll dataCommonAll);
+    Page<Map<String, Object>> selectPage(Page<Map<String, Object>> page, DataCommon dataCommon);
 
 }

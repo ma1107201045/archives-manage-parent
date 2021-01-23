@@ -21,8 +21,7 @@ public class ObjectConvertUtil {
     public static DataCommonFormDto getAddFormDto(Map<String, String> params) {
         DataCommonFormDto dataCommonFormDto = new DataCommonFormDto();
         String archivesLibraryId = params.get(ARCHIVES_LIBRARY_ID);
-        if (archivesLibraryId == null || archivesLibraryId.isEmpty())
-            throw new BaseRuntimeException("档案库Id不能为空");
+        AssertUtil.notEmpty(archivesLibraryId, "档案库id不能为空");
         dataCommonFormDto.setArchivesLibraryId(Integer.valueOf(archivesLibraryId));
         dataCommonFormDto.setParams(params);
         return dataCommonFormDto;
@@ -36,7 +35,13 @@ public class ObjectConvertUtil {
 
     public static DataCommonQueryDto getQueryDto(Map<String, String> params) {
         DataCommonQueryDto dataCommonQueryDto = new DataCommonQueryDto();
-        dataCommonQueryDto.setArchivesLibraryId(Integer.valueOf(params.get(ARCHIVES_LIBRARY_ID)));
+        String archivesLibraryId = params.get(ARCHIVES_LIBRARY_ID);
+        String num = params.get(NUM);
+        String size = params.get(SIZE);
+        AssertUtil.notEmpty(archivesLibraryId, "档案库id不能为空");
+        AssertUtil.notEmpty(num, "页码不能为空");
+        AssertUtil.notEmpty(size, "页数不能为空");
+        dataCommonQueryDto.setArchivesLibraryId(Integer.valueOf(archivesLibraryId));
         dataCommonQueryDto.setNum(Integer.valueOf(params.get(NUM)));
         dataCommonQueryDto.setSize(Integer.valueOf(params.get(SIZE)));
         dataCommonQueryDto.setParams(params);
