@@ -3,6 +3,7 @@ package com.yintu.rixing.data.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
@@ -12,6 +13,7 @@ import com.yintu.rixing.data.DataCommonMapper;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumDataType;
+import com.yintu.rixing.enumobject.EnumDefaultField;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
@@ -19,6 +21,8 @@ import com.yintu.rixing.util.AssertUtil;
 import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.data.DataCommonFieldVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,11 +30,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Authenticator;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -50,16 +52,18 @@ public class DataCommonService {
     @Autowired
     protected ISysArchivesLibraryService iSysArchivesLibraryService;
     @Autowired
+    protected ISysArchivesLibraryFieldDefaultService iSysArchivesLibraryFieldDefaultService;
+    @Autowired
     protected ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
-
 
     protected DataCommon saveOrUpdateHandler(DataCommonFormDto dataCommonFormDto) {
         Integer archivesLibraryId = dataCommonFormDto.getArchivesLibraryId();
+        Integer id = dataCommonFormDto.getId();
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndForm(archivesLibraryId);
         Map<String, String> params = dataCommonFormDto.getParams();
-        List<DataCommonKV> dataCommonKVS = new ArrayList<>();
+        List<DataCommonKV> dataCommonKVS = new ArrayList<>(this.getDefaultFields(id));
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
             String name = sysArchivesLibraryField.getName();
             String dataKey = sysArchivesLibraryField.getDataKey();
@@ -74,7 +78,7 @@ public class DataCommonService {
                 case VARCHAR:
                 case TEXT:
                     if (value != null && value.length() > length)
-                        throw new BaseRuntimeException(dataType + "长度超过定义的长度");
+                        throw new BaseRuntimeException(name + "[长度超过定义的长度]");
                     break;
                 case TINYINT:
                     newValue = Byte.valueOf(value);
@@ -103,6 +107,47 @@ public class DataCommonService {
         dataCommon.setId(dataCommonFormDto.getId());
         dataCommon.setDataCommonKVs(dataCommonKVS);
         return dataCommon;
+    }
+
+    protected List<DataCommonKV> getDefaultFields(Integer id) {
+        List<DataCommonKV> dataCommonKVS = new ArrayList<>();
+        if (id == null) {//判断是否是新增还是删除
+            DataCommonKV dataCommonKV1 = new DataCommonKV();
+            dataCommonKV1.setFieldName(EnumDefaultField.CREATE_BY.getDataKey());
+            dataCommonKV1.setFieldValue(getLoginUsername());
+            dataCommonKVS.add(dataCommonKV1);
+            DataCommonKV dataCommonKV2 = new DataCommonKV();
+            dataCommonKV2.setFieldName(EnumDefaultField.CREATE_TIME.getDataKey());
+            dataCommonKV2.setFieldValue(DateUtil.date());
+
+            DataCommonKV dataCommonKV = new DataCommonKV();
+            dataCommonKV1.setFieldName(EnumDefaultField.ARCHIVES_NUM.getDataKey());
+            dataCommonKV1.setFieldValue("DH-" + UUID.randomUUID().toString(true));
+            dataCommonKVS.add(dataCommonKV1);
+            dataCommonKVS.add(dataCommonKV2);
+            dataCommonKVS.add(dataCommonKV);
+        }
+        DataCommonKV dataCommonKV3 = new DataCommonKV();
+        dataCommonKV3.setFieldName(EnumDefaultField.MODIFIED_BY.getDataKey());
+        dataCommonKV3.setFieldValue(DateUtil.date());
+        DataCommonKV dataCommonKV4 = new DataCommonKV();
+        dataCommonKV4.setFieldName(EnumDefaultField.MODIFIED_TIME.getDataKey());
+        dataCommonKV4.setFieldValue(DateUtil.date());
+        dataCommonKVS.add(dataCommonKV3);
+        dataCommonKVS.add(dataCommonKV4);
+        return dataCommonKVS;
+    }
+
+    protected DataCommonKV getStatusField(Short status) {
+        DataCommonKV dataCommonKV = new DataCommonKV();
+        dataCommonKV.setFieldName(EnumDefaultField.STATUS.getDataKey());
+        dataCommonKV.setFieldValue(status);
+        return dataCommonKV;
+    }
+
+    protected static String getLoginUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication == null ? "unknown" : authentication.getPrincipal() == null ? "unknown" : ((SysUser) authentication.getPrincipal()).getUsername();
     }
 
     protected DataCommon removeOrGetHandler(Integer archivesLibraryId) {
@@ -172,11 +217,11 @@ public class DataCommonService {
 
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
-        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
+        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndForm(archivesLibraryId);
         List<List<DataCommonKV>> lists = new ArrayList<>();
 
         for (Map<String, Object> record : records) {
-            List<DataCommonKV> dataCommons = new ArrayList<>();
+            List<DataCommonKV> dataCommons = new ArrayList<>(this.getDefaultFields(null));
             for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
                 if (sysArchivesLibraryField.getQuery().equals(EnumFlag.True.getValue())) {
                     String name = sysArchivesLibraryField.getName();
@@ -276,7 +321,8 @@ public class DataCommonService {
     }
 
 
-    protected void exportExcelFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException {
+    protected void exportExcelFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer
+            archivesLibraryId) throws IOException {
         SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
         String name = sysArchivesLibrary.getName();

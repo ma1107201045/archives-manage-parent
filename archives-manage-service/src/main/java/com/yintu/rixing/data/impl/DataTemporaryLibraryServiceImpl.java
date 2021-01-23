@@ -28,51 +28,55 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
 
     @Override
     public void save(DataCommonFormDto dataCommonFormDto) {
-        DataCommon dataCommonAll = this.saveOrUpdateHandler(dataCommonFormDto);
-        dataTemporaryLibraryMapper.insertSelective(dataCommonAll);
+        DataCommon dataCommon = this.saveOrUpdateHandler(dataCommonFormDto);
+        dataCommon.getDataCommonKVs().add(this.getStatusField((short) 1));
+        dataTemporaryLibraryMapper.insertSelective(dataCommon);
     }
 
     @Override
     public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
-        DataCommon dataCommonAll = this.removeOrGetHandler(archivesLibraryId);
-        dataTemporaryLibraryMapper.deleteByPrimaryKeys(ids, dataCommonAll.getTableName());
+        DataCommon dataCommon = this.removeOrGetHandler(archivesLibraryId);
+        dataTemporaryLibraryMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
     }
 
     @Override
     public void updateById(DataCommonFormDto dataCommonFormDto) {
-        DataCommon dataCommonAll = this.saveOrUpdateHandler(dataCommonFormDto);
-        Integer id = dataCommonAll.getId();
-        String tableName = dataCommonAll.getTableName();
+        DataCommon dataCommon = this.saveOrUpdateHandler(dataCommonFormDto);
+        Integer id = dataCommon.getId();
+        String tableName = dataCommon.getTableName();
         Map<String, Object> map = dataTemporaryLibraryMapper.selectByPrimaryKey(id, tableName);
         if (map != null) {
-            dataTemporaryLibraryMapper.updateByPrimaryKeySelective(dataCommonAll);
+            dataTemporaryLibraryMapper.updateByPrimaryKeySelective(dataCommon);
         }
     }
 
     @Override
     public Map<String, Object> getById(Integer id, Integer archivesLibraryId) {
-        DataCommon dataCommonAll = this.removeOrGetHandler(archivesLibraryId);
-        return dataTemporaryLibraryMapper.selectByPrimaryKey(id, dataCommonAll.getTableName());
+        DataCommon dataCommon = this.removeOrGetHandler(archivesLibraryId);
+        return dataTemporaryLibraryMapper.selectByPrimaryKey(id, dataCommon.getTableName());
     }
 
 
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
-        DataCommon dataCommonAll = this.page(dataCommonPageDto);
+        DataCommon dataCommon = this.page(dataCommonPageDto);
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
 
         DataCommonVo dataCommonVo = new DataCommonVo();
         dataCommonVo.setFields(this.getDataCommonVos(archivesLibraryId));
-        dataCommonVo.setPage(dataTemporaryLibraryMapper.selectPage(new Page<>(num, size), dataCommonAll));
+        dataCommonVo.setPage(dataTemporaryLibraryMapper.selectPage(new Page<>(num, size), dataCommon));
         return dataCommonVo;
     }
 
     @Override
     public void importExcelRecord(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
-        DataCommon dataCommonAll = this.importExcelFile(multipartFile, archivesLibraryId);
-        dataTemporaryLibraryMapper.insertSelectiveBatch(dataCommonAll);
+        DataCommon dataCommon = this.importExcelFile(multipartFile, archivesLibraryId);
+        dataCommon.getLists().forEach(dataCommonKVS -> {
+            dataCommonKVS.add(this.getStatusField((short) 1));
+        });
+        dataTemporaryLibraryMapper.insertSelectiveBatch(dataCommon);
     }
 
     @Override
