@@ -60,6 +60,7 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
+        dataCommon.getDataCommonKVs().add(this.getStatusField((short) 1));
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();

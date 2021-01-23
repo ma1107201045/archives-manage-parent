@@ -115,21 +115,22 @@ public class DataCommonService {
             DataCommonKV dataCommonKV1 = new DataCommonKV();
             dataCommonKV1.setFieldName(EnumDefaultField.CREATE_BY.getDataKey());
             dataCommonKV1.setFieldValue(getLoginUsername());
-            dataCommonKVS.add(dataCommonKV1);
+
             DataCommonKV dataCommonKV2 = new DataCommonKV();
             dataCommonKV2.setFieldName(EnumDefaultField.CREATE_TIME.getDataKey());
             dataCommonKV2.setFieldValue(DateUtil.date());
 
             DataCommonKV dataCommonKV = new DataCommonKV();
-            dataCommonKV1.setFieldName(EnumDefaultField.ARCHIVES_NUM.getDataKey());
-            dataCommonKV1.setFieldValue("DH-" + UUID.randomUUID().toString(true));
+            dataCommonKV.setFieldName(EnumDefaultField.ARCHIVES_NUM.getDataKey());
+            dataCommonKV.setFieldValue("DH-" + UUID.randomUUID().toString(true).substring(0, 5));
+
             dataCommonKVS.add(dataCommonKV1);
             dataCommonKVS.add(dataCommonKV2);
             dataCommonKVS.add(dataCommonKV);
         }
         DataCommonKV dataCommonKV3 = new DataCommonKV();
         dataCommonKV3.setFieldName(EnumDefaultField.MODIFIED_BY.getDataKey());
-        dataCommonKV3.setFieldValue(DateUtil.date());
+        dataCommonKV3.setFieldValue(getLoginUsername());
         DataCommonKV dataCommonKV4 = new DataCommonKV();
         dataCommonKV4.setFieldName(EnumDefaultField.MODIFIED_TIME.getDataKey());
         dataCommonKV4.setFieldValue(DateUtil.date());

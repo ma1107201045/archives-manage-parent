@@ -5,20 +5,18 @@
     <insert id="insertSelective" parameterType="com.yintu.rixing.data.DataCommonKV">
         insert into `${tableName}`
         <trim prefix="(" suffix=")">
-            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator="," close=",">
+            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator=",">
                 <if test="dataCommonKV.fieldValue != null">
                     `${dataCommonKV.fieldName}`
                 </if>
             </foreach>
-            `status`
         </trim>
         <trim prefix="values (" suffix=")">
-            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator="," close=",">
+            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator=",">
                 <if test="dataCommonKV.fieldValue != null">
                     #{dataCommonKV.fieldValue}
                 </if>
             </foreach>
-            1
         </trim>
     </insert>
 
@@ -27,24 +25,22 @@
         <foreach collection="lists" index="index" item="dataCommonKVs">
             <trim prefix="(" suffix=")">
                 <if test="index == 0">
-                    <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator="," close=",">
+                    <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator=",">
                         <if test="dataCommonKV.fieldValue != null">
                             `${dataCommonKV.fieldName}`
                         </if>
                     </foreach>
-                    `status`
                 </if>
             </trim>
         </foreach>
         <trim prefix="values">
             <foreach collection="lists" index="index" item="dataCommonKVs" separator=",">
                 <trim prefix="(" suffix=")">
-                    <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator="," close=",">
+                    <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator=",">
                         <if test="dataCommonKV.fieldValue != null">
                             #{dataCommonKV.fieldValue}
                         </if>
                     </foreach>
-                    1
                 </trim>
             </foreach>
         </trim>
@@ -90,7 +86,6 @@
             <foreach collection="dataCommon.dataCommonKVs" index="index" item="dataCommonKV" separator="and">
                 `${dataCommonKV.fieldName}`= #{dataCommonKV.fieldValue}
             </foreach>
-            `status` = 1
         </where>
         order by `id` DESC
     </select>
