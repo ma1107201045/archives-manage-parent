@@ -15,7 +15,11 @@ public interface IWareTemplateLibraryFieldService extends IService<WareTemplateL
 
     void updateOrderByIds(Integer id1, Integer id2);
 
-    void creatTable(JSONObject jsonObject,Integer times);
+    void creatTable(JSONObject jsonObject);
 
     Integer findTable(String tableName);
+
+    Integer findTurnLeftState();
+
+    void addWarehouse(JSONObject jsonObject);
 }

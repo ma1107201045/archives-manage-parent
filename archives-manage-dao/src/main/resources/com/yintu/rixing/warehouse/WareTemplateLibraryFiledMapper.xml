@@ -20,10 +20,45 @@
     create_by, create_time, modified_by, modified_time
   </sql>
 
+  <!--新增入库数据-->
+  <insert id="addWarehouse" >
+    insert into `${tableName}`
+    <foreach collection="set" index="index" item="key">
+      <trim prefix="(" suffix=")">
+        <if test="index == 0">
+          <foreach collection="set" index="index" item="key" separator=",">
+            <if test="key != null">
+              `${key}`
+            </if>
+          </foreach>
+        </if>
+      </trim>
+    </foreach>
+    <trim prefix="values">
+      <foreach collection="set" index="index" item="value" separator=",">
+        <trim prefix="(" suffix=")">
+          <foreach collection="set" index="index" item="value" separator=",">
+            <if test="value != null">
+              #{value}
+            </if>
+          </foreach>
+        </trim>
+      </foreach>
+    </trim>
+  </insert>
+
   <!--查询表是否存在-->
   <select id="findTable" parameterType="string" resultType="int">
         select count(*)
         from information_schema.TABLES
         where table_name = #{tableName}
     </select>
+
+  <!--查询表里是否有数据-->
+  <select id="findTurnLeftState" resultType="java.util.Map">
+    select *
+    from `${tableName}`
+  </select>
+
+
 </mapper>

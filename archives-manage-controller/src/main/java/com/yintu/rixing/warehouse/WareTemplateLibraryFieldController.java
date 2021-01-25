@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -116,42 +117,57 @@ public class WareTemplateLibraryFieldController {
         return ResultDataUtil.ok("修改库房管理实体表字段顺序成功");
     }
 
-    //判断表是否存在
-    @GetMapping("/findTable")
-    @ApiOperation(value = "判断表是否存在", notes = "判断表是否存在")
-    public ResultDataUtil<Object>findTable(){
-        String tableName="ware_physical_warehouse";
-        Integer table=iWareTemplateLibraryFieldService.findTable(tableName);
-        return ResultDataUtil.ok("查询表结果成功",table);
-    }
 
 
     //动态创建数据表
     @Log(level = EnumLogLevel.INFO, module = "库房管理", context = "动态创建库房管理实体表")
     @PostMapping("/creatTable")
     @ApiOperation(value = "动态创建库房管理实体表", notes = "动态创建库房管理实体表")
-    @ApiImplicitParam(name = "times", dataType = "int", value = "次数", required = true, paramType = "path")
-    public ResultDataUtil<Object> creatTable(@RequestBody JSONObject jsonObject, Integer times) {
+    @ApiImplicitParam(name = "jsonObject", dataType = "JSONObject", value = "创建表的字段", required = true, paramType = "path")
+    public ResultDataUtil<Object> creatTable(@RequestBody JSONObject jsonObject) {
         //JSONObject jsonObject=new JSONObject();
        // jsonObject.put("jsonObject","[{\"id\":3,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:39:36\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:39:36\",\"name\":\"测试三\",\"dataKey\":\"test3\",\"length\":11,\"required\":1,\"index\":1,\"order\":11111,\"templateLibraryFieldTypeId\":2,\"typeId\":0},{\"id\":1,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:16:58\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:16:58\",\"name\":\"测试一\",\"dataKey\":\"test1\",\"length\":111,\"required\":1,\"index\":1,\"order\":11,\"templateLibraryFieldTypeId\":2,\"typeId\":0},{\"id\":2,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:17:15\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:17:15\",\"name\":\"测试二\",\"dataKey\":\"test2\",\"length\":11,\"required\":1,\"index\":1,\"order\":1,\"templateLibraryFieldTypeId\":2,\"typeId\":0}]");
-        iWareTemplateLibraryFieldService.creatTable(jsonObject, times);
+        iWareTemplateLibraryFieldService.creatTable(jsonObject);
         return ResultDataUtil.ok("动态创建库房管理实体表成功");
     }
 
+    //判断字段选项能否 从右边转到左边
+    @GetMapping("/findTurnLeftState")
+    @ApiOperation(value = "判断字段选项能否从右边转到左边", notes = "判断字段选项能否从右边转到左边")
+    public ResultDataUtil<Object>findTurnLeftState(){
+        Integer state=iWareTemplateLibraryFieldService.findTurnLeftState();
+        return ResultDataUtil.ok("查询状态成功",state);
+    }
 
+    //新增入库
+    @Log(level = EnumLogLevel.INFO, module = "库房管理", context = "新增入库")
+    @PostMapping("/addWarehouse")
+    @ApiOperation(value = "新增入库", notes = "新增入库")
+    @ApiImplicitParam(name = "jsonObject", dataType = "JSONObject", value = "新增数据", required = true, paramType = "path")
+    public ResultDataUtil<Object> addWarehouse() {
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("sss","[{\"inTime\":\"2021-01-22 20:39:36\",\"type\":\"huxiaowen\",\"num\":\"测试三\",\"secret\":\"test3\",\"title\":1111}]");
+        iWareTemplateLibraryFieldService.addWarehouse(jsonObject);
+        return ResultDataUtil.ok("新增入库成功");
+    }
 
 
 
 
     public static void main(String[] args) {//@RequestBody JSONObject jsonObject,
         JSONObject jsonObject=new JSONObject();
-        jsonObject.put("sss","[{\"id\":3,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:39:36\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:39:36\",\"name\":\"测试三\",\"dataKey\":\"test3\",\"length\":1111,\"required\":1,\"index\":1,\"order\":11111,\"templateLibraryFieldTypeId\":2,\"typeId\":0},{\"id\":1,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:16:58\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:16:58\",\"name\":\"测试一\",\"dataKey\":\"test1\",\"length\":111,\"required\":1,\"index\":1,\"order\":11,\"templateLibraryFieldTypeId\":2,\"typeId\":0},{\"id\":2,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:17:15\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:17:15\",\"name\":\"测试二\",\"dataKey\":\"test2\",\"length\":11,\"required\":1,\"index\":1,\"order\":1,\"templateLibraryFieldTypeId\":2,\"typeId\":0}]");
+       // jsonObject.put("sss","[{\"id\":3,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:39:36\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:39:36\",\"name\":\"测试三\",\"dataKey\":\"test3\",\"length\":1111,\"required\":1,\"index\":1,\"order\":11111,\"templateLibraryFieldTypeId\":2,\"typeId\":0},{\"id\":1,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:16:58\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:16:58\",\"name\":\"测试一\",\"dataKey\":\"test1\",\"length\":111,\"required\":1,\"index\":1,\"order\":11,\"templateLibraryFieldTypeId\":2,\"typeId\":0},{\"id\":2,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:17:15\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:17:15\",\"name\":\"测试二\",\"dataKey\":\"test2\",\"length\":11,\"required\":1,\"index\":1,\"order\":1,\"templateLibraryFieldTypeId\":2,\"typeId\":0}]");
+        jsonObject.put("sss","[{\"id\":3,\"createBy\":\" \",\"createTime\":\"2021-01-22 20:39:36\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:39:36\",\"name\":\"测试三\",\"dataKey\":\"test3\",\"length\":1111,\"required\":1,\"index\":1,\"order\":11111,\"templateLibraryFieldTypeId\":2,\"typeId\":0}]");
         JSONArray tableDates = jsonObject.getJSONArray("sss");
         for (Object tableDate : tableDates) {
             System.out.println("6666"+tableDate);
            // Map map = JSONObject.parseObject(JSONObject.toJSONString(tableDate), Map.class);
             Map<String,Object> map = JSONObject.parseObject(JSON.toJSONString(tableDate));
             System.out.println("7777"+map);
+            Set<String> strings = map.keySet();
+            System.out.println("9999"+strings);
+            Collection<Object> values = map.values();
+            System.out.println("11111"+values);
             Object modifiedTime = map.get("modifiedTime");
             System.out.println("888"+modifiedTime);
 

@@ -63,7 +63,7 @@ public class WareTemplateLibraryField extends BaseEntity {
     @TableField("query")
     private Short query;
 
-    @ApiModelProperty(value = "字段是否在页面表头显示 1.是 0.否" )
+     @ApiModelProperty(value = "字段是否在页面表头显示 1.是 0.否" )
     @TableField("title")
     private Short title;
 
