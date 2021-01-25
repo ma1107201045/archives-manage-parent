@@ -40,8 +40,14 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
 
     @Override
     public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
-        DataCommon dataCommon = this.removeOrGetHandler(null, archivesLibraryId);
-        dataTemporaryLibraryMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
+//        DataCommon dataCommon = this.removeOrGetHandler(null, archivesLibraryId);
+//        dataTemporaryLibraryMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
+        Short value1 = EnumArchivesOrder.RECYCLE_BIN.getValue();
+        Short value2 = EnumArchivesOrder.TEMPORARY_LIBRARY.getValue();
+        Short newValue = Short.valueOf(value1 + value2.toString());
+        for (Integer id : ids) {
+            this.updateStatusById(id, archivesLibraryId, newValue);
+        }
     }
 
     @Override
