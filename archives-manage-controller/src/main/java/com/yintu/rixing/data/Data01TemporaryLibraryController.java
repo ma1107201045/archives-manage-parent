@@ -80,9 +80,9 @@ public class Data01TemporaryLibraryController extends Authenticator {
         return ResultDataUtil.ok("修改临时库信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "移交整理库")
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "临时库信息移交到整理库")
     @PatchMapping("/turn-over/{id}")
-    @ApiOperation(value = "移交整理库", notes = "移交整理库")
+    @ApiOperation(value = "临时库信息移交到整理库", notes = "临时库信息移交到整理库")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
@@ -90,20 +90,20 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @ApiOperationSupport(order = 4)
     public ResultDataUtil<Object> turnOver(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
         iDataTemporaryLibraryService.updateStatusById(id, archivesLibraryId, (short) 2);
-        return ResultDataUtil.ok("移交整理库成功");
+        return ResultDataUtil.ok("临时库信息移交到整理库成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "标记为病档")
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "临时库信息标记为病档信息")
     @PatchMapping("/mark/{id}")
-    @ApiOperation(value = "标记为病档", notes = "标记为病档")
+    @ApiOperation(value = "临时库信息标记为病档信息", notes = "临时库信息标记为病档信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
     @ApiOperationSupport(order = 5)
     public ResultDataUtil<Object> mark(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        iDataTemporaryLibraryService.updateStatusById(id, archivesLibraryId, (short) 7);
-        return ResultDataUtil.ok("标记为病档成功");
+        iDataTemporaryLibraryService.updateStatusById(id, archivesLibraryId);
+        return ResultDataUtil.ok("临时库信息标记为病档信息成功");
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库单条信息")

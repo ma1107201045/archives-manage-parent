@@ -60,6 +60,15 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
     }
 
     @Override
+    public void updateStatusById(Integer id, Integer archivesLibraryId) {
+        Short value1 = EnumArchivesOrder.DISEASE_ARCHIVES.getValue();
+        Short value2 = EnumArchivesOrder.TEMPORARY_LIBRARY.getValue();
+        Short newValue = Short.valueOf(value1 + value2.toString());
+        this.updateStatusById(id, archivesLibraryId, newValue);
+
+    }
+
+    @Override
     public void updateStatusById(Integer id, Integer archivesLibraryId, Short status) {
         DataCommon dataCommon = this.removeOrGetHandler(id, archivesLibraryId);
         Map<String, Object> map = dataTemporaryLibraryMapper.selectByPrimaryKey(dataCommon);

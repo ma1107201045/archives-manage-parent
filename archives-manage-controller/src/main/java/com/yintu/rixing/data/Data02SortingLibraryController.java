@@ -112,7 +112,7 @@ public class Data02SortingLibraryController extends Authenticator {
     })
     @ApiOperationSupport(order = 5)
     public ResultDataUtil<Object> mark(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, (short) 7);
+        dataSortingLibraryService.updateStatusById(id, archivesLibraryId);
         return ResultDataUtil.ok("标记为病档成功");
     }
 
