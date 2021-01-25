@@ -163,7 +163,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @ApiOperation(value = "批量导出整理库信息", notes = "批量导出整理库信息")
     @ApiOperationSupport(order = 11)
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
-        dataSortingLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), ids, archivesLibraryId);
+        dataSortingLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.SORTING_LIBRARY.getName(), ids, archivesLibraryId);
     }
 
 }

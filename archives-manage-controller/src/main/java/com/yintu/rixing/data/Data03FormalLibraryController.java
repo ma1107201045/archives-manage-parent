@@ -66,7 +66,7 @@ public class Data03FormalLibraryController extends Authenticator {
     @ApiOperation(value = "批量导出正式库信息", notes = "批量导出正式库信息")
     @ApiOperationSupport(order = 11)
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
-        iDataFormalLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), ids, archivesLibraryId);
+        iDataFormalLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.FORMAL_LIBRARY.getName(), ids, archivesLibraryId);
     }
 
 
