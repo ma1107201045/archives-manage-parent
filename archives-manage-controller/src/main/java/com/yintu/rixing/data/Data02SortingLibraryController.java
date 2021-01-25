@@ -40,6 +40,16 @@ public class Data02SortingLibraryController extends Authenticator {
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
 
+    @Log(level = EnumLogLevel.DEBUG, module = "数据中心", context = "添加整理库信息")
+    @PostMapping
+    @ApiOperation(value = "添加整理库信息", notes = "添加整理库信息")
+    @ApiOperationSupport(order = 1)
+    @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
+    public ResultDataUtil<Object> add(@RequestParam Map<String, String> params) {
+        dataSortingLibraryService.save(ObjectConvertUtil.getAddFormDto(params));
+        return ResultDataUtil.ok("添加整理库信息成功");
+    }
+
     @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "删除整理库信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除整理库信息", notes = "删除整理库信息")
