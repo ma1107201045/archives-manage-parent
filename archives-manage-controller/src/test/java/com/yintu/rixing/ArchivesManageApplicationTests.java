@@ -9,6 +9,7 @@ import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.data.impl.DataCommonService;
 import com.yintu.rixing.demo.DeTest;
 import com.yintu.rixing.demo.DeTestMapper;
+import com.yintu.rixing.demo.IDeTestService;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.pojo.SysPermissionPojo;
 import com.yintu.rixing.system.ISysPermissionService;
@@ -29,10 +30,11 @@ public class ArchivesManageApplicationTests {
     @Autowired
     private DeTestMapper deTestMapper;
     @Autowired
+    private IDeTestService iDeTestService;
+    @Autowired
     private ISysPermissionService iSysPermissionService;
     @Autowired
     private ICommTableFieldService iCommTableFieldService;
-
     @Autowired
     private DataCommonService dataCommonService;
 
@@ -161,8 +163,19 @@ public class ArchivesManageApplicationTests {
     @Test
     void list5() {
         QueryWrapper<DeTest> q = new QueryWrapper<>();
-        DeTest deTest = new DeTest();
-        deTest.setEmail("11");
-        deTestMapper.update(deTest, q);
+        q.select("email", "id");
+        q.eq("email", 11);
+        List<String> list = iDeTestService.listObjs(q, a -> {
+            System.out.println(a.getClass());
+            return (String) a;
+        });
+        for (Object o : list) {
+            System.out.println(o);
+        }
+    }
+
+    @Test
+    void list6() {
+        System.out.println(JSONObject.toJSON(iCommTableFieldService.findByTableName("de_test")));
     }
 }

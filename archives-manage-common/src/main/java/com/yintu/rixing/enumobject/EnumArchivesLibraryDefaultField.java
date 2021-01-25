@@ -5,7 +5,7 @@ package com.yintu.rixing.enumobject;
  * @Date: 2021/1/23 10:20:05
  * @Version: 1.0
  */
-public enum EnumDefaultField {
+public enum EnumArchivesLibraryDefaultField {
 
     ID("主键id", 1, "id", ""),
     CREATE_BY("创建人", 2, "create_by", ""),
@@ -20,7 +20,7 @@ public enum EnumDefaultField {
     private final String dataKey;
     private final String description;
 
-    EnumDefaultField(String name, Integer value, String dataKey, String description) {
+    EnumArchivesLibraryDefaultField(String name, Integer value, String dataKey, String description) {
         this.name = name;
         this.value = value;
         this.dataKey = dataKey;
@@ -43,11 +43,11 @@ public enum EnumDefaultField {
         return description;
     }
 
-    public static EnumDefaultField get(Integer value) {
-        EnumDefaultField[] enumDefaultFields;
+    public static EnumArchivesLibraryDefaultField get(Integer value) {
+        EnumArchivesLibraryDefaultField[] enumDefaultFields;
         int length = (enumDefaultFields = values()).length;
         for (int i = 0; i < length; ++i) {
-            EnumDefaultField enumDataType = enumDefaultFields[i];
+            EnumArchivesLibraryDefaultField enumDataType = enumDefaultFields[i];
             if (value.equals(enumDataType.getValue())) {
                 return enumDataType;
             }

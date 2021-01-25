@@ -7,7 +7,7 @@ import com.yintu.rixing.data.DataTemporaryLibraryMapper;
 import com.yintu.rixing.data.IDataTemporaryLibraryService;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
-import com.yintu.rixing.enumobject.EnumDefaultField;
+import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,14 +55,14 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
     }
 
     @Override
-    public void updateStatusById(Integer id, Integer archivesLibraryId) {
+    public void updateStatusById(Integer id, Integer archivesLibraryId, Short status) {
         DataCommon dataCommon = this.removeOrGetHandler(archivesLibraryId);
         String tableName = dataCommon.getTableName();
         Map<String, Object> map = dataTemporaryLibraryMapper.selectByPrimaryKey(id, tableName);
         if (map != null) {
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
             DataCommonKV dataCommonKV = new DataCommonKV();
-            dataCommonKV.setFieldName(EnumDefaultField.STATUS.getDataKey());
+            dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
             dataCommonKV.setFieldValue(2);
             dataCommonKVS.add(dataCommonKV);
             dataCommon.setDataCommonKVs(dataCommonKVS);

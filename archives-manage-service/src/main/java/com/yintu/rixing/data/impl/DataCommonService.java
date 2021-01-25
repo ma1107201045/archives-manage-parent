@@ -13,7 +13,7 @@ import com.yintu.rixing.data.DataCommonMapper;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumDataType;
-import com.yintu.rixing.enumobject.EnumDefaultField;
+import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
@@ -30,7 +30,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Authenticator;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -113,15 +112,15 @@ public class DataCommonService {
         List<DataCommonKV> dataCommonKVS = new ArrayList<>();
         if (id == null) {//判断是否是新增还是删除
             DataCommonKV dataCommonKV1 = new DataCommonKV();
-            dataCommonKV1.setFieldName(EnumDefaultField.CREATE_BY.getDataKey());
+            dataCommonKV1.setFieldName(EnumArchivesLibraryDefaultField.CREATE_BY.getDataKey());
             dataCommonKV1.setFieldValue(getLoginUsername());
 
             DataCommonKV dataCommonKV2 = new DataCommonKV();
-            dataCommonKV2.setFieldName(EnumDefaultField.CREATE_TIME.getDataKey());
+            dataCommonKV2.setFieldName(EnumArchivesLibraryDefaultField.CREATE_TIME.getDataKey());
             dataCommonKV2.setFieldValue(DateUtil.date());
 
             DataCommonKV dataCommonKV = new DataCommonKV();
-            dataCommonKV.setFieldName(EnumDefaultField.ARCHIVES_NUM.getDataKey());
+            dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey());
             dataCommonKV.setFieldValue("DH-" + UUID.randomUUID().toString(true).substring(0, 5));
 
             dataCommonKVS.add(dataCommonKV1);
@@ -129,10 +128,10 @@ public class DataCommonService {
             dataCommonKVS.add(dataCommonKV);
         }
         DataCommonKV dataCommonKV3 = new DataCommonKV();
-        dataCommonKV3.setFieldName(EnumDefaultField.MODIFIED_BY.getDataKey());
+        dataCommonKV3.setFieldName(EnumArchivesLibraryDefaultField.MODIFIED_BY.getDataKey());
         dataCommonKV3.setFieldValue(getLoginUsername());
         DataCommonKV dataCommonKV4 = new DataCommonKV();
-        dataCommonKV4.setFieldName(EnumDefaultField.MODIFIED_TIME.getDataKey());
+        dataCommonKV4.setFieldName(EnumArchivesLibraryDefaultField.MODIFIED_TIME.getDataKey());
         dataCommonKV4.setFieldValue(DateUtil.date());
         dataCommonKVS.add(dataCommonKV3);
         dataCommonKVS.add(dataCommonKV4);
@@ -141,7 +140,7 @@ public class DataCommonService {
 
     protected DataCommonKV getStatusField(Short status) {
         DataCommonKV dataCommonKV = new DataCommonKV();
-        dataCommonKV.setFieldName(EnumDefaultField.STATUS.getDataKey());
+        dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
         dataCommonKV.setFieldValue(status);
         return dataCommonKV;
     }

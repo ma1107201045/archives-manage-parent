@@ -20,4 +20,5 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "正式库接口")
 @ApiSort(3)
 public class Data03FormalLibraryController extends Authenticator {
+
 }

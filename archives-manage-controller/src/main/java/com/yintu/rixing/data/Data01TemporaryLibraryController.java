@@ -80,16 +80,29 @@ public class Data01TemporaryLibraryController extends Authenticator {
         return ResultDataUtil.ok("修改临时库信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "移交整理库")
-    @PatchMapping("/{id}")
-    @ApiOperation(value = "移交整理库", notes = "移交整理库")
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "标记为病档")
+    @PatchMapping("/mark/{id}")
+    @ApiOperation(value = "标记为病档", notes = "标记为病档")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
     @ApiOperationSupport(order = 4)
-    public ResultDataUtil<Object> editStatus(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        iDataTemporaryLibraryService.updateStatusById(id, archivesLibraryId);
+    public ResultDataUtil<Object> mark(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
+        iDataTemporaryLibraryService.updateStatusById(id, archivesLibraryId, (short) 7);
+        return ResultDataUtil.ok("标记为病档成功");
+    }
+
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "移交整理库")
+    @PatchMapping("/turn-over/{id}")
+    @ApiOperation(value = "移交整理库", notes = "移交整理库")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
+    })
+    @ApiOperationSupport(order = 5)
+    public ResultDataUtil<Object> turnOver(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
+        iDataTemporaryLibraryService.updateStatusById(id, archivesLibraryId, (short) 2);
         return ResultDataUtil.ok("移交整理库成功");
     }
 
@@ -100,7 +113,7 @@ public class Data01TemporaryLibraryController extends Authenticator {
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
-    @ApiOperationSupport(order = 5)
+    @ApiOperationSupport(order = 6)
     public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
         iDataTemporaryLibraryService.getById(id, archivesLibraryId);
         return ResultDataUtil.ok("查询临时库单条信息成功");
@@ -109,7 +122,7 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库列表信息")
     @GetMapping
     @ApiOperation(value = "查询临时库列表信息", notes = "查询临时库列表信息")
-    @ApiOperationSupport(order = 6)
+    @ApiOperationSupport(order = 7)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
         DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
@@ -120,7 +133,7 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库档案库列表信息树")
     @GetMapping("/sys-archives-library")
     @ApiOperation(value = "查询临时库档案库列表信息树", notes = "查询临时库档案库列表信息树")
-    @ApiOperationSupport(order = 7)
+    @ApiOperationSupport(order = 8)
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
         return ResultDataUtil.ok("查询临时库档案库列表信息树成功", treeNodeUtils);
@@ -133,7 +146,7 @@ public class Data01TemporaryLibraryController extends Authenticator {
             @ApiImplicitParam(name = "file", dataType = "__file", value = "文件对象", required = true, paramType = "form"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "form")
     })
-    @ApiOperationSupport(order = 8)
+    @ApiOperationSupport(order = 9)
     public ResultDataUtil<Object> importExcelData(@RequestParam("file") MultipartFile multipartFile, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataTemporaryLibraryService.importExcelRecord(multipartFile, archivesLibraryId);
         return ResultDataUtil.ok("批量导入临时库信息成功");
@@ -143,7 +156,7 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出临时库信息")
     @GetMapping("/export/{ids}")
     @ApiOperation(value = "批量导出临时库信息", notes = "批量导出临时库信息")
-    @ApiOperationSupport(order = 9)
+    @ApiOperationSupport(order = 10)
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataTemporaryLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), ids, archivesLibraryId);
     }
