@@ -35,17 +35,17 @@ public class Data05DestructionLibraryController extends Authenticator {
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
 
-    @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "删除销毁库信息")
+    @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "销毁销毁库信息")
     @DeleteMapping("/{ids}")
-    @ApiOperation(value = "删除销毁库信息", notes = "删除销毁库信息")
-    @ApiOperationSupport(order = 2)
+    @ApiOperation(value = "销毁销毁库信息", notes = "销毁销毁库信息")
+    @ApiOperationSupport(order = 1)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
         dataDestructionLibraryService.removeByIds(ids, archivesLibraryId);
-        return ResultDataUtil.ok("删除销毁库信息成功");
+        return ResultDataUtil.ok("销毁销毁库信息成功");
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询销毁库单条信息")
@@ -55,7 +55,7 @@ public class Data05DestructionLibraryController extends Authenticator {
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
-    @ApiOperationSupport(order = 6)
+    @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
         dataDestructionLibraryService.getById(id, archivesLibraryId);
         return ResultDataUtil.ok("查询销毁库单条信息成功");
@@ -64,7 +64,7 @@ public class Data05DestructionLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询销毁库列表信息")
     @GetMapping
     @ApiOperation(value = "查询销毁库列表信息", notes = "查询销毁库列表信息")
-    @ApiOperationSupport(order = 7)
+    @ApiOperationSupport(order = 3)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
         DataCommonVo dataCommonVo = dataDestructionLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
@@ -74,7 +74,7 @@ public class Data05DestructionLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询销毁库档案库列表信息树")
     @GetMapping("/sys-archives-library")
     @ApiOperation(value = "查询销毁库档案库列表信息树", notes = "查询销毁库档案库列表信息树")
-    @ApiOperationSupport(order = 8)
+    @ApiOperationSupport(order = 4)
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
         return ResultDataUtil.ok("查询销毁库档案库列表信息树成功", treeNodeUtils);

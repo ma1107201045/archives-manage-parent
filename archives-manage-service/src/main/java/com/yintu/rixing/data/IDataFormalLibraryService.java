@@ -35,10 +35,5 @@ public interface IDataFormalLibraryService {
 
     DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
 
-    @Transactional(rollbackFor = {Exception.class})
-    void importExcelRecord(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException;
-
-    void exportExcelTemplateFile(HttpServletResponse response, String fileName, Integer archivesLibraryId) throws IOException;
-
     void exportExcelRecordFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException;
 }

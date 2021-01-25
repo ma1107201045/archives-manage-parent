@@ -38,7 +38,7 @@ public class Data06DiseaseArchivesManagementController extends Authenticator {
     @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "删除病档管理信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除病档管理信息", notes = "删除病档管理信息")
-    @ApiOperationSupport(order = 2)
+    @ApiOperationSupport(order = 1)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
