@@ -18,6 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/data/disease-archives-management")
 @Api(tags = "病档管理接口")
-@ApiSort(9)
+@ApiSort(6)
 public class Data06DiseaseArchivesManagementController extends Authenticator {
 }
