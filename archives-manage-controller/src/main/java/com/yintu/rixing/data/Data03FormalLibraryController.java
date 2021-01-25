@@ -45,7 +45,7 @@ public class Data03FormalLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询正式库列表信息")
     @GetMapping
     @ApiOperation(value = "查询正式库列表信息", notes = "查询正式库列表信息")
-    @ApiOperationSupport(order = 7)
+    @ApiOperationSupport(order = 1)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
         DataCommonVo dataCommonVo = iDataFormalLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
@@ -55,7 +55,7 @@ public class Data03FormalLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询正式库档案库列表信息树")
     @GetMapping("/sys-archives-library")
     @ApiOperation(value = "查询正式库档案库列表信息树", notes = "查询正式库档案库列表信息树")
-    @ApiOperationSupport(order = 8)
+    @ApiOperationSupport(order = 2)
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
         return ResultDataUtil.ok("查询正式库档案库列表信息树成功", treeNodeUtils);
@@ -64,7 +64,7 @@ public class Data03FormalLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出正式库信息")
     @GetMapping("/export/{ids}")
     @ApiOperation(value = "批量导出正式库信息", notes = "批量导出正式库信息")
-    @ApiOperationSupport(order = 11)
+    @ApiOperationSupport(order = 3)
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataFormalLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.FORMAL_LIBRARY.getName(), ids, archivesLibraryId);
     }

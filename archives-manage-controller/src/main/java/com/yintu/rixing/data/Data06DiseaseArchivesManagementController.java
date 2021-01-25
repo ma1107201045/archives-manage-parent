@@ -68,7 +68,7 @@ public class Data06DiseaseArchivesManagementController extends Authenticator {
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
-    @ApiOperationSupport(order = 6)
+    @ApiOperationSupport(order = 3)
     public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
         iDataDiseaseArchivesManagementService.getById(id, archivesLibraryId);
         return ResultDataUtil.ok("查询病档管理单条信息成功");
@@ -77,7 +77,7 @@ public class Data06DiseaseArchivesManagementController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询病档管理列表信息")
     @GetMapping
     @ApiOperation(value = "查询病档管理列表信息", notes = "查询病档管理列表信息")
-    @ApiOperationSupport(order = 7)
+    @ApiOperationSupport(order = 4)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
         DataCommonVo dataCommonVo = iDataDiseaseArchivesManagementService.getPage(ObjectConvertUtil.getQueryDto(params));
@@ -87,7 +87,7 @@ public class Data06DiseaseArchivesManagementController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询病档管理档案库列表信息树")
     @GetMapping("/sys-archives-library")
     @ApiOperation(value = "查询病档管理档案库列表信息树", notes = "查询病档管理档案库列表信息树")
-    @ApiOperationSupport(order = 8)
+    @ApiOperationSupport(order = 5)
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
         return ResultDataUtil.ok("查询病档管理档案库列表信息树成功", treeNodeUtils);

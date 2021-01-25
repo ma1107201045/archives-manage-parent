@@ -110,7 +110,7 @@ public class Data02SortingLibraryController extends Authenticator {
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
-    @ApiOperationSupport(order = 5)
+    @ApiOperationSupport(order = 6)
     public ResultDataUtil<Object> mark(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
         dataSortingLibraryService.updateStatusById(id, archivesLibraryId);
         return ResultDataUtil.ok("整理库信息标记为病档信息成功");
@@ -124,7 +124,7 @@ public class Data02SortingLibraryController extends Authenticator {
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
-    @ApiOperationSupport(order = 6)
+    @ApiOperationSupport(order = 7)
     public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
         dataSortingLibraryService.getById(id, archivesLibraryId);
         return ResultDataUtil.ok("查询整理库单条信息成功");
@@ -133,7 +133,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询整理库列表信息")
     @GetMapping
     @ApiOperation(value = "查询整理库列表信息", notes = "查询整理库列表信息")
-    @ApiOperationSupport(order = 7)
+    @ApiOperationSupport(order = 8)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
         DataCommonVo dataCommonVo = dataSortingLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
@@ -144,7 +144,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询整理库档案库列表信息树")
     @GetMapping("/sys-archives-library")
     @ApiOperation(value = "查询整理库档案库列表信息树", notes = "查询整理库档案库列表信息树")
-    @ApiOperationSupport(order = 8)
+    @ApiOperationSupport(order = 9)
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
         return ResultDataUtil.ok("查询整理库档案库列表信息树成功", treeNodeUtils);
@@ -158,7 +158,7 @@ public class Data02SortingLibraryController extends Authenticator {
             @ApiImplicitParam(name = "file", dataType = "__file", value = "文件对象", required = true, paramType = "form"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "form")
     })
-    @ApiOperationSupport(order = 9)
+    @ApiOperationSupport(order = 10)
     public ResultDataUtil<Object> importExcelData(@RequestParam("file") MultipartFile multipartFile, @RequestParam Integer archivesLibraryId) throws IOException {
         dataSortingLibraryService.importExcelRecord(multipartFile, archivesLibraryId);
         return ResultDataUtil.ok("批量导入整理库信息成功");
@@ -167,7 +167,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "下载档案收集信息模板")
     @GetMapping("/download-template")
     @ApiOperation(value = "下载整理库信息模板", notes = "下载整理库信息模板")
-    @ApiOperationSupport(order = 10)
+    @ApiOperationSupport(order = 11)
     public void exportExcelTemplateFile(HttpServletResponse response, @RequestParam Integer archivesLibraryId) throws IOException {
         dataSortingLibraryService.exportExcelTemplateFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), archivesLibraryId);
     }
@@ -175,7 +175,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出整理库信息")
     @GetMapping("/export/{ids}")
     @ApiOperation(value = "批量导出整理库信息", notes = "批量导出整理库信息")
-    @ApiOperationSupport(order = 11)
+    @ApiOperationSupport(order = 12)
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
         dataSortingLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.SORTING_LIBRARY.getName(), ids, archivesLibraryId);
     }

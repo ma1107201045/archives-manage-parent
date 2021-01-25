@@ -143,7 +143,7 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出临时库信息")
     @GetMapping("/export/{ids}")
     @ApiOperation(value = "批量导出临时库信息", notes = "批量导出临时库信息")
-    @ApiOperationSupport(order = 10)
+    @ApiOperationSupport(order = 9)
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataTemporaryLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.TEMPORARY_LIBRARY.getName(), ids, archivesLibraryId);
     }
