@@ -1,7 +1,10 @@
 package com.yintu.rixing.data.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yintu.rixing.data.*;
+import com.yintu.rixing.data.DataCommon;
+import com.yintu.rixing.data.DataCommonKV;
+import com.yintu.rixing.data.DataFormalLibraryMapper;
+import com.yintu.rixing.data.IDataFormalLibraryService;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
@@ -20,40 +23,40 @@ import java.util.Set;
 
 /**
  * @Author: mlf
- * @Date: 2021/1/25 10:17:35
+ * @Date: 2021/1/25 11:50:24
  * @Version: 1.0
  */
 @Service
-public class DataSortingLibraryServiceImpl extends DataCommonService implements IDataSortingLibraryService {
+public class DataFormalLibraryServiceImpl extends DataCommonService implements IDataFormalLibraryService {
     @Autowired
-    private DataSortingLibraryMapper dataSortingLibraryMapper;
+    private DataFormalLibraryMapper dataFormalLibraryMapper;
 
     @Override
     public void save(DataCommonFormDto dataCommonFormDto) {
         DataCommon dataCommon = this.saveOrUpdateHandler(dataCommonFormDto);
-        dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.SORTING_LIBRARY.getValue()));
-        dataSortingLibraryMapper.insertSelective(dataCommon);
+        dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.FORMAL_LIBRARY.getValue()));
+        dataFormalLibraryMapper.insertSelective(dataCommon);
     }
 
     @Override
     public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
         DataCommon dataCommon = this.removeOrGetHandler(null, archivesLibraryId);
-        dataSortingLibraryMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
+        dataFormalLibraryMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
     }
 
     @Override
     public void updateById(DataCommonFormDto dataCommonDto) {
         DataCommon dataCommon = this.saveOrUpdateHandler(dataCommonDto);
-        Map<String, Object> map = dataSortingLibraryMapper.selectByPrimaryKey(dataCommon);
+        Map<String, Object> map = dataFormalLibraryMapper.selectByPrimaryKey(dataCommon);
         if (map != null) {
-            dataSortingLibraryMapper.updateByPrimaryKeySelective(dataCommon);
+            dataFormalLibraryMapper.updateByPrimaryKeySelective(dataCommon);
         }
     }
 
     @Override
     public void updateStatusById(Integer id, Integer archivesLibraryId, Short status) {
         DataCommon dataCommon = this.removeOrGetHandler(id, archivesLibraryId);
-        Map<String, Object> map = dataSortingLibraryMapper.selectByPrimaryKey(dataCommon);
+        Map<String, Object> map = dataFormalLibraryMapper.selectByPrimaryKey(dataCommon);
         if (map != null) {
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
             DataCommonKV dataCommonKV = new DataCommonKV();
@@ -61,14 +64,14 @@ public class DataSortingLibraryServiceImpl extends DataCommonService implements 
             dataCommonKV.setFieldValue(status);
             dataCommonKVS.add(dataCommonKV);
             dataCommon.setDataCommonKVs(dataCommonKVS);
-            dataSortingLibraryMapper.updateByPrimaryKeySelective(dataCommon);
+            dataFormalLibraryMapper.updateByPrimaryKeySelective(dataCommon);
         }
     }
 
     @Override
     public Map<String, Object> getById(Integer id, Integer archivesLibraryId) {
         DataCommon dataCommon = this.removeOrGetHandler(id, archivesLibraryId);
-        return dataSortingLibraryMapper.selectByPrimaryKey(dataCommon);
+        return dataFormalLibraryMapper.selectByPrimaryKey(dataCommon);
     }
 
     @Override
@@ -81,15 +84,15 @@ public class DataSortingLibraryServiceImpl extends DataCommonService implements 
 
         DataCommonVo dataCommonVo = new DataCommonVo();
         dataCommonVo.setFields(this.getDataCommonVos(archivesLibraryId));
-        dataCommonVo.setPage(dataSortingLibraryMapper.selectPage(new Page<>(num, size), dataCommon));
+        dataCommonVo.setPage(dataFormalLibraryMapper.selectPage(new Page<>(num, size), dataCommon));
         return dataCommonVo;
     }
 
     @Override
     public void importExcelRecord(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
         DataCommon dataCommon = this.importExcelFile(multipartFile, archivesLibraryId);
-        dataCommon.getLists().forEach(dataCommonKVS -> dataCommonKVS.add(this.getStatusField(EnumArchivesOrder.SORTING_LIBRARY.getValue())));
-        dataSortingLibraryMapper.insertSelectiveBatch(dataCommon);
+        dataCommon.getLists().forEach(dataCommonKVS -> dataCommonKVS.add(this.getStatusField(EnumArchivesOrder.FORMAL_LIBRARY.getValue())));
+        dataFormalLibraryMapper.insertSelectiveBatch(dataCommon);
     }
 
     @Override

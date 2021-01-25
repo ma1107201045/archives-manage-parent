@@ -8,6 +8,7 @@ import com.yintu.rixing.data.IDataTemporaryLibraryService;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
+import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
     @Override
     public void save(DataCommonFormDto dataCommonFormDto) {
         DataCommon dataCommon = this.saveOrUpdateHandler(dataCommonFormDto);
-        dataCommon.getDataCommonKVs().add(this.getStatusField((short) 1));
+        dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue()));
         dataTemporaryLibraryMapper.insertSelective(dataCommon);
     }
 
@@ -77,7 +78,7 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
-        dataCommon.getDataCommonKVs().add(this.getStatusField((short) 1));
+        dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue()));
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
@@ -91,7 +92,7 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
     @Override
     public void importExcelRecord(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
         DataCommon dataCommon = this.importExcelFile(multipartFile, archivesLibraryId);
-        dataCommon.getLists().forEach(dataCommonKVS -> dataCommonKVS.add(this.getStatusField((short) 1)));
+        dataCommon.getLists().forEach(dataCommonKVS -> dataCommonKVS.add(this.getStatusField(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue())));
         dataTemporaryLibraryMapper.insertSelectiveBatch(dataCommon);
     }
 
