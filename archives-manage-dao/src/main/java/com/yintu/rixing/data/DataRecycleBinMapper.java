@@ -14,6 +14,9 @@ import java.util.Set;
 @Mapper
 public interface DataRecycleBinMapper {
 
+    void insertSelective(DataCommon dataCommon);
+
+    void insertSelectiveBatch(DataCommon dataCommon);
 
     void deleteByPrimaryKey(DataCommon dataCommon);
 
