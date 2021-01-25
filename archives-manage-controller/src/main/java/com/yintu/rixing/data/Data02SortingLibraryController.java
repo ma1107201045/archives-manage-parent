@@ -1,10 +1,20 @@
 package com.yintu.rixing.data;
 
+import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiSort;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.yintu.rixing.enumobject.EnumLogLevel;
+import com.yintu.rixing.system.ISysArchivesLibraryService;
+import com.yintu.rixing.util.ObjectConvertUtil;
+import com.yintu.rixing.util.ResultDataUtil;
+import com.yintu.rixing.util.TreeUtil;
+import com.yintu.rixing.vo.data.DataCommonVo;
+import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -16,8 +26,111 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version: 1.0
  */
 @RestController
-@RequestMapping("/data/data-temporary-library")
+@RequestMapping("/data/data-Sorting-library")
 @Api(tags = "整理库接口")
 @ApiSort(2)
 public class Data02SortingLibraryController extends Authenticator {
+
+    @Autowired
+    private IDataSortingLibraryService dataSortingLibraryService;
+    @Autowired
+    private ISysArchivesLibraryService iSysArchivesLibraryService;
+
+
+    @Log(level = EnumLogLevel.DEBUG, module = "数据中心", context = "添加临时库信息")
+    @PostMapping
+    @ApiOperation(value = "添加整理库信息", notes = "添加整理库信息")
+    @ApiOperationSupport(order = 1)
+    @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
+    public ResultDataUtil<Object> add(@RequestParam Map<String, String> params) {
+        dataSortingLibraryService.save(ObjectConvertUtil.getAddFormDto(params));
+        return ResultDataUtil.ok("添加整理库信息成功");
+    }
+
+    @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "删除临时库信息")
+    @DeleteMapping("/{ids}")
+    @ApiOperation(value = "删除临时库信息", notes = "删除临时库信息")
+    @ApiOperationSupport(order = 2)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
+    })
+    public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
+        dataSortingLibraryService.removeByIds(ids, archivesLibraryId);
+        return ResultDataUtil.ok("删除临时库信息成功");
+    }
+
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "修改临时库信息")
+    @PutMapping("/{id}")
+    @ApiOperation(value = "修改临时库信息", notes = "修改临时库信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
+    })
+    @ApiOperationSupport(order = 3)
+    public ResultDataUtil<Object> edit(@PathVariable Integer id, @RequestParam Map<String, String> params) {
+        params.put(ObjectConvertUtil.ID, id.toString());
+        dataSortingLibraryService.updateById(ObjectConvertUtil.getNotAddFormDto(params));
+        return ResultDataUtil.ok("修改临时库信息成功");
+    }
+
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "回退临时库")
+    @PatchMapping("/rollback/{id}")
+    @ApiOperation(value = "回退临时库", notes = "回退临时库")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
+    })
+    @ApiOperationSupport(order = 4)
+    public ResultDataUtil<Object> rollback(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
+        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, (short) 1);
+        return ResultDataUtil.ok("回退临时库成功");
+    }
+
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "移交正式库")
+    @PatchMapping("/turn-over/{id}")
+    @ApiOperation(value = "移交正式库", notes = "移交正式库")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
+    })
+    @ApiOperationSupport(order = 5)
+    public ResultDataUtil<Object> turnOver(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
+        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, (short) 3);
+        return ResultDataUtil.ok("移交正式库成功");
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库单条信息")
+    @GetMapping("/{id}")
+    @ApiOperation(value = "查询临时库单条信息", notes = "查询临时库单条信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
+    })
+    @ApiOperationSupport(order = 6)
+    public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
+        dataSortingLibraryService.getById(id, archivesLibraryId);
+        return ResultDataUtil.ok("查询临时库单条信息成功");
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库列表信息")
+    @GetMapping
+    @ApiOperation(value = "查询临时库列表信息", notes = "查询临时库列表信息")
+    @ApiOperationSupport(order = 7)
+    @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
+    public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = dataSortingLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询临时库列表信息成功", dataCommonVo);
+    }
+
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库档案库列表信息树")
+    @GetMapping("/sys-archives-library")
+    @ApiOperation(value = "查询临时库档案库列表信息树", notes = "查询临时库档案库列表信息树")
+    @ApiOperationSupport(order = 8)
+    public ResultDataUtil<List<TreeUtil>> findTree() {
+        List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
+        return ResultDataUtil.ok("查询临时库档案库列表信息树成功", treeNodeUtils);
+    }
+
 }

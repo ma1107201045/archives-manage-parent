@@ -8,11 +8,11 @@ import java.util.Set;
 
 /**
  * @Author: mlf
- * @Date: 2021/1/21 16:07:29
+ * @Date: 2021/1/25 10:21:12
  * @Version: 1.0
  */
 @Mapper
-public interface DataTemporaryLibraryMapper {
+public interface DataSortingLibraryMapper {
 
 
     void insertSelective(DataCommon dataCommon);

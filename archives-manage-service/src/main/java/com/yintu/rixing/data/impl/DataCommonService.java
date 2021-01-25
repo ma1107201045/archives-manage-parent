@@ -150,12 +150,13 @@ public class DataCommonService {
         return authentication == null ? "unknown" : authentication.getPrincipal() == null ? "unknown" : ((SysUser) authentication.getPrincipal()).getUsername();
     }
 
-    protected DataCommon removeOrGetHandler(Integer archivesLibraryId) {
+    protected DataCommon removeOrGetHandler(Integer id, Integer archivesLibraryId) {
         AssertUtil.notNull(archivesLibraryId, "档案库id不能为空");
         SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
         DataCommon dataCommon = new DataCommon();
+        dataCommon.setId(id);
         dataCommon.setTableName(tableName);
         return dataCommon;
     }
