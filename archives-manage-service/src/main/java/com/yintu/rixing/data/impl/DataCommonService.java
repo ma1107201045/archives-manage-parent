@@ -303,7 +303,7 @@ public class DataCommonService {
             dataCommonTitleVo.setTypeId(fieldTypeId);
             dataCommonTitleVo.setTypeProp(fieldTypeDataKey);
             dataCommonTitleVo.setTypeLabel(fieldTypeName);
-            dataCommonTitleVo.setNotNull(sysArchivesLibraryField.getRequired() == 1);
+            dataCommonTitleVo.setNotNull(sysArchivesLibraryField.getRequired().equals(EnumFlag.True.getValue()));
 
             dataCommonTitleVo.setQuery(query.equals(EnumFlag.True.getValue()));
             dataCommonTitleVo.setTitle(title.equals(EnumFlag.True.getValue()));
