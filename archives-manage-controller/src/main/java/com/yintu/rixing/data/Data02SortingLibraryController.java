@@ -136,6 +136,20 @@ public class Data02SortingLibraryController extends Authenticator {
         return ResultDataUtil.ok("查询整理库档案库列表信息树成功", treeNodeUtils);
     }
 
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导入临时库信息")
+    @PostMapping("/import")
+    @ApiOperation(value = "批量导入整理库信息", notes = "批量导入整理库信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", dataType = "__file", value = "文件对象", required = true, paramType = "form"),
+            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "form")
+    })
+    @ApiOperationSupport(order = 9)
+    public ResultDataUtil<Object> importExcelData(@RequestParam("file") MultipartFile multipartFile, @RequestParam Integer archivesLibraryId) throws IOException {
+        dataSortingLibraryService.importExcelRecord(multipartFile, archivesLibraryId);
+        return ResultDataUtil.ok("批量导入整理库信息成功");
+    }
+
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "下载档案收集信息模板")
     @GetMapping("/download-template")
     @ApiOperation(value = "下载整理库信息模板", notes = "下载整理库信息模板")
