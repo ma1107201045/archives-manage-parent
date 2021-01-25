@@ -103,6 +103,20 @@ public class Data02SortingLibraryController extends Authenticator {
         return ResultDataUtil.ok("移交正式库成功");
     }
 
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "标记为病档")
+    @PatchMapping("/mark/{id}")
+    @ApiOperation(value = "标记为病档", notes = "标记为病档")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
+    })
+    @ApiOperationSupport(order = 5)
+    public ResultDataUtil<Object> mark(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
+        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, (short) 7);
+        return ResultDataUtil.ok("标记为病档成功");
+    }
+
+
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询整理库单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询整理库单条信息", notes = "查询整理库单条信息")

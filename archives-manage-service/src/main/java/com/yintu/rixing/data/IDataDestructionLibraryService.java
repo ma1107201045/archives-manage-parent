@@ -12,7 +12,7 @@ import java.util.Set;
  * @Date: 2021/1/25 17:15:27
  * @Version: 1.0
  */
-public interface IDestructionLibraryService {
+public interface IDataDestructionLibraryService {
 
 
     @Transactional(rollbackFor = {Exception.class})

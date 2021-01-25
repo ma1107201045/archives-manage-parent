@@ -3,7 +3,7 @@ package com.yintu.rixing.data.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DestructionLibraryMapper;
-import com.yintu.rixing.data.IDestructionLibraryService;
+import com.yintu.rixing.data.IDataDestructionLibraryService;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.vo.data.DataCommonVo;
@@ -19,7 +19,7 @@ import java.util.Set;
  * @Version: 1.0
  */
 @Service
-public class DestructionLibraryServiceImpl extends DataCommonService implements IDestructionLibraryService {
+public class DestructionLibraryServiceImpl extends DataCommonService implements IDataDestructionLibraryService {
     @Autowired
     private DestructionLibraryMapper destructionLibraryMapper;
 

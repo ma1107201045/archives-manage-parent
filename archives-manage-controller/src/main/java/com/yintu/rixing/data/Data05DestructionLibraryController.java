@@ -31,7 +31,7 @@ import java.util.Set;
 @ApiSort(5)
 public class Data05DestructionLibraryController extends Authenticator {
     @Autowired
-    private IDataTemporaryLibraryService iDataTemporaryLibraryService;
+    private IDataDestructionLibraryService dataDestructionLibraryService;
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
 
@@ -44,7 +44,7 @@ public class Data05DestructionLibraryController extends Authenticator {
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
-        iDataTemporaryLibraryService.removeByIds(ids, archivesLibraryId);
+        dataDestructionLibraryService.removeByIds(ids, archivesLibraryId);
         return ResultDataUtil.ok("删除销毁库信息成功");
     }
 
@@ -57,7 +57,7 @@ public class Data05DestructionLibraryController extends Authenticator {
     })
     @ApiOperationSupport(order = 6)
     public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        iDataTemporaryLibraryService.getById(id, archivesLibraryId);
+        dataDestructionLibraryService.getById(id, archivesLibraryId);
         return ResultDataUtil.ok("查询销毁库单条信息成功");
     }
 
@@ -67,7 +67,7 @@ public class Data05DestructionLibraryController extends Authenticator {
     @ApiOperationSupport(order = 7)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
-        DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
+        DataCommonVo dataCommonVo = dataDestructionLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
         return ResultDataUtil.ok("查询销毁库列表信息成功", dataCommonVo);
     }
 

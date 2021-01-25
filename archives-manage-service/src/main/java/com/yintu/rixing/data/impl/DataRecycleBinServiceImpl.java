@@ -28,12 +28,6 @@ public class DataRecycleBinServiceImpl extends DataCommonService implements IDat
     @Autowired
     private DataRecycleBinMapper dataRecycleBinMapper;
 
-    @Override
-    public void regainByIds(Set<Integer> ids, Integer archivesLibraryId) {
-        for (Integer id : ids) {
-            this.updateStatusById(id, archivesLibraryId);
-        }
-    }
 
     @Override
     public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
@@ -42,16 +36,23 @@ public class DataRecycleBinServiceImpl extends DataCommonService implements IDat
     }
 
     @Override
+    public void regainByIds(Set<Integer> ids, Integer archivesLibraryId) {
+        for (Integer id : ids) {
+            this.updateStatusById(id, archivesLibraryId);
+        }
+    }
+
+    @Override
     public void updateStatusById(Integer id, Integer archivesLibraryId) {
         DataCommon dataCommon = this.removeOrGetHandler(id, archivesLibraryId);
         Map<String, Object> map = dataRecycleBinMapper.selectByPrimaryKey(dataCommon);
         if (map != null) {
             String dataKey = EnumArchivesLibraryDefaultField.STATUS.getDataKey();
-            Integer status = (Integer) map.get(dataKey);
+            Short status = Short.valueOf(((Integer) map.get(dataKey)).toString().substring(1));
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(dataKey);
-            dataCommonKV.setFieldValue(status.toString().substring(1));
+            dataCommonKV.setFieldValue(status);
             dataCommonKVS.add(dataCommonKV);
             dataCommon.setDataCommonKVs(dataCommonKVS);
             dataRecycleBinMapper.updateByPrimaryKeySelective(dataCommon);
