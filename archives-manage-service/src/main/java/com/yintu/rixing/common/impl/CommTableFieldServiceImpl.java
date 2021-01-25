@@ -90,6 +90,18 @@ public class CommTableFieldServiceImpl implements ICommTableFieldService {
         commTableFieldMapper.alterOrder(tableName, commTableField, fieldName);
     }
 
+    @Override
+    public CommTableField findFixed() {
+        CommTableField commTableField = new CommTableField();
+        commTableField.setFieldName("data_id");
+        commTableField.setDataType("int");
+        commTableField.setLength(11);
+        commTableField.setIsNull((short) 0);
+        commTableField.setIsIndex((short) 1);
+        commTableField.setComment("动态表id");
+        return commTableField;
+    }
+
 
     @Override
     public List<CommTableField> findByTableName(String tableName) {

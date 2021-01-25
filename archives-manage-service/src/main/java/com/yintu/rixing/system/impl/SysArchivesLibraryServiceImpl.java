@@ -101,6 +101,9 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             }
             iSysArchivesLibraryFieldService.saveBatch(sysArchivesLibraryFields);
             iCommTableFieldService.addTable(TableNameUtil.getFullTableName(dataKey), name, commTableFields);
+            commTableFields.add(iCommTableFieldService.findFixed());
+            iCommTableFieldService.addTable(TableNameUtil.getRollbackTableName(dataKey), name + TableNameUtil.ROLLBACK_COMMENT_SUFFIX, commTableFields);
+            iCommTableFieldService.addTable(TableNameUtil.getDestructionTableName(dataKey), name + TableNameUtil.DESTRUCTION_COMMENT_SUFFIX, commTableFields);
         }
     }
 
@@ -110,6 +113,8 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         if (sysArchivesLibrary != null && sysArchivesLibrary.getType() == 2) {
             String oldDataKey = sysArchivesLibrary.getDataKey();
             iCommTableFieldService.removeTableByTableName(TableNameUtil.getFullTableName(oldDataKey));
+            iCommTableFieldService.removeTableByTableName(TableNameUtil.getRollbackTableName(oldDataKey));
+            iCommTableFieldService.removeTableByTableName(TableNameUtil.getDestructionTableName(oldDataKey));
         }
         this.removeById(id);
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
@@ -145,8 +150,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
         SysArchivesLibrary sysArchivesLibrary = this.getById(id);
         if (sysArchivesLibrary != null) {
-            SysArchivesLibrary rollBack = new SysArchivesLibrary();//回滚做准备
-            BeanUtil.copyProperties(sysArchivesLibrary, rollBack);
             Short oldType = sysArchivesLibrary.getType();
             String oldName = sysArchivesLibrary.getName();
             String oldDataKey = sysArchivesLibrary.getDataKey();
@@ -166,6 +169,8 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 sysArchivesLibrary.setTemplateLibraryId(null);
                 //删除表
                 iCommTableFieldService.removeTableByTableName(TableNameUtil.getFullTableName(oldDataKey));
+                iCommTableFieldService.removeTableByTableName(TableNameUtil.getRollbackTableName(oldDataKey));
+                iCommTableFieldService.removeTableByTableName(TableNameUtil.getDestructionTableName(oldDataKey));
             }
             //判断修改跟下级的类型对比
             if (type == 2) {
@@ -177,14 +182,23 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             this.updateById(sysArchivesLibrary);
             if (type == 2) {
                 String tableName1 = TableNameUtil.getFullTableName(oldDataKey);
+                String tableName11 = TableNameUtil.getRollbackTableName(oldDataKey);
+                String tableName12 = TableNameUtil.getDestructionTableName(oldDataKey);
                 String tableName2 = TableNameUtil.getFullTableName(dataKey);
+                String tableName21 = TableNameUtil.getRollbackTableName(dataKey);
+                String tableName22 = TableNameUtil.getDestructionTableName(dataKey);
                 iCommTableFieldService.isHasDataByTableName(tableName1);
                 //更改表的注释
-                if (!oldName.equals(name))
+                if (!oldName.equals(name)) {
                     iCommTableFieldService.editTableCommentByTableName(tableName1, name);
+                    iCommTableFieldService.editTableCommentByTableName(tableName11, name + TableNameUtil.ROLLBACK_COMMENT_SUFFIX);
+                    iCommTableFieldService.editTableCommentByTableName(tableName12, name + TableNameUtil.DESTRUCTION_COMMENT_SUFFIX);
+                }
                 //更改表的表名
                 if (!oldDataKey.equals(dataKey)) {
                     iCommTableFieldService.editTableNameByTableName(tableName1, tableName2);
+                    iCommTableFieldService.editTableNameByTableName(tableName11, tableName21);
+                    iCommTableFieldService.editTableNameByTableName(tableName12, tableName22);
                 }
                 //如果更换模板库则删除属于此模板库的字段以及表，并且重新添加字段跟表结构
                 if (!oldTemplateLibraryId.equals(templateLibraryId)) {
@@ -210,7 +224,12 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
                     //DDL操作
                     iCommTableFieldService.removeTableByTableName(tableName1);
-                    iCommTableFieldService.addTable(TableNameUtil.getFullTableName(dataKey), name, commTableFields);
+                    iCommTableFieldService.removeTableByTableName(tableName11);
+                    iCommTableFieldService.removeTableByTableName(tableName12);
+                    iCommTableFieldService.addTable(tableName1, name, commTableFields);
+                    commTableFields.add(iCommTableFieldService.findFixed());
+                    iCommTableFieldService.addTable(tableName11, name + TableNameUtil.ROLLBACK_COMMENT_SUFFIX, commTableFields);
+                    iCommTableFieldService.addTable(tableName12, name + TableNameUtil.DESTRUCTION_COMMENT_SUFFIX, commTableFields);
                 }
             }
         }

@@ -45,6 +45,8 @@ public interface ICommTableFieldService {
     void alterOrder(String tableName, CommTableField commTableField, String fieldName);
 
 
+    CommTableField findFixed();
+
     List<CommTableField> findByTableName(String tableName);
 
 
