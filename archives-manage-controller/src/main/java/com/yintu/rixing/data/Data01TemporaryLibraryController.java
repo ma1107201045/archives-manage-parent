@@ -139,19 +139,6 @@ public class Data01TemporaryLibraryController extends Authenticator {
         return ResultDataUtil.ok("查询临时库档案库列表信息树成功", treeNodeUtils);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导入临时库信息")
-    @PostMapping("/import")
-    @ApiOperation(value = "批量导入临时库信息", notes = "批量导入临时库信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "file", dataType = "__file", value = "文件对象", required = true, paramType = "form"),
-            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "form")
-    })
-    @ApiOperationSupport(order = 9)
-    public ResultDataUtil<Object> importExcelData(@RequestParam("file") MultipartFile multipartFile, @RequestParam Integer archivesLibraryId) throws IOException {
-        iDataTemporaryLibraryService.importExcelRecord(multipartFile, archivesLibraryId);
-        return ResultDataUtil.ok("批量导入临时库信息成功");
-    }
-
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出临时库信息")
     @GetMapping("/export/{ids}")
