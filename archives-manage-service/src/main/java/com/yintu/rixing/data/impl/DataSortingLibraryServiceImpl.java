@@ -80,7 +80,7 @@ public class DataSortingLibraryServiceImpl extends DataCommonService implements 
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
-        dataCommon.getDataCommonKVs().add(this.getStatusField((short) 1));
+        dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.SORTING_LIBRARY.getValue()));
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
