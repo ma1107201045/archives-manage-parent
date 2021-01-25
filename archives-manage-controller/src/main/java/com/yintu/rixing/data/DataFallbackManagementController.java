@@ -18,6 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/data/data-fallback-management")
 @Api(tags = "回退管理接口")
-@ApiSort(6)
+@ApiSort(7)
 public class DataFallbackManagementController extends Authenticator {
 }

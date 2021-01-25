@@ -28,7 +28,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/data/data-archives-library-file")
 @Api(tags = "档案文件接口")
-@ApiSort(10)
+@ApiSort(9)
 public class DataArchivesLibraryFileController extends Authenticator implements BaseController<DataArchivesLibraryFileFormDto, DataArchivesLibraryFileQueryDto, DataArchivesLibraryFile, Integer> {
 
     @Autowired

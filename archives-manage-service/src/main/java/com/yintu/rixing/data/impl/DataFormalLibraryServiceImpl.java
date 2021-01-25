@@ -12,7 +12,6 @@ import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -88,17 +87,6 @@ public class DataFormalLibraryServiceImpl extends DataCommonService implements I
         return dataCommonVo;
     }
 
-    @Override
-    public void importExcelRecord(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
-        DataCommon dataCommon = this.importExcelFile(multipartFile, archivesLibraryId);
-        dataCommon.getLists().forEach(dataCommonKVS -> dataCommonKVS.add(this.getStatusField(EnumArchivesOrder.FORMAL_LIBRARY.getValue())));
-        dataFormalLibraryMapper.insertSelectiveBatch(dataCommon);
-    }
-
-    @Override
-    public void exportExcelTemplateFile(HttpServletResponse response, String fileName, Integer archivesLibraryId) throws IOException {
-        this.exportExcelFile(response, fileName, null, archivesLibraryId);
-    }
 
     @Override
     public void exportExcelRecordFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException {
