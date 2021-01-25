@@ -77,9 +77,9 @@ public class Data02SortingLibraryController extends Authenticator {
         return ResultDataUtil.ok("修改整理库信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "回退临时库")
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "整理库信息回退临时库")
     @PatchMapping("/rollback/{id}")
-    @ApiOperation(value = "回退临时库", notes = "回退临时库")
+    @ApiOperation(value = "整理库信息回退临时库", notes = "整理库信息回退临时库")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
@@ -87,25 +87,25 @@ public class Data02SortingLibraryController extends Authenticator {
     @ApiOperationSupport(order = 4)
     public ResultDataUtil<Object> rollback(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
         dataSortingLibraryService.updateStatusById(id, archivesLibraryId, (short) 1);
-        return ResultDataUtil.ok("回退临时库成功");
+        return ResultDataUtil.ok("整理库信息回退临时库成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "移交正式库")
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "整理库信息移交正式库")
     @PatchMapping("/turn-over/{id}")
-    @ApiOperation(value = "移交正式库", notes = "移交正式库")
+    @ApiOperation(value = "整理库信息移交正式库", notes = "整理库信息移交正式库")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
     @ApiOperationSupport(order = 5)
     public ResultDataUtil<Object> turnOver(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, (short) 3);
-        return ResultDataUtil.ok("移交正式库成功");
+        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.FORMAL_LIBRARY.getValue());
+        return ResultDataUtil.ok("整理库信息移交正式库成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "标记为病档")
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "整理库信息标记为病档")
     @PatchMapping("/mark/{id}")
-    @ApiOperation(value = "标记为病档", notes = "标记为病档")
+    @ApiOperation(value = "整理库信息标记为病档信息", notes = "整理库信息标记为病档信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
@@ -113,7 +113,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @ApiOperationSupport(order = 5)
     public ResultDataUtil<Object> mark(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
         dataSortingLibraryService.updateStatusById(id, archivesLibraryId);
-        return ResultDataUtil.ok("标记为病档成功");
+        return ResultDataUtil.ok("整理库信息标记为病档信息成功");
     }
 
 
