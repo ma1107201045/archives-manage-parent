@@ -13,9 +13,8 @@ public enum EnumArchivesOrder {
     FORMAL_LIBRARY("正式库", (short) 3, ""),
     RECYCLE_BIN("回收站", (short) 4, ""),
     DESTRUCTION_LIBRARY("销毁库", (short) 5, ""),
-    FALLBACK_MANAGEMENT("回退管理", (short) 6, ""),
-    DISEASE_ARCHIVES("病档管理", (short) 7, ""),
-    ARCHIVES_DESTRUCTION("档案销毁", (short) 8, "");
+    DISEASE_ARCHIVES("病档管理", (short) 6, "");
+
 
     private final String name;
     private final Short value;

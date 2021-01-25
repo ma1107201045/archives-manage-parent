@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 数据回退管理 前端控制器
+ * 数据档案销毁 前端控制器
  * </p>
  *
  * @Author: mlf
- * @Date: 2021/1/18 10:21:11
+ * @Date: 2021/1/18 10:24:45
  * @Version: 1.0
  */
 @RestController
-@RequestMapping("/data/data-fallback-management")
-@Api(tags = "回退管理接口")
-@ApiSort(6)
-public class Data06FallbackManagementController extends Authenticator {
+@RequestMapping("/data/data-archives-destruction")
+@Api(tags = "档案销毁接口")
+@ApiSort(8)
+public class DataArchivesDestructionController extends Authenticator {
 }

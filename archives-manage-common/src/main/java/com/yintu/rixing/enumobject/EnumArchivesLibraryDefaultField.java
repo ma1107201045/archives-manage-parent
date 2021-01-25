@@ -13,7 +13,7 @@ public enum EnumArchivesLibraryDefaultField {
     MODIFIED_BY("修改人", 4, "modified_by", ""),
     MODIFIED_TIME("修改时间", 5, "modified_time", ""),
     ARCHIVES_NUM("档号", 6, "archives_num", ""),
-    STATUS("档案状态", 14, "status", "");
+    STATUS("档案状态", 14, "status", "档案状态：0.档案收集 1.临时库 2.整理库 3.正式库 4.回收站 5.销毁库  6.病档管理");
 
     private final String name;
     private final Integer value;

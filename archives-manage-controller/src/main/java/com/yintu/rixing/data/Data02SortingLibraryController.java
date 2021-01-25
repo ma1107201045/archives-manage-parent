@@ -40,17 +40,6 @@ public class Data02SortingLibraryController extends Authenticator {
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
 
-
-    @Log(level = EnumLogLevel.DEBUG, module = "数据中心", context = "添加整理库信息")
-    @PostMapping
-    @ApiOperation(value = "添加整理库信息", notes = "添加整理库信息")
-    @ApiOperationSupport(order = 1)
-    @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
-    public ResultDataUtil<Object> add(@RequestParam Map<String, String> params) {
-        dataSortingLibraryService.save(ObjectConvertUtil.getAddFormDto(params));
-        return ResultDataUtil.ok("添加整理库信息成功");
-    }
-
     @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "删除整理库信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除整理库信息", notes = "删除整理库信息")
@@ -135,19 +124,6 @@ public class Data02SortingLibraryController extends Authenticator {
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
         return ResultDataUtil.ok("查询整理库档案库列表信息树成功", treeNodeUtils);
-    }
-
-    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导入整理库信息")
-    @PostMapping("/import")
-    @ApiOperation(value = "批量导入整理库信息", notes = "批量导入整理库信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "file", dataType = "__file", value = "文件对象", required = true, paramType = "form"),
-            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "form")
-    })
-    @ApiOperationSupport(order = 9)
-    public ResultDataUtil<Object> importExcelData(@RequestParam("file") MultipartFile multipartFile, @RequestParam Integer archivesLibraryId) throws IOException {
-        dataSortingLibraryService.importExcelRecord(multipartFile, archivesLibraryId);
-        return ResultDataUtil.ok("批量导入整理库信息成功");
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "下载档案收集信息模板")

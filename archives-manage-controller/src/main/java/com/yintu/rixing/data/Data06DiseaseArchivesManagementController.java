@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 数据档案销毁 前端控制器
+ * 数据病档管理 前端控制器
  * </p>
  *
  * @Author: mlf
- * @Date: 2021/1/18 10:24:45
+ * @Date: 2021/1/18 10:22:57
  * @Version: 1.0
  */
 @RestController
-@RequestMapping("/data/data-archives-destruction")
-@Api(tags = "档案销毁接口")
-@ApiSort(8)
-public class Data08ArchivesDestructionController extends Authenticator {
+@RequestMapping("/data/disease-archives-management")
+@Api(tags = "病档管理接口")
+@ApiSort(9)
+public class Data06DiseaseArchivesManagementController extends Authenticator {
 }
