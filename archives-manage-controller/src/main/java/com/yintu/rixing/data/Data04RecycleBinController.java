@@ -58,7 +58,9 @@ public class Data04RecycleBinController extends Authenticator {
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
     public ResultDataUtil<Object> regain(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
-        iDataRecycleBinService.regainByIds(ids, archivesLibraryId);
+        for (Integer id : ids) {
+            iDataRecycleBinService.updateStatusById(id, archivesLibraryId, null);
+        }
         return ResultDataUtil.ok("恢复回收站信息成功");
     }
 

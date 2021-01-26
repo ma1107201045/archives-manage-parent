@@ -35,21 +35,17 @@ public class DataRecycleBinServiceImpl extends DataCommonService implements IDat
         dataRecycleBinMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
     }
 
-    @Override
-    public void regainByIds(Set<Integer> ids, Integer archivesLibraryId) {
-        for (Integer id : ids) {
-            this.updateStatusById(id, archivesLibraryId, null);
-        }
-    }
 
     @Override
-    public void updateStatusById(Integer id, Integer archivesLibraryId, Short status) {
+    public void updateStatusById(Integer id, Integer archivesLibraryId) {
         DataCommon dataCommon = this.removeOrGetHandler(id, archivesLibraryId);
         Map<String, Object> map = dataRecycleBinMapper.selectByPrimaryKey(dataCommon);
         if (map != null) {
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
+            Integer value = (Integer) map.get(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
+            Short status = value.shortValue();
             dataCommonKV.setFieldValue(status);
             dataCommonKVS.add(dataCommonKV);
             dataCommon.setDataCommonKVs(dataCommonKVS);

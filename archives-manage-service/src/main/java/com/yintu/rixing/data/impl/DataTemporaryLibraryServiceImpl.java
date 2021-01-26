@@ -43,11 +43,8 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
     public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
 //        DataCommon dataCommon = this.removeOrGetHandler(null, archivesLibraryId);
 //        dataTemporaryLibraryMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
-        Short value1 = EnumArchivesOrder.RECYCLE_BIN.getValue();
-        Short value2 = EnumArchivesOrder.TEMPORARY_LIBRARY.getValue();
-        Short newValue = Short.valueOf(value1 + value2.toString());
         for (Integer id : ids) {
-            this.updateStatusById(id, archivesLibraryId, newValue);
+            this.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.RECYCLE_BIN.getValue());
         }
     }
 
@@ -66,21 +63,22 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
         Map<String, Object> map = dataTemporaryLibraryMapper.selectByPrimaryKey(dataCommon);
         if (map != null) {
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
+
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
             dataCommonKV.setFieldValue(status);
+
+            DataCommonKV dataCommon1 = new DataCommonKV();
+            dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
+            dataCommon1.setFieldValue(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
+            DataCommonKV dataCommon2 = new DataCommonKV();
+
+            dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD1.getDataKey());
+            dataCommon2.setFieldValue(DateUtil.date());
+
             dataCommonKVS.add(dataCommonKV);
-            //如果标记为病档管理
-            if (EnumArchivesOrder.DISEASE_ARCHIVES.getValue().equals(status)) {
-                DataCommonKV dataCommon1 = new DataCommonKV();
-                dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
-                dataCommon1.setFieldValue(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
-                DataCommonKV dataCommon2 = new DataCommonKV();
-                dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD1.getDataKey());
-                dataCommon2.setFieldValue(DateUtil.date());
-                dataCommonKVS.add(dataCommon1);
-                dataCommonKVS.add(dataCommon2);
-            }
+            dataCommonKVS.add(dataCommon1);
+            dataCommonKVS.add(dataCommon2);
             dataCommon.setDataCommonKVs(dataCommonKVS);
             dataTemporaryLibraryMapper.updateByPrimaryKeySelective(dataCommon);
         }
