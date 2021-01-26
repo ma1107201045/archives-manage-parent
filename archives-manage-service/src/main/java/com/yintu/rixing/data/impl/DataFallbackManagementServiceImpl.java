@@ -75,6 +75,8 @@ public class DataFallbackManagementServiceImpl extends DataCommonService impleme
     @Override
     public DataCommVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
+        String rollbackTableName = dataCommon.getTableName() + TableNameUtil.ROLLBACK_SUFFIX;
+        dataCommon.setTableName(rollbackTableName);
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
