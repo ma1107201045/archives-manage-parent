@@ -16,7 +16,7 @@ public enum EnumArchivesLibraryDefaultField {
     STATUS("档案状态", 14, "status", "档案状态：0.档案收集 1.临时库 2.整理库 3.正式库 4.回收站 5.销毁库  6.病档管理"),
     STATUS_FIELD1("档案状态预留字段1", 14, "status_field1", ""),
     OPERATION_TIME_FIELD1("操作时间预留字段1", 14, "operation_time _field1", ""),
-    STATUS_FIELD2("档案状态预留字段2", 14, "status_field1", ""),
+    STATUS_FIELD2("档案状态预留字段2", 14, "status_field2", ""),
     OPERATION_TIME_FIELD2("档案状态预留字段2", 14, "operation_time _field2", "");
 
     private final String name;

@@ -164,12 +164,12 @@ public class Data02SortingLibraryController extends Authenticator {
         return ResultDataUtil.ok("批量导入整理库信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "下载档案收集信息模板")
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "下载整理库信息模板")
     @GetMapping("/download-template")
     @ApiOperation(value = "下载整理库信息模板", notes = "下载整理库信息模板")
     @ApiOperationSupport(order = 11)
     public void exportExcelTemplateFile(HttpServletResponse response, @RequestParam Integer archivesLibraryId) throws IOException {
-        iDataSortingLibraryService.exportExcelTemplateFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), archivesLibraryId);
+        iDataSortingLibraryService.exportExcelTemplateFile(response, EnumArchivesOrder.SORTING_LIBRARY.getName(), archivesLibraryId);
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出整理库信息")
