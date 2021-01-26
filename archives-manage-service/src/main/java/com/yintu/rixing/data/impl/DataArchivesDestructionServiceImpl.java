@@ -38,7 +38,7 @@ public class DataArchivesDestructionServiceImpl extends DataCommonService implem
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
-        dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.SORTING_LIBRARY.getValue()));
+        dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.ARCHIVES_DESTRUCTION.getValue()));
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
