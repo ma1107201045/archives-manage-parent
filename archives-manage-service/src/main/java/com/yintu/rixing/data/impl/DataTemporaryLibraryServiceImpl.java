@@ -63,22 +63,20 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
         Map<String, Object> map = dataTemporaryLibraryMapper.selectByPrimaryKey(dataCommon);
         if (map != null) {
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
-
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
             dataCommonKV.setFieldValue(status);
-
-            DataCommonKV dataCommon1 = new DataCommonKV();
-            dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
-            dataCommon1.setFieldValue(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
-
-            DataCommonKV dataCommon2 = new DataCommonKV();
-            dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD1.getDataKey());
-            dataCommon2.setFieldValue(DateUtil.date());
-
             dataCommonKVS.add(dataCommonKV);
-            dataCommonKVS.add(dataCommon1);
-            dataCommonKVS.add(dataCommon2);
+            if (EnumArchivesOrder.DISEASE_ARCHIVES.getValue().equals(status)) {
+                DataCommonKV dataCommon1 = new DataCommonKV();
+                dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
+                dataCommon1.setFieldValue(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
+                DataCommonKV dataCommon2 = new DataCommonKV();
+                dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD1.getDataKey());
+                dataCommon2.setFieldValue(DateUtil.date());
+                dataCommonKVS.add(dataCommon1);
+                dataCommonKVS.add(dataCommon2);
+            }
             dataCommon.setDataCommonKVs(dataCommonKVS);
             dataTemporaryLibraryMapper.updateByPrimaryKeySelective(dataCommon);
         }

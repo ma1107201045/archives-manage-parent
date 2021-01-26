@@ -2,6 +2,7 @@ package com.yintu.rixing.data.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataCommon;
+import com.yintu.rixing.data.DataCommonKV;
 import com.yintu.rixing.data.DataFallbackManagementMapper;
 import com.yintu.rixing.data.IDataFallbackManagementService;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
@@ -14,6 +15,8 @@ import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,8 +33,21 @@ public class DataFallbackManagementServiceImpl extends DataCommonService impleme
     @Override
     public void save(String tableName, Map<String, Object> params) {
         DataCommon dataCommon = new DataCommon();
-        String rollbackTableName = tableName + TableNameUtil.ROLLBACK_SUFFIX;
 
+        String rollbackTableName = tableName + TableNameUtil.ROLLBACK_SUFFIX;
+        Integer dataId = (Integer) params.get("id");
+        params.remove("id");
+        params.put("data_id", dataId);
+
+        List<DataCommonKV> dataCommonKVS = new ArrayList<>();
+        for (String key : params.keySet()) {
+            DataCommonKV dataCommonKV = new DataCommonKV();
+            dataCommonKV.setFieldName(key);
+            dataCommonKV.setFieldValue(params.get(key));
+            dataCommonKVS.add(dataCommonKV);
+        }
+        dataCommon.setTableName(rollbackTableName);
+        dataCommon.setDataCommonKVs(dataCommonKVS);
         dataFallbackManagementMapper.insertSelectiveBatch(dataCommon);
     }
 

@@ -65,6 +65,7 @@ public class DataSortingLibraryServiceImpl extends DataCommonService implements 
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
             dataCommonKV.setFieldValue(status);
+            dataCommonKVS.add(dataCommonKV);
             if (EnumArchivesOrder.DISEASE_ARCHIVES.getValue().equals(status)) {
                 //整理库标记为病档时
                 DataCommonKV dataCommon1 = new DataCommonKV();
@@ -79,7 +80,6 @@ public class DataSortingLibraryServiceImpl extends DataCommonService implements 
                 //从整理库回退到临时库时需要添加回退记录
                 iDataFallbackManagementService.save(dataCommon.getTableName(), map);
             }
-            dataCommonKVS.add(dataCommonKV);
             dataCommon.setDataCommonKVs(dataCommonKVS);
             dataSortingLibraryMapper.updateByPrimaryKeySelective(dataCommon);
         }
