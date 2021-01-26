@@ -1,5 +1,6 @@
 package com.yintu.rixing.data.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonKV;
@@ -69,6 +70,17 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
             dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
             dataCommonKV.setFieldValue(status);
             dataCommonKVS.add(dataCommonKV);
+            //如果标记为病档管理
+            if (EnumArchivesOrder.DISEASE_ARCHIVES.getValue().equals(status)) {
+                DataCommonKV dataCommon1 = new DataCommonKV();
+                dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
+                dataCommon1.setFieldValue(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
+                DataCommonKV dataCommon2 = new DataCommonKV();
+                dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD1.getDataKey());
+                dataCommon2.setFieldValue(DateUtil.date());
+                dataCommonKVS.add(dataCommon1);
+                dataCommonKVS.add(dataCommon2);
+            }
             dataCommon.setDataCommonKVs(dataCommonKVS);
             dataTemporaryLibraryMapper.updateByPrimaryKeySelective(dataCommon);
         }

@@ -58,7 +58,7 @@ public class Data06DiseaseArchivesManagementController extends Authenticator {
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
     public ResultDataUtil<Object> cancel(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        iDataDiseaseArchivesManagementService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
+        iDataDiseaseArchivesManagementService.updateStatusById(id, archivesLibraryId, null);
         return ResultDataUtil.ok("取消病档管理信息成功");
     }
 

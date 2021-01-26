@@ -45,7 +45,7 @@ public class DataArchivesDestructionServiceImpl extends DataCommonService implem
 
         DataCommonVo dataCommonVo = new DataCommonVo();
         dataCommonVo.setFields(this.getDataCommonVos(archivesLibraryId));
-        dataCommonVo.setPage(dataSortingLibraryMapper.selectPage(new Page<>(num, size), dataCommon));
+        dataCommonVo.setPage(dataArchivesDestructionMapper.selectPage(new Page<>(num, size), dataCommon));
         return dataCommonVo;
     }
 }

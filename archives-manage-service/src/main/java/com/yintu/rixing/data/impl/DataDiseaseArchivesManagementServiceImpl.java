@@ -1,5 +1,6 @@
 package com.yintu.rixing.data.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonKV;
@@ -29,8 +30,11 @@ public class DataDiseaseArchivesManagementServiceImpl extends DataCommonService 
 
     @Override
     public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
-        DataCommon dataCommon = this.removeOrGetHandler(null, archivesLibraryId);
-        dataDiseaseArchivesManagementMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
+//        DataCommon dataCommon = this.removeOrGetHandler(null, archivesLibraryId);
+//        dataDiseaseArchivesManagementMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
+        for (Integer id : ids) {
+            this.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.RECYCLE_BIN.getValue());
+        }
     }
 
     @Override
@@ -41,6 +45,19 @@ public class DataDiseaseArchivesManagementServiceImpl extends DataCommonService 
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
+            if (status == null) {//判断是取消病档 还是病档删除
+                Integer value = (Integer) map.get(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
+                status = value.shortValue();
+            } else {
+                DataCommonKV dataCommon1 = new DataCommonKV();
+                dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD2.getDataKey());
+                dataCommon1.setFieldValue(EnumArchivesOrder.DISEASE_ARCHIVES.getValue());
+                DataCommonKV dataCommon2 = new DataCommonKV();
+                dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD2.getDataKey());
+                dataCommon2.setFieldValue(DateUtil.date());
+                dataCommonKVS.add(dataCommon1);
+                dataCommonKVS.add(dataCommon2);
+            }
             dataCommonKV.setFieldValue(status);
             dataCommonKVS.add(dataCommonKV);
             dataCommon.setDataCommonKVs(dataCommonKVS);
