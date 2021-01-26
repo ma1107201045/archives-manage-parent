@@ -44,8 +44,10 @@ public class Data05DestructionLibraryController extends Authenticator {
             @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
-    public ResultDataUtil<Object> destructionByIds(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
-        dataDestructionLibraryService.destructionByIds(ids, archivesLibraryId, EnumArchivesOrder.ARCHIVES_DESTRUCTION.getValue());
+    public ResultDataUtil<Object> destruction(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
+        for (Integer id : ids) {
+            dataDestructionLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.ARCHIVES_DESTRUCTION.getValue());
+        }
         return ResultDataUtil.ok("销毁销毁库信息成功");
     }
 
