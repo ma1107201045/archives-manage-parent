@@ -38,12 +38,6 @@ public class DestructionLibraryServiceImpl extends DataCommonService implements 
         }
     }
 
-    @Override
-    public void destructionByIds(Set<Integer> ids, Integer archivesLibraryId, Short status) {
-        for (Integer id : ids) {
-            this.updateStatusById(id, archivesLibraryId, status);
-        }
-    }
 
     @Override
     public void updateStatusById(Integer id, Integer archivesLibraryId, Short status) {

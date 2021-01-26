@@ -1,6 +1,5 @@
 package com.yintu.rixing.data;
 
-import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,19 +9,17 @@ import java.util.Set;
 
 /**
  * @Author: mlf
- * @Date: 2021/1/25 17:15:27
+ * @Date: 2021/1/26 11:47:12
  * @Version: 1.0
  */
-public interface IDataDestructionLibraryService {
+public interface IDataArchivesDestructionService {
 
 
     @Transactional(rollbackFor = {Exception.class})
-    void updateById(DataCommonFormDto dataCommonFormDto);
-
-    @Transactional(rollbackFor = {Exception.class})
-    void updateStatusById(Integer id, Integer archivesLibraryId, Short status);
+    void removeByIds(Set<Integer> ids, Integer archivesLibraryId);
 
     Map<String, Object> getById(Integer id, Integer archivesLibraryId);
 
     DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
+
 }
