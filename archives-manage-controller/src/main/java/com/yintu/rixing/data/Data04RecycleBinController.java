@@ -59,7 +59,7 @@ public class Data04RecycleBinController extends Authenticator {
     })
     public ResultDataUtil<Object> regain(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
         for (Integer id : ids) {
-            iDataRecycleBinService.updateStatusById(id, archivesLibraryId, null);
+            iDataRecycleBinService.updateStatusById(id, archivesLibraryId);
         }
         return ResultDataUtil.ok("恢复回收站信息成功");
     }

@@ -1,5 +1,6 @@
 package com.yintu.rixing.data.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonKV;
@@ -44,8 +45,22 @@ public class DataRecycleBinServiceImpl extends DataCommonService implements IDat
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
-            Integer value = (Integer) map.get(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
-            Short status = value.shortValue();
+
+            Integer value1 = (Integer) map.get(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
+            short status = value1.shortValue();
+
+            Integer value2 = (Integer) map.get(EnumArchivesLibraryDefaultField.STATUS_FIELD2.getDataKey());
+            if (value2 != null) {//如果是病档管理还原则需要清除原来值防止循环造成数据错乱
+                status = value2.shortValue();
+                DataCommonKV dataCommon1 = new DataCommonKV();
+                dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD2.getDataKey());
+                dataCommon1.setFieldValue(null);
+                DataCommonKV dataCommon2 = new DataCommonKV();
+                dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD2.getDataKey());
+                dataCommon2.setFieldValue(null);
+                dataCommonKVS.add(dataCommon1);
+                dataCommonKVS.add(dataCommon2);
+            }
             dataCommonKV.setFieldValue(status);
             dataCommonKVS.add(dataCommonKV);
             dataCommon.setDataCommonKVs(dataCommonKVS);
