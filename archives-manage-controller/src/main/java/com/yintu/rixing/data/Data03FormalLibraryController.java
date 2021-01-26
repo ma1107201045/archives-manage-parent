@@ -8,12 +8,10 @@ import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
-import com.yintu.rixing.vo.data.DataCommonVo;
+import com.yintu.rixing.vo.data.DataCommoVo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -47,8 +45,8 @@ public class Data03FormalLibraryController extends Authenticator {
     @ApiOperation(value = "查询正式库列表信息", notes = "查询正式库列表信息")
     @ApiOperationSupport(order = 1)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
-    public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
-        DataCommonVo dataCommonVo = iDataFormalLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
+    public ResultDataUtil<DataCommoVo> findPage(@RequestParam Map<String, String> params) {
+        DataCommoVo dataCommonVo = iDataFormalLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
         return ResultDataUtil.ok("查询正式库列表信息成功", dataCommonVo);
     }
 

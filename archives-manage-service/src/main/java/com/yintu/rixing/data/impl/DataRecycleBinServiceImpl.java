@@ -1,6 +1,5 @@
 package com.yintu.rixing.data.impl;
 
-import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonKV;
@@ -9,7 +8,7 @@ import com.yintu.rixing.data.IDataRecycleBinService;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
-import com.yintu.rixing.vo.data.DataCommonVo;
+import com.yintu.rixing.vo.data.DataCommoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,15 +74,15 @@ public class DataRecycleBinServiceImpl extends DataCommonService implements IDat
     }
 
     @Override
-    public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
+    public DataCommoVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
         dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.RECYCLE_BIN.getValue()));
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
 
-        DataCommonVo dataCommonVo = new DataCommonVo();
-        dataCommonVo.setFields(this.getDataCommonVos(archivesLibraryId));
+        DataCommoVo dataCommonVo = new DataCommoVo();
+        dataCommonVo.setDataCommonFieldVos(this.getDataCommonFieldVos(archivesLibraryId));
         dataCommonVo.setPage(dataRecycleBinMapper.selectPage(new Page<>(num, size), dataCommon));
         return dataCommonVo;
     }

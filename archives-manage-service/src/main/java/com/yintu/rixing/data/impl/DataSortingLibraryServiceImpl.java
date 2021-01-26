@@ -7,7 +7,7 @@ import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
-import com.yintu.rixing.vo.data.DataCommonVo;
+import com.yintu.rixing.vo.data.DataCommoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -90,15 +90,15 @@ public class DataSortingLibraryServiceImpl extends DataCommonService implements 
     }
 
     @Override
-    public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
+    public DataCommoVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
         dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.SORTING_LIBRARY.getValue()));
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
 
-        DataCommonVo dataCommonVo = new DataCommonVo();
-        dataCommonVo.setFields(this.getDataCommonVos(archivesLibraryId));
+        DataCommoVo dataCommonVo = new DataCommoVo();
+        dataCommonVo.setDataCommonFieldVos(this.getDataCommonFieldVos(archivesLibraryId));
         dataCommonVo.setPage(dataSortingLibraryMapper.selectPage(new Page<>(num, size), dataCommon));
         return dataCommonVo;
     }

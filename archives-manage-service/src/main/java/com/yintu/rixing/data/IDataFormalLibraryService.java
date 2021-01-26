@@ -2,9 +2,8 @@ package com.yintu.rixing.data;
 
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
-import com.yintu.rixing.vo.data.DataCommonVo;
+import com.yintu.rixing.vo.data.DataCommoVo;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -33,7 +32,7 @@ public interface IDataFormalLibraryService {
 
     Map<String, Object> getById(Integer id, Integer archivesLibraryId);
 
-    DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
+    DataCommoVo getPage(DataCommonQueryDto dataCommonPageDto);
 
     void exportExcelRecordFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException;
 }

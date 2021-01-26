@@ -6,14 +6,11 @@ import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonKV;
 import com.yintu.rixing.data.DataFallbackManagementMapper;
 import com.yintu.rixing.data.IDataFallbackManagementService;
-import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
-import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
-import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.util.AssertUtil;
 import com.yintu.rixing.util.TableNameUtil;
-import com.yintu.rixing.vo.data.DataCommonVo;
+import com.yintu.rixing.vo.data.DataCommoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,15 +73,15 @@ public class DataFallbackManagementServiceImpl extends DataCommonService impleme
     }
 
     @Override
-    public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
+    public DataCommoVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
 
-        DataCommonVo dataCommonVo = new DataCommonVo();
-        dataCommonVo.setFields(this.getDataCommonVos(archivesLibraryId));
-        dataCommonVo.setPage(dataFallbackManagementMapper.selectPage(new Page<>(num, size), dataCommon));
-        return dataCommonVo;
+        DataCommoVo dataCommoVo = new DataCommoVo();
+        dataCommoVo.setDataCommonFieldVos(this.getDataCommonFieldVos(archivesLibraryId));
+        dataCommoVo.setPage(dataFallbackManagementMapper.selectPage(new Page<>(num, size), dataCommon));
+        return dataCommoVo;
     }
 }

@@ -279,7 +279,7 @@ public class DataCommonService {
         return dataCommonMapper.selectByPrimaryKey(dataCommon);
     }
 
-    protected List<DataCommonFieldVo> getDataCommonVos(Integer archivesLibraryId) {
+    protected List<DataCommonFieldVo> getDataCommonFieldVos(Integer archivesLibraryId) {
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archivesLibraryId);
         List<DataCommonFieldVo> dataCommonFieldVos = new ArrayList<>();
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {

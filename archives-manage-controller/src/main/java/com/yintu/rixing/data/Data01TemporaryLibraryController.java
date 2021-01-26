@@ -2,20 +2,16 @@ package com.yintu.rixing.data;
 
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
-import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
-import com.yintu.rixing.vo.data.DataCommonVo;
+import com.yintu.rixing.vo.data.DataCommoVo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -124,8 +120,8 @@ public class Data01TemporaryLibraryController extends Authenticator {
     @ApiOperation(value = "查询临时库列表信息", notes = "查询临时库列表信息")
     @ApiOperationSupport(order = 7)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
-    public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
-        DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
+    public ResultDataUtil<DataCommoVo> findPage(@RequestParam Map<String, String> params) {
+        DataCommoVo dataCommonVo = iDataTemporaryLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
         return ResultDataUtil.ok("查询临时库列表信息成功", dataCommonVo);
     }
 

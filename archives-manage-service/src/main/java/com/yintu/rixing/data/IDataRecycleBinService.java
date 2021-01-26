@@ -1,7 +1,7 @@
 package com.yintu.rixing.data;
 
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
-import com.yintu.rixing.vo.data.DataCommonVo;
+import com.yintu.rixing.vo.data.DataCommoVo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
@@ -22,5 +22,5 @@ public interface IDataRecycleBinService {
 
     Map<String, Object> getById(Integer id, Integer archivesLibraryId);
 
-    DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
+    DataCommoVo getPage(DataCommonQueryDto dataCommonPageDto);
 }
