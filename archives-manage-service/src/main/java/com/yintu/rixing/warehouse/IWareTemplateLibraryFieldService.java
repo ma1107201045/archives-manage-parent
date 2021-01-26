@@ -2,6 +2,7 @@ package com.yintu.rixing.warehouse;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yintu.rixing.vo.data.DataCommonVo;
 
 /**
  * <p>
@@ -22,4 +23,14 @@ public interface IWareTemplateLibraryFieldService extends IService<WareTemplateL
     Integer findTurnLeftState();
 
     void addWarehouse(JSONObject jsonObject);
+
+    DataCommonVo findAllEntityArchives(Integer num, Integer size);
+
+    DataCommonVo findInWarehouse(Integer num, Integer size);
+
+    DataCommonVo findOutWarehouse(Integer num, Integer size);
+
+    void updateWarehouse(JSONObject jsonObject, Integer id);
+
+    void deleteWarehouse(Integer id);
 }

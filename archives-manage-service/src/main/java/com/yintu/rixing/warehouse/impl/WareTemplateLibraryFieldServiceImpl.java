@@ -4,11 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.common.CommTableField;
 import com.yintu.rixing.common.ICommTableFieldService;
+import com.yintu.rixing.enumobject.EnumFlag;
+import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.ISysTemplateLibraryFieldTypeService;
 import com.yintu.rixing.system.SysTemplateLibraryFieldType;
+import com.yintu.rixing.vo.data.DataCommonFieldVo;
+import com.yintu.rixing.vo.data.DataCommonVo;
 import com.yintu.rixing.warehouse.IWareTemplateLibraryFieldService;
 import com.yintu.rixing.warehouse.WareTemplateLibraryField;
 
@@ -37,21 +43,180 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
     private WareTemplateLibraryFiledMapper wareTemplateLibraryFiledMapper;
 
     @Override
-    public void addWarehouse(JSONObject jsonObject) {
+    public void deleteWarehouse(Integer id) {
+        wareTemplateLibraryFiledMapper.deleteWarehouse(id);
+    }
+
+    @Override
+    public void updateWarehouse(JSONObject jsonObject, Integer id) {
         String tableName="ware_physical_warehouse";
-        JSONArray tableDates = jsonObject.getJSONArray("sss");
+        JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
         for (Object tableDate : tableDates) {
-            Set<Object> value=new HashSet<>();
+            List<Object> values=new ArrayList<>();
             Map<String,Object> map = JSONObject.parseObject(JSON.toJSONString(tableDate));
-            Collection<Object> values = map.values();
             Set<String> key = map.keySet();
-            for (String s : key) {
+            List<String> keys = new ArrayList<>(key);
+            for (String s : keys) {
                 Object o = map.get(s);
-                value.add(o);
+                values.add(o);
+            }
+            StringBuilder sb1=new StringBuilder();
+            StringBuilder sb2=new StringBuilder();
+            for (int i = 0; i < keys.size(); i++) {
+                for (int ii = 0; ii < values.size(); ii++) {
+                    if (i == 0 && ii == 0) {
+                        sb1.append(keys.get(i) + "=" + "'" + values.get(i) + "'");
+                    } else {
+                        sb1.append("," + keys.get(i) + "=" + "'" + values.get(i) + "'");
+                    }
+                }
             }
             System.out.println("111111"+key);
-            System.out.println("222222"+value);
-            wareTemplateLibraryFiledMapper.addWarehouse(key,value,tableName);
+            System.out.println("222222"+values);
+            wareTemplateLibraryFiledMapper.updateWarehouse(sb1,tableName,id);
+        }
+    }
+
+    @Override
+    public DataCommonVo findOutWarehouse(Integer num, Integer size) {
+        String tableName="ware_physical_warehouse";
+        if (wareTemplateLibraryFiledMapper.findTable(tableName)==0){
+            throw new BaseRuntimeException("请先创建实体库表");
+        }else {
+            List<DataCommonFieldVo> dataCommonFieldVos = new ArrayList<>();
+            List<WareTemplateLibraryField> wareTemplateLibraryFieldList = this.list();
+            for (WareTemplateLibraryField wareTemplateLibraryField : wareTemplateLibraryFieldList) {
+                DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
+                Integer templateLibraryFieldTypeId = wareTemplateLibraryField.getTemplateLibraryFieldTypeId();
+                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+                Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
+                String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
+                String fieldTypeName = sysTemplateLibraryFieldType.getName();
+                dataCommonTitleVo.setTypeId(fieldTypeId);
+                dataCommonTitleVo.setTypeProp(fieldTypeDataKey);
+                dataCommonTitleVo.setTypeLabel(fieldTypeName);
+                dataCommonTitleVo.setNotNull(wareTemplateLibraryField.getRequired() == 1);
+                dataCommonTitleVo.setProp(wareTemplateLibraryField.getDataKey());
+                dataCommonTitleVo.setLabel(wareTemplateLibraryField.getName());
+                dataCommonTitleVo.setQuery(wareTemplateLibraryField.getQuery().equals(EnumFlag.True.getValue()));
+                dataCommonTitleVo.setTitle(wareTemplateLibraryField.getTitle().equals(EnumFlag.True.getValue()));
+                dataCommonTitleVo.setForm(wareTemplateLibraryField.getForm().equals(EnumFlag.True.getValue()));
+                dataCommonFieldVos.add(dataCommonTitleVo);
+            }
+            DataCommonVo dataCommonVo = new DataCommonVo();
+            dataCommonVo.setFields(dataCommonFieldVos);
+            Page page=new Page();
+            page.setSize(size);
+            page.setPages(num);
+            dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findOutWarehouse(page));
+            return dataCommonVo;
+        }
+    }
+
+    @Override
+    public DataCommonVo findInWarehouse(Integer num, Integer size) {
+        String tableName="ware_physical_warehouse";
+        if (wareTemplateLibraryFiledMapper.findTable(tableName)==0){
+            throw new BaseRuntimeException("请先创建实体库表");
+        }else {
+            List<DataCommonFieldVo> dataCommonFieldVos = new ArrayList<>();
+            List<WareTemplateLibraryField> wareTemplateLibraryFieldList = this.list();
+            for (WareTemplateLibraryField wareTemplateLibraryField : wareTemplateLibraryFieldList) {
+                DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
+                Integer templateLibraryFieldTypeId = wareTemplateLibraryField.getTemplateLibraryFieldTypeId();
+                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+                Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
+                String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
+                String fieldTypeName = sysTemplateLibraryFieldType.getName();
+                dataCommonTitleVo.setTypeId(fieldTypeId);
+                dataCommonTitleVo.setTypeProp(fieldTypeDataKey);
+                dataCommonTitleVo.setTypeLabel(fieldTypeName);
+                dataCommonTitleVo.setNotNull(wareTemplateLibraryField.getRequired() == 1);
+                dataCommonTitleVo.setProp(wareTemplateLibraryField.getDataKey());
+                dataCommonTitleVo.setLabel(wareTemplateLibraryField.getName());
+                dataCommonTitleVo.setQuery(wareTemplateLibraryField.getQuery().equals(EnumFlag.True.getValue()));
+                dataCommonTitleVo.setTitle(wareTemplateLibraryField.getTitle().equals(EnumFlag.True.getValue()));
+                dataCommonTitleVo.setForm(wareTemplateLibraryField.getForm().equals(EnumFlag.True.getValue()));
+                dataCommonFieldVos.add(dataCommonTitleVo);
+            }
+            DataCommonVo dataCommonVo = new DataCommonVo();
+            dataCommonVo.setFields(dataCommonFieldVos);
+            Page page=new Page();
+            page.setSize(size);
+            page.setPages(num);
+            dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findInWarehousePage(page));
+            return dataCommonVo;
+        }
+    }
+
+    @Override
+    public DataCommonVo findAllEntityArchives(Integer num, Integer size) {
+        String tableName="ware_physical_warehouse";
+        if (wareTemplateLibraryFiledMapper.findTable(tableName)==0){
+            throw new BaseRuntimeException("请先创建实体库表");
+        }else {
+        List<DataCommonFieldVo> dataCommonFieldVos = new ArrayList<>();
+        List<WareTemplateLibraryField> wareTemplateLibraryFieldList = this.list();
+        for (WareTemplateLibraryField wareTemplateLibraryField : wareTemplateLibraryFieldList) {
+            DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
+            Integer templateLibraryFieldTypeId = wareTemplateLibraryField.getTemplateLibraryFieldTypeId();
+            SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+            Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
+            String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
+            String fieldTypeName = sysTemplateLibraryFieldType.getName();
+            dataCommonTitleVo.setTypeId(fieldTypeId);
+            dataCommonTitleVo.setTypeProp(fieldTypeDataKey);
+            dataCommonTitleVo.setTypeLabel(fieldTypeName);
+            dataCommonTitleVo.setNotNull(wareTemplateLibraryField.getRequired() == 1);
+            dataCommonTitleVo.setProp(wareTemplateLibraryField.getDataKey());
+            dataCommonTitleVo.setLabel(wareTemplateLibraryField.getName());
+            dataCommonTitleVo.setQuery(wareTemplateLibraryField.getQuery().equals(EnumFlag.True.getValue()));
+            dataCommonTitleVo.setTitle(wareTemplateLibraryField.getTitle().equals(EnumFlag.True.getValue()));
+            dataCommonTitleVo.setForm(wareTemplateLibraryField.getForm().equals(EnumFlag.True.getValue()));
+            dataCommonFieldVos.add(dataCommonTitleVo);
+        }
+        DataCommonVo dataCommonVo = new DataCommonVo();
+        dataCommonVo.setFields(dataCommonFieldVos);
+        Page page=new Page();
+        page.setSize(size);
+        page.setPages(num);
+        dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findAllEntityArchivesPage(page));
+        return dataCommonVo;
+        }
+    }
+
+    @Override
+    public void addWarehouse(JSONObject jsonObject) {
+        String tableName="ware_physical_warehouse";
+        JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
+        for (Object tableDate : tableDates) {
+            List<Object> values=new ArrayList<>();
+            Map<String,Object> map = JSONObject.parseObject(JSON.toJSONString(tableDate));
+            Set<String> key = map.keySet();
+            List<String> keys = new ArrayList<>(key);
+            for (String s : keys) {
+                Object o = map.get(s);
+                values.add(o);
+            }
+            StringBuilder sb1=new StringBuilder();
+            StringBuilder sb2=new StringBuilder();
+            for (int i = 0; i < keys.size(); i++) {
+                if (i==0){
+                    sb1.append("warehouseType");
+                }else {
+                    sb1.append(","+keys.get(i));
+                }
+            }
+            for (int i = 0; i < values.size(); i++) {
+                if (i==0){
+                    sb2.append("'1'");
+                }else {
+                    sb2.append(","+"'"+values.get(i)+"'");
+                }
+            }
+            System.out.println("111111"+key);
+            System.out.println("222222"+values);
+            wareTemplateLibraryFiledMapper.addWarehousee(sb1,sb2,tableName);
         }
     }
 
@@ -85,6 +250,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         List<CommTableField> commTableFields = new ArrayList<>();
         Integer table = wareTemplateLibraryFiledMapper.findTable(tableName);
         if (table==0) {//判断表是否存在  0是不存在   1是存在
+            //添加主键id
             CommTableField commTableField1=new CommTableField();
             commTableField1.setComment("主键id");//注释
             commTableField1.setFieldName("id");//字段名
@@ -94,6 +260,16 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             commTableField1.setDataType("int");//数据类型
             commTableField1.setIsNull((short)0);//是否为空
             commTableFields.add(0,commTableField1);
+            //添加区分 出库和入库的字段
+            CommTableField commTableField2=new CommTableField();
+            commTableField2.setComment("区分出库和入库 入库：1，出库：2");//注释
+            commTableField2.setFieldName("warehouseType");//字段名
+            commTableField2.setLength(11);//长度
+            commTableField2.setTableName(tableName);//表名
+            commTableField2.setIsIndex((short)1);//是否索引
+            commTableField2.setDataType("int");//数据类型
+            commTableField2.setIsNull((short)0);//是否为空
+            commTableFields.add(1,commTableField2);
             for (Object tableDate : tableDates) {
                 CommTableField commTableField=new CommTableField();
                 Map<String,Object> map = JSONObject.parseObject(JSON.toJSONString(tableDate));
@@ -127,6 +303,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             if (wareTemplateLibraryFiledMapper.findTurnLeftState(tableName)==null){//说明表里没数据
                 iCommTableFieldService.removeTableByTableName(tableName);//删除此表
                 //再重新创建表
+                //添加主键id
                 CommTableField commTableField1=new CommTableField();
                 commTableField1.setComment("主键id");//注释
                 commTableField1.setFieldName("id");//字段名
@@ -136,6 +313,16 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                 commTableField1.setDataType("int");//数据类型
                 commTableField1.setIsNull((short)0);//是否为空
                 commTableFields.add(0,commTableField1);
+                //添加区分 出库和入库的字段
+                CommTableField commTableField2=new CommTableField();
+                commTableField2.setComment("区分出库和入库 入库：1，出库：2");//注释
+                commTableField2.setFieldName("warehouseType");//字段名
+                commTableField2.setLength(11);//长度
+                commTableField2.setTableName(tableName);//表名
+                commTableField2.setIsIndex((short)1);//是否索引
+                commTableField2.setDataType("int");//数据类型
+                commTableField2.setIsNull((short)0);//是否为空
+                commTableFields.add(1,commTableField2);
                 List<Integer> ids=new ArrayList<>();//typeId=1的数据id集合
                 for (Object tableDate : tableDates) {
                     CommTableField commTableField=new CommTableField();

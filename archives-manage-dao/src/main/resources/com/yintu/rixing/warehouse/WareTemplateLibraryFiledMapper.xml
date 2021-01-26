@@ -20,31 +20,48 @@
     create_by, create_time, modified_by, modified_time
   </sql>
 
+  <!--根据id 删除对应的实体档案库数据-->
+  <select id="deleteWarehouse" >
+    DELETE
+    FROM
+        ware_physical_warehouse
+    WHERE
+        where id=#{id}
+  </select>
+
+  <!--根据id 编辑对应的实体档案库数据-->
+  <select id="updateWarehouse" >
+    update ${tableName}
+    set ${sb1}
+    where id=${id}
+  </select>
+
+  <!--分页查询实体档案入库数据-->
+  <select id="findOutWarehouse" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    where warehouseType=2
+  </select>
+
+  <!--分页查询实体档案入库数据-->
+  <select id="findInWarehousePage" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    where warehouseType=1
+  </select>
+
+  <!--分页查询实体档案表里所有数据-->
+  <select id="findAllEntityArchivesPage" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+  </select>
+
   <!--新增入库数据-->
-  <insert id="addWarehouse" >
+  <insert id="addWarehousee" >
     insert into `${tableName}`
-    <foreach collection="set" index="index" item="key">
-      <trim prefix="(" suffix=")">
-        <if test="index == 0">
-          <foreach collection="set" index="index" item="key" separator=",">
-            <if test="key != null">
-              `${key}`
-            </if>
-          </foreach>
-        </if>
-      </trim>
-    </foreach>
-    <trim prefix="values">
-      <foreach collection="set" index="index" item="value" separator=",">
-        <trim prefix="(" suffix=")">
-          <foreach collection="set" index="index" item="value" separator=",">
-            <if test="value != null">
-              #{value}
-            </if>
-          </foreach>
-        </trim>
-      </foreach>
-    </trim>
+    (${sb1})
+    VALUES
+    (${sb2})
   </insert>
 
   <!--查询表是否存在-->
