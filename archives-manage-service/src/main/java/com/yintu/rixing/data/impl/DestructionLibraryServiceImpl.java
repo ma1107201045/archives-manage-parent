@@ -2,14 +2,19 @@ package com.yintu.rixing.data.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataCommon;
+import com.yintu.rixing.data.DataCommonKV;
 import com.yintu.rixing.data.DestructionLibraryMapper;
 import com.yintu.rixing.data.IDataDestructionLibraryService;
+import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
+import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,10 +28,36 @@ public class DestructionLibraryServiceImpl extends DataCommonService implements 
     @Autowired
     private DestructionLibraryMapper destructionLibraryMapper;
 
+
     @Override
-    public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
-        DataCommon dataCommon = this.removeOrGetHandler(null, archivesLibraryId);
-        destructionLibraryMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
+    public void updateById(DataCommonFormDto dataCommonFormDto) {
+        DataCommon dataCommon = this.saveOrUpdateHandler(dataCommonFormDto);
+        Map<String, Object> map = destructionLibraryMapper.selectByPrimaryKey(dataCommon);
+        if (map != null) {
+            destructionLibraryMapper.updateByPrimaryKeySelective(dataCommon);
+        }
+    }
+
+    @Override
+    public void destructionByIds(Set<Integer> ids, Integer archivesLibraryId, Short status) {
+        for (Integer id : ids) {
+            this.updateStatusById(id, archivesLibraryId, status);
+        }
+    }
+
+    @Override
+    public void updateStatusById(Integer id, Integer archivesLibraryId, Short status) {
+        DataCommon dataCommon = this.removeOrGetHandler(id, archivesLibraryId);
+        Map<String, Object> map = destructionLibraryMapper.selectByPrimaryKey(dataCommon);
+        if (map != null) {
+            List<DataCommonKV> dataCommonKVS = new ArrayList<>();
+            DataCommonKV dataCommonKV = new DataCommonKV();
+            dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
+            dataCommonKV.setFieldValue(status);
+            dataCommonKVS.add(dataCommonKV);
+            dataCommon.setDataCommonKVs(dataCommonKVS);
+            destructionLibraryMapper.updateByPrimaryKeySelective(dataCommon);
+        }
     }
 
     @Override

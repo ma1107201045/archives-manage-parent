@@ -2,6 +2,7 @@ package com.yintu.rixing.data;
 
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
+import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.util.ObjectConvertUtil;
@@ -43,8 +44,8 @@ public class Data05DestructionLibraryController extends Authenticator {
             @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
-    public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
-        dataDestructionLibraryService.removeByIds(ids, archivesLibraryId);
+    public ResultDataUtil<Object> destructionByIds(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
+        dataDestructionLibraryService.destructionByIds(ids, archivesLibraryId, EnumArchivesOrder.ARCHIVES_DESTRUCTION.getValue());
         return ResultDataUtil.ok("销毁销毁库信息成功");
     }
 
