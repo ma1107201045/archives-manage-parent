@@ -65,19 +65,17 @@ public class DataSortingLibraryServiceImpl extends DataCommonService implements 
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
             dataCommonKV.setFieldValue(status);
+            DataCommonKV dataCommon1 = new DataCommonKV();
+            dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
+            dataCommon1.setFieldValue(EnumArchivesOrder.SORTING_LIBRARY.getValue());
+            DataCommonKV dataCommon2 = new DataCommonKV();
+            dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD1.getDataKey());
+            dataCommon2.setFieldValue(DateUtil.date());
             dataCommonKVS.add(dataCommonKV);
-            if (EnumArchivesOrder.DISEASE_ARCHIVES.getValue().equals(status)) {
-                //整理库标记为病档时
-                DataCommonKV dataCommon1 = new DataCommonKV();
-                dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
-                dataCommon1.setFieldValue(EnumArchivesOrder.SORTING_LIBRARY.getValue());
-                DataCommonKV dataCommon2 = new DataCommonKV();
-                dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD1.getDataKey());
-                dataCommon2.setFieldValue(DateUtil.date());
-                dataCommonKVS.add(dataCommon1);
-                dataCommonKVS.add(dataCommon2);
-            } else if (EnumArchivesOrder.TEMPORARY_LIBRARY.getValue().equals(status)) {
-                //从整理库回退到临时库时需要添加回退记录
+            dataCommonKVS.add(dataCommon1);
+            dataCommonKVS.add(dataCommon2);
+            //从整理库回退到临时库时需要添加回退记录
+            if (EnumArchivesOrder.TEMPORARY_LIBRARY.getValue().equals(status)) {
                 iDataFallbackManagementService.save(dataCommon.getTableName(), map);
             }
             dataCommon.setDataCommonKVs(dataCommonKVS);

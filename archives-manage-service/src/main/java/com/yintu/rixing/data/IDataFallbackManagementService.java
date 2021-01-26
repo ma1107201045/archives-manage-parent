@@ -1,6 +1,5 @@
 package com.yintu.rixing.data;
 
-import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +19,6 @@ public interface IDataFallbackManagementService {
 
     @Transactional(rollbackFor = {Exception.class})
     void removeByIds(Set<Integer> ids, Integer archivesLibraryId);
-
-    Map<String, Object> getById(Integer id, Integer archivesLibraryId);
 
     DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
 }

@@ -60,11 +60,6 @@ public class DataFallbackManagementServiceImpl extends DataCommonService impleme
         dataFallbackManagementMapper.deleteByPrimaryKeys(ids, tableName);
     }
 
-    @Override
-    public Map<String, Object> getById(Integer id, Integer archivesLibraryId) {
-        DataCommon dataCommon = this.removeOrGetHandler(id, archivesLibraryId);
-        return dataFallbackManagementMapper.selectByPrimaryKey(dataCommon);
-    }
 
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
