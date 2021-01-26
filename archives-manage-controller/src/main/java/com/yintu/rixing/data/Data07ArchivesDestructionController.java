@@ -48,13 +48,13 @@ public class Data07ArchivesDestructionController extends Authenticator {
     })
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
         iDataArchivesDestructionService.removeByIds(ids, archivesLibraryId);
-        return ResultDataUtil.ok("删除整理库信息成功");
+        return ResultDataUtil.ok("删除档案销毁信息成功");
     }
 
 
-    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询整理库单条信息")
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案销毁单条信息")
     @GetMapping("/{id}")
-    @ApiOperation(value = "查询整理库单条信息", notes = "查询整理库单条信息")
+    @ApiOperation(value = "查询档案销毁单条信息", notes = "查询档案销毁单条信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
@@ -62,26 +62,26 @@ public class Data07ArchivesDestructionController extends Authenticator {
     @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
         iDataArchivesDestructionService.getById(id, archivesLibraryId);
-        return ResultDataUtil.ok("查询整理库单条信息成功");
+        return ResultDataUtil.ok("查询档案销毁单条信息成功");
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询整理库列表信息")
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案销毁列表信息")
     @GetMapping
-    @ApiOperation(value = "查询整理库列表信息", notes = "查询整理库列表信息")
+    @ApiOperation(value = "查询档案销毁列表信息", notes = "查询档案销毁列表信息")
     @ApiOperationSupport(order = 3)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<DataCommVo> findPage(@RequestParam Map<String, String> params) {
         DataCommVo dataCommonVo = iDataArchivesDestructionService.getPage(ObjectConvertUtil.getQueryDto(params));
-        return ResultDataUtil.ok("查询整理库列表信息成功", dataCommonVo);
+        return ResultDataUtil.ok("查询档案销毁列表信息成功", dataCommonVo);
     }
 
 
-    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询整理库档案库列表信息树")
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案销毁档案库列表信息树")
     @GetMapping("/sys-archives-library")
-    @ApiOperation(value = "查询整理库档案库列表信息树", notes = "查询整理库档案库列表信息树")
+    @ApiOperation(value = "查询档案销毁档案库列表信息树", notes = "查询档案销毁档案库列表信息树")
     @ApiOperationSupport(order = 4)
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
-        return ResultDataUtil.ok("查询整理库档案库列表信息树成功", treeNodeUtils);
+        return ResultDataUtil.ok("查询档案销毁档案库列表信息树成功", treeNodeUtils);
     }
 }
