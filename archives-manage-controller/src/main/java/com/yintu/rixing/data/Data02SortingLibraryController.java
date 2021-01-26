@@ -36,7 +36,7 @@ import java.util.Set;
 public class Data02SortingLibraryController extends Authenticator {
 
     @Autowired
-    private IDataSortingLibraryService dataSortingLibraryService;
+    private IDataSortingLibraryService iDataSortingLibraryService;
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
 
@@ -46,7 +46,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @ApiOperationSupport(order = 1)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<Object> add(@RequestParam Map<String, String> params) {
-        dataSortingLibraryService.save(ObjectConvertUtil.getAddFormDto(params));
+        iDataSortingLibraryService.save(ObjectConvertUtil.getAddFormDto(params));
         return ResultDataUtil.ok("添加整理库信息成功");
     }
 
@@ -59,7 +59,7 @@ public class Data02SortingLibraryController extends Authenticator {
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) {
-        dataSortingLibraryService.removeByIds(ids, archivesLibraryId);
+        iDataSortingLibraryService.removeByIds(ids, archivesLibraryId);
         return ResultDataUtil.ok("删除整理库信息成功");
     }
 
@@ -73,7 +73,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @ApiOperationSupport(order = 3)
     public ResultDataUtil<Object> edit(@PathVariable Integer id, @RequestParam Map<String, String> params) {
         params.put(ObjectConvertUtil.ID, id.toString());
-        dataSortingLibraryService.updateById(ObjectConvertUtil.getNotAddFormDto(params));
+        iDataSortingLibraryService.updateById(ObjectConvertUtil.getNotAddFormDto(params));
         return ResultDataUtil.ok("修改整理库信息成功");
     }
 
@@ -86,7 +86,7 @@ public class Data02SortingLibraryController extends Authenticator {
     })
     @ApiOperationSupport(order = 4)
     public ResultDataUtil<Object> rollback(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
+        iDataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
         return ResultDataUtil.ok("整理库信息回退临时库成功");
     }
 
@@ -99,7 +99,7 @@ public class Data02SortingLibraryController extends Authenticator {
     })
     @ApiOperationSupport(order = 5)
     public ResultDataUtil<Object> turnOver(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.FORMAL_LIBRARY.getValue());
+        iDataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.FORMAL_LIBRARY.getValue());
         return ResultDataUtil.ok("整理库信息移交正式库成功");
     }
 
@@ -112,7 +112,7 @@ public class Data02SortingLibraryController extends Authenticator {
     })
     @ApiOperationSupport(order = 6)
     public ResultDataUtil<Object> mark(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.DISEASE_ARCHIVES.getValue());
+        iDataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.DISEASE_ARCHIVES.getValue());
         return ResultDataUtil.ok("整理库信息标记为病档信息成功");
     }
 
@@ -126,7 +126,7 @@ public class Data02SortingLibraryController extends Authenticator {
     })
     @ApiOperationSupport(order = 7)
     public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        dataSortingLibraryService.getById(id, archivesLibraryId);
+        iDataSortingLibraryService.getById(id, archivesLibraryId);
         return ResultDataUtil.ok("查询整理库单条信息成功");
     }
 
@@ -136,7 +136,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @ApiOperationSupport(order = 8)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
-        DataCommonVo dataCommonVo = dataSortingLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
+        DataCommonVo dataCommonVo = iDataSortingLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
         return ResultDataUtil.ok("查询整理库列表信息成功", dataCommonVo);
     }
 
@@ -160,7 +160,7 @@ public class Data02SortingLibraryController extends Authenticator {
     })
     @ApiOperationSupport(order = 10)
     public ResultDataUtil<Object> importExcelData(@RequestParam("file") MultipartFile multipartFile, @RequestParam Integer archivesLibraryId) throws IOException {
-        dataSortingLibraryService.importExcelRecord(multipartFile, archivesLibraryId);
+        iDataSortingLibraryService.importExcelRecord(multipartFile, archivesLibraryId);
         return ResultDataUtil.ok("批量导入整理库信息成功");
     }
 
@@ -169,7 +169,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @ApiOperation(value = "下载整理库信息模板", notes = "下载整理库信息模板")
     @ApiOperationSupport(order = 11)
     public void exportExcelTemplateFile(HttpServletResponse response, @RequestParam Integer archivesLibraryId) throws IOException {
-        dataSortingLibraryService.exportExcelTemplateFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), archivesLibraryId);
+        iDataSortingLibraryService.exportExcelTemplateFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), archivesLibraryId);
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出整理库信息")
@@ -177,7 +177,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @ApiOperation(value = "批量导出整理库信息", notes = "批量导出整理库信息")
     @ApiOperationSupport(order = 12)
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
-        dataSortingLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.SORTING_LIBRARY.getName(), ids, archivesLibraryId);
+        iDataSortingLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.SORTING_LIBRARY.getName(), ids, archivesLibraryId);
     }
 
 }

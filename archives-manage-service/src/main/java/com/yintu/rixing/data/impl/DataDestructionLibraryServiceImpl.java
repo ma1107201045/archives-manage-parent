@@ -3,7 +3,7 @@ package com.yintu.rixing.data.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonKV;
-import com.yintu.rixing.data.DestructionLibraryMapper;
+import com.yintu.rixing.data.DataDestructionLibraryMapper;
 import com.yintu.rixing.data.IDataDestructionLibraryService;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @Author: mlf
@@ -24,9 +23,9 @@ import java.util.Set;
  * @Version: 1.0
  */
 @Service
-public class DestructionLibraryServiceImpl extends DataCommonService implements IDataDestructionLibraryService {
+public class DataDestructionLibraryServiceImpl extends DataCommonService implements IDataDestructionLibraryService {
     @Autowired
-    private DestructionLibraryMapper destructionLibraryMapper;
+    private DataDestructionLibraryMapper destructionLibraryMapper;
 
 
     @Override

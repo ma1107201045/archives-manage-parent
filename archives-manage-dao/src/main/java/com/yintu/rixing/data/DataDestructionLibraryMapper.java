@@ -12,7 +12,7 @@ import java.util.Set;
  * @Version: 1.0
  */
 @Mapper
-public interface DestructionLibraryMapper {
+public interface DataDestructionLibraryMapper {
 
 
     void insertSelective(DataCommon dataCommon);
