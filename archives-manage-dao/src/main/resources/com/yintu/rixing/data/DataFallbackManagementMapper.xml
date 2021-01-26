@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.rixing.data.DataFallbackManagementMapper">
+    <insert id="insertSelective" parameterType="com.yintu.rixing.data.DataCommonKV">
+        insert into `${tableName}`
+        <trim prefix="(" suffix=")">
+            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator=",">
+                <if test="dataCommonKV.fieldValue != null">
+                    `${dataCommonKV.fieldName}`
+                </if>
+            </foreach>
+        </trim>
+        <trim prefix="values (" suffix=")">
+            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator=",">
+                <if test="dataCommonKV.fieldValue != null">
+                    #{dataCommonKV.fieldValue}
+                </if>
+            </foreach>
+        </trim>
+    </insert>
+
+    <insert id="insertSelectiveBatch" parameterType="com.yintu.rixing.data.DataCommonKV">
+        insert into `${tableName}`
+        <foreach collection="lists" index="index" item="dataCommonKVs">
+            <trim prefix="(" suffix=")">
+                <if test="index == 0">
+                    <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator=",">
+                        <if test="dataCommonKV.fieldValue != null">
+                            `${dataCommonKV.fieldName}`
+                        </if>
+                    </foreach>
+                </if>
+            </trim>
+        </foreach>
+        <trim prefix="values">
+            <foreach collection="lists" index="index" item="dataCommonKVs" separator=",">
+                <trim prefix="(" suffix=")">
+                    <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator=",">
+                        <if test="dataCommonKV.fieldValue != null">
+                            #{dataCommonKV.fieldValue}
+                        </if>
+                    </foreach>
+                </trim>
+            </foreach>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from `${tableName}`
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByPrimaryKeys" parameterType="java.lang.Integer">
+        delete
+        from `${tableName}`
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id,jdbcType=INTEGER}
+        </foreach>
+    </delete>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.rixing.data.DataCommonKV">
+        update `${tableName}`
+        <set>
+            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator=",">
+                <if test="dataCommonKV.fieldValue != null">
+                    `${dataCommonKV.fieldName}` = #{dataCommonKV.fieldValue}
+                </if>
+            </foreach>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="java.util.Map">
+        select *
+        from `${tableName}`
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="selectPage" resultType="java.util.Map">
+        select *
+        from `${dataCommon.tableName}`
+        <where>
+            <foreach collection="dataCommon.dataCommonKVs" index="index" item="dataCommonKV" separator="and">
+                `${dataCommonKV.fieldName}`= #{dataCommonKV.fieldValue}
+            </foreach>
+        </where>
+        order by `id` DESC
+    </select>
+</mapper>

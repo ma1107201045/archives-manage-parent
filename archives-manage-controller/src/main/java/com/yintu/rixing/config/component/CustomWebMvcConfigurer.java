@@ -1,6 +1,5 @@
 package com.yintu.rixing.config.component;
 
-import cn.hutool.system.SystemUtil;
 import com.yintu.rixing.util.PathUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
