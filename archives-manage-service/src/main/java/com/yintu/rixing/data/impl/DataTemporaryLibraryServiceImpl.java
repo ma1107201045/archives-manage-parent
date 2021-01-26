@@ -71,8 +71,8 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
             DataCommonKV dataCommon1 = new DataCommonKV();
             dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
             dataCommon1.setFieldValue(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
-            DataCommonKV dataCommon2 = new DataCommonKV();
 
+            DataCommonKV dataCommon2 = new DataCommonKV();
             dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD1.getDataKey());
             dataCommon2.setFieldValue(DateUtil.date());
 
