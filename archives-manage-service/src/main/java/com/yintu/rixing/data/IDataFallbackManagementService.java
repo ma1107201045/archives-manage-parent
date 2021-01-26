@@ -16,7 +16,7 @@ import java.util.Set;
 public interface IDataFallbackManagementService {
 
     @Transactional(rollbackFor = {Exception.class})
-    void save(DataCommonFormDto dataCommonFormDto);
+    void save(String tableName, Map<String, Object> params);
 
     @Transactional(rollbackFor = {Exception.class})
     void removeByIds(Set<Integer> ids, Integer archivesLibraryId);

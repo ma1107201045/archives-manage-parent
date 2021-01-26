@@ -28,6 +28,8 @@ import java.util.Set;
 public class DataSortingLibraryServiceImpl extends DataCommonService implements IDataSortingLibraryService {
     @Autowired
     private DataSortingLibraryMapper dataSortingLibraryMapper;
+    @Autowired
+    private IDataFallbackManagementService iDataFallbackManagementService;
 
     @Override
     public void save(DataCommonFormDto dataCommonFormDto) {
@@ -60,24 +62,24 @@ public class DataSortingLibraryServiceImpl extends DataCommonService implements 
         Map<String, Object> map = dataSortingLibraryMapper.selectByPrimaryKey(dataCommon);
         if (map != null) {
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
-
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
             dataCommonKV.setFieldValue(status);
-
-            DataCommonKV dataCommon1 = new DataCommonKV();
-            dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
-            dataCommon1.setFieldValue(EnumArchivesOrder.SORTING_LIBRARY.getValue());
-
-            DataCommonKV dataCommon2 = new DataCommonKV();
-            dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD1.getDataKey());
-            dataCommon2.setFieldValue(DateUtil.date());
-
+            if (EnumArchivesOrder.DISEASE_ARCHIVES.getValue().equals(status)) {
+                //整理库标记为病档时
+                DataCommonKV dataCommon1 = new DataCommonKV();
+                dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
+                dataCommon1.setFieldValue(EnumArchivesOrder.SORTING_LIBRARY.getValue());
+                DataCommonKV dataCommon2 = new DataCommonKV();
+                dataCommon2.setFieldName(EnumArchivesLibraryDefaultField.OPERATION_TIME_FIELD1.getDataKey());
+                dataCommon2.setFieldValue(DateUtil.date());
+                dataCommonKVS.add(dataCommon1);
+                dataCommonKVS.add(dataCommon2);
+            } else if (EnumArchivesOrder.TEMPORARY_LIBRARY.getValue().equals(status)) {
+                //从整理库回退到临时库时需要添加回退记录
+                iDataFallbackManagementService.save(dataCommon.getTableName(), map);
+            }
             dataCommonKVS.add(dataCommonKV);
-            dataCommonKVS.add(dataCommon1);
-            dataCommonKVS.add(dataCommon2);
-
-
             dataCommon.setDataCommonKVs(dataCommonKVS);
             dataSortingLibraryMapper.updateByPrimaryKeySelective(dataCommon);
         }

@@ -28,10 +28,11 @@ public class DataFallbackManagementServiceImpl extends DataCommonService impleme
     private DataFallbackManagementMapper dataFallbackManagementMapper;
 
     @Override
-    public void save(DataCommonFormDto dataCommonFormDto) {
+    public void save(String tableName, Map<String, Object> params) {
+        DataCommon dataCommon = new DataCommon();
+        String rollbackTableName = tableName + TableNameUtil.ROLLBACK_SUFFIX;
 
-
-
+        dataFallbackManagementMapper.insertSelectiveBatch(dataCommon);
     }
 
     @Override
