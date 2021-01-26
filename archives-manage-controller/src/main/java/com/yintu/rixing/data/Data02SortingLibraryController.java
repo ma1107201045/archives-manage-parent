@@ -86,7 +86,7 @@ public class Data02SortingLibraryController extends Authenticator {
     })
     @ApiOperationSupport(order = 4)
     public ResultDataUtil<Object> rollback(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, (short) 1);
+        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
         return ResultDataUtil.ok("整理库信息回退临时库成功");
     }
 
@@ -112,7 +112,7 @@ public class Data02SortingLibraryController extends Authenticator {
     })
     @ApiOperationSupport(order = 6)
     public ResultDataUtil<Object> mark(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        dataSortingLibraryService.updateStatusById(id, archivesLibraryId);
+        dataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.DISEASE_ARCHIVES.getValue());
         return ResultDataUtil.ok("整理库信息标记为病档信息成功");
     }
 

@@ -89,7 +89,7 @@ public class Data01TemporaryLibraryController extends Authenticator {
     })
     @ApiOperationSupport(order = 4)
     public ResultDataUtil<Object> turnOver(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        iDataTemporaryLibraryService.updateStatusById(id, archivesLibraryId, (short) 2);
+        iDataTemporaryLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.SORTING_LIBRARY.getValue());
         return ResultDataUtil.ok("临时库信息移交到整理库成功");
     }
 
@@ -102,7 +102,7 @@ public class Data01TemporaryLibraryController extends Authenticator {
     })
     @ApiOperationSupport(order = 5)
     public ResultDataUtil<Object> mark(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        iDataTemporaryLibraryService.updateStatusById(id, archivesLibraryId);
+        iDataTemporaryLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.DISEASE_ARCHIVES.getValue());
         return ResultDataUtil.ok("临时库信息标记为病档信息成功");
     }
 
