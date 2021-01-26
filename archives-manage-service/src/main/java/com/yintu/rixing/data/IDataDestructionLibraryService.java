@@ -2,7 +2,7 @@ package com.yintu.rixing.data;
 
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
-import com.yintu.rixing.vo.data.DataCommoVo;
+import com.yintu.rixing.vo.data.DataCommVo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
@@ -23,5 +23,5 @@ public interface IDataDestructionLibraryService {
 
     Map<String, Object> getById(Integer id, Integer archivesLibraryId);
 
-    DataCommoVo getPage(DataCommonQueryDto dataCommonPageDto);
+    DataCommVo getPage(DataCommonQueryDto dataCommonPageDto);
 }

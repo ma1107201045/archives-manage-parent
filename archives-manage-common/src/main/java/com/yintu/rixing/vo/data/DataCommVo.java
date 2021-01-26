@@ -15,9 +15,9 @@ import java.util.Map;
  */
 @Data
 @ApiModel
-public class DataCommoVo {
+public class DataCommVo {
     @ApiModelProperty(value = "字段集", position = 1)
-    private List<DataCommonFieldVo> dataCommonFieldVos;
+    private List<DataCommonFieldVo> fields;
 
     @ApiModelProperty(value = "列表数据", position = 2)
     private Page<Map<String, Object>> page;

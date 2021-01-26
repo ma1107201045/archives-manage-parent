@@ -8,7 +8,7 @@ import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
-import com.yintu.rixing.vo.data.DataCommoVo;
+import com.yintu.rixing.vo.data.DataCommVo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +44,8 @@ public class Data00ArchivesCollectionController extends Authenticator {
     @GetMapping
     @ApiOperation(value = "查询档案收集列表信息", notes = "查询档案收集列表信息")
     @ApiOperationSupport(order = 1)
-    public ResultDataUtil<DataCommoVo> findPage(@RequestParam Map<String, String> params) {
-        DataCommoVo dataCommonVo = iDataTemporaryLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
+    public ResultDataUtil<DataCommVo> findPage(@RequestParam Map<String, String> params) {
+        DataCommVo dataCommonVo = iDataTemporaryLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
         return ResultDataUtil.ok("查询档案收集列表信息成功", dataCommonVo);
     }
 
