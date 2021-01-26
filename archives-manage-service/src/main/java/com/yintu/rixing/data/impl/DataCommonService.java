@@ -331,7 +331,7 @@ public class DataCommonService {
         List<SysArchivesLibraryField> sysArchivesLibraryFields = this.iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndTitle(archivesLibraryId);
         ExcelWriter excelWriter = ExcelUtil.getWriter(true);
         // excelWriter.merge(dataCommonFieldVos.size() - 1, fileName);
-        String fullName = null;
+        String fullName;
         if (ids == null) { //下载模板
             List<String> titles = sysArchivesLibraryFields.stream().map(SysArchivesLibraryField::getName).collect(Collectors.toList());
             excelWriter.writeHeadRow(titles);

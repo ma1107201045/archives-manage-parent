@@ -40,11 +40,8 @@ public class DataSortingLibraryServiceImpl extends DataCommonService implements 
     public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
 //        DataCommon dataCommon = this.removeOrGetHandler(null, archivesLibraryId);
 //        dataSortingLibraryMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
-        Short value1 = EnumArchivesOrder.RECYCLE_BIN.getValue();
-        Short value2 = EnumArchivesOrder.SORTING_LIBRARY.getValue();
-        Short newValue = Short.valueOf(value1 + value2.toString());
         for (Integer id : ids) {
-            this.updateStatusById(id, archivesLibraryId, newValue);
+            this.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.RECYCLE_BIN.getValue());
         }
     }
 
