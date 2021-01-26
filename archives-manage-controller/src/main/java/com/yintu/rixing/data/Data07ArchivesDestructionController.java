@@ -41,7 +41,7 @@ public class Data07ArchivesDestructionController extends Authenticator {
     @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "删除档案销毁信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除档案销毁信息", notes = "删除档案销毁信息")
-    @ApiOperationSupport(order = 2)
+    @ApiOperationSupport(order = 1)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
@@ -59,7 +59,7 @@ public class Data07ArchivesDestructionController extends Authenticator {
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
-    @ApiOperationSupport(order = 7)
+    @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> findById(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
         iDataArchivesDestructionService.getById(id, archivesLibraryId);
         return ResultDataUtil.ok("查询整理库单条信息成功");
@@ -68,7 +68,7 @@ public class Data07ArchivesDestructionController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询整理库列表信息")
     @GetMapping
     @ApiOperation(value = "查询整理库列表信息", notes = "查询整理库列表信息")
-    @ApiOperationSupport(order = 8)
+    @ApiOperationSupport(order = 3)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
     public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
         DataCommonVo dataCommonVo = iDataArchivesDestructionService.getPage(ObjectConvertUtil.getQueryDto(params));
@@ -79,7 +79,7 @@ public class Data07ArchivesDestructionController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询整理库档案库列表信息树")
     @GetMapping("/sys-archives-library")
     @ApiOperation(value = "查询整理库档案库列表信息树", notes = "查询整理库档案库列表信息树")
-    @ApiOperationSupport(order = 9)
+    @ApiOperationSupport(order = 4)
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
         return ResultDataUtil.ok("查询整理库档案库列表信息树成功", treeNodeUtils);
