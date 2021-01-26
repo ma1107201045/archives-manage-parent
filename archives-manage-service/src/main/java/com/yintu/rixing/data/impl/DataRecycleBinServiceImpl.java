@@ -45,13 +45,13 @@ public class DataRecycleBinServiceImpl extends DataCommonService implements IDat
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
-
-            Integer value1 = (Integer) map.get(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
-            short status = value1.shortValue();
-
-            Integer value2 = (Integer) map.get(EnumArchivesLibraryDefaultField.STATUS_FIELD2.getDataKey());
-            if (value2 != null) {//如果是病档管理还原则需要清除原来值防止循环造成数据错乱
-                status = value2.shortValue();
+            Object value2 = map.get(EnumArchivesLibraryDefaultField.STATUS_FIELD2.getDataKey());
+            short status;
+            if (value2 == null) {//如果是病档管理还原则需要清除原来值防止循环造成数据错乱
+                Object value1 = map.get(EnumArchivesLibraryDefaultField.STATUS_FIELD1.getDataKey());
+                status = ((Integer) value1).shortValue();
+            } else {
+                status = ((Integer) value2).shortValue();
                 DataCommonKV dataCommon1 = new DataCommonKV();
                 dataCommon1.setFieldName(EnumArchivesLibraryDefaultField.STATUS_FIELD2.getDataKey());
                 dataCommon1.setFieldValue(null);
@@ -64,7 +64,7 @@ public class DataRecycleBinServiceImpl extends DataCommonService implements IDat
             dataCommonKV.setFieldValue(status);
             dataCommonKVS.add(dataCommonKV);
             dataCommon.setDataCommonKVs(dataCommonKVS);
-            dataRecycleBinMapper.updateByPrimaryKeySelective(dataCommon);
+            dataRecycleBinMapper.updateStatusByPrimaryKeySelective(dataCommon);
         }
     }
 

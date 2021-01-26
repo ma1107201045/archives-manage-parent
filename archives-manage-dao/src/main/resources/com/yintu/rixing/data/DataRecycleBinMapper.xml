@@ -72,6 +72,18 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <update id="updateStatusByPrimaryKeySelective" parameterType="com.yintu.rixing.data.DataCommonKV">
+        update `${tableName}`
+        <set>
+            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator=",">
+                <if test="dataCommonKV.fieldName != null">
+                    `${dataCommonKV.fieldName}` = #{dataCommonKV.fieldValue}
+                </if>
+            </foreach>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
     <select id="selectByPrimaryKey" resultType="java.util.Map">
         select *
         from `${tableName}`

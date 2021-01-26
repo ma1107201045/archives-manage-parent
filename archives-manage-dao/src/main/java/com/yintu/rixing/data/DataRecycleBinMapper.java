@@ -24,6 +24,8 @@ public interface DataRecycleBinMapper {
 
     void updateByPrimaryKeySelective(DataCommon dataCommon);
 
+    void updateStatusByPrimaryKeySelective(DataCommon dataCommon);
+
     Map<String, Object> selectByPrimaryKey(DataCommon dataCommon);
 
     Page<Map<String, Object>> selectPage(Page<Map<String, Object>> page, DataCommon dataCommon);
