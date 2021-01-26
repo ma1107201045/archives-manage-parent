@@ -2,6 +2,7 @@ package com.yintu.rixing.data;
 
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
+import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.util.ObjectConvertUtil;
@@ -57,7 +58,7 @@ public class Data06DiseaseArchivesManagementController extends Authenticator {
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
     public ResultDataUtil<Object> cancel(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        iDataDiseaseArchivesManagementService.updateStatusById(id, archivesLibraryId);
+        iDataDiseaseArchivesManagementService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
         return ResultDataUtil.ok("取消病档管理信息成功");
     }
 

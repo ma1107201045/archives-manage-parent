@@ -19,7 +19,7 @@ public interface IDataDiseaseArchivesManagementService {
     void removeByIds(Set<Integer> ids, Integer archivesLibraryId);
 
     @Transactional(rollbackFor = {Exception.class})
-    void updateStatusById(Integer id, Integer archivesLibraryId);
+    void updateStatusById(Integer id, Integer archivesLibraryId, Short status);
 
     Map<String, Object> getById(Integer id, Integer archivesLibraryId);
 

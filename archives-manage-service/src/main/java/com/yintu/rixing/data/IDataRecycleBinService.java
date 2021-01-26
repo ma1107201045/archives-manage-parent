@@ -21,7 +21,7 @@ public interface IDataRecycleBinService {
     @Transactional(rollbackFor = {Exception.class})
     void regainByIds(Set<Integer> ids, Integer archivesLibraryId);
 
-    void updateStatusById(Integer id, Integer archivesLibraryId);
+    void updateStatusById(Integer id, Integer archivesLibraryId, Short status);
 
     Map<String, Object> getById(Integer id, Integer archivesLibraryId);
 

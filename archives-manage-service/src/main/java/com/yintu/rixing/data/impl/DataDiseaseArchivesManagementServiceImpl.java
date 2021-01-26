@@ -34,12 +34,10 @@ public class DataDiseaseArchivesManagementServiceImpl extends DataCommonService 
     }
 
     @Override
-    public void updateStatusById(Integer id, Integer archivesLibraryId) {
+    public void updateStatusById(Integer id, Integer archivesLibraryId, Short status) {
         DataCommon dataCommon = this.removeOrGetHandler(id, archivesLibraryId);
         Map<String, Object> map = dataDiseaseArchivesManagementMapper.selectByPrimaryKey(dataCommon);
         if (map != null) {
-            String dataKey = EnumArchivesLibraryDefaultField.STATUS.getDataKey();
-            Short status = Short.valueOf(((Integer) map.get(dataKey)).toString().substring(1));
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
