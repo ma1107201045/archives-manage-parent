@@ -1,12 +1,14 @@
 package com.yintu.rixing.data.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonKV;
 import com.yintu.rixing.data.DataFallbackManagementMapper;
 import com.yintu.rixing.data.IDataFallbackManagementService;
 import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
+import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.util.AssertUtil;
@@ -29,16 +31,16 @@ import java.util.Set;
 public class DataFallbackManagementServiceImpl extends DataCommonService implements IDataFallbackManagementService {
     @Autowired
     private DataFallbackManagementMapper dataFallbackManagementMapper;
+    @Autowired
+    private ICommTableFieldService iCommTableFieldService;
 
     @Override
     public void save(String tableName, Map<String, Object> params) {
         DataCommon dataCommon = new DataCommon();
-
         String rollbackTableName = tableName + TableNameUtil.ROLLBACK_SUFFIX;
         Integer dataId = (Integer) params.get("id");
         params.remove("id");
-        params.put("data_id", dataId);
-
+        params.put(iCommTableFieldService.findFixed().getFieldName(), dataId);
         List<DataCommonKV> dataCommonKVS = new ArrayList<>();
         for (String key : params.keySet()) {
             DataCommonKV dataCommonKV = new DataCommonKV();
@@ -48,7 +50,7 @@ public class DataFallbackManagementServiceImpl extends DataCommonService impleme
         }
         dataCommon.setTableName(rollbackTableName);
         dataCommon.setDataCommonKVs(dataCommonKVS);
-        dataFallbackManagementMapper.insertSelectiveBatch(dataCommon);
+        dataFallbackManagementMapper.insertSelective(dataCommon);
     }
 
     @Override
@@ -62,9 +64,20 @@ public class DataFallbackManagementServiceImpl extends DataCommonService impleme
 
 
     @Override
+    public Map<String, Object> getById(Integer id, Integer archivesLibraryId) {
+        AssertUtil.notNull(archivesLibraryId, "档案库id不能为空");
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
+        String tableName = TableNameUtil.getRollbackTableName(sysArchivesLibrary.getDataKey());
+        DataCommon dataCommon = new DataCommon();
+        dataCommon.setTableName(tableName);
+        dataCommon.setId(id);
+        return dataFallbackManagementMapper.selectByPrimaryKey(dataCommon);
+    }
+
+    @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
-        dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.FORMAL_LIBRARY.getValue()));
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
