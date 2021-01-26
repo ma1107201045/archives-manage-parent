@@ -220,50 +220,47 @@ public class DataCommonService {
         AssertUtil.notNull(sysArchivesLibrary, "档案库不存在");
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndForm(archivesLibraryId);
         List<List<DataCommonKV>> lists = new ArrayList<>();
-
         for (Map<String, Object> record : records) {
             List<DataCommonKV> dataCommons = new ArrayList<>(this.getDefaultFields(null));
             for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
-                if (sysArchivesLibraryField.getQuery().equals(EnumFlag.True.getValue())) {
-                    String name = sysArchivesLibraryField.getName();
-                    String dataKey = sysArchivesLibraryField.getDataKey();
-                    Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
-                    Integer length = sysArchivesLibraryField.getLength();
-                    Short required = sysArchivesLibraryField.getRequired();
-                    Object obj = record.get(name);
-                    if (required == 1 && (obj == null || (obj instanceof String && ((String) obj).isEmpty())))
-                        throw new BaseRuntimeException(name + "不能为空");
-                    String value = String.valueOf(obj);
-                    Object newValue = value;
-                    switch (EnumDataType.get(dataType)) {
-                        case VARCHAR:
-                        case TEXT:
-                            if (value != null && value.length() > length)
-                                throw new BaseRuntimeException(dataType + "长度超过定义的长度");
-                            break;
-                        case TINYINT:
-                            newValue = Byte.valueOf(value);
-                            break;
-                        case SMALLINT:
-                            newValue = Short.valueOf(value);
-                            break;
-                        case INT:
-                            newValue = Integer.valueOf(value);
-                            break;
-                        case DATETIME:
-                            newValue = DateUtil.parseDateTime(value);
-                            break;
-                        case DATE:
-                            newValue = DateUtil.parseDate(value);
-                            break;
-                    }
-                    DataCommonKV dataCommon = new DataCommonKV();
-                    dataCommon.setFieldName(dataKey);
-                    dataCommon.setFieldValue(newValue);
-                    dataCommons.add(dataCommon);
+                String name = sysArchivesLibraryField.getName();
+                String dataKey = sysArchivesLibraryField.getDataKey();
+                Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
+                Integer length = sysArchivesLibraryField.getLength();
+                Short required = sysArchivesLibraryField.getRequired();
+                Object obj = record.get(name);
+                if (required == 1 && (obj == null || (obj instanceof String && ((String) obj).isEmpty())))
+                    throw new BaseRuntimeException(name + "不能为空");
+                String value = String.valueOf(obj);
+                Object newValue = value;
+                switch (EnumDataType.get(dataType)) {
+                    case VARCHAR:
+                    case TEXT:
+                        if (value != null && value.length() > length)
+                            throw new BaseRuntimeException(dataType + "长度超过定义的长度");
+                        break;
+                    case TINYINT:
+                        newValue = Byte.valueOf(value);
+                        break;
+                    case SMALLINT:
+                        newValue = Short.valueOf(value);
+                        break;
+                    case INT:
+                        newValue = Integer.valueOf(value);
+                        break;
+                    case DATETIME:
+                        newValue = DateUtil.parseDateTime(value);
+                        break;
+                    case DATE:
+                        newValue = DateUtil.parseDate(value);
+                        break;
                 }
-                lists.add(dataCommons);
+                DataCommonKV dataCommon = new DataCommonKV();
+                dataCommon.setFieldName(dataKey);
+                dataCommon.setFieldValue(newValue);
+                dataCommons.add(dataCommon);
             }
+            lists.add(dataCommons);
         }
         DataCommon dataCommon = new DataCommon();
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
