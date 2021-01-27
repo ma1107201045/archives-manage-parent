@@ -90,7 +90,7 @@ public class DataFallbackManagementController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询回退管理组织机构机构列表信息")
     @GetMapping("/sys-department")
     @ApiOperation(value = "查询回退管理组织机构列表信息", notes = "查询回退管理组织机构列表信息")
-    @ApiOperationSupport(order = 6)
+    @ApiOperationSupport(order = 5)
     public ResultDataUtil<List<SysDepartment>> findList() {
         List<SysDepartment> sysDepartments = iSysDepartmentService.list(new QueryWrapper<SysDepartment>().orderByDesc("id"));
         return ResultDataUtil.ok("查询回退管理组织机构列表信息成功", sysDepartments);
