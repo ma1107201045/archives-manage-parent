@@ -1,10 +1,13 @@
 package com.yintu.rixing.data;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
+import com.yintu.rixing.system.ISysDepartmentService;
+import com.yintu.rixing.system.SysDepartment;
 import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
@@ -38,6 +41,8 @@ public class Data01TemporaryLibraryController extends Authenticator {
     private IDataTemporaryLibraryService iDataTemporaryLibraryService;
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
+    @Autowired
+    private ISysDepartmentService iSysDepartmentService;
 
     @Log(level = EnumLogLevel.DEBUG, module = "数据中心", context = "添加临时库信息")
     @PostMapping
@@ -135,11 +140,19 @@ public class Data01TemporaryLibraryController extends Authenticator {
         return ResultDataUtil.ok("查询临时库档案库列表信息树成功", treeNodeUtils);
     }
 
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库组织机构机构列表信息")
+    @GetMapping("/sys-department")
+    @ApiOperation(value = "查询临时库组织机构列表信息", notes = "查询临时库组织机构列表信息")
+    @ApiOperationSupport(order = 9)
+    public ResultDataUtil<List<SysDepartment>> findList() {
+        List<SysDepartment> sysDepartments = iSysDepartmentService.list(new QueryWrapper<SysDepartment>().orderByDesc("id"));
+        return ResultDataUtil.ok("查询临时库组织机构列表信息成功", sysDepartments);
+    }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导出临时库信息")
     @GetMapping("/export/{ids}")
     @ApiOperation(value = "批量导出临时库信息", notes = "批量导出临时库信息")
-    @ApiOperationSupport(order = 9)
+    @ApiOperationSupport(order = 10)
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataTemporaryLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.TEMPORARY_LIBRARY.getName(), ids, archivesLibraryId);
     }

@@ -1,10 +1,13 @@
 package com.yintu.rixing.data;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
+import com.yintu.rixing.system.ISysDepartmentService;
+import com.yintu.rixing.system.SysDepartment;
 import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
@@ -38,6 +41,8 @@ public class Data00ArchivesCollectionController extends Authenticator {
     private IDataTemporaryLibraryService iDataTemporaryLibraryService;
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
+    @Autowired
+    private ISysDepartmentService iSysDepartmentService;
 
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库列表信息")
@@ -58,11 +63,19 @@ public class Data00ArchivesCollectionController extends Authenticator {
         return ResultDataUtil.ok("查询档案收集档案库列表信息树成功", treeNodeUtils);
     }
 
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案收集组织机构列表信息")
+    @GetMapping("/sys-department")
+    @ApiOperation(value = "查询档案收集组织机构列表信息", notes = "查询档案收集组织机构列表信息")
+    @ApiOperationSupport(order = 3)
+    public ResultDataUtil<List<SysDepartment>> findList() {
+        List<SysDepartment> sysDepartments = iSysDepartmentService.list(new QueryWrapper<SysDepartment>().orderByDesc("id"));
+        return ResultDataUtil.ok("查询档案收集组织机构列表信息成功", sysDepartments);
+    }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "下载档案收集信息模板")
     @GetMapping("/download-template")
     @ApiOperation(value = "下载档案收集信息模板", notes = "下载档案收集信息模板")
-    @ApiOperationSupport(order = 3)
+    @ApiOperationSupport(order = 4)
     public void exportExcelTemplateFile(HttpServletResponse response, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataTemporaryLibraryService.exportExcelTemplateFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), archivesLibraryId);
     }
@@ -74,7 +87,7 @@ public class Data00ArchivesCollectionController extends Authenticator {
             @ApiImplicitParam(name = "file", value = "文件对象", required = true, dataType = "__file", paramType = "form"),
             @ApiImplicitParam(name = "archivesLibraryId", value = "档案库id", required = true, dataType = "int", paramType = "form")
     })
-    @ApiOperationSupport(order = 4)
+    @ApiOperationSupport(order = 5)
     public ResultDataUtil<Object> importExcelData(@RequestParam("file") MultipartFile multipartFile, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataTemporaryLibraryService.importExcelRecord(multipartFile, archivesLibraryId);
         return ResultDataUtil.ok("批量导入档案收集信息成功");

@@ -9,6 +9,7 @@ import com.yintu.rixing.dto.base.PageDto;
 import com.yintu.rixing.dto.data.DataArchivesLibraryFileFormDto;
 import com.yintu.rixing.dto.data.DataArchivesLibraryFileQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
+import com.yintu.rixing.system.ISysDepartmentService;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
 
     @Autowired
     private IDataArchivesLibraryFileService iDataArchivesLibraryFileService;
+    @Autowired
+    private ISysDepartmentService iSysDepartmentService;
 
     @Log(level = EnumLogLevel.DEBUG, module = "数据中心", context = "添加档案文件信息")
     @PostMapping

@@ -1,9 +1,12 @@
 package com.yintu.rixing.data;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
+import com.yintu.rixing.system.ISysDepartmentService;
+import com.yintu.rixing.system.SysDepartment;
 import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
@@ -34,6 +37,8 @@ public class Data06DiseaseArchivesManagementController extends Authenticator {
     private IDataDiseaseArchivesManagementService iDataDiseaseArchivesManagementService;
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
+    @Autowired
+    private ISysDepartmentService iSysDepartmentService;
 
     @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "删除病档管理信息")
     @DeleteMapping("/{ids}")
@@ -91,5 +96,14 @@ public class Data06DiseaseArchivesManagementController extends Authenticator {
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
         return ResultDataUtil.ok("查询病档管理档案库列表信息树成功", treeNodeUtils);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询销毁库组织机构机构列表信息")
+    @GetMapping("/sys-department")
+    @ApiOperation(value = "查询销毁库组织机构列表信息", notes = "查询销毁库组织机构列表信息")
+    @ApiOperationSupport(order = 6)
+    public ResultDataUtil<List<SysDepartment>> findList() {
+        List<SysDepartment> sysDepartments = iSysDepartmentService.list(new QueryWrapper<SysDepartment>().orderByDesc("id"));
+        return ResultDataUtil.ok("查询销毁库组织机构列表信息成功", sysDepartments);
     }
 }
