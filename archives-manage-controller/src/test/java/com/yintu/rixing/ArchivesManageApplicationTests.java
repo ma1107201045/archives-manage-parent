@@ -178,4 +178,10 @@ public class ArchivesManageApplicationTests {
     void list6() {
         System.out.println(JSONObject.toJSON(iCommTableFieldService.findByTableName("de_test")));
     }
+
+    @Test
+    void test7() {
+        Map<String, Object> map = deTestMapper.selectById();
+        System.out.println(map);
+    }
 }

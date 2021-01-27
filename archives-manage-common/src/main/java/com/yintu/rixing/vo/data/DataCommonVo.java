@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @Data
 @ApiModel
-public class DataCommVo {
+public class DataCommonVo {
     @ApiModelProperty(value = "字段集", position = 1)
     private List<DataCommonFieldVo> fields;
 

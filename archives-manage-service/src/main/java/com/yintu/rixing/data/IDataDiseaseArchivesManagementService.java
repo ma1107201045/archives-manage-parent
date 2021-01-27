@@ -1,7 +1,7 @@
 package com.yintu.rixing.data;
 
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
-import com.yintu.rixing.vo.data.DataCommVo;
+import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
@@ -23,5 +23,5 @@ public interface IDataDiseaseArchivesManagementService {
 
     Map<String, Object> getById(Integer id, Integer archivesLibraryId);
 
-    DataCommVo getPage(DataCommonQueryDto dataCommonPageDto);
+    DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
 }

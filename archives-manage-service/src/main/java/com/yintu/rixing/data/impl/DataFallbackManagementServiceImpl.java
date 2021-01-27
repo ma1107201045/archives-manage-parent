@@ -10,7 +10,7 @@ import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.util.AssertUtil;
 import com.yintu.rixing.util.TableNameUtil;
-import com.yintu.rixing.vo.data.DataCommVo;
+import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +73,7 @@ public class DataFallbackManagementServiceImpl extends DataCommonService impleme
     }
 
     @Override
-    public DataCommVo getPage(DataCommonQueryDto dataCommonPageDto) {
+    public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
         String rollbackTableName = dataCommon.getTableName() + TableNameUtil.ROLLBACK_SUFFIX;
         dataCommon.setTableName(rollbackTableName);
@@ -81,7 +81,7 @@ public class DataFallbackManagementServiceImpl extends DataCommonService impleme
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
 
-        DataCommVo dataCommVo = new DataCommVo();
+        DataCommonVo dataCommVo = new DataCommonVo();
         dataCommVo.setFields(this.getDataCommonFieldVos(archivesLibraryId));
         dataCommVo.setPage(dataFallbackManagementMapper.selectPage(new Page<>(num, size), dataCommon));
         return dataCommVo;

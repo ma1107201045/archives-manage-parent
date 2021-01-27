@@ -9,7 +9,7 @@ import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
-import com.yintu.rixing.vo.data.DataCommVo;
+import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,14 +60,14 @@ public class DataDestructionLibraryServiceImpl extends DataCommonService impleme
     }
 
     @Override
-    public DataCommVo getPage(DataCommonQueryDto dataCommonPageDto) {
+    public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
         dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.DESTRUCTION_LIBRARY.getValue()));
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
 
-        DataCommVo dataCommVo = new DataCommVo();
+        DataCommonVo dataCommVo = new DataCommonVo();
         dataCommVo.setFields(this.getDataCommonFieldVos(archivesLibraryId));
         dataCommVo.setPage(destructionLibraryMapper.selectPage(new Page<>(num, size), dataCommon));
         return dataCommVo;

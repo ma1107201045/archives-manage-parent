@@ -8,7 +8,7 @@ import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
-import com.yintu.rixing.vo.data.DataCommVo;
+import com.yintu.rixing.vo.data.DataCommonVo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -69,8 +69,8 @@ public class Data05DestructionLibraryController extends Authenticator {
     @ApiOperation(value = "查询销毁库列表信息", notes = "查询销毁库列表信息")
     @ApiOperationSupport(order = 3)
     @ApiImplicitParam(name = "params", dataType = "map", value = "参数集", required = true, paramType = "query")
-    public ResultDataUtil<DataCommVo> findPage(@RequestParam Map<String, String> params) {
-        DataCommVo dataCommonVo = dataDestructionLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
+    public ResultDataUtil<DataCommonVo> findPage(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = dataDestructionLibraryService.getPage(ObjectConvertUtil.getQueryDto(params));
         return ResultDataUtil.ok("查询销毁库列表信息成功", dataCommonVo);
     }
 
