@@ -26,7 +26,7 @@
     FROM
         ware_physical_warehouse
     WHERE
-        where id=#{id}
+       id=#{id}
   </select>
 
   <!--根据id 编辑对应的实体档案库数据-->
@@ -41,6 +41,7 @@
     select *
     from ware_physical_warehouse
     where warehouseType=2
+    order by id desc
   </select>
 
   <!--分页查询实体档案入库数据-->
@@ -48,12 +49,14 @@
     select *
     from ware_physical_warehouse
     where warehouseType=1
+    order by id desc
   </select>
 
   <!--分页查询实体档案表里所有数据-->
   <select id="findAllEntityArchivesPage" resultType="java.util.Map">
     select *
     from ware_physical_warehouse
+    order by id desc
   </select>
 
   <!--新增入库数据-->

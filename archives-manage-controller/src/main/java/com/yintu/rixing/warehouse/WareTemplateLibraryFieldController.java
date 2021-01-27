@@ -19,10 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <p>
@@ -101,6 +98,37 @@ public class WareTemplateLibraryFieldController {
         QueryWrapper<WareTemplateLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("`order`");
         List<WareTemplateLibraryField> wareTemplateLibraryFieldPage = iWareTemplateLibraryFieldService.list(queryWrapper);
+        QueryWrapper<SysTemplateLibraryFieldType> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.like("data_key","datetime");
+        SysTemplateLibraryFieldType sysTemplateLibraryFieldType=iSysTemplateLibraryFieldTypeService.getOne(queryWrapper1);
+        WareTemplateLibraryField wareTemplateLibraryField1=new WareTemplateLibraryField();
+        Long time1 = new Date().getTime();
+        wareTemplateLibraryField1.setId( time1.intValue());
+        wareTemplateLibraryField1.setName("入库时间");
+        wareTemplateLibraryField1.setDataKey("inWarehouseTime");
+        wareTemplateLibraryField1.setLength(0);
+        wareTemplateLibraryField1.setIndex(0);
+        wareTemplateLibraryField1.setRequired(1);
+        wareTemplateLibraryField1.setTemplateLibraryFieldTypeId(sysTemplateLibraryFieldType.getId());
+        wareTemplateLibraryField1.setQuery((short)0);
+        wareTemplateLibraryField1.setTitle((short)1);
+        wareTemplateLibraryField1.setForm((short)0);
+        wareTemplateLibraryField1.setTypeId(3);
+        wareTemplateLibraryFieldPage.add(wareTemplateLibraryField1);
+        WareTemplateLibraryField wareTemplateLibraryField2=new WareTemplateLibraryField();
+        Long time2 = new Date().getTime();
+        wareTemplateLibraryField2.setId(time2.intValue()+1);
+        wareTemplateLibraryField2.setName("出库时间");
+        wareTemplateLibraryField2.setDataKey("outWarehouseTime");
+        wareTemplateLibraryField2.setLength(0);
+        wareTemplateLibraryField2.setIndex(0);
+        wareTemplateLibraryField2.setRequired(1);
+        wareTemplateLibraryField2.setTemplateLibraryFieldTypeId(sysTemplateLibraryFieldType.getId());
+        wareTemplateLibraryField2.setQuery((short)0);
+        wareTemplateLibraryField2.setTitle((short)1);
+        wareTemplateLibraryField2.setForm((short)0);
+        wareTemplateLibraryField2.setTypeId(3);
+        wareTemplateLibraryFieldPage.add(wareTemplateLibraryField2);
         return ResponseDataUtil.ok("查询库房管理实体表字段列表信息成功", wareTemplateLibraryFieldPage);
     }
 
@@ -144,8 +172,6 @@ public class WareTemplateLibraryFieldController {
     @ApiOperation(value = "新增入库", notes = "新增入库")
     @ApiImplicitParam(name = "jsonObject", dataType = "JSONObject", value = "新增数据", required = true, paramType = "path")
     public ResultDataUtil<Object> addWarehouse(@RequestBody JSONObject jsonObject) {
-      //  JSONObject jsonObject=new JSONObject();
-      //  jsonObject.put("sss","[{\"inTime\":\"2021-01-22 20:39:36\",\"type\":\"huxiaowen\",\"num\":\"测试三\",\"secret\":\"test3\",\"title\":1111}]");
         iWareTemplateLibraryFieldService.addWarehouse(jsonObject);
         return ResultDataUtil.ok("新增入库成功");
     }
@@ -192,27 +218,23 @@ public class WareTemplateLibraryFieldController {
 
     //根据id 对数据进行编辑
     @Log(level = EnumLogLevel.INFO, module = "库房管理", context = "根据id编辑对应的实体库表数据")
-    @PostMapping("/updateWarehouse")
+    @PutMapping("/updateWarehouse/{id}")
     @ApiOperation(value = "根据id编辑对应的实体库表数据", notes = "根据id编辑对应的实体库表数据")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jsonObject", dataType = "JSONObject", value = "需要编辑数据", required = true, paramType = "path"),
             @ApiImplicitParam(name = "id", dataType = "int", value = "需要编辑数据id", required = true, paramType = "path")
     })
-    public ResultDataUtil<Object> updateWarehouse(@RequestBody JSONObject jsonObject,Integer id) {
-        //  JSONObject jsonObject=new JSONObject();
-        //  jsonObject.put("sss","[{\"inTime\":\"2021-01-22 20:39:36\",\"type\":\"huxiaowen\",\"num\":\"测试三\",\"secret\":\"test3\",\"title\":1111}]");
+    public ResultDataUtil<Object> updateWarehouse(@RequestBody JSONObject jsonObject,@PathVariable Integer id) {
         iWareTemplateLibraryFieldService.updateWarehouse(jsonObject,id);
         return ResultDataUtil.ok("编辑对应的实体库表数据成功");
     }
 
     //根据id 对数据进行删除
     @Log(level = EnumLogLevel.INFO, module = "库房管理", context = "根据id删除对应的实体库表数据")
-    @PostMapping("/deleteWarehouse")
+    @DeleteMapping("/deleteWarehouse/{id}")
     @ApiOperation(value = "根据id删除对应的实体库表数据", notes = "根据id删除对应的实体库表数据")
     @ApiImplicitParam(name = "id", dataType = "int", value = "需要删除数据id", required = true, paramType = "path")
-    public ResultDataUtil<Object> deleteWarehouse(Integer id) {
-        //  JSONObject jsonObject=new JSONObject();
-        //  jsonObject.put("sss","[{\"inTime\":\"2021-01-22 20:39:36\",\"type\":\"huxiaowen\",\"num\":\"测试三\",\"secret\":\"test3\",\"title\":1111}]");
+    public ResultDataUtil<Object> deleteWarehouse(@PathVariable Integer id) {
         iWareTemplateLibraryFieldService.deleteWarehouse(id);
         return ResultDataUtil.ok("删除对应的实体库表数据成功");
     }

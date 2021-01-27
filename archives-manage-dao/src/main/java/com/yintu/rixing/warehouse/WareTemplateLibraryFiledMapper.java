@@ -13,7 +13,7 @@ public interface WareTemplateLibraryFiledMapper extends BaseMapper<WareTemplateL
 
     Integer findTable(String tableName);
 
-    Map<String, Object> findTurnLeftState(String tableName);
+    List<Map<String, Object>> findTurnLeftState(String tableName);
 
     void addWarehouse(List<String> keys, List<Object> values, String tableName);
 
