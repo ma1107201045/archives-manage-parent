@@ -16,5 +16,4 @@ import java.util.Map;
 @Mapper
 public interface DeTestMapper extends BaseMapper<DeTest> {
 
-    Map<String, Object> selectById();
 }

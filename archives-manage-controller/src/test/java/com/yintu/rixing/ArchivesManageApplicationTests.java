@@ -17,6 +17,7 @@ import com.yintu.rixing.system.ISysUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +38,8 @@ public class ArchivesManageApplicationTests {
     private ICommTableFieldService iCommTableFieldService;
     @Autowired
     private DataCommonService dataCommonService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Test
     void contextLoads() {
@@ -181,7 +184,6 @@ public class ArchivesManageApplicationTests {
 
     @Test
     void test7() {
-        Map<String, Object> map = deTestMapper.selectById();
-        System.out.println(map);
+
     }
 }
