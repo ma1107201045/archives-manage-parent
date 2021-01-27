@@ -147,8 +147,6 @@ public class CommTableFieldServiceImpl implements ICommTableFieldService {
         commTableField.setFieldName(sysArchivesLibraryField.getDataKey());
         commTableField.setDataType(dataType);
         commTableField.setLength(sysArchivesLibraryField.getLength());
-        if ("datetime".equals(dataType))
-            commTableField.setLength(0);
         commTableField.setIsNull(sysArchivesLibraryField.getRequired() == 1 ? (short) 0 : (short) 1);
         commTableField.setIsIndex(sysArchivesLibraryField.getIndex());
         commTableField.setComment(sysArchivesLibraryField.getName());

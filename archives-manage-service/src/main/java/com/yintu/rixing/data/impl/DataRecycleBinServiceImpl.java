@@ -8,6 +8,8 @@ import com.yintu.rixing.data.IDataRecycleBinService;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
+import com.yintu.rixing.system.SysDepartment;
+import com.yintu.rixing.vo.data.DataCommonFieldVo;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,9 +83,21 @@ public class DataRecycleBinServiceImpl extends DataCommonService implements IDat
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
 
-        DataCommonVo dataCommVo = new DataCommonVo();
-        dataCommVo.setFields(this.getDataCommonFieldVos(archivesLibraryId));
-        dataCommVo.setPage(dataRecycleBinMapper.selectPage(new Page<>(num, size), dataCommon));
-        return dataCommVo;
+        DataCommonVo dataCommonVo = new DataCommonVo();
+        List<DataCommonFieldVo> dataCommonFieldVos = this.getDataCommonFieldVos(archivesLibraryId);
+        Page<Map<String, Object>> page = this.dataRecycleBinMapper.selectPage(new Page<>(num, size), dataCommon);
+        //特殊字段需要处理
+        page.getRecords().forEach(map -> {
+            String dataKey = EnumArchivesLibraryDefaultField.DEPARTMENT_ID.getDataKey();
+            if (map.containsKey(dataKey)) {
+                Integer departmentId = (Integer) map.get(dataKey);
+                SysDepartment sysDepartment = iSysDepartmentService.getById(departmentId);
+                map.put(dataKey, sysDepartment.getName());
+            }
+        });
+        dataCommonVo.setFields(dataCommonFieldVos);
+        dataCommonVo.setPage(page);
+        return dataCommonVo;
     }
+
 }

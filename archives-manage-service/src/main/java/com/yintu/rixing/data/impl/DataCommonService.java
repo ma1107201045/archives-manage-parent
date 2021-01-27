@@ -54,6 +54,8 @@ public class DataCommonService {
     protected ISysArchivesLibraryFieldDefaultService iSysArchivesLibraryFieldDefaultService;
     @Autowired
     protected ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
+    @Autowired
+    protected ISysDepartmentService iSysDepartmentService;
 
     protected DataCommon saveOrUpdateHandler(DataCommonFormDto dataCommonFormDto) {
         Integer archivesLibraryId = dataCommonFormDto.getArchivesLibraryId();
@@ -316,6 +318,7 @@ public class DataCommonService {
         AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
         return this.dataCommonMapper.selectByPrimaryKeys(tableName, ids);
+
     }
 
 
@@ -341,6 +344,15 @@ public class DataCommonService {
             }
             excelWriter.setOnlyAlias(true);//仅仅显示表头的数据，则可以过滤掉无用的字段
             List<Map<String, Object>> records = this.getDataCommonRecord(archivesLibraryId, ids);
+            //特殊字段需要处理
+            records.forEach(map -> {
+                String dataKey = EnumArchivesLibraryDefaultField.DEPARTMENT_ID.getDataKey();
+                if (map.containsKey(dataKey)) {
+                    Integer departmentId = (Integer) map.get(dataKey);
+                    SysDepartment sysDepartment = iSysDepartmentService.getById(departmentId);
+                    map.put("dataKey", sysDepartment.getName());
+                }
+            });
             excelWriter.write(records, true);
             fullName = fileName + RECORD + name + timestamp + SUFFIX;
         }
