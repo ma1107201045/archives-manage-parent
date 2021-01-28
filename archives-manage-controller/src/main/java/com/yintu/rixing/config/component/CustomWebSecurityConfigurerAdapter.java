@@ -203,6 +203,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**")
                 .antMatchers("/webjars/**", "/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/v2/api-docs-ext", "/doc.html")//忽略swagger2接口
                 .antMatchers("/druid/**")//忽略druid接口
+                .antMatchers("/remote/*")//忽略远程登录接口
                 .antMatchers("/captcha");//忽略验证码接口
     }
 }
