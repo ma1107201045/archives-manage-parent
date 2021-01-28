@@ -1,9 +1,9 @@
 package com.yintu.rixing.config.jwt;
 
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,12 +12,22 @@ import java.util.List;
  * @Version: 1.0
  */
 @Data
-@PropertySource("classpath:jwt-property.yml")
-@ConfigurationProperties(prefix = "jwt")
+@Component
 public class JwtProperties {
     private String secret;//加密密钥
     private Long expire; // token有效期 秒
     private String header;// token 采用的http头，一般使用: Authorization
     private String issuer;//发行人
-    private List<String> ignores; //忽略token的页面
+    private List<String> ignores = new ArrayList<>(); //忽略token的页面
+
+    public JwtProperties() {
+        this.secret = "J2m6hNsY2r5";
+        this.expire = 3600L;
+        this.header = "Authorization";
+        this.issuer = "system";
+        List<String> ignores = new ArrayList<>();
+        ignores.add("/remote/remo-auth/login");
+        ignores.add("/remote/remo-auth/register");
+        this.ignores = ignores;
+    }
 }

@@ -12,8 +12,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @ServletComponentScan
 @EnableSwagger2Doc
 @EnableSwaggerBootstrapUI
-@EnableConfigurationProperties(JwtProperties.class)
-@ConfigurationPropertiesScan
 @SpringBootApplication
 public class ArchivesManageApplication {
 
