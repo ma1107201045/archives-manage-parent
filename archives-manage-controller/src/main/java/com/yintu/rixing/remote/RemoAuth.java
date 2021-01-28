@@ -6,6 +6,7 @@ import com.yintu.rixing.system.SysRemoteUser;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,13 +32,13 @@ public class RemoAuth {
     /**
      * 登录获取token
      *
-     * @param username 用户名
-     * @param password 密码
-     * @return
+     * @param certificateNumber 证件号
+     * @param password          密码
+     * @return 用户信息
      */
-    @RequestMapping("/token")
-    public ResultDataUtil<Object> token(String username, String password) {
-        SysRemoteUser sysRemoteUser = iSysRemoteUserService.login(username, password);
+    @PostMapping("/login")
+    public ResultDataUtil<Object> login(String certificateNumber, String password) {
+        SysRemoteUser sysRemoteUser = iSysRemoteUserService.login(certificateNumber, password);
         if (sysRemoteUser != null) { //说明登录成功
             String token = jwtTokenUtil.createToken(sysRemoteUser.getCertificateNumber());
             Claims claims = jwtTokenUtil.parseJWT(token);//jwt主体
@@ -54,7 +55,7 @@ public class RemoAuth {
     /**
      * 刷新token  获取新的token
      *
-     * @return
+     * @return 返回信息
      */
     @RequestMapping("/refreshToken")
     public ResultDataUtil<Object> refreshToken() {
@@ -66,9 +67,9 @@ public class RemoAuth {
     }
 
     /**
-     * 获取用户信息，从token中获取到username
+     * 获取用户信息，从token中获取到certificateNumber
      *
-     * @return
+     * @return 返回信息
      */
     @RequestMapping("/getUserInfo")
     public ResultDataUtil<Object> getUserInfo() {

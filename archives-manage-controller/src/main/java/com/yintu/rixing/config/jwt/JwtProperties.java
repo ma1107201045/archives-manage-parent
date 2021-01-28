@@ -18,7 +18,7 @@ public class JwtProperties {
     private Long expire; // token有效期 秒
     private String header;// token 采用的http头，一般使用: Authorization
     private String issuer;//发行人
-    private List<String> ignores = new ArrayList<>(); //忽略token的页面
+    private List<String> ignores; //忽略token的页面
 
     public JwtProperties() {
         this.secret = "J2m6hNsY2r5";

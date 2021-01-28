@@ -113,10 +113,14 @@ public class SysRemoteUserServiceImpl extends ServiceImpl<SysRemoteUserMapper, S
     public SysRemoteUser login(String certificateNumber, String password) {
         AssertUtil.notEmpty(certificateNumber, "证件号码不能为空");
         AssertUtil.notEmpty(password, "密码不能为空");
-        QueryWrapper<SysRemoteUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysRemoteUser::getCertificateNumber, certificateNumber)
-                .eq(SysRemoteUser::getPassword, password);
-        return this.getOne(queryWrapper);
+        SysRemoteUser sysRemoteUser = this.getByCertificateNumber(certificateNumber);
+        if (sysRemoteUser != null) {
+            String p = sysRemoteUser.getPassword();
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            if (passwordEncoder.matches(password, p))
+                return sysRemoteUser;
+        }
+        return null;
     }
 
     @Override
