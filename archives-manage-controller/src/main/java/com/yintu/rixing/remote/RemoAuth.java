@@ -1,6 +1,6 @@
 package com.yintu.rixing.remote;
 
-import com.yintu.rixing.config.other.JwtTokenUtil;
+import com.yintu.rixing.config.jwt.JwtTokenUtil;
 import com.yintu.rixing.system.ISysRemoteUserService;
 import com.yintu.rixing.system.SysRemoteUser;
 import com.yintu.rixing.util.ResultDataUtil;

@@ -1,4 +1,4 @@
-package com.yintu.rixing.config.other;
+package com.yintu.rixing.config.jwt;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
@@ -35,7 +35,6 @@ public class JwtTokenUtil {
         return Base64.getEncoder().encodeToString(secret.getBytes());
 
     }
-
 
     /**
      * 生成token

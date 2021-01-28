@@ -2,7 +2,7 @@ package com.yintu.rixing;
 
 import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import com.spring4all.swagger.EnableSwagger2Doc;
-import com.yintu.rixing.config.other.JwtProperties;
+import com.yintu.rixing.config.jwt.JwtProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;

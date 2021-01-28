@@ -2,12 +2,11 @@ package com.yintu.rixing.config.filter;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import com.yintu.rixing.config.other.JwtProperties;
-import com.yintu.rixing.config.other.JwtTokenUtil;
+import com.yintu.rixing.config.jwt.JwtProperties;
+import com.yintu.rixing.config.jwt.JwtTokenUtil;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.util.PathIgnoringUtil;
 import io.jsonwebtoken.Claims;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

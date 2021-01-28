@@ -1,4 +1,4 @@
-package com.yintu.rixing.config.other;
+package com.yintu.rixing.config.jwt;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
