@@ -23,6 +23,7 @@ import com.yintu.rixing.warehouse.WareTemplateLibraryFiledMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.transform.Source;
 import java.util.*;
 
 /**
@@ -56,23 +57,18 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             Map<String,Object> map = JSONObject.parseObject(JSON.toJSONString(tableDate));
             Set<String> key = map.keySet();
             List<String> keys = new ArrayList<>(key);
-            for (String s : keys) {
-                Object o = map.get(s);
-                values.add(o);
-            }
             StringBuilder sb1=new StringBuilder();
-            StringBuilder sb2=new StringBuilder();
             for (int i = 0; i < keys.size(); i++) {
-                for (int ii = 0; ii < values.size(); ii++) {
-                    if (i == 0 && ii == 0) {
-                        sb1.append(keys.get(i) + "=" + "'" + values.get(i) + "'");
-                    } else {
-                        sb1.append("," + keys.get(i) + "=" + "'" + values.get(i) + "'");
-                    }
+                Object o = map.get(keys.get(i));
+                if (i == 0) {
+                    sb1.append(keys.get(i) + "=" + "'" + o + "'");
+                } else {
+                    sb1.append("," + keys.get(i) + "=" + "'" + o + "'");
                 }
             }
             System.out.println("111111"+key);
             System.out.println("222222"+values);
+            System.out.println("33333"+sb1);
             wareTemplateLibraryFiledMapper.updateWarehouse(sb1,tableName,id);
         }
     }
@@ -107,7 +103,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonVo.setFields(dataCommonFieldVos);
             Page page=new Page();
             page.setSize(size);
-            page.setPages(num);
+            page.setCurrent(num);
             dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findOutWarehouse(page));
             return dataCommonVo;
         }
@@ -143,7 +139,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonVo.setFields(dataCommonFieldVos);
             Page page=new Page();
             page.setSize(size);
-            page.setPages(num);
+            page.setCurrent(num);
             dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findInWarehousePage(page));
             return dataCommonVo;
         }
@@ -179,7 +175,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonVo.setFields(dataCommonFieldVos);
         Page page=new Page();
         page.setSize(size);
-        page.setPages(num);
+        page.setCurrent(num);
         dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findAllEntityArchivesPage(page));
         return dataCommonVo;
         }
@@ -199,23 +195,19 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                 values.add(o);
             }
             StringBuilder sb1=new StringBuilder();
+            sb1.append("warehouseType");
             StringBuilder sb2=new StringBuilder();
+            sb2.append("'1'");
             for (int i = 0; i < keys.size(); i++) {
-                if (i==0){
-                    sb1.append("warehouseType");
-                }else {
-                    sb1.append(","+keys.get(i));
-                }
+                sb1.append(","+keys.get(i));
             }
             for (int i = 0; i < values.size(); i++) {
-                if (i==0){
-                    sb2.append("'1'");
-                }else {
-                    sb2.append(","+"'"+values.get(i)+"'");
-                }
+                sb2.append(","+"'"+values.get(i)+"'");
             }
             System.out.println("111111"+key);
             System.out.println("222222"+values);
+            System.out.println("3333333"+sb1);
+            System.out.println("4444444"+sb2);
             wareTemplateLibraryFiledMapper.addWarehousee(sb1,sb2,tableName);
         }
     }
@@ -227,8 +219,9 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         if (wareTemplateLibraryFiledMapper.findTable(tableName)==0){
             return state;
         }else {
-            Map<String, Object> warePhysicalWarehouseDatas=wareTemplateLibraryFiledMapper.findTurnLeftState(tableName);
-            if (warePhysicalWarehouseDatas==null){
+            List<Map<String, Object>> warePhysicalWarehouseDatas=wareTemplateLibraryFiledMapper.findTurnLeftState(tableName);
+            System.out.println("11111"+warePhysicalWarehouseDatas);
+            if (warePhysicalWarehouseDatas.size()==0){
                 return state;
             }else {
                 state=1;
@@ -273,6 +266,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             for (Object tableDate : tableDates) {
                 CommTableField commTableField=new CommTableField();
                 Map<String,Object> map = JSONObject.parseObject(JSON.toJSONString(tableDate));
+                System.out.println("mmmmmmm11mm"+map);
                 Integer id = (Integer)map.get("id");
                 WareTemplateLibraryField wareTemplateLibraryField=new WareTemplateLibraryField();
                 wareTemplateLibraryField.setTypeId(1);
@@ -285,22 +279,23 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                 Integer templateLibraryFieldTypeId =(Integer) map.get("templateLibraryFieldTypeId");
                 SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
                 String dataType = sysTemplateLibraryFieldType.getDataKey();
-                String name =(String) map.get("name");
-                commTableField.setComment(name);//注释
-                commTableField.setFieldName(dataKey);//字段名
-                commTableField.setLength(length);//长度
-                if ("datetime".equals(dataType))
-                    commTableField.setLength(6);
-                commTableField.setTableName(tableName);//表名
-                commTableField.setIsIndex(index.shortValue());//是否索引
-                commTableField.setDataType(dataType);//数据类型
-                commTableField.setIsNull(required.shortValue() == 1 ? (short) 0 : (short) 1);//是否为空
-                commTableFields.add(commTableField);
+                if (!"datetime".equals(dataType)) {
+                    String name = (String) map.get("name");
+                    commTableField.setComment(name);//注释
+                    commTableField.setFieldName(dataKey);//字段名
+                    commTableField.setLength(length);//长度
+                    commTableField.setTableName(tableName);//表名
+                    commTableField.setIsIndex(index.shortValue());//是否索引
+                    commTableField.setDataType(dataType);//数据类型
+                    commTableField.setIsNull(required.shortValue() == 1 ? (short) 0 : (short) 1);//是否为空
+                    commTableFields.add(commTableField);
+                }
             }
+            System.out.println("1111111q="+commTableFields);
             iCommTableFieldService.addTable(tableName,tableComment,commTableFields);
         }
         if (table>0){//判断表是否存在  0是不存在   大于0是存在
-            if (wareTemplateLibraryFiledMapper.findTurnLeftState(tableName)==null){//说明表里没数据
+            if (wareTemplateLibraryFiledMapper.findTurnLeftState(tableName).size()==0){//说明表里没数据
                 iCommTableFieldService.removeTableByTableName(tableName);//删除此表
                 //再重新创建表
                 //添加主键id
@@ -327,6 +322,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                 for (Object tableDate : tableDates) {
                     CommTableField commTableField=new CommTableField();
                     Map<String,Object> map = JSONObject.parseObject(JSON.toJSONString(tableDate));
+                    System.out.println("mammmm=="+map);
                     Integer id = (Integer)map.get("id");
                     ids.add(id);
                     WareTemplateLibraryField wareTemplateLibraryField=new WareTemplateLibraryField();
@@ -345,7 +341,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                     commTableField.setFieldName(dataKey);//字段名
                     commTableField.setLength(length);//长度
                     if ("datetime".equals(dataType))
-                        commTableField.setLength(6);
+                        commTableField.setLength(0);
                     commTableField.setTableName(tableName);//表名
                     commTableField.setIsIndex(index.shortValue());//是否索引
                     commTableField.setDataType(dataType);//数据类型
@@ -362,6 +358,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                 for (Object tableDate : tableDates) {
                     CommTableField commTableField = new CommTableField();
                     Map<String, Object> map = JSONObject.parseObject(JSON.toJSONString(tableDate));
+                    System.out.println("mmmmmmm="+map);
                     Integer id = (Integer) map.get("id");
                     WareTemplateLibraryField wareTemplateLibraryField = new WareTemplateLibraryField();
                     wareTemplateLibraryField.setTypeId(1);
@@ -379,7 +376,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                     commTableField.setFieldName(dataKey);//字段名
                     commTableField.setLength(length);//长度
                     if ("datetime".equals(dataType))
-                        commTableField.setLength(6);
+                        commTableField.setLength(0);
                     commTableField.setTableName(tableName);//表名
                     commTableField.setIsIndex(index.shortValue());//是否索引
                     commTableField.setDataType(dataType);//数据类型
