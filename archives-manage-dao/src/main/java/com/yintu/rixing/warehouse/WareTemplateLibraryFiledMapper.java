@@ -28,4 +28,14 @@ public interface WareTemplateLibraryFiledMapper extends BaseMapper<WareTemplateL
     void updateWarehouse(StringBuilder sb1, String tableName, Integer id);
 
     void deleteWarehouse(Integer id);
+
+    void outWarehouse(Integer id);
+
+    void inWarehouse(Integer id);
+
+    Page<Map<String, Object>> findAllEntityArchivesBySomethings(Page page, StringBuilder sb1);
+
+    Page<Map<String, Object>> findInWarehouseBySomethings(Page page, StringBuilder sb1);
+
+    Page<Map<String, Object>> findOutWarehouseBySomethings(Page page, StringBuilder sb1);
 }

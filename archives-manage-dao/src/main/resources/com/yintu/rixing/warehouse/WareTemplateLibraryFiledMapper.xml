@@ -20,6 +20,48 @@
     create_by, create_time, modified_by, modified_time
   </sql>
 
+  <!--多条件查询分页查询 实体档案出库管理-->
+  <select id="findOutWarehouseBySomethings" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    where ${sb1}
+    order by id desc
+  </select>
+
+
+
+  <!--多条件查询分页查询 实体档案入库管理-->
+  <select id="findInWarehouseBySomethings" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    where ${sb1}
+    order by id desc
+  </select>
+
+
+  <!--多条件查询分页查询 实体档案管理-->
+  <select id="findAllEntityArchivesBySomethings" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    where ${sb1}
+    order by id desc
+  </select>
+
+  <!--根据id 将数据由出库变为入库-->
+  <select id="outWarehouse" >
+    update ware_physical_warehouse
+    set warehouseType=1 , inWarehouseTime= now()
+    where id=#{id}
+  </select>
+
+
+  <!--根据id 将数据由入库变为出库-->
+  <select id="outWarehouse" >
+    update ware_physical_warehouse
+    set warehouseType=2 , outWarehouseTime= now()
+    where id=#{id}
+  </select>
+
   <!--根据id 删除对应的实体档案库数据-->
   <select id="deleteWarehouse" >
     DELETE

@@ -108,7 +108,7 @@ public class WareTemplateLibraryFieldController {
         wareTemplateLibraryField1.setDataKey("inWarehouseTime");
         wareTemplateLibraryField1.setLength(0);
         wareTemplateLibraryField1.setIndex(0);
-        wareTemplateLibraryField1.setRequired(1);
+        wareTemplateLibraryField1.setRequired(0);
         wareTemplateLibraryField1.setTemplateLibraryFieldTypeId(sysTemplateLibraryFieldType.getId());
         wareTemplateLibraryField1.setQuery((short)0);
         wareTemplateLibraryField1.setTitle((short)1);
@@ -122,7 +122,7 @@ public class WareTemplateLibraryFieldController {
         wareTemplateLibraryField2.setDataKey("outWarehouseTime");
         wareTemplateLibraryField2.setLength(0);
         wareTemplateLibraryField2.setIndex(0);
-        wareTemplateLibraryField2.setRequired(1);
+        wareTemplateLibraryField2.setRequired(0);
         wareTemplateLibraryField2.setTemplateLibraryFieldTypeId(sysTemplateLibraryFieldType.getId());
         wareTemplateLibraryField2.setQuery((short)0);
         wareTemplateLibraryField2.setTitle((short)1);
@@ -176,6 +176,26 @@ public class WareTemplateLibraryFieldController {
         return ResultDataUtil.ok("新增入库成功");
     }
 
+    //根据id 出库
+    @Log(level = EnumLogLevel.INFO, module = "库房管理", context = "更改出库")
+    @PutMapping("/outWarehouse/{id}")
+    @ApiOperation(value = "更改出库", notes = "更改出库")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    public ResultDataUtil<Object> outWarehouse(@PathVariable Integer id) {
+        iWareTemplateLibraryFieldService.outWarehouse(id);
+        return ResultDataUtil.ok("更改出库成功");
+    }
+
+    //根据id 入库
+    @Log(level = EnumLogLevel.INFO, module = "库房管理", context = "更改入库")
+    @PutMapping("/inWarehouse/{id}")
+    @ApiOperation(value = "更改入库", notes = "更改入库")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    public ResultDataUtil<Object> inWarehouse(@PathVariable Integer id) {
+        iWareTemplateLibraryFieldService.inWarehouse(id);
+        return ResultDataUtil.ok("更改入库成功");
+    }
+
     //分页查询 实体档案管理
     @GetMapping("/findAllEntityArchives")
     @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "分页查询实体档案管理信息")
@@ -189,6 +209,19 @@ public class WareTemplateLibraryFieldController {
         return ResultDataUtil.ok("分页查询实体档案管理信息成功",dataCommonVo);
     }
 
+    //多条件查询分页查询 实体档案管理
+    @PostMapping("/findAllEntityArchivesBySomethings/{num}/{size}")
+    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案管理信息")
+    @ApiOperation(value = "根据条件分页查询实体档案管理信息", notes = " 根据条件分页查询实体档案管理信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
+            @ApiImplicitParam(name = "jsonObject", dataType = "JSONObject", value = "条件数据", required = true, paramType = "path")
+    })
+    public ResultDataUtil<DataCommonVo>findAllEntityArchivesBySomethings(@RequestBody JSONObject jsonObject, @PathVariable Integer num, @PathVariable Integer size){
+        DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findAllEntityArchivesBySomethings(num,size,jsonObject);
+        return ResultDataUtil.ok("根据条件分页查询实体档案管理信息成功",dataCommonVo);
+    }
 
     //分页查询 实体档案入库管理
     @GetMapping("/findInWarehouse")
@@ -203,6 +236,20 @@ public class WareTemplateLibraryFieldController {
         return ResultDataUtil.ok("分页查询实体档案入库管理信息成功",dataCommonVo);
     }
 
+    //多条件分页查询 实体档案入库管理
+    @PostMapping("/findInWarehouseBySomethings/{num}/{size}")
+    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案入库管理信息")
+    @ApiOperation(value = "根据条件分页查询实体档案入库管理信息", notes = " 根据条件分页查询实体档案入库管理信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
+            @ApiImplicitParam(name = "jsonObject", dataType = "JSONObject", value = "条件数据", required = true, paramType = "path")
+    })
+    public ResultDataUtil<DataCommonVo>findInWarehouseBySomethings(@RequestBody JSONObject jsonObject,@PathVariable Integer num, @PathVariable Integer size){
+        DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findInWarehouseBySomethings(num,size,jsonObject);
+        return ResultDataUtil.ok("根据条件分页查询实体档案入库管理信息成功",dataCommonVo);
+    }
+
     //分页查询 实体档案出库管理
     @GetMapping("/findOutWarehouse")
     @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "分页查询实体档案出库管理信息")
@@ -214,6 +261,19 @@ public class WareTemplateLibraryFieldController {
     public ResultDataUtil<DataCommonVo>findOutWarehouse(@RequestParam Integer num, @RequestParam Integer size){
         DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findOutWarehouse(num,size);
         return ResultDataUtil.ok("分页查询实体档案出库管理信息成功",dataCommonVo);
+    }
+    //多条件分页查询 实体档案出库管理
+    @PostMapping("/findOutWarehouseBySomethings/{num}/{size}")
+    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案出库管理信息")
+    @ApiOperation(value = "根据条件分页查询实体档案出库管理信息", notes = " 根据条件分页查询实体档案出库管理信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
+            @ApiImplicitParam(name = "jsonObject", dataType = "JSONObject", value = "条件数据", required = true, paramType = "path")
+    })
+    public ResultDataUtil<DataCommonVo>findOutWarehouseBySomethings(@RequestBody JSONObject jsonObject,@PathVariable Integer num, @PathVariable Integer size){
+        DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findOutWarehouseBySomethings(num,size,jsonObject);
+        return ResultDataUtil.ok("根据条件分页查询实体档案出库管理信息成功",dataCommonVo);
     }
 
     //根据id 对数据进行编辑
@@ -238,6 +298,10 @@ public class WareTemplateLibraryFieldController {
         iWareTemplateLibraryFieldService.deleteWarehouse(id);
         return ResultDataUtil.ok("删除对应的实体库表数据成功");
     }
+
+
+
+
 
 
 
