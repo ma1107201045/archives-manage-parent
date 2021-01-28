@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -13,10 +15,17 @@ import java.io.IOException;
  */
 @WebFilter(urlPatterns = "/remote/*", filterName = "remoteLoginFilter")
 @Slf4j
-public class RemoteLoginFilter implements Filter {
+public class AuthenticationTokenFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        log.debug("....................................................................................");
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader == null) {
+
+        }
+        response.setHeader("Authorization", "JWT+");
+
     }
 }
