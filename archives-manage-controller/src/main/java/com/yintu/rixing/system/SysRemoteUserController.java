@@ -9,10 +9,7 @@ import com.yintu.rixing.dto.system.SysRemoteUserPasswordDto;
 import com.yintu.rixing.dto.system.SysRemoteUserQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResultDataUtil;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiOperationSupport;
-import io.swagger.annotations.ApiSort;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +26,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/system/sys-remote-user")
+@Api(tags = "远程用户接口")
 @ApiSort(11)
 public class SysRemoteUserController extends Authenticator {
 

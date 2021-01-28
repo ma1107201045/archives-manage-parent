@@ -32,4 +32,8 @@ public interface ISysRemoteUserService extends IService<SysRemoteUser> {
     List<Integer> listByCertificateNumber(String certificateNumber);
 
     Page<SysRemoteUser> page(SysRemoteUserQueryDto sysRemoteUserQueryDto);
+
+    SysRemoteUser login(String certificateNumber, String password);
+
+    SysRemoteUser getByCertificateNumber(String certificateNumber);
 }

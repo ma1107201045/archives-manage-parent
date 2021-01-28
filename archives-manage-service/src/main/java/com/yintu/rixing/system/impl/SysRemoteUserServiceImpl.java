@@ -10,6 +10,7 @@ import com.yintu.rixing.dto.system.SysRemoteUserPasswordDto;
 import com.yintu.rixing.dto.system.SysRemoteUserQueryDto;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
+import com.yintu.rixing.util.AssertUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -106,5 +107,23 @@ public class SysRemoteUserServiceImpl extends ServiceImpl<SysRemoteUserMapper, S
             queryWrapper.lambda().eq(SysRemoteUser::getPhoneNum, phoneNum);
         queryWrapper.orderByDesc("id");
         return this.page(new Page<>(num, size), queryWrapper);
+    }
+
+    @Override
+    public SysRemoteUser login(String certificateNumber, String password) {
+        AssertUtil.notEmpty(certificateNumber, "证件号码不能为空");
+        AssertUtil.notEmpty(password, "密码不能为空");
+        QueryWrapper<SysRemoteUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysRemoteUser::getCertificateNumber, certificateNumber)
+                .eq(SysRemoteUser::getPassword, password);
+        return this.getOne(queryWrapper);
+    }
+
+    @Override
+    public SysRemoteUser getByCertificateNumber(String certificateNumber) {
+        AssertUtil.notEmpty(certificateNumber, "证件号码不能为空");
+        QueryWrapper<SysRemoteUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysRemoteUser::getCertificateNumber, certificateNumber);
+        return this.getOne(queryWrapper);
     }
 }
