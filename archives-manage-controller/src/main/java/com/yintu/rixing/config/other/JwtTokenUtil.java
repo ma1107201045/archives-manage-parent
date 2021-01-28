@@ -78,17 +78,6 @@ public class JwtTokenUtil {
     }
 
 
-    /**
-     * 从http请求中获取http的token头
-     *
-     * @return
-     */
-    public String getHttpToken() {
-        HttpServletRequest request = ((ServletRequestAttributes)
-                Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        return request.getHeader(jwtProperties.getHeader());
-    }
-
     public Claims getTokenClaims() {
         String token = getHttpToken();
         return parseJWT(token);
@@ -99,5 +88,11 @@ public class JwtTokenUtil {
         Claims claims = parseJWT(token);
         return claims.getSubject();
 
+    }
+
+    public String getHttpToken() {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        return request.getHeader(jwtProperties.getHeader());
     }
 }
