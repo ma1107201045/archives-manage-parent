@@ -7,7 +7,7 @@
             <foreach collection="commTableFields" index="index" item="commTableField" separator="," close=",">
                 `${commTableField.fieldName}`
                 ${commTableField.dataType}
-                <if test="commTableField.dataType !='date' or commTableField.dataType !='datetime'">
+                <if test="commTableField.dataType !='date'.toString() and commTableField.dataType !='datetime'.toString()">
                     (${commTableField.length})
                 </if>
                 <if test="commTableField.isNull==1">

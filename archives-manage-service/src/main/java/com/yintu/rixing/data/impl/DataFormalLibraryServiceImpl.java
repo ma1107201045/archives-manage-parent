@@ -40,6 +40,11 @@ public class DataFormalLibraryServiceImpl extends DataCommonService implements I
     }
 
     @Override
+    public void saveBatch(DataCommon dataCommon) {
+        dataFormalLibraryMapper.insertSelectiveBatch(dataCommon);
+    }
+
+    @Override
     public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
         DataCommon dataCommon = this.removeOrGetHandler(null, archivesLibraryId);
         dataFormalLibraryMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
@@ -73,6 +78,11 @@ public class DataFormalLibraryServiceImpl extends DataCommonService implements I
     public Map<String, Object> getById(Integer id, Integer archivesLibraryId) {
         DataCommon dataCommon = this.removeOrGetHandler(id, archivesLibraryId);
         return dataFormalLibraryMapper.selectByPrimaryKey(dataCommon);
+    }
+
+    @Override
+    public List<Map<String, Object>> getList(DataCommon dataCommon) {
+        return dataFormalLibraryMapper.selectList(dataCommon);
     }
 
     @Override

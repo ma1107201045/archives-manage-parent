@@ -3,6 +3,7 @@ package com.yintu.rixing.data;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +26,8 @@ public interface DataFormalLibraryMapper {
     void updateByPrimaryKeySelective(DataCommon dataCommon);
 
     Map<String, Object> selectByPrimaryKey(DataCommon dataCommon);
+
+    List<Map<String, Object>> selectList(DataCommon dataCommon);
 
     Page<Map<String, Object>> selectPage(Page<Map<String, Object>> page, DataCommon dataCommon);
 

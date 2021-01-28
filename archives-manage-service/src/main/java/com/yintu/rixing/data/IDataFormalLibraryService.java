@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +23,9 @@ public interface IDataFormalLibraryService {
     void save(DataCommonFormDto dataCommonFormDto);
 
     @Transactional(rollbackFor = {Exception.class})
+    void saveBatch(DataCommon dataCommon);
+
+    @Transactional(rollbackFor = {Exception.class})
     void removeByIds(Set<Integer> ids, Integer archivesLibraryId);
 
     @Transactional(rollbackFor = {Exception.class})
@@ -31,6 +35,8 @@ public interface IDataFormalLibraryService {
     void updateStatusById(Integer id, Integer archivesLibraryId, Short status);
 
     Map<String, Object> getById(Integer id, Integer archivesLibraryId);
+
+    List<Map<String, Object>> getList(DataCommon dataCommon);
 
     DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
 
