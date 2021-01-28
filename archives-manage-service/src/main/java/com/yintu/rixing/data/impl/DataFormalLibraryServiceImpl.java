@@ -40,11 +40,6 @@ public class DataFormalLibraryServiceImpl extends DataCommonService implements I
     }
 
     @Override
-    public void saveBatch(DataCommon dataCommon) {
-        dataFormalLibraryMapper.insertSelectiveBatch(dataCommon);
-    }
-
-    @Override
     public void removeByIds(Set<Integer> ids, Integer archivesLibraryId) {
         DataCommon dataCommon = this.removeOrGetHandler(null, archivesLibraryId);
         dataFormalLibraryMapper.deleteByPrimaryKeys(ids, dataCommon.getTableName());
@@ -57,6 +52,11 @@ public class DataFormalLibraryServiceImpl extends DataCommonService implements I
         if (map != null) {
             dataFormalLibraryMapper.updateByPrimaryKeySelective(dataCommon);
         }
+    }
+
+    @Override
+    public void updateById(DataCommon dataCommon) {
+        dataFormalLibraryMapper.updateByPrimaryKeySelective(dataCommon);
     }
 
     @Override

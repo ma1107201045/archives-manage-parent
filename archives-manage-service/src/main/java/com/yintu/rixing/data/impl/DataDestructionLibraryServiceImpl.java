@@ -66,7 +66,6 @@ public class DataDestructionLibraryServiceImpl extends DataCommonService impleme
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
         DataCommon dataCommon = this.page(dataCommonPageDto);
-
         //销毁库查询时候 去检测正式库中超过期限的数据
         DataCommon d = new DataCommon();
         d.setTableName(dataCommon.getTableName());
@@ -74,23 +73,25 @@ public class DataDestructionLibraryServiceImpl extends DataCommonService impleme
         d.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.FORMAL_LIBRARY.getValue()));
         List<Map<String, Object>> list = iDataFormalLibraryService.getList(d);
         //判断有效期是否过期
-        List<List<DataCommonKV>> list1 = new ArrayList<>();
         for (Map<String, Object> map : list) {
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
             String dataKey = EnumArchivesLibraryDefaultField.VALID_PERIOD.getDataKey();
             if (map.containsKey(dataKey)) {
                 Object o = map.get(dataKey);
-                if (DateUtil.date().isBeforeOrEquals((Date) o)) {
-                    DataCommonKV dataCommonKV = new DataCommonKV();
-                    dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
-                    dataCommonKV.setFieldValue(EnumArchivesOrder.DESTRUCTION_LIBRARY.getValue());
-                    dataCommonKVS.add(dataCommonKV);
+                if (o != null) {
+                    if (DateUtil.parseDate(DateUtil.today()).isBeforeOrEquals((Date) o)) {
+                        DataCommonKV dataCommonKV = new DataCommonKV();
+                        dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
+                        dataCommonKV.setFieldValue(EnumArchivesOrder.DESTRUCTION_LIBRARY.getValue());
+                        dataCommonKVS.add(dataCommonKV);
+                        d.setId((Integer) map.get(EnumArchivesLibraryDefaultField.ID.getDataKey()));
+                        d.setDataCommonKVs(dataCommonKVS);
+                        iDataFormalLibraryService.updateById(d);
+                    }
                 }
             }
-            list1.add(dataCommonKVS);
         }
-        d.setLists(list1);
-        iDataFormalLibraryService.saveBatch(d);
+
 
         dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.DESTRUCTION_LIBRARY.getValue()));
         Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();

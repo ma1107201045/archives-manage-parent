@@ -23,13 +23,13 @@ public interface IDataFormalLibraryService {
     void save(DataCommonFormDto dataCommonFormDto);
 
     @Transactional(rollbackFor = {Exception.class})
-    void saveBatch(DataCommon dataCommon);
-
-    @Transactional(rollbackFor = {Exception.class})
     void removeByIds(Set<Integer> ids, Integer archivesLibraryId);
 
     @Transactional(rollbackFor = {Exception.class})
     void updateById(DataCommonFormDto dataCommonDto);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void updateById(DataCommon dataCommon);
 
     @Transactional(rollbackFor = {Exception.class})
     void updateStatusById(Integer id, Integer archivesLibraryId, Short status);

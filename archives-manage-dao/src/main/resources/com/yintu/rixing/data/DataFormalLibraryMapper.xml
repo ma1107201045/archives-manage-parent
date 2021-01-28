@@ -80,9 +80,9 @@
 
     <select id="selectList" resultType="java.util.Map">
         select *
-        from `${dataCommon.tableName}`
+        from `${tableName}`
         <where>
-            <foreach collection="dataCommon.dataCommonKVs" index="index" item="dataCommonKV" separator="and">
+            <foreach collection="dataCommonKVs" index="index" item="dataCommonKV" separator="and">
                 `${dataCommonKV.fieldName}`= #{dataCommonKV.fieldValue}
             </foreach>
         </where>
