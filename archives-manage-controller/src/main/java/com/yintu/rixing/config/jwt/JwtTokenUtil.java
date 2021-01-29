@@ -12,6 +12,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Objects;
@@ -105,5 +106,6 @@ public class JwtTokenUtil {
     public String parseJWTSignature(String token) {
         return parseJWT(token).getSignature();
     }
+
 
 }
