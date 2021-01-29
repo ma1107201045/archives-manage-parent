@@ -5,7 +5,9 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yintu.rixing.dto.remote.RemoAuthenticationRegisterDto;
 import com.yintu.rixing.dto.system.SysRemoteUserFormDto;
+import com.yintu.rixing.dto.remote.RemoAuthenticationLoginDto;
 import com.yintu.rixing.dto.system.SysRemoteUserPasswordDto;
 import com.yintu.rixing.dto.system.SysRemoteUserQueryDto;
 import com.yintu.rixing.exception.BaseRuntimeException;
@@ -29,9 +31,9 @@ import java.util.List;
 public class SysRemoteUserServiceImpl extends ServiceImpl<SysRemoteUserMapper, SysRemoteUser> implements ISysRemoteUserService {
 
     @Override
-    public void save(SysRemoteUserFormDto sysRemoteUserFormDto) {
-        String password = sysRemoteUserFormDto.getPassword();
-        String certificateNumber = sysRemoteUserFormDto.getCertificateNumber();
+    public void save(RemoAuthenticationRegisterDto remoAuthenticationRegisterDto) {
+        String password = remoAuthenticationRegisterDto.getPassword();
+        String certificateNumber = remoAuthenticationRegisterDto.getCertificateNumber();
         if (StrUtil.isEmpty(password))
             throw new BaseRuntimeException("密码不能为空");
         //判断证件号码是否重复
@@ -39,9 +41,9 @@ public class SysRemoteUserServiceImpl extends ServiceImpl<SysRemoteUserMapper, S
         if (!ids.isEmpty())
             throw new BaseRuntimeException("证件号码不能重复");
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        sysRemoteUserFormDto.setPassword(passwordEncoder.encode(sysRemoteUserFormDto.getPassword()));
+        remoAuthenticationRegisterDto.setPassword(passwordEncoder.encode(password));
         SysRemoteUser sysRemoteUser = new SysRemoteUser();
-        BeanUtil.copyProperties(sysRemoteUserFormDto, sysRemoteUser);
+        BeanUtil.copyProperties(remoAuthenticationRegisterDto, sysRemoteUser);
         this.save(sysRemoteUser);
     }
 
@@ -110,17 +112,19 @@ public class SysRemoteUserServiceImpl extends ServiceImpl<SysRemoteUserMapper, S
     }
 
     @Override
-    public SysRemoteUser login(String certificateNumber, String password) {
+    public SysRemoteUser login(RemoAuthenticationLoginDto sysRemoteUserLoginDto) {
+        String certificateNumber = sysRemoteUserLoginDto.getCertificateNumber();
+        String password = sysRemoteUserLoginDto.getPassword();
         AssertUtil.notEmpty(certificateNumber, "证件号码不能为空");
         AssertUtil.notEmpty(password, "密码不能为空");
         SysRemoteUser sysRemoteUser = this.getByCertificateNumber(certificateNumber);
-        if (sysRemoteUser != null) {
-            String p = sysRemoteUser.getPassword();
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if (passwordEncoder.matches(password, p))
-                return sysRemoteUser;
-        }
-        return null;
+        if (sysRemoteUser == null)
+            throw new BaseRuntimeException("远程用户登录失败[用户不存在]");
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String p = sysRemoteUser.getPassword();
+        if (!passwordEncoder.matches(password, p))
+            throw new BaseRuntimeException("远程用户登录失败[密码错误]");
+        return sysRemoteUser;
     }
 
     @Override

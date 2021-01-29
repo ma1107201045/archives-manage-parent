@@ -33,22 +33,22 @@ public class AuthenticationTokenFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        String path = StrUtil.split(request.getRequestURL(), '?').get(0);
+        if (PathIgnoringUtil.antMatchers(request, path)) {
+            JwtProperties props = jwtTokenUtil.getJwtProperties();
+            List<String> ignores = props.getIgnores();
+            if (!PathIgnoringUtil.antMatchers(request, ignores, path)) {
+                String token = request.getHeader(props.getHeader());
+                if (StrUtil.isEmpty(token)) {
+                    throw new BaseRuntimeException("token不能为空");
+                }
+                Claims claims = jwtTokenUtil.parseJWT(token);
+                if (claims.getExpiration().before(DateUtil.date())) {
+                    throw new BaseRuntimeException("token已过期，请重新获取");
+                }
+                request.setAttribute("identityId", claims.getSubject());//设置用户凭证id
+            }
+        }
         filterChain.doFilter(request, response);
-//
-//        String path = StrUtil.split(request.getRequestURL(), '?').get(0);
-//        JwtProperties props = jwtTokenUtil.getJwtProperties();
-//        List<String> ignores = props.getIgnores();
-//        if (PathIgnoringUtil.antMatchers(request, ignores, path))
-//            filterChain.doFilter(request, response);
-//        String token = request.getHeader(props.getHeader());
-//        if (StrUtil.isEmpty(token)) {
-//            throw new BaseRuntimeException("token不能为空");
-//        }
-//        Claims claims = jwtTokenUtil.parseJWT(token);
-//        if (claims.getExpiration().before(DateUtil.date())) {
-//            throw new BaseRuntimeException("token已过期，请重新获取");
-//        }
-//        request.setAttribute("identityId", claims.getSubject());//设置用户凭证id
-//        filterChain.doFilter(request, response);
     }
 }

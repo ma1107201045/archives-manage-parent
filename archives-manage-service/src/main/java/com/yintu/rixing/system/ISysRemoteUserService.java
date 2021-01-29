@@ -2,10 +2,9 @@ package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yintu.rixing.dto.system.SysRemoteUserFormDto;
-import com.yintu.rixing.dto.system.SysRemoteUserPasswordDto;
-import com.yintu.rixing.dto.system.SysRemoteUserQueryDto;
-import com.yintu.rixing.dto.system.SysUserQueryDto;
+import com.yintu.rixing.dto.remote.RemoAuthenticationLoginDto;
+import com.yintu.rixing.dto.remote.RemoAuthenticationRegisterDto;
+import com.yintu.rixing.dto.system.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.List;
 public interface ISysRemoteUserService extends IService<SysRemoteUser> {
 
     @Transactional(rollbackFor = {Exception.class})
-    void save(SysRemoteUserFormDto sysRemoteUserFormDto);
+    void save(RemoAuthenticationRegisterDto remoAuthenticationRegisterDto);
 
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysRemoteUserFormDto sysRemoteUserFormDto);
@@ -33,7 +32,7 @@ public interface ISysRemoteUserService extends IService<SysRemoteUser> {
 
     Page<SysRemoteUser> page(SysRemoteUserQueryDto sysRemoteUserQueryDto);
 
-    SysRemoteUser login(String certificateNumber, String password);
+    SysRemoteUser login(RemoAuthenticationLoginDto remoAuthenticationDto);
 
     SysRemoteUser getByCertificateNumber(String certificateNumber);
 }

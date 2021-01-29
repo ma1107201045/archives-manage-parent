@@ -1,7 +1,9 @@
 package com.yintu.rixing.system;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yintu.rixing.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -42,6 +44,8 @@ public class SysRemoteUser extends BaseEntity {
 
     @ApiModelProperty(value = "密码", position = 10)
     @TableField("password")
+    @JsonIgnore
+    @JSONField(serialize = false)
     private String password;
 
     @ApiModelProperty(value = "学院/单位", position = 11)
