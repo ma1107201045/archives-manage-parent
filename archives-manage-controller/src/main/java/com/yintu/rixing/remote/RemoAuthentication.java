@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @Author: mlf
  * @Date: 2021/1/28 16:01:01
@@ -64,5 +66,6 @@ public class RemoAuthentication {
         SysRemoteUser sysRemoteUser = iSysRemoteUserService.getById(id);
         return ResultDataUtil.ok("获取远程用户成功", sysRemoteUser);
     }
+
 
 }
