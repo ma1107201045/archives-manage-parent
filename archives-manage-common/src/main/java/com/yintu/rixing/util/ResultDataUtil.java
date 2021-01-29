@@ -15,6 +15,7 @@ public class ResultDataUtil<T> {
 
     public static final Integer CODE_VALUE_200 = 200;
     public static final Integer CODE_VALUE_401 = 401;
+    public static final Integer CODE_VALUE_666 = 666;
     public static final Integer CODE_VALUE_403 = 403;
     public static final Integer CODE_VALUE_404 = 404;
     public static final Integer CODE_VALUE_500 = 500;
@@ -57,6 +58,19 @@ public class ResultDataUtil<T> {
         return responseData;
     }
 
+    public static <T> ResultDataUtil<T> noJWTAuthentication(String message) {
+        return ResultDataUtil.noJWTAuthentication(message, null);
+
+    }
+
+
+    public static <T> ResultDataUtil<T> noJWTAuthentication(String message, T data) {
+        ResultDataUtil<T> responseData = new ResultDataUtil<>();
+        responseData.setCode(CODE_VALUE_666);
+        responseData.setData(data);
+        responseData.setMessage(message);
+        return responseData;
+    }
 
     public static <T> ResultDataUtil<T> noAuthorization(String message) {
         return ResultDataUtil.noAuthorization(message, null);

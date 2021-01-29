@@ -55,7 +55,7 @@ public class AuthenticationTokenFilter implements Filter {
                     }
                     request.setAttribute("identityId", claims.getSubject());//设置用户凭证id
                 } catch (BaseRuntimeException runtimeException) {
-                    ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noAuthentication("尚未认证，请先认证");
+                    ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noJWTAuthentication("尚未认证，请先认证");
                     JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
                     response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     response.setStatus(HttpServletResponse.SC_OK);

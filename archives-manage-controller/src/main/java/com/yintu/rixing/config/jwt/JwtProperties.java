@@ -22,7 +22,7 @@ public class JwtProperties {
 
     public JwtProperties() {
         this.secret = "J2m6hNsY2r5";
-        this.expire = 3600L;
+        this.expire = 31536000L;
         this.header = "Authorization";
         this.issuer = "system";
         List<String> ignores = new ArrayList<>();
