@@ -48,7 +48,7 @@ public class AuthenticationTokenFilter implements Filter {
                     if (StrUtil.isEmpty(token)) {
                         throw new BaseRuntimeException("token不能为空");
                     }
-                    Claims claims = jwtTokenUtil.parseJWT(token);
+                    Claims claims = jwtTokenUtil.parseJWTBody(token);
                     if (claims.getExpiration().before(DateUtil.date())) {
                         throw new BaseRuntimeException("token已过期，请重新获取");
                     }

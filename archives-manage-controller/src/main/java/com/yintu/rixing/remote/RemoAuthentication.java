@@ -44,7 +44,7 @@ public class RemoAuthentication {
     @ApiOperationSupport(order = 1)
     public ResultDataUtil<RemoAuthenticationVo> login(@Validated RemoAuthenticationLoginDto remoAuthenticationDto) {
         SysRemoteUser sysRemoteUser = iSysRemoteUserService.login(remoAuthenticationDto);
-        String token = jwtTokenUtil.createToken(sysRemoteUser.getCertificateNumber());
+        String token = jwtTokenUtil.createToken(sysRemoteUser.getId().toString());
         RemoAuthenticationVo remoAuthenticationVo = new RemoAuthenticationVo();
         remoAuthenticationVo.setRemoteUser(BeanUtil.beanToMap(sysRemoteUser));
         remoAuthenticationVo.setToken(token);

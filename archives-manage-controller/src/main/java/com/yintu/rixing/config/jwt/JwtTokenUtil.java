@@ -4,9 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.rixing.exception.BaseRuntimeException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -56,25 +54,56 @@ public class JwtTokenUtil {
 
     }
 
+
     /**
-     * 获取token中注册信息 (body信息)
+     * 获取token中注册信息
      *
      * @param token token
      * @return 返回信息
      */
-    public Claims parseJWT(String token) {
+    public Jws<Claims> parseJWT(String token) {
         try {
             if (StrUtil.isEmpty(token)) {
                 throw new BaseRuntimeException("token不能为空");
             }
             token = token.substring(7);
             String secret = getSecretKey();//密钥
-            return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+            System.out.println(JSONObject.toJSON(Jwts.parser().setSigningKey(secret).parseClaimsJws(token)));
+            return Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
         } catch (Exception e) {
             throw new BaseRuntimeException("token验证失败");
         }
     }
 
+    /**
+     * 获取token中注册信息 (header信息)
+     *
+     * @param token token
+     * @return 返回信息
+     */
+    public JwsHeader parseJWTHeader(String token) {
+        return parseJWT(token).getHeader();
+    }
 
+    /**
+     * 获取token中注册信息 (body信息)
+     *
+     * @param token token
+     * @return 返回信息
+     */
+    public Claims parseJWTBody(String token) {
+        return parseJWT(token).getBody();
+    }
+
+
+    /**
+     * 获取token中注册信息 (Signature信息)
+     *
+     * @param token token
+     * @return 返回信息
+     */
+    public String parseJWTSignature(String token) {
+        return parseJWT(token).getSignature();
+    }
 
 }
