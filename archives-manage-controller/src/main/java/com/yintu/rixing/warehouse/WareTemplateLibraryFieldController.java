@@ -1,6 +1,7 @@
 package com.yintu.rixing.warehouse;
 
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -116,8 +117,7 @@ public class WareTemplateLibraryFieldController {
         wareTemplateLibraryField1.setTypeId(3);
         wareTemplateLibraryFieldPage.add(wareTemplateLibraryField1);
         WareTemplateLibraryField wareTemplateLibraryField2=new WareTemplateLibraryField();
-        Long time2 = new Date().getTime();
-        wareTemplateLibraryField2.setId(time2.intValue()+1);
+        wareTemplateLibraryField2.setId(time1.intValue()+1);
         wareTemplateLibraryField2.setName("出库时间");
         wareTemplateLibraryField2.setDataKey("outWarehouseTime");
         wareTemplateLibraryField2.setLength(0);
@@ -129,6 +129,22 @@ public class WareTemplateLibraryFieldController {
         wareTemplateLibraryField2.setForm((short)0);
         wareTemplateLibraryField2.setTypeId(3);
         wareTemplateLibraryFieldPage.add(wareTemplateLibraryField2);
+        WareTemplateLibraryField wareTemplateLibraryField3=new WareTemplateLibraryField();
+        QueryWrapper<SysTemplateLibraryFieldType> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.like("data_key","varchar");
+        SysTemplateLibraryFieldType sysTemplateLibraryFieldType1=iSysTemplateLibraryFieldTypeService.getOne(queryWrapper2);
+        wareTemplateLibraryField3.setId(time1.intValue()+2);
+        wareTemplateLibraryField3.setName("档案号");
+        wareTemplateLibraryField3.setDataKey("archivesNum");
+        wareTemplateLibraryField3.setLength(255);
+        wareTemplateLibraryField3.setIndex(1);
+        wareTemplateLibraryField3.setRequired(1);
+        wareTemplateLibraryField3.setTemplateLibraryFieldTypeId(sysTemplateLibraryFieldType1.getId());
+        wareTemplateLibraryField3.setQuery((short)1);
+        wareTemplateLibraryField3.setTitle((short)1);
+        wareTemplateLibraryField3.setForm((short)0);
+        wareTemplateLibraryField3.setTypeId(3);
+        wareTemplateLibraryFieldPage.add(wareTemplateLibraryField3);
         return ResponseDataUtil.ok("查询库房管理实体表字段列表信息成功", wareTemplateLibraryFieldPage);
     }
 
@@ -307,14 +323,37 @@ public class WareTemplateLibraryFieldController {
 
 
     public static void main(String[] args) {//@RequestBody JSONObject jsonObject,
-        JSONObject jsonObject=new JSONObject();
+        Date date = new Date();
+        String archivesNum="";
+        int day = DateUtil.dayOfMonth(date);
+        int month = DateUtil.month(date) + 1;
+        String yearStr = String.valueOf(DateUtil.year(date));
+        String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
+        String dayStr = Integer.toString(day).length() == 1 ? "0" + day : Integer.toString(day);
+        archivesNum="STDH-"+yearStr+monthStr+dayStr+"-0001";
+
+        System.out.println(archivesNum);
+        String[] split = archivesNum.split("-");
+        for (String s : split) {
+            System.out.println("sss1"+s);
+        }
+
+        System.out.println("ssss"+split[2]);
+
+
+
+
+
+
+
+        /*JSONObject jsonObject=new JSONObject();
        // jsonObject.put("sss","[{\"id\":3,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:39:36\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:39:36\",\"name\":\"测试三\",\"dataKey\":\"test3\",\"length\":1111,\"required\":1,\"index\":1,\"order\":11111,\"templateLibraryFieldTypeId\":2,\"typeId\":0},{\"id\":1,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:16:58\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:16:58\",\"name\":\"测试一\",\"dataKey\":\"test1\",\"length\":111,\"required\":1,\"index\":1,\"order\":11,\"templateLibraryFieldTypeId\":2,\"typeId\":0},{\"id\":2,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:17:15\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:17:15\",\"name\":\"测试二\",\"dataKey\":\"test2\",\"length\":11,\"required\":1,\"index\":1,\"order\":1,\"templateLibraryFieldTypeId\":2,\"typeId\":0}]");
         jsonObject.put("sss","{\"id\":3,\"createBy\":\" \",\"createTime\":\"2021-01-22 20:39:36\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:39:36\",\"name\":\"测试三\",\"dataKey\":\"test3\",\"length\":1111,\"required\":1,\"index\":1,\"order\":11111,\"templateLibraryFieldTypeId\":2,\"typeId\":0}");
         //JSONArray tableDates = jsonObject.getJSONArray("sss");
         JSONObject sss = (JSONObject)jsonObject.get("sss");
         Map<String, String> jsonMap = JSONObject.toJavaObject(sss, Map.class);
         System.out.println(jsonObject.get("sss"));
-        System.out.println("sssss"+jsonMap);
+        System.out.println("sssss"+jsonMap);*/
 
        /* for (Object tableDate : tableDates) {
             System.out.println("6666"+tableDate);

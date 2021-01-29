@@ -1,5 +1,6 @@
 package com.yintu.rixing.warehouse.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -113,7 +114,30 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonTitleVo2.setQuery(false);
         dataCommonTitleVo2.setTitle(true);
         dataCommonTitleVo2.setForm(false);
+        dataCommonTitleVo2.setTypeId(6);
         dataCommonFieldVos.add(dataCommonTitleVo2);
+        DataCommonFieldVo dataCommonTitleVo3 = new DataCommonFieldVo();
+        dataCommonTitleVo3.setTypeProp("varchar");
+        dataCommonTitleVo3.setTypeLabel("文本框(文本)");
+        dataCommonTitleVo3.setNotNull(true);
+        dataCommonTitleVo3.setProp("archivesNum");
+        dataCommonTitleVo3.setLabel("档案号");
+        dataCommonTitleVo3.setQuery(true);
+        dataCommonTitleVo3.setTitle(true);
+        dataCommonTitleVo3.setForm(false);
+        dataCommonTitleVo3.setTypeId(1);
+        dataCommonFieldVos.add(0,dataCommonTitleVo3);
+        DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
+        dataCommonTitleVo4.setTypeProp("int");
+        dataCommonTitleVo4.setTypeLabel("文本框(数值)");
+        dataCommonTitleVo4.setNotNull(true);
+        dataCommonTitleVo4.setProp("ware_library_tree_id");
+        dataCommonTitleVo4.setLabel("库房");
+        dataCommonTitleVo4.setQuery(false);
+        dataCommonTitleVo4.setTitle(false);
+        dataCommonTitleVo4.setForm(true);
+        dataCommonTitleVo4.setTypeId(5);
+        dataCommonFieldVos.add(dataCommonTitleVo4);
 
         JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
         if (tableDates== null) {
@@ -122,7 +146,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             Page page = new Page();
             page.setSize(size);
             page.setCurrent(num);
-            dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findAllEntityArchivesPage(page));
+            dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findOutWarehouse(page));
             return dataCommonVo;
         } else {
             StringBuilder sb1 = new StringBuilder();
@@ -133,7 +157,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                 List<String> keys = new ArrayList<>(key);
                 for (int i = 0; i < keys.size(); i++) {
                     Object o = map.get(keys.get(i));
-                    sb1.append("and  " + keys.get(i) + "=" + "'" + o + "'");
+                    sb1.append("  and  " + keys.get(i) + "=" + "'" + o + "'");
                 }
             }
             DataCommonVo dataCommonVo = new DataCommonVo();
@@ -182,7 +206,30 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonTitleVo2.setQuery(false);
             dataCommonTitleVo2.setTitle(true);
             dataCommonTitleVo2.setForm(false);
+            dataCommonTitleVo2.setTypeId(6);
             dataCommonFieldVos.add(dataCommonTitleVo2);
+            DataCommonFieldVo dataCommonTitleVo3 = new DataCommonFieldVo();
+            dataCommonTitleVo3.setTypeProp("varchar");
+            dataCommonTitleVo3.setTypeLabel("文本框(文本)");
+            dataCommonTitleVo3.setNotNull(true);
+            dataCommonTitleVo3.setProp("archivesNum");
+            dataCommonTitleVo3.setLabel("档案号");
+            dataCommonTitleVo3.setQuery(true);
+            dataCommonTitleVo3.setTitle(true);
+            dataCommonTitleVo3.setForm(false);
+            dataCommonTitleVo3.setTypeId(1);
+            dataCommonFieldVos.add(0,dataCommonTitleVo3);
+            DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
+            dataCommonTitleVo4.setTypeProp("int");
+            dataCommonTitleVo4.setTypeLabel("文本框(数值)");
+            dataCommonTitleVo4.setNotNull(true);
+            dataCommonTitleVo4.setProp("ware_library_tree_id");
+            dataCommonTitleVo4.setLabel("库房");
+            dataCommonTitleVo4.setQuery(false);
+            dataCommonTitleVo4.setTitle(false);
+            dataCommonTitleVo4.setForm(true);
+            dataCommonTitleVo4.setTypeId(5);
+            dataCommonFieldVos.add(dataCommonTitleVo4);
 
             DataCommonVo dataCommonVo = new DataCommonVo();
             dataCommonVo.setFields(dataCommonFieldVos);
@@ -225,7 +272,30 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonTitleVo1.setQuery(false);
         dataCommonTitleVo1.setTitle(true);
         dataCommonTitleVo1.setForm(false);
+        dataCommonTitleVo1.setTypeId(6);
         dataCommonFieldVos.add(dataCommonTitleVo1);
+        DataCommonFieldVo dataCommonTitleVo3 = new DataCommonFieldVo();
+        dataCommonTitleVo3.setTypeProp("varchar");
+        dataCommonTitleVo3.setTypeLabel("文本框(文本)");
+        dataCommonTitleVo3.setNotNull(true);
+        dataCommonTitleVo3.setProp("archivesNum");
+        dataCommonTitleVo3.setLabel("档案号");
+        dataCommonTitleVo3.setQuery(true);
+        dataCommonTitleVo3.setTitle(true);
+        dataCommonTitleVo3.setForm(false);
+        dataCommonTitleVo3.setTypeId(1);
+        dataCommonFieldVos.add(0,dataCommonTitleVo3);
+        DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
+        dataCommonTitleVo4.setTypeProp("int");
+        dataCommonTitleVo4.setTypeLabel("文本框(数值)");
+        dataCommonTitleVo4.setNotNull(true);
+        dataCommonTitleVo4.setProp("ware_library_tree_id");
+        dataCommonTitleVo4.setLabel("库房");
+        dataCommonTitleVo4.setQuery(false);
+        dataCommonTitleVo4.setTitle(false);
+        dataCommonTitleVo4.setForm(true);
+        dataCommonTitleVo4.setTypeId(5);
+        dataCommonFieldVos.add(dataCommonTitleVo4);
 
         JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
         if (tableDates==null) {
@@ -234,7 +304,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             Page page = new Page();
             page.setSize(size);
             page.setCurrent(num);
-            dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findAllEntityArchivesPage(page));
+            dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findInWarehousePage(page));
             return dataCommonVo;
         } else {
             StringBuilder sb1 = new StringBuilder();
@@ -245,7 +315,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                 List<String> keys = new ArrayList<>(key);
                 for (int i = 0; i < keys.size(); i++) {
                     Object o = map.get(keys.get(i));
-                    sb1.append("and  " + keys.get(i) + "=" + "'" + o + "'");
+                    sb1.append("  and  " + keys.get(i) + "=" + "'" + o + "'");
                 }
             }
             DataCommonVo dataCommonVo = new DataCommonVo();
@@ -294,7 +364,30 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonTitleVo1.setQuery(false);
             dataCommonTitleVo1.setTitle(true);
             dataCommonTitleVo1.setForm(false);
+            dataCommonTitleVo1.setTypeId(6);
             dataCommonFieldVos.add(dataCommonTitleVo1);
+            DataCommonFieldVo dataCommonTitleVo3 = new DataCommonFieldVo();
+            dataCommonTitleVo3.setTypeProp("varchar");
+            dataCommonTitleVo3.setTypeLabel("文本框(文本)");
+            dataCommonTitleVo3.setNotNull(true);
+            dataCommonTitleVo3.setProp("archivesNum");
+            dataCommonTitleVo3.setLabel("档案号");
+            dataCommonTitleVo3.setQuery(true);
+            dataCommonTitleVo3.setTitle(true);
+            dataCommonTitleVo3.setForm(false);
+            dataCommonTitleVo3.setTypeId(1);
+            dataCommonFieldVos.add(0,dataCommonTitleVo3);
+            DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
+            dataCommonTitleVo4.setTypeProp("int");
+            dataCommonTitleVo4.setTypeLabel("文本框(数值)");
+            dataCommonTitleVo4.setNotNull(true);
+            dataCommonTitleVo4.setProp("ware_library_tree_id");
+            dataCommonTitleVo4.setLabel("库房");
+            dataCommonTitleVo4.setQuery(false);
+            dataCommonTitleVo4.setTitle(false);
+            dataCommonTitleVo4.setForm(true);
+            dataCommonTitleVo4.setTypeId(5);
+            dataCommonFieldVos.add(dataCommonTitleVo4);
 
             DataCommonVo dataCommonVo = new DataCommonVo();
             dataCommonVo.setFields(dataCommonFieldVos);
@@ -337,6 +430,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonTitleVo1.setQuery(false);
         dataCommonTitleVo1.setTitle(true);
         dataCommonTitleVo1.setForm(false);
+        dataCommonTitleVo1.setTypeId(6);
         DataCommonFieldVo dataCommonTitleVo2 = new DataCommonFieldVo();
         dataCommonTitleVo2.setTypeProp("datetime");
         dataCommonTitleVo2.setTypeLabel("日期时间框");
@@ -346,8 +440,31 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonTitleVo2.setQuery(false);
         dataCommonTitleVo2.setTitle(true);
         dataCommonTitleVo2.setForm(false);
+        dataCommonTitleVo2.setTypeId(6);
+        DataCommonFieldVo dataCommonTitleVo3 = new DataCommonFieldVo();
+        dataCommonTitleVo3.setTypeProp("varchar");
+        dataCommonTitleVo3.setTypeLabel("文本框(文本)");
+        dataCommonTitleVo3.setNotNull(true);
+        dataCommonTitleVo3.setProp("archivesNum");
+        dataCommonTitleVo3.setLabel("档案号");
+        dataCommonTitleVo3.setQuery(true);
+        dataCommonTitleVo3.setTitle(true);
+        dataCommonTitleVo3.setForm(false);
+        dataCommonTitleVo3.setTypeId(1);
+        dataCommonFieldVos.add(0,dataCommonTitleVo3);
         dataCommonFieldVos.add(dataCommonTitleVo1);
         dataCommonFieldVos.add(dataCommonTitleVo2);
+        DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
+        dataCommonTitleVo4.setTypeProp("int");
+        dataCommonTitleVo4.setTypeLabel("文本框(数值)");
+        dataCommonTitleVo4.setNotNull(true);
+        dataCommonTitleVo4.setProp("ware_library_tree_id");
+        dataCommonTitleVo4.setLabel("库房");
+        dataCommonTitleVo4.setQuery(false);
+        dataCommonTitleVo4.setTitle(false);
+        dataCommonTitleVo4.setForm(true);
+        dataCommonTitleVo4.setTypeId(5);
+        dataCommonFieldVos.add(dataCommonTitleVo4);
 
         JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
         if (tableDates==null) {
@@ -421,6 +538,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonTitleVo1.setQuery(false);
             dataCommonTitleVo1.setTitle(true);
             dataCommonTitleVo1.setForm(false);
+            dataCommonTitleVo1.setTypeId(6);
             DataCommonFieldVo dataCommonTitleVo2 = new DataCommonFieldVo();
             dataCommonTitleVo2.setTypeProp("datetime");
             dataCommonTitleVo2.setTypeLabel("日期时间框");
@@ -430,8 +548,31 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonTitleVo2.setQuery(false);
             dataCommonTitleVo2.setTitle(true);
             dataCommonTitleVo2.setForm(false);
+            dataCommonTitleVo2.setTypeId(6);
+            DataCommonFieldVo dataCommonTitleVo3 = new DataCommonFieldVo();
+            dataCommonTitleVo3.setTypeProp("varchar");
+            dataCommonTitleVo3.setTypeLabel("文本框(文本)");
+            dataCommonTitleVo3.setNotNull(true);
+            dataCommonTitleVo3.setProp("archivesNum");
+            dataCommonTitleVo3.setLabel("档案号");
+            dataCommonTitleVo3.setQuery(true);
+            dataCommonTitleVo3.setTitle(true);
+            dataCommonTitleVo3.setForm(false);
+            dataCommonTitleVo3.setTypeId(1);
+            dataCommonFieldVos.add(0,dataCommonTitleVo3);
             dataCommonFieldVos.add(dataCommonTitleVo1);
             dataCommonFieldVos.add(dataCommonTitleVo2);
+            DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
+            dataCommonTitleVo4.setTypeProp("int");
+            dataCommonTitleVo4.setTypeLabel("文本框(数值)");
+            dataCommonTitleVo4.setNotNull(true);
+            dataCommonTitleVo4.setProp("ware_library_tree_id");
+            dataCommonTitleVo4.setLabel("库房");
+            dataCommonTitleVo4.setQuery(false);
+            dataCommonTitleVo4.setTitle(false);
+            dataCommonTitleVo4.setForm(true);
+            dataCommonTitleVo4.setTypeId(5);
+            dataCommonFieldVos.add(dataCommonTitleVo4);
 
             DataCommonVo dataCommonVo = new DataCommonVo();
             dataCommonVo.setFields(dataCommonFieldVos);
@@ -448,7 +589,27 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String format = sdf.format(date);
+        String archivesNum="";
         String tableName = "ware_physical_warehouse";
+        Map<String,Object> wareMap=wareTemplateLibraryFiledMapper.findLastWareDatas();
+        if (wareMap==null){
+            int day = DateUtil.dayOfMonth(date);
+            int month = DateUtil.month(date) + 1;
+            String yearStr = String.valueOf(DateUtil.year(date));
+            String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
+            String dayStr = Integer.toString(day).length() == 1 ? "0" + day : Integer.toString(day);
+            archivesNum="STDH-"+yearStr+monthStr+dayStr+"-10001";
+        }else {
+            int day = DateUtil.dayOfMonth(date);
+            int month = DateUtil.month(date) + 1;
+            String yearStr = String.valueOf(DateUtil.year(date));
+            String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
+            String dayStr = Integer.toString(day).length() == 1 ? "0" + day : Integer.toString(day);
+            String archivesNum1 =(String) wareMap.get("archivesNum");
+            String[] split = archivesNum1.split("-");
+            Integer integer1 = Integer.valueOf(split[2])+1;
+            archivesNum="STDH-"+yearStr+monthStr+dayStr+"-"+integer1.toString();
+        }
         JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
         for (Object tableDate : tableDates) {
             List<Object> values = new ArrayList<>();
@@ -462,9 +623,11 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             StringBuilder sb1 = new StringBuilder();
             sb1.append("warehouseType");
             sb1.append(",inWarehouseTime");
+            sb1.append(",archivesNum");
             StringBuilder sb2 = new StringBuilder();
             sb2.append("'1'");
             sb2.append("," + "'" + format + "'");
+            sb2.append("," + "'" + archivesNum + "'");
             for (int i = 0; i < keys.size(); i++) {
                 sb1.append("," + keys.get(i));
             }
@@ -530,6 +693,16 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             commTableField2.setDataType("int");//数据类型
             commTableField2.setIsNull((short) 0);//是否为空
             commTableFields.add(1, commTableField2);
+            //添加库房管理目录树的id字段
+            CommTableField commTableField3 = new CommTableField();
+            commTableField3.setComment("库房管理目录树的id");//注释
+            commTableField3.setFieldName("ware_library_tree_id");//字段名
+            commTableField3.setLength(11);//长度
+            commTableField3.setTableName(tableName);//表名
+            commTableField3.setIsIndex((short) 0);//是否索引
+            commTableField3.setDataType("int");//数据类型
+            commTableField3.setIsNull((short) 0);//是否为空
+            commTableFields.add(2, commTableField3);
             for (Object tableDate : tableDates) {
                 CommTableField commTableField = new CommTableField();
                 Map<String, Object> map = JSONObject.parseObject(JSON.toJSONString(tableDate));

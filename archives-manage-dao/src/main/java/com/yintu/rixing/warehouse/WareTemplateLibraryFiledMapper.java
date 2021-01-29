@@ -38,4 +38,7 @@ public interface WareTemplateLibraryFiledMapper extends BaseMapper<WareTemplateL
     Page<Map<String, Object>> findInWarehouseBySomethings(Page page, StringBuilder sb1);
 
     Page<Map<String, Object>> findOutWarehouseBySomethings(Page page, StringBuilder sb1);
+
+    Map<String, Object> findLastWareDatas();
+
 }

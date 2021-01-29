@@ -31,6 +31,7 @@ public class WareLibraryTreeController {
     @ApiOperation(value = "新增库房管理根目录", notes = "新增库房管理根目录")
     public ResultDataUtil<Object> addParent(WareLibraryTree wareLibraryTree) {
         wareLibraryTree.setParentId(-1);
+        wareLibraryTree.setType(1);
         iWareLibraryTreeService.save(wareLibraryTree);
         return ResultDataUtil.ok("新增库房管理根目录成功");
     }
@@ -40,7 +41,7 @@ public class WareLibraryTreeController {
     @Log(level = EnumLogLevel.DEBUG, module = "库房管理", context = "新增库房管理子节点目录")
     @ApiOperation(value = "新增库房管理子节点目录", notes = "新增库房管理子节点目录")
     public ResultDataUtil<Object> add(WareLibraryTree wareLibraryTree) {
-        wareLibraryTree.setParentId(wareLibraryTree.getId());
+        wareLibraryTree.setType(1);
         iWareLibraryTreeService.save(wareLibraryTree);
         return ResultDataUtil.ok("新增库房管理子节点目录成功");
     }
