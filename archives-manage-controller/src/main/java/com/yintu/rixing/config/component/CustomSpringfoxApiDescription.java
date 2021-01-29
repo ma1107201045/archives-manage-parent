@@ -1,13 +1,15 @@
 package com.yintu.rixing.config.component;
 
+import com.fasterxml.classmate.TypeResolver;
 import com.google.common.collect.Sets;
-import io.swagger.v3.oas.models.media.MediaType;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMethod;
 import springfox.documentation.builders.ApiDescriptionBuilder;
-import springfox.documentation.builders.MultipartFormDataParameterSpecificationProvider;
 import springfox.documentation.builders.OperationBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.RequestParameterBuilder;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiDescription;
 import springfox.documentation.service.Operation;
 import springfox.documentation.service.ParameterType;
@@ -18,6 +20,7 @@ import springfox.documentation.spring.web.readers.operation.CachingOperationName
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -41,45 +44,54 @@ public class CustomSpringfoxApiDescription implements ApiListingScannerPlugin {
     public List<ApiDescription> apply(DocumentationContext context) {
         if ("02.登录模块".equals(context.getGroupName())) {
             Operation loginOperation = new OperationBuilder(new CachingOperationNameGenerator())
-                    .uniqueId("login")
                     .tags(Sets.newHashSet("登录有关接口"))
+                    .uniqueId("login")
                     .method(HttpMethod.POST)
-                    .summary("登录系统")
-                    .notes("登录系统")
-                    .requestParameters(Arrays.asList(
-                            new RequestParameterBuilder()
-                                    .name("username")
-                                    .description("用户名")
-                                    .required(true)
-                                    .in(ParameterType.QUERY)
-                                    .parameterIndex(1)
-                                    .build(),
-                            new RequestParameterBuilder()
-                                    .name("username")
-                                    .description("密码")
-                                    .required(true)
-                                    .in(ParameterType.QUERY)
-                                    .parameterIndex(2)
-                                    .build(),
-                            new RequestParameterBuilder()
-                                    .name("captcha")
-                                    .description("验证码")
-                                    .required(true)
-                                    .in(ParameterType.QUERY)
-                                    .parameterIndex(3)
-                                    .build(),
-                            new RequestParameterBuilder()
-                                    .name("rememberMe")
-                                    .in("int")
-                                    .description("记住密码")
-                                    .in(ParameterType.QUERY)
-                                    .parameterIndex(4)
-                                    .build()
-                    ))
+                    .summary("登录")
+                    .notes("登录")
                     .produces(context.getProduces())
                     .consumes(context.getConsumes())
+                    .parameters(Arrays.asList(
+                            new ParameterBuilder()
+                                    .description("用户名")
+                                    .type(new TypeResolver().resolve(String.class))
+                                    .name("username")
+                                    .defaultValue("super")
+                                    .parameterType("query")
+                                    .parameterAccess("access")
+                                    .required(true)
+                                    .modelRef(new ModelRef("string"))
+                                    .build(),
+                            new ParameterBuilder()
+                                    .description("密码")
+                                    .type(new TypeResolver().resolve(String.class))
+                                    .name("password")
+                                    .defaultValue("123456")
+                                    .parameterType("query")
+                                    .parameterAccess("access")
+                                    .required(true)
+                                    .modelRef(new ModelRef("string"))
+                                    .build(),
+                            new ParameterBuilder()
+                                    .description("验证码")
+                                    .type(new TypeResolver().resolve(String.class))
+                                    .name("captcha")
+                                    .parameterType("query")
+                                    .parameterAccess("access")
+                                    .required(false)
+                                    .modelRef(new ModelRef("string"))
+                                    .build(),
+                            new ParameterBuilder()
+                                    .description("记住密码")
+                                    .type(new TypeResolver().resolve(String.class))
+                                    .name("rememberMe")
+                                    .parameterType("query")
+                                    .parameterAccess("access")
+                                    .modelRef(new ModelRef("boolean"))
+                                    .build()
+                    ))
+                    .responseMessages(new HashSet<>(context.getGlobalResponseMessages().get(RequestMethod.GET)))
                     .build();
-
             ApiDescription login = new ApiDescriptionBuilder(context.operationOrdering())
                     .groupName("login")
                     .path("/login")
@@ -87,16 +99,15 @@ public class CustomSpringfoxApiDescription implements ApiListingScannerPlugin {
                     .operations(Collections.singletonList(loginOperation))
                     .hidden(false)
                     .build();
-
-
             Operation logoutOperation = new OperationBuilder(new CachingOperationNameGenerator())
-                    .uniqueId("logout")
                     .tags(Sets.newHashSet("登录有关接口"))
+                    .uniqueId("logout")
                     .method(HttpMethod.POST)
-                    .summary("注销系统")
-                    .notes("注销系统")
+                    .summary("注销")
+                    .notes("注销")
                     .produces(context.getProduces())
                     .consumes(context.getConsumes())
+                    .responseMessages(new HashSet<>(context.getGlobalResponseMessages().get(RequestMethod.GET)))
                     .build();
             ApiDescription logout = new ApiDescriptionBuilder(context.operationOrdering())
                     .groupName("login")

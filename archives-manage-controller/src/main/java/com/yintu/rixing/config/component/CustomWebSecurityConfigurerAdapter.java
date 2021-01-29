@@ -198,14 +198,16 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
      * 忽略不用认证的url
      *
      * @param web web
-     * @throws Exception exception
      */
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**")
-                .antMatchers("/webjars/**", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs", "/doc.html")//忽略swagger2接口
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers("/webjars/**")
+                .antMatchers(HttpMethod.OPTIONS, "/**")
+                .antMatchers("/captcha")//忽略验证码接口
+                .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs", "/doc.html")//忽略API文档接口
                 .antMatchers("/druid/**")//忽略druid接口
-                .antMatchers("/remote/**")//忽略远程登录接口
-                .antMatchers("/captcha");//忽略验证码接口
+                .antMatchers("/remote/**");//忽略远程登录接口
+
     }
 }
