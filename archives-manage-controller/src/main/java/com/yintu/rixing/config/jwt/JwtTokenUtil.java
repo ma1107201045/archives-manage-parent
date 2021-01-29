@@ -26,15 +26,6 @@ public class JwtTokenUtil {
     @Autowired
     private JwtProperties jwtProperties;
 
-    public JwtProperties getJwtProperties() {
-        return jwtProperties;
-    }
-
-    public String getSecretKey() {
-        String secret = jwtProperties.getSecret();//密钥
-        return Base64.getEncoder().encodeToString(secret.getBytes());
-
-    }
 
     /**
      * 生成token
@@ -58,6 +49,12 @@ public class JwtTokenUtil {
                 .compact();
     }
 
+    public String getSecretKey() {
+        String secret = jwtProperties.getSecret();//密钥
+        return Base64.getEncoder().encodeToString(secret.getBytes());
+
+    }
+
     /**
      * 获取token中注册信息 (body信息)
      *
@@ -72,26 +69,8 @@ public class JwtTokenUtil {
             String secret = getSecretKey();//密钥
             return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
         } catch (Exception e) {
-            throw new BaseRuntimeException("验证token失败");
+            throw new BaseRuntimeException("token验证失败");
         }
     }
 
-
-    public Claims getTokenClaims() {
-        String token = getHttpToken();
-        return parseJWT(token);
-    }
-
-    public String getTokenClaimsSubject() {
-        String token = getHttpToken();
-        Claims claims = parseJWT(token);
-        return claims.getSubject();
-
-    }
-
-    public String getHttpToken() {
-        HttpServletRequest request = ((ServletRequestAttributes)
-                Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        return request.getHeader(jwtProperties.getHeader());
-    }
 }

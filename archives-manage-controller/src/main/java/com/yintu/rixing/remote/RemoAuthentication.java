@@ -58,17 +58,5 @@ public class RemoAuthentication {
         return ResultDataUtil.ok("远程用户注册成功");
     }
 
-    /**
-     * 刷新token  获取新的token
-     *
-     * @return 返回信息
-     */
-    @RequestMapping("/refreshToken")
-    public ResultDataUtil<Object> refreshToken() {
-        String certificateNumber = jwtTokenUtil.getTokenClaimsSubject();
-        //生成新的token
-        String newToken = jwtTokenUtil.createToken(certificateNumber);
-        return ResultDataUtil.ok("获取新的token成功", newToken);
-    }
 
 }

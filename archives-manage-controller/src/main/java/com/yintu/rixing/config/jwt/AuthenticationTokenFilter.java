@@ -32,6 +32,8 @@ public class AuthenticationTokenFilter implements Filter {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private JwtProperties jwtProperties;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -39,10 +41,9 @@ public class AuthenticationTokenFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String path = StrUtil.split(request.getRequestURI(), '?').get(0);
         if (PathIgnoringUtil.antMatchers(request, path)) {
-            JwtProperties props = jwtTokenUtil.getJwtProperties();
-            List<String> ignores = props.getIgnores();
+            List<String> ignores = jwtProperties.getIgnores();
             if (!PathIgnoringUtil.antMatchers(request, ignores, path)) {
-                String token = request.getHeader(props.getHeader());
+                String token = request.getHeader(jwtProperties.getHeader());
                 try {
                     if (StrUtil.isEmpty(token)) {
                         throw new BaseRuntimeException("token不能为空");
