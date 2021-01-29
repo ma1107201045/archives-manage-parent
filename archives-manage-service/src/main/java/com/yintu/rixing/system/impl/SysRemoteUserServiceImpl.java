@@ -115,15 +115,15 @@ public class SysRemoteUserServiceImpl extends ServiceImpl<SysRemoteUserMapper, S
     public SysRemoteUser login(RemoAuthenticationLoginDto sysRemoteUserLoginDto) {
         String certificateNumber = sysRemoteUserLoginDto.getCertificateNumber();
         String password = sysRemoteUserLoginDto.getPassword();
-        AssertUtil.notEmpty(certificateNumber, "证件号码不能为空");
-        AssertUtil.notEmpty(password, "密码不能为空");
+        AssertUtil.notEmpty(certificateNumber, "证件号码不能为空[远程用户]");
+        AssertUtil.notEmpty(password, "密码不能为空[远程用户]");
         SysRemoteUser sysRemoteUser = this.getByCertificateNumber(certificateNumber);
         if (sysRemoteUser == null)
-            throw new BaseRuntimeException("远程用户登录失败[用户不存在]");
+            throw new BaseRuntimeException("用户名输入错误，请重新输入[远程用户]");
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String p = sysRemoteUser.getPassword();
         if (!passwordEncoder.matches(password, p))
-            throw new BaseRuntimeException("远程用户登录失败[密码错误]");
+            throw new BaseRuntimeException("密码输入错误，请重新输入[远程用户]]");
         return sysRemoteUser;
     }
 

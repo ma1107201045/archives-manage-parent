@@ -26,8 +26,8 @@ public class JwtProperties {
         this.header = "Authorization";
         this.issuer = "system";
         List<String> ignores = new ArrayList<>();
-        ignores.add("/remote/remo-auth/login");
-        ignores.add("/remote/remo-auth/register");
+        ignores.add("/remote/remo-authentication/login");
+        ignores.add("/remote/remo-authentication/register");
         this.ignores = ignores;
     }
 }
