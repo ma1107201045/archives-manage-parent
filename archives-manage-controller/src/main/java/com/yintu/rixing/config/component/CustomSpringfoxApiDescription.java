@@ -1,9 +1,11 @@
 package com.yintu.rixing.config.component;
 
 import com.google.common.collect.Sets;
+import io.swagger.v3.oas.models.media.MediaType;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import springfox.documentation.builders.ApiDescriptionBuilder;
+import springfox.documentation.builders.MultipartFormDataParameterSpecificationProvider;
 import springfox.documentation.builders.OperationBuilder;
 import springfox.documentation.builders.RequestParameterBuilder;
 import springfox.documentation.service.ApiDescription;
@@ -39,43 +41,45 @@ public class CustomSpringfoxApiDescription implements ApiListingScannerPlugin {
     public List<ApiDescription> apply(DocumentationContext context) {
         if ("02.登录模块".equals(context.getGroupName())) {
             Operation loginOperation = new OperationBuilder(new CachingOperationNameGenerator())
-                    //  .authorizations(context.getSecurityContexts().stream().map(SecurityContext::getSecurityReferences).findFirst().orElse(null))
-                    .tags(Sets.newHashSet("登录有关接口"))
                     .uniqueId("login")
+                    .tags(Sets.newHashSet("登录有关接口"))
                     .method(HttpMethod.POST)
-                    .summary("登录")
-                    .notes("登录")
-                    .produces(context.getProduces())
-                    .consumes(context.getConsumes())
+                    .summary("登录系统")
+                    .notes("登录系统")
                     .requestParameters(Arrays.asList(
                             new RequestParameterBuilder()
                                     .name("username")
                                     .description("用户名")
                                     .required(true)
                                     .in(ParameterType.QUERY)
+                                    .parameterIndex(1)
                                     .build(),
                             new RequestParameterBuilder()
                                     .name("username")
-                                    .in("int")
                                     .description("密码")
                                     .required(true)
                                     .in(ParameterType.QUERY)
+                                    .parameterIndex(2)
                                     .build(),
                             new RequestParameterBuilder()
                                     .name("captcha")
                                     .description("验证码")
                                     .required(true)
                                     .in(ParameterType.QUERY)
+                                    .parameterIndex(3)
                                     .build(),
                             new RequestParameterBuilder()
                                     .name("rememberMe")
                                     .in("int")
                                     .description("记住密码")
-                                    .required(true)
                                     .in(ParameterType.QUERY)
+                                    .parameterIndex(4)
                                     .build()
                     ))
+                    .produces(context.getProduces())
+                    .consumes(context.getConsumes())
                     .build();
+
             ApiDescription login = new ApiDescriptionBuilder(context.operationOrdering())
                     .groupName("login")
                     .path("/login")
@@ -86,12 +90,11 @@ public class CustomSpringfoxApiDescription implements ApiListingScannerPlugin {
 
 
             Operation logoutOperation = new OperationBuilder(new CachingOperationNameGenerator())
-                    //.authorizations(context.getSecurityContexts().stream().map(SecurityContext::getSecurityReferences).findFirst().orElse(null))
-                    .tags(Sets.newHashSet("登录有关接口"))
                     .uniqueId("logout")
+                    .tags(Sets.newHashSet("登录有关接口"))
                     .method(HttpMethod.POST)
-                    .summary("注销")
-                    .notes("注销")
+                    .summary("注销系统")
+                    .notes("注销系统")
                     .produces(context.getProduces())
                     .consumes(context.getConsumes())
                     .build();
