@@ -21,7 +21,4 @@ public class RemoAuthenticationVo {
 
     @ApiModelProperty(value = "token", position = 2)
     private String token;
-
-    @ApiModelProperty(value = "token失效时间", position = 3)
-    private Date expire;
 }

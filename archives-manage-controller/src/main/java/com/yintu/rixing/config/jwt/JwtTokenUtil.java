@@ -2,6 +2,7 @@ package com.yintu.rixing.config.jwt;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -40,11 +40,9 @@ public class RemoAuthentication {
     public ResultDataUtil<RemoAuthenticationVo> login(@Validated RemoAuthenticationLoginDto remoAuthenticationDto) {
         SysRemoteUser sysRemoteUser = iSysRemoteUserService.login(remoAuthenticationDto);
         String token = jwtTokenUtil.createToken(sysRemoteUser.getCertificateNumber());
-        Claims claims = jwtTokenUtil.parseJWT(token);
         RemoAuthenticationVo remoAuthenticationVo = new RemoAuthenticationVo();
         remoAuthenticationVo.setRemoteUser(BeanUtil.beanToMap(sysRemoteUser));
         remoAuthenticationVo.setToken(token);
-        remoAuthenticationVo.setExpire(claims.getExpiration());
         return ResultDataUtil.ok("远程用户登录成功", remoAuthenticationVo);
     }
 
