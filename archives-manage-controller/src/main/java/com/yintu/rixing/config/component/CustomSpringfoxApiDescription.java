@@ -1,16 +1,14 @@
 package com.yintu.rixing.config.component;
 
-import com.fasterxml.classmate.TypeResolver;
 import com.google.common.collect.Sets;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMethod;
 import springfox.documentation.builders.ApiDescriptionBuilder;
 import springfox.documentation.builders.OperationBuilder;
-import springfox.documentation.builders.ParameterBuilder;
-import springfox.documentation.schema.ModelRef;
+import springfox.documentation.builders.RequestParameterBuilder;
 import springfox.documentation.service.ApiDescription;
 import springfox.documentation.service.Operation;
+import springfox.documentation.service.ParameterType;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.ApiListingScannerPlugin;
 import springfox.documentation.spi.service.contexts.DocumentationContext;
@@ -18,7 +16,6 @@ import springfox.documentation.spring.web.readers.operation.CachingOperationName
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -50,46 +47,34 @@ public class CustomSpringfoxApiDescription implements ApiListingScannerPlugin {
                     .notes("登录")
                     .produces(context.getProduces())
                     .consumes(context.getConsumes())
-                    .parameters(Arrays.asList(
-                            new ParameterBuilder()
-                                    .description("用户名")
-                                    .type(new TypeResolver().resolve(String.class))
+                    .requestParameters(Arrays.asList(
+                            new RequestParameterBuilder()
                                     .name("username")
-                                    .defaultValue("super")
-                                    .parameterType("query")
-                                    .parameterAccess("access")
+                                    .description("用户名")
                                     .required(true)
-                                    .modelRef(new ModelRef("string"))
+                                    .in(ParameterType.QUERY)
                                     .build(),
-                            new ParameterBuilder()
+                            new RequestParameterBuilder()
+                                    .name("username")
+                                    .in("int")
                                     .description("密码")
-                                    .type(new TypeResolver().resolve(String.class))
-                                    .name("password")
-                                    .defaultValue("123456")
-                                    .parameterType("query")
-                                    .parameterAccess("access")
                                     .required(true)
-                                    .modelRef(new ModelRef("string"))
+                                    .in(ParameterType.QUERY)
                                     .build(),
-                            new ParameterBuilder()
-                                    .description("验证码")
-                                    .type(new TypeResolver().resolve(String.class))
+                            new RequestParameterBuilder()
                                     .name("captcha")
-                                    .parameterType("query")
-                                    .parameterAccess("access")
-                                    .required(false)
-                                    .modelRef(new ModelRef("string"))
+                                    .description("验证码")
+                                    .required(true)
+                                    .in(ParameterType.QUERY)
                                     .build(),
-                            new ParameterBuilder()
-                                    .description("记住密码")
-                                    .type(new TypeResolver().resolve(String.class))
+                            new RequestParameterBuilder()
                                     .name("rememberMe")
-                                    .parameterType("query")
-                                    .parameterAccess("access")
-                                    .modelRef(new ModelRef("boolean"))
+                                    .in("int")
+                                    .description("记住密码")
+                                    .required(true)
+                                    .in(ParameterType.QUERY)
                                     .build()
                     ))
-                    .responseMessages(new HashSet<>(context.getGlobalResponseMessages().get(RequestMethod.GET)))
                     .build();
             ApiDescription login = new ApiDescriptionBuilder(context.operationOrdering())
                     .groupName("login")
@@ -98,6 +83,8 @@ public class CustomSpringfoxApiDescription implements ApiListingScannerPlugin {
                     .operations(Collections.singletonList(loginOperation))
                     .hidden(false)
                     .build();
+
+
             Operation logoutOperation = new OperationBuilder(new CachingOperationNameGenerator())
                     //.authorizations(context.getSecurityContexts().stream().map(SecurityContext::getSecurityReferences).findFirst().orElse(null))
                     .tags(Sets.newHashSet("登录有关接口"))
@@ -107,7 +94,6 @@ public class CustomSpringfoxApiDescription implements ApiListingScannerPlugin {
                     .notes("注销")
                     .produces(context.getProduces())
                     .consumes(context.getConsumes())
-                    .responseMessages(new HashSet<>(context.getGlobalResponseMessages().get(RequestMethod.GET)))
                     .build();
             ApiDescription logout = new ApiDescriptionBuilder(context.operationOrdering())
                     .groupName("login")
