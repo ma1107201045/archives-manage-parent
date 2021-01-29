@@ -1,4 +1,4 @@
-package com.yintu.rixing.config.filter;
+package com.yintu.rixing.config.jwt;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
