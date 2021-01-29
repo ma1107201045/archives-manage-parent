@@ -12,13 +12,12 @@ import com.yintu.rixing.system.SysRemoteUser;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.vo.remote.RemoAuthenticationVo;
 import io.jsonwebtoken.Claims;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiOperationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: mlf
@@ -58,5 +57,14 @@ public class RemoAuthentication {
         return ResultDataUtil.ok("远程用户注册成功");
     }
 
+    @Log(level = EnumLogLevel.DEBUG, module = "远程借阅", context = "远程用户注册")
+    @GetMapping("/{id}")
+    @ApiOperation(value = "远程用户注册", notes = "远程用户注册")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    @ApiOperationSupport(order = 3)
+    public ResultDataUtil<SysRemoteUser> getById(@PathVariable Integer id) {
+        SysRemoteUser sysRemoteUser = iSysRemoteUserService.getById(id);
+        return ResultDataUtil.ok("获取远程用户成功", sysRemoteUser);
+    }
 
 }

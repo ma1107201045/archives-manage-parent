@@ -66,6 +66,7 @@ public class JwtTokenUtil {
             if (StrUtil.isEmpty(token)) {
                 throw new BaseRuntimeException("token不能为空");
             }
+            token = token.substring(7);
             String secret = getSecretKey();//密钥
             return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
         } catch (Exception e) {
