@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.impl.crypto.JwtSigner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -68,7 +69,6 @@ public class JwtTokenUtil {
             }
             token = token.substring(7);
             String secret = getSecretKey();//密钥
-            System.out.println(JSONObject.toJSON(Jwts.parser().setSigningKey(secret).parseClaimsJws(token)));
             return Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
         } catch (Exception e) {
             throw new BaseRuntimeException("token验证失败");

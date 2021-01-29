@@ -27,8 +27,10 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @Author: mlf
@@ -78,11 +80,11 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .and().formLogin().loginProcessingUrl("/login").successHandler((request, response, authenticationException) -> {
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
-            PrintWriter out = response.getWriter();
+            ServletOutputStream servletOutputStream = response.getOutputStream();
             JSONObject jo = (JSONObject) JSONObject.toJSON(ResultDataUtil.ok("登录成功", authenticationException.getPrincipal()));
-            out.write(jo.toJSONString());
-            out.flush();
-            out.close();
+            servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
+            servletOutputStream.flush();
+            servletOutputStream.close();
             //登录日志
             SysUser sysUser = Authenticator.getPrincipal();
             SecLog secLog = new SecLog();
@@ -98,7 +100,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         }).permitAll().failureHandler((request, response, authenticationException) -> {
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
-            PrintWriter out = response.getWriter();
+            ServletOutputStream servletOutputStream = response.getOutputStream();
             ResultDataUtil<Object> resultDataUtil;
             if (authenticationException instanceof BadCredentialsException) {
                 resultDataUtil = ResultDataUtil.error("用户名或者密码输入错误，请重新输入");
@@ -116,21 +118,21 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 resultDataUtil = ResultDataUtil.error("登录异常");
             }
             JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
-            out.write(jo.toJSONString());
-            out.flush();
-            out.close();
+            servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
+            servletOutputStream.flush();
+            servletOutputStream.close();
         }).permitAll()
                 .and().rememberMe().userDetailsService(userDetailsService).tokenValiditySeconds(60 * 60 * 24 * 365).rememberMeParameter("rememberMe").rememberMeCookieName("REMEMBERME")
                 .and().logout().logoutUrl("/logout")
                 .logoutSuccessHandler((request, response, authentication) -> {
                     response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     response.setStatus(HttpServletResponse.SC_OK);
-                    PrintWriter out = response.getWriter();
+                    ServletOutputStream servletOutputStream = response.getOutputStream();
                     ResultDataUtil<Object> resultDataUtil = ResultDataUtil.ok("注销成功");
                     JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
-                    out.write(jo.toJSONString());
-                    out.flush();
-                    out.close();
+                    servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
+                    servletOutputStream.flush();
+                    servletOutputStream.close();
 
                     //注销日志
                     SysUser sysUser = Authenticator.getPrincipal();
@@ -148,7 +150,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 //                .and().httpBasic().authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
 //            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 //            response.setStatus(HttpServletResponse.SC_OK);
-//            PrintWriter out = response.getWriter();
+//            PrintWriter out = response.getOutputStream();
 //            Map<String, Object> errorData = ResponseDataUtil.noLogin(authenticationException.getMessage());
 //            JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
 //            out.write(jo.toJSONString());
@@ -159,32 +161,32 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .authenticationEntryPoint((request, response, authenticationException) -> { //没有登录权限时，在这里处理结果，不要重定向
                     response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     response.setStatus(HttpServletResponse.SC_OK);
-                    PrintWriter out = response.getWriter();
+                    ServletOutputStream servletOutputStream = response.getOutputStream();
                     ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noAuthentication(authenticationException.getMessage());
                     JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
-                    out.write(jo.toJSONString());
-                    out.flush();
-                    out.close();
+                    servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
+                    servletOutputStream.flush();
+                    servletOutputStream.close();
                 })
                 .accessDeniedHandler((request, response, accessDeniedException) -> {  //没有访问权限时，在这里处理结果，不要重定向
                     response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     response.setStatus(HttpServletResponse.SC_OK);
-                    PrintWriter out = response.getWriter();
+                    ServletOutputStream servletOutputStream = response.getOutputStream();
                     ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noAuthorization(accessDeniedException.getMessage());
                     JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
-                    out.write(jo.toJSONString());
-                    out.flush();
-                    out.close();
+                    servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
+                    servletOutputStream.flush();
+                    servletOutputStream.close();
                 }).and().sessionManagement().maximumSessions(1).expiredSessionStrategy(event -> {//用户登录踢出上一个相同用户
             HttpServletResponse response = event.getResponse();
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatus(HttpServletResponse.SC_OK);
-            PrintWriter out = response.getWriter();
+            ServletOutputStream servletOutputStream = response.getOutputStream();
             ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noAuthentication("您已在另一台设备登录，本次登录已下线");
             JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
-            out.write(jo.toJSONString());
-            out.flush();
-            out.close();
+            servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
+            servletOutputStream.flush();
+            servletOutputStream.close();
         });
         //开启跨域访问
         http.cors();

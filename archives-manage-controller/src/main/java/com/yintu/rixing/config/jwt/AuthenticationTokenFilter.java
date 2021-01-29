@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -58,10 +59,10 @@ public class AuthenticationTokenFilter implements Filter {
                     JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
                     response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     response.setStatus(HttpServletResponse.SC_OK);
-                    PrintWriter printWriter = response.getWriter();
-                    printWriter.write(jo.toJSONString());
-                    printWriter.flush();
-                    printWriter.close();
+                    ServletOutputStream servletOutputStream = response.getOutputStream();
+                    servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
+                    servletOutputStream.flush();
+                    servletOutputStream.close();
                 }
             }
         }
