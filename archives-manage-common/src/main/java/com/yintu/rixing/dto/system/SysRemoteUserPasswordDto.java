@@ -7,17 +7,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
  * @Author: mlf
- * @Date: 2020/12/30 16:42:16
+ * @Date: 2021/1/28 17:14:36
  * @Version: 1.0
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel
-public class SysUserPasswordDto extends IdDto {
+public class SysRemoteUserPasswordDto extends IdDto {
 
     @ApiModelProperty(value = "旧密码", required = true)
     @NotBlank

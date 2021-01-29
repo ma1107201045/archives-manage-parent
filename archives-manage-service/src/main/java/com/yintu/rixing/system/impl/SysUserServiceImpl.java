@@ -47,7 +47,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void save(SysUserFormDto sysUserFormDto) {
         String password = sysUserFormDto.getPassword();
-        if (password == null)
+        if (StrUtil.isEmpty(password))
             throw new BaseRuntimeException("密码不能为空");
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         sysUserFormDto.setPassword(passwordEncoder.encode(sysUserFormDto.getPassword()));

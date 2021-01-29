@@ -1,11 +1,13 @@
 package com.yintu.rixing.demo;
 
 
+import com.yintu.rixing.config.jwt.JwtProperties;
 import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.ResponseDataUtil;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +26,8 @@ import java.util.Map;
 @Api(tags = "测试接口")
 @Slf4j
 public class DeTestController {
+    @Autowired
+    private JwtProperties jwtProperties;
 
     @GetMapping("/test")
     public Map<String, Object> test() {

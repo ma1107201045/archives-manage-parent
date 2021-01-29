@@ -32,7 +32,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-user")
 @Api(tags = "用户接口")
-@ApiSort(1)
+@ApiSort(11)
 public class SysUserController extends Authenticator implements BaseController<SysUserFormDto, SysUserQueryDto, SysUser, Integer> {
     @Autowired
     private ISysUserService iSysUserService;
@@ -69,11 +69,11 @@ public class SysUserController extends Authenticator implements BaseController<S
 
     @Log(level = EnumLogLevel.INFO, module = "系统管理", context = " 重置用户密码")
     @PatchMapping("/{id}")
-    @ApiOperation(value = "重置密码", notes = "重置密码", position = 4)
+    @ApiOperation(value = "重置用户密码", notes = "重置用户密码", position = 4)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<Object> editPassword(@PathVariable Integer id, @Validated SysUserPasswordDto sysUserPasswordDto) {
         iSysUserService.resetPassword(sysUserPasswordDto);
-        return ResultDataUtil.ok("重置密码成功");
+        return ResultDataUtil.ok("重置用户密码成功");
     }
 
     @Log(level = EnumLogLevel.INFO, module = "系统管理", context = "修改用户启用禁用状态")

@@ -127,4 +127,11 @@ swagger:
       base-path:
         - /system/**
       exclude-path: [ /error ]
+    remote:
+      title: 远程借阅模块
+      description: 远程借阅模块有关的接口
+      base-package: com.yintu.rixing.remote
+      base-path:
+        - /remote/**
+      exclude-path: [ /error ]
 
