@@ -26,7 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/common/comm-menu")
-@Api(tags = "公共有关接口")
+@Api(tags = "菜单栏接口")
 @ApiSort(1)
 public class CommMenuController extends Authenticator {
 

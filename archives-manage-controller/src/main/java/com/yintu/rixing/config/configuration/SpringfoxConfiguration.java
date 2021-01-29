@@ -56,7 +56,7 @@ public class SpringfoxConfiguration {
     @Bean
     public Docket warehouse() {
         return new Docket(DocumentationType.OAS_30)
-                .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.data")).build()
+                .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.warehouse")).build()
                 .groupName("06.库房管理模块");
 
     }

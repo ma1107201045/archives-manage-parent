@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/common/comm-file-upload")
-@Api(tags = "公共接口")
+@Api(tags = "上传文件接口")
 @ApiSort(2)
 public class CommFileController extends Authenticator {
 
