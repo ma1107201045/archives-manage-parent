@@ -34,9 +34,8 @@
         <fastjson.version>1.2.62</fastjson.version>
         <poi-ooxml.version>3.17</poi-ooxml.version>
         <hutool-all.version>5.3.9</hutool-all.version>
-        <swagger-spring-boot-starter.version>1.9.1.RELEASE</swagger-spring-boot-starter.version>
-        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
-        <swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
+        <springfox-swagger-ui.version>3.0.0</springfox-swagger-ui.version>
+        <knife4j-spring-boot-starter.version>3.0.2</knife4j-spring-boot-starter.version>
         <jjwt.version>0.9.1</jjwt.version>
     </properties>
     <dependencyManagement>
@@ -114,21 +113,15 @@
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-all.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>com.spring4all</groupId>
-                <artifactId>swagger-spring-boot-starter</artifactId>
-                <version>${swagger-spring-boot-starter.version}</version>
-            </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
-                <artifactId>springfox-boot-starter</artifactId>
-                <version>${springfox-boot-starter.version}</version>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox-swagger-ui.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>swagger-bootstrap-ui</artifactId>
-                <version>${swagger-bootstrap-ui.version}</version>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j-spring-boot-starter.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>

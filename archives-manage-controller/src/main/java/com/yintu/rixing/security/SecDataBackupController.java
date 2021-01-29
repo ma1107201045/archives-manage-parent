@@ -2,6 +2,7 @@ package com.yintu.rixing.security;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.base.PageDto;
@@ -10,7 +11,6 @@ import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiSort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +28,8 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/security/sec-data-backup")
-@ApiSort(2)
 @Api(tags = "数据备份接口")
+@ApiSort(2)
 public class SecDataBackupController extends Authenticator {
 
     @Autowired

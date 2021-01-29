@@ -1,5 +1,7 @@
 package com.yintu.rixing.common;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumLogLevel;
@@ -25,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/common/comm-file-upload")
-@Api(tags = "文件上传接口")
+@Api(tags = "公共接口")
 @ApiSort(2)
 public class CommFileController extends Authenticator {
 

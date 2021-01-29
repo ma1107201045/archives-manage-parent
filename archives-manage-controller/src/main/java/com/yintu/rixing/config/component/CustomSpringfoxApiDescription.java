@@ -14,7 +14,6 @@ import springfox.documentation.service.Operation;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.ApiListingScannerPlugin;
 import springfox.documentation.spi.service.contexts.DocumentationContext;
-import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator;
 
 import java.util.Arrays;
@@ -28,7 +27,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Component
-public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
+public class CustomSpringfoxApiDescription implements ApiListingScannerPlugin {
 
 
     /**
@@ -41,9 +40,9 @@ public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
      */
     @Override
     public List<ApiDescription> apply(DocumentationContext context) {
-        if ("login".equals(context.getGroupName())) {
+        if ("02.登录模块".equals(context.getGroupName())) {
             Operation loginOperation = new OperationBuilder(new CachingOperationNameGenerator())
-                    .authorizations(context.getSecurityContexts().stream().map(SecurityContext::getSecurityReferences).findFirst().orElse(null))
+                    //  .authorizations(context.getSecurityContexts().stream().map(SecurityContext::getSecurityReferences).findFirst().orElse(null))
                     .tags(Sets.newHashSet("登录有关接口"))
                     .uniqueId("login")
                     .method(HttpMethod.POST)
@@ -100,7 +99,7 @@ public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
                     .hidden(false)
                     .build();
             Operation logoutOperation = new OperationBuilder(new CachingOperationNameGenerator())
-                    .authorizations(context.getSecurityContexts().stream().map(SecurityContext::getSecurityReferences).findFirst().orElse(null))
+                    //.authorizations(context.getSecurityContexts().stream().map(SecurityContext::getSecurityReferences).findFirst().orElse(null))
                     .tags(Sets.newHashSet("登录有关接口"))
                     .uniqueId("logout")
                     .method(HttpMethod.POST)
@@ -132,6 +131,6 @@ public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
      */
     @Override
     public boolean supports(DocumentationType delimiter) {
-        return DocumentationType.SWAGGER_2.equals(delimiter);
+        return delimiter.equals(DocumentationType.OAS_30);
     }
 }

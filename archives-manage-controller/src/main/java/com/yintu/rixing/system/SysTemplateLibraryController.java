@@ -1,6 +1,7 @@
 package com.yintu.rixing.system;
 
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFormDto;
@@ -10,7 +11,6 @@ import com.yintu.rixing.util.TreeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiSort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

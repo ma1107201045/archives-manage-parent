@@ -3,6 +3,7 @@ package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.other.Authenticator;
@@ -28,8 +29,8 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/system/sys-template-library-field")
-@ApiSort(6)
 @Api(tags = "模板库字段接口")
+@ApiSort(6)
 public class SysTemplateLibraryFieldController extends Authenticator implements BaseController<SysTemplateLibraryFieldFormDto, SysTemplateLibraryFieldQueryDto, SysTemplateLibraryField, Integer> {
 
     @Autowired
@@ -58,7 +59,7 @@ public class SysTemplateLibraryFieldController extends Authenticator implements 
     @PutMapping("/{id}")
     @ApiOperation(value = "修改模板库字段信息", notes = "修改模板库字段信息", position = 3)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
-    public ResultDataUtil<Object> edit(@PathVariable Integer id,@Validated SysTemplateLibraryFieldFormDto dto) {
+    public ResultDataUtil<Object> edit(@PathVariable Integer id, @Validated SysTemplateLibraryFieldFormDto dto) {
         iSysTemplateLibraryFieldService.updateById(dto);
         return ResultDataUtil.ok("修改模板库字段信息成功");
     }

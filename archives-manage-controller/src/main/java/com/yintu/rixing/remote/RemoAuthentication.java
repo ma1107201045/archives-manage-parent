@@ -1,27 +1,23 @@
 package com.yintu.rixing.remote;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.jwt.JwtTokenUtil;
 import com.yintu.rixing.dto.remote.RemoAuthenticationLoginDto;
 import com.yintu.rixing.dto.remote.RemoAuthenticationRegisterDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.ISysRemoteUserService;
 import com.yintu.rixing.system.SysRemoteUser;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.vo.remote.RemoAuthenticationVo;
-import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiOperationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author: mlf
@@ -31,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/remote/remo-authentication")
 @Api(tags = "远程借阅接口")
+@ApiSort(1)
 public class RemoAuthentication {
 
     @Autowired

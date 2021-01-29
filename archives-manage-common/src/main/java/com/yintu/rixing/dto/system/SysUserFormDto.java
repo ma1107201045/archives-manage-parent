@@ -1,6 +1,7 @@
 package com.yintu.rixing.dto.system;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.yintu.rixing.dto.base.IdDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

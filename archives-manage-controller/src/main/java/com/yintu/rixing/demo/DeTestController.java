@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/demo/de-test")
-@Api(tags = "测试接口")
+@Api(tags = "测试有关接口")
 @Slf4j
 public class DeTestController {
     @Autowired

@@ -1,6 +1,6 @@
 package com.yintu.rixing.common;
 
-import com.alibaba.fastjson.JSONObject;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumAuthType;
@@ -12,13 +12,11 @@ import com.yintu.rixing.vo.common.CommAuthorityVo;
 import com.yintu.rixing.vo.common.CommPermissionVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiSort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/common/comm-menu")
-@Api(tags = "菜单栏接口")
+@Api(tags = "公共有关接口")
 @ApiSort(1)
 public class CommMenuController extends Authenticator {
 
