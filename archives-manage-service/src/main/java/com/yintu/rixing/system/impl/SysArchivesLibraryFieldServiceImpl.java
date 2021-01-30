@@ -160,6 +160,18 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
     }
 
     @Override
+    public List<Integer> listByArchivesLibraryIdAndSystem(Integer archivesLibraryId, Short system) {
+        if (archivesLibraryId == null || system == null)
+            throw new BaseRuntimeException("档案库id或者系统字段不能为空");
+        QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .select(SysArchivesLibraryField::getId)
+                .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)
+                .eq(SysArchivesLibraryField::getSystem, system);
+        return this.listObjs(queryWrapper, id -> (Integer) id);
+    }
+
+    @Override
     public List<Integer> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId) {
         if (archivesLibraryId == null || templateLibraryId == null)
             throw new BaseRuntimeException("档案库id或者模板库id不能为空");

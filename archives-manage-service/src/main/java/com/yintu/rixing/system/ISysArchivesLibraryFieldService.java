@@ -35,7 +35,10 @@ public interface ISysArchivesLibraryFieldService extends IService<SysArchivesLib
 
     List<Integer> listByArchivesLibraryIdDataKeys(Integer archivesLibraryId, String dataKey);
 
+    List<Integer> listByArchivesLibraryIdAndSystem(Integer archivesLibraryId, Short system);
+
     List<Integer> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId);
+
 
     List<SysArchivesLibraryField> listByArchivesLibraryId(Integer archivesLibraryId);
 
