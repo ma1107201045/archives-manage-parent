@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/system/sys-archives-library")
-@ApiSort(8)
+@ApiSort(9)
 @Api(tags = "档案库接口")
 public class SysArchivesLibraryController extends Authenticator {
 

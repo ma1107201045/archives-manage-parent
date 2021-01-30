@@ -30,7 +30,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-template-library-field")
 @Api(tags = "模板库字段接口")
-@ApiSort(6)
+@ApiSort(8)
 public class SysTemplateLibraryFieldController extends Authenticator implements BaseController<SysTemplateLibraryFieldFormDto, SysTemplateLibraryFieldQueryDto, SysTemplateLibraryField, Integer> {
 
     @Autowired

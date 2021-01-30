@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/system/sys-template-library")
-@ApiSort(5)
+@ApiSort(7)
 @Api(tags = "模板库接口")
 public class SysTemplateLibraryController extends Authenticator {
 

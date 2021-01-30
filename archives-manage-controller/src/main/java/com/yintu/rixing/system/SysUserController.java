@@ -33,7 +33,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-user")
 @Api(tags = "用户接口")
-@ApiSort(11)
+@ApiSort(2)
 public class SysUserController extends Authenticator implements BaseController<SysUserFormDto, SysUserQueryDto, SysUser, Integer> {
     @Autowired
     private ISysUserService iSysUserService;

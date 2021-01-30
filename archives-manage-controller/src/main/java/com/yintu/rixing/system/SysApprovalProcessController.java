@@ -32,7 +32,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-approval-process")
 @Api(tags = "审批流程接口")
-@ApiSort(10)
+@ApiSort(6)
 public class SysApprovalProcessController extends Authenticator implements BaseController<SysApprovalProcessFormDto, SysApprovalProcessQueryDto, SysApprovalProcess, Integer> {
 
     @Autowired

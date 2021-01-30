@@ -29,7 +29,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/system/sys-permission")
 @Api(tags = "权限接口")
-@ApiSort(3)
+@ApiSort(4)
 public class SysPermissionController extends Authenticator {
 
     @Autowired

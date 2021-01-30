@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/system/sys-department")
 @Api(tags = "组织机构接口（组织机构接口）")
-@ApiSort(4)
+@ApiSort(1)
 public class SysDepartmentController extends Authenticator {
     @Autowired
     private ISysDepartmentService iSysDepartmentService;

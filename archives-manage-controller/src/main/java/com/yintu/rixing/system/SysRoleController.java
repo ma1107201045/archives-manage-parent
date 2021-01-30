@@ -33,7 +33,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-role")
 @Api(tags = "角色接口")
-@ApiSort(2)
+@ApiSort(3)
 public class SysRoleController extends Authenticator implements BaseController<SysRoleFormDto, SysRoleQueryDto, SysRole, Integer> {
     @Autowired
     private ISysRoleService iSysRoleService;

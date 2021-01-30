@@ -32,7 +32,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/system/sys-archives-library-field")
-@ApiSort(9)
+@ApiSort(10)
 @Api(tags = "档案库字段接口")
 public class SysArchivesLibraryFieldController extends Authenticator implements BaseController<SysArchivesLibraryFieldFormDto, SysArchivesLibraryFieldQueryDto, SysArchivesLibraryField, Integer> {
 
