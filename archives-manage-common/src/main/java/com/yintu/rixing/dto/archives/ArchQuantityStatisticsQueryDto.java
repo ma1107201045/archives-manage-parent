@@ -4,6 +4,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +26,9 @@ public class ArchQuantityStatisticsQueryDto {
     private Date endDate;
 
     @ApiModelProperty(value = "档案库id集合")
+
+    @Size(min = 1, message = "请选择一个档案库")
+    @NotNull
     private List<Integer> archivesIds;
 
 

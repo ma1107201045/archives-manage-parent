@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class ArchQuantityStatisticsController {
     @GetMapping("/archives-quantity")
     @ApiOperation(value = "查询数量统计档案库统计数据", notes = "查询数量统计档案库统计数据")
     @ApiOperationSupport(order = 2)
-    public ResultDataUtil<ArchQuantityStatisticsDataVo> findArchivesName(ArchQuantityStatisticsQueryDto archQuantityStatisticsQueryDto) {
+    public ResultDataUtil<ArchQuantityStatisticsDataVo> findArchivesName(@Validated ArchQuantityStatisticsQueryDto archQuantityStatisticsQueryDto) {
         ArchQuantityStatisticsDataVo archQuantityStatisticsQueryVo = iArchQuantityStatisticsService.findArchivesData(archQuantityStatisticsQueryDto);
         return ResultDataUtil.ok("查询数量统计档案库统计数据成功", archQuantityStatisticsQueryVo);
     }
