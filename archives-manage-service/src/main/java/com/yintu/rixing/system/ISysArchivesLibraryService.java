@@ -34,4 +34,6 @@ public interface ISysArchivesLibraryService extends IService<SysArchivesLibrary>
     List<Integer> listByDataKey(String dataKey);
 
     List<TreeUtil> listTree(Integer parentId);
+
+    List<SysArchivesLibrary> listByType(Short type);
 }

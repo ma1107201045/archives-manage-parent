@@ -317,4 +317,12 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         }
         return treeUtils;
     }
+
+    @Override
+    public List<SysArchivesLibrary> listByType(Short type) {
+        QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysArchivesLibrary::getType, type);
+        return this.list(queryWrapper);
+    }
+
 }

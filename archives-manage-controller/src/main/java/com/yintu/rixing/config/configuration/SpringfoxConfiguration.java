@@ -1,9 +1,7 @@
 package com.yintu.rixing.config.configuration;
 
-import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -66,10 +64,18 @@ public class SpringfoxConfiguration {
     }
 
     @Bean
+    public Docket archives() {
+        return new Docket(DocumentationType.OAS_30)
+                .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.archives")).paths(PathSelectors.any()).build()
+                .groupName("07.档案统计模板");
+
+    }
+
+    @Bean
     public Docket security() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.security")).paths(PathSelectors.any()).build()
-                .groupName("07.安全中心模块");
+                .groupName("08.安全中心模块");
 
     }
 
@@ -77,7 +83,7 @@ public class SpringfoxConfiguration {
     public Docket notification() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.notification")).paths(PathSelectors.any()).build()
-                .groupName("08.通知公告模块");
+                .groupName("09.通知公告模块");
 
     }
 
@@ -85,7 +91,7 @@ public class SpringfoxConfiguration {
     public Docket system() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.system")).paths(PathSelectors.any()).build()
-                .groupName("09.系统设置模块");
+                .groupName("10.系统设置模块");
 
     }
 
@@ -93,7 +99,7 @@ public class SpringfoxConfiguration {
     public Docket remote() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.remote")).paths(PathSelectors.any()).build()
-                .groupName("10.远程借阅模块");
+                .groupName("11.远程借阅模块");
 
     }
 
