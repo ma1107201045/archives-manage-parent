@@ -33,4 +33,15 @@ public interface IWareTemplateLibraryFieldService extends IService<WareTemplateL
     void updateWarehouse(JSONObject jsonObject, Integer id);
 
     void deleteWarehouse(Integer id);
+
+    void outWarehouse(Integer id);
+
+    void inWarehouse(Integer id);
+
+    DataCommonVo findAllEntityArchivesBySomethings(Integer num, Integer size, JSONObject jsonObject);
+
+    DataCommonVo findInWarehouseBySomethings(Integer num, Integer size, JSONObject jsonObject);
+
+    DataCommonVo findOutWarehouseBySomethings(Integer num, Integer size, JSONObject jsonObject);
+
 }

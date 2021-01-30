@@ -1,6 +1,7 @@
 package com.yintu.rixing.warehouse;
 
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -108,7 +109,7 @@ public class WareTemplateLibraryFieldController {
         wareTemplateLibraryField1.setDataKey("inWarehouseTime");
         wareTemplateLibraryField1.setLength(0);
         wareTemplateLibraryField1.setIndex(0);
-        wareTemplateLibraryField1.setRequired(1);
+        wareTemplateLibraryField1.setRequired(0);
         wareTemplateLibraryField1.setTemplateLibraryFieldTypeId(sysTemplateLibraryFieldType.getId());
         wareTemplateLibraryField1.setQuery((short)0);
         wareTemplateLibraryField1.setTitle((short)1);
@@ -116,19 +117,34 @@ public class WareTemplateLibraryFieldController {
         wareTemplateLibraryField1.setTypeId(3);
         wareTemplateLibraryFieldPage.add(wareTemplateLibraryField1);
         WareTemplateLibraryField wareTemplateLibraryField2=new WareTemplateLibraryField();
-        Long time2 = new Date().getTime();
-        wareTemplateLibraryField2.setId(time2.intValue()+1);
+        wareTemplateLibraryField2.setId(time1.intValue()+1);
         wareTemplateLibraryField2.setName("出库时间");
         wareTemplateLibraryField2.setDataKey("outWarehouseTime");
         wareTemplateLibraryField2.setLength(0);
         wareTemplateLibraryField2.setIndex(0);
-        wareTemplateLibraryField2.setRequired(1);
+        wareTemplateLibraryField2.setRequired(0);
         wareTemplateLibraryField2.setTemplateLibraryFieldTypeId(sysTemplateLibraryFieldType.getId());
         wareTemplateLibraryField2.setQuery((short)0);
         wareTemplateLibraryField2.setTitle((short)1);
         wareTemplateLibraryField2.setForm((short)0);
         wareTemplateLibraryField2.setTypeId(3);
         wareTemplateLibraryFieldPage.add(wareTemplateLibraryField2);
+        WareTemplateLibraryField wareTemplateLibraryField3=new WareTemplateLibraryField();
+        QueryWrapper<SysTemplateLibraryFieldType> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.like("data_key","varchar");
+        SysTemplateLibraryFieldType sysTemplateLibraryFieldType1=iSysTemplateLibraryFieldTypeService.getOne(queryWrapper2);
+        wareTemplateLibraryField3.setId(time1.intValue()+2);
+        wareTemplateLibraryField3.setName("档案号");
+        wareTemplateLibraryField3.setDataKey("archivesNum");
+        wareTemplateLibraryField3.setLength(255);
+        wareTemplateLibraryField3.setIndex(1);
+        wareTemplateLibraryField3.setRequired(1);
+        wareTemplateLibraryField3.setTemplateLibraryFieldTypeId(sysTemplateLibraryFieldType1.getId());
+        wareTemplateLibraryField3.setQuery((short)1);
+        wareTemplateLibraryField3.setTitle((short)1);
+        wareTemplateLibraryField3.setForm((short)0);
+        wareTemplateLibraryField3.setTypeId(3);
+        wareTemplateLibraryFieldPage.add(wareTemplateLibraryField3);
         return ResponseDataUtil.ok("查询库房管理实体表字段列表信息成功", wareTemplateLibraryFieldPage);
     }
 
@@ -176,6 +192,26 @@ public class WareTemplateLibraryFieldController {
         return ResultDataUtil.ok("新增入库成功");
     }
 
+    //根据id 出库
+    @Log(level = EnumLogLevel.INFO, module = "库房管理", context = "更改出库")
+    @PutMapping("/outWarehouse/{id}")
+    @ApiOperation(value = "更改出库", notes = "更改出库")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    public ResultDataUtil<Object> outWarehouse(@PathVariable Integer id) {
+        iWareTemplateLibraryFieldService.outWarehouse(id);
+        return ResultDataUtil.ok("更改出库成功");
+    }
+
+    //根据id 入库
+    @Log(level = EnumLogLevel.INFO, module = "库房管理", context = "更改入库")
+    @PutMapping("/inWarehouse/{id}")
+    @ApiOperation(value = "更改入库", notes = "更改入库")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    public ResultDataUtil<Object> inWarehouse(@PathVariable Integer id) {
+        iWareTemplateLibraryFieldService.inWarehouse(id);
+        return ResultDataUtil.ok("更改入库成功");
+    }
+
     //分页查询 实体档案管理
     @GetMapping("/findAllEntityArchives")
     @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "分页查询实体档案管理信息")
@@ -189,6 +225,19 @@ public class WareTemplateLibraryFieldController {
         return ResultDataUtil.ok("分页查询实体档案管理信息成功",dataCommonVo);
     }
 
+    //多条件查询分页查询 实体档案管理
+    @PostMapping("/findAllEntityArchivesBySomethings/{num}/{size}")
+    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案管理信息")
+    @ApiOperation(value = "根据条件分页查询实体档案管理信息", notes = " 根据条件分页查询实体档案管理信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
+            @ApiImplicitParam(name = "jsonObject", dataType = "JSONObject", value = "条件数据", required = true, paramType = "path")
+    })
+    public ResultDataUtil<DataCommonVo>findAllEntityArchivesBySomethings(@RequestBody JSONObject jsonObject, @PathVariable Integer num, @PathVariable Integer size){
+        DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findAllEntityArchivesBySomethings(num,size,jsonObject);
+        return ResultDataUtil.ok("根据条件分页查询实体档案管理信息成功",dataCommonVo);
+    }
 
     //分页查询 实体档案入库管理
     @GetMapping("/findInWarehouse")
@@ -203,6 +252,20 @@ public class WareTemplateLibraryFieldController {
         return ResultDataUtil.ok("分页查询实体档案入库管理信息成功",dataCommonVo);
     }
 
+    //多条件分页查询 实体档案入库管理
+    @PostMapping("/findInWarehouseBySomethings/{num}/{size}")
+    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案入库管理信息")
+    @ApiOperation(value = "根据条件分页查询实体档案入库管理信息", notes = " 根据条件分页查询实体档案入库管理信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
+            @ApiImplicitParam(name = "jsonObject", dataType = "JSONObject", value = "条件数据", required = true, paramType = "path")
+    })
+    public ResultDataUtil<DataCommonVo>findInWarehouseBySomethings(@RequestBody JSONObject jsonObject,@PathVariable Integer num, @PathVariable Integer size){
+        DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findInWarehouseBySomethings(num,size,jsonObject);
+        return ResultDataUtil.ok("根据条件分页查询实体档案入库管理信息成功",dataCommonVo);
+    }
+
     //分页查询 实体档案出库管理
     @GetMapping("/findOutWarehouse")
     @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "分页查询实体档案出库管理信息")
@@ -214,6 +277,19 @@ public class WareTemplateLibraryFieldController {
     public ResultDataUtil<DataCommonVo>findOutWarehouse(@RequestParam Integer num, @RequestParam Integer size){
         DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findOutWarehouse(num,size);
         return ResultDataUtil.ok("分页查询实体档案出库管理信息成功",dataCommonVo);
+    }
+    //多条件分页查询 实体档案出库管理
+    @PostMapping("/findOutWarehouseBySomethings/{num}/{size}")
+    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案出库管理信息")
+    @ApiOperation(value = "根据条件分页查询实体档案出库管理信息", notes = " 根据条件分页查询实体档案出库管理信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
+            @ApiImplicitParam(name = "jsonObject", dataType = "JSONObject", value = "条件数据", required = true, paramType = "path")
+    })
+    public ResultDataUtil<DataCommonVo>findOutWarehouseBySomethings(@RequestBody JSONObject jsonObject,@PathVariable Integer num, @PathVariable Integer size){
+        DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findOutWarehouseBySomethings(num,size,jsonObject);
+        return ResultDataUtil.ok("根据条件分页查询实体档案出库管理信息成功",dataCommonVo);
     }
 
     //根据id 对数据进行编辑
@@ -242,15 +318,42 @@ public class WareTemplateLibraryFieldController {
 
 
 
+
+
+
+
     public static void main(String[] args) {//@RequestBody JSONObject jsonObject,
-        JSONObject jsonObject=new JSONObject();
+        Date date = new Date();
+        String archivesNum="";
+        int day = DateUtil.dayOfMonth(date);
+        int month = DateUtil.month(date) + 1;
+        String yearStr = String.valueOf(DateUtil.year(date));
+        String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
+        String dayStr = Integer.toString(day).length() == 1 ? "0" + day : Integer.toString(day);
+        archivesNum="STDH-"+yearStr+monthStr+dayStr+"-0001";
+
+        System.out.println(archivesNum);
+        String[] split = archivesNum.split("-");
+        for (String s : split) {
+            System.out.println("sss1"+s);
+        }
+
+        System.out.println("ssss"+split[2]);
+
+
+
+
+
+
+
+        /*JSONObject jsonObject=new JSONObject();
        // jsonObject.put("sss","[{\"id\":3,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:39:36\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:39:36\",\"name\":\"测试三\",\"dataKey\":\"test3\",\"length\":1111,\"required\":1,\"index\":1,\"order\":11111,\"templateLibraryFieldTypeId\":2,\"typeId\":0},{\"id\":1,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:16:58\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:16:58\",\"name\":\"测试一\",\"dataKey\":\"test1\",\"length\":111,\"required\":1,\"index\":1,\"order\":11,\"templateLibraryFieldTypeId\":2,\"typeId\":0},{\"id\":2,\"createBy\":\"huxiaowen\",\"createTime\":\"2021-01-22 20:17:15\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:17:15\",\"name\":\"测试二\",\"dataKey\":\"test2\",\"length\":11,\"required\":1,\"index\":1,\"order\":1,\"templateLibraryFieldTypeId\":2,\"typeId\":0}]");
         jsonObject.put("sss","{\"id\":3,\"createBy\":\" \",\"createTime\":\"2021-01-22 20:39:36\",\"modifiedBy\":\"huxiaowen\",\"modifiedTime\":\"2021-01-22 20:39:36\",\"name\":\"测试三\",\"dataKey\":\"test3\",\"length\":1111,\"required\":1,\"index\":1,\"order\":11111,\"templateLibraryFieldTypeId\":2,\"typeId\":0}");
         //JSONArray tableDates = jsonObject.getJSONArray("sss");
         JSONObject sss = (JSONObject)jsonObject.get("sss");
         Map<String, String> jsonMap = JSONObject.toJavaObject(sss, Map.class);
         System.out.println(jsonObject.get("sss"));
-        System.out.println("sssss"+jsonMap);
+        System.out.println("sssss"+jsonMap);*/
 
        /* for (Object tableDate : tableDates) {
             System.out.println("6666"+tableDate);

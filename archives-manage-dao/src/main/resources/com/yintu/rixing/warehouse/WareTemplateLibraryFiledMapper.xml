@@ -20,21 +20,70 @@
     create_by, create_time, modified_by, modified_time
   </sql>
 
+  <!--查询表里最后一个数据-->
+  <select id="findLastWareDatas" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    order by id desc limit 1
+  </select>
+
+  <!--多条件查询分页查询 实体档案出库管理-->
+  <select id="findOutWarehouseBySomethings" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    where ${sb1}
+    order by id desc
+  </select>
+
+
+
+  <!--多条件查询分页查询 实体档案入库管理-->
+  <select id="findInWarehouseBySomethings" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    where ${sb1}
+    order by id desc
+  </select>
+
+
+  <!--多条件查询分页查询 实体档案管理-->
+  <select id="findAllEntityArchivesBySomethings" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    where ${sb1}
+    order by id desc
+  </select>
+
+  <!--根据id 将数据由出库变为入库-->
+  <update id="inWarehouse" >
+    update ware_physical_warehouse
+    set warehouseType=1 , inWarehouseTime= now()
+    where id=#{id}
+  </update>
+
+
+  <!--根据id 将数据由入库变为出库-->
+  <update id="outWarehouse" >
+    update ware_physical_warehouse
+    set warehouseType=2 , outWarehouseTime= now()
+    where id=#{id}
+  </update>
+
   <!--根据id 删除对应的实体档案库数据-->
-  <select id="deleteWarehouse" >
+  <delete id="deleteWarehouse" >
     DELETE
     FROM
         ware_physical_warehouse
     WHERE
        id=#{id}
-  </select>
+  </delete>
 
   <!--根据id 编辑对应的实体档案库数据-->
-  <select id="updateWarehouse" >
+  <update id="updateWarehouse" >
     update ${tableName}
     set ${sb1}
     where id=${id}
-  </select>
+  </update>
 
   <!--分页查询实体档案入库数据-->
   <select id="findOutWarehouse" resultType="java.util.Map">
