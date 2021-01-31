@@ -1,6 +1,7 @@
 package com.yintu.rixing.remote;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.yintu.rixing.annotation.Log;
@@ -19,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -44,10 +46,11 @@ public class RemoAuthentication {
     public ResultDataUtil<RemoAuthenticationVo> login(@Validated RemoAuthenticationLoginDto remoAuthenticationDto) {
         SysRemoteUser sysRemoteUser = iSysRemoteUserService.login(remoAuthenticationDto);
         sysRemoteUser.setPassword(null);
-        Map<String, Object> map = BeanUtil.beanToMap(sysRemoteUser);
-        String token = jwtTokenUtil.createToken(sysRemoteUser.getId().toString(), map);
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("userInfo", sysRemoteUser);
+        String token = jwtTokenUtil.createToken(sysRemoteUser.getId().toString(), userInfo);
         RemoAuthenticationVo remoAuthenticationVo = new RemoAuthenticationVo();
-        remoAuthenticationVo.setRemoteUser(map);
+        remoAuthenticationVo.setRemoteUser(BeanUtil.beanToMap(sysRemoteUser));
         remoAuthenticationVo.setToken(token);
         return ResultDataUtil.ok("远程用户登录成功", remoAuthenticationVo);
     }
