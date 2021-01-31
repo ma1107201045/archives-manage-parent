@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.warehouse.WareLibraryTreeMapper">
 
+    <!--根据id  查询对应的parentid-->
+    <select id="findParentId" resultType="java.lang.Integer">
+        select parent_id from ware_library_tree where id=#{integer}
+    </select>
+
 </mapper>

@@ -16,4 +16,6 @@ import java.util.List;
 public interface IWareLibraryTreeService extends IService<WareLibraryTree> {
 
     List<TreeUtil> listTree(Integer parentId);
+
+    Integer findParentId(Integer integer);
 }

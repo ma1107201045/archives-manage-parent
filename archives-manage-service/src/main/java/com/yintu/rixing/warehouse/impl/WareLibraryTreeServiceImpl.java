@@ -8,6 +8,7 @@ import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.warehouse.IWareLibraryTreeService;
 import com.yintu.rixing.warehouse.WareLibraryTree;
 import com.yintu.rixing.warehouse.WareLibraryTreeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +24,14 @@ import java.util.List;
  */
 @Service
 public class WareLibraryTreeServiceImpl extends ServiceImpl<WareLibraryTreeMapper, WareLibraryTree> implements IWareLibraryTreeService {
+    @Autowired
+    private WareLibraryTreeMapper wareLibraryTreeMapper;
+
+
+    @Override
+    public Integer findParentId(Integer integer) {
+        return wareLibraryTreeMapper.findParentId(integer);
+    }
 
     @Override
     public List<TreeUtil> listTree(Integer parentId) {

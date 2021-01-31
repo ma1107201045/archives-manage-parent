@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.common.CommTableField;
@@ -16,6 +17,7 @@ import com.yintu.rixing.system.ISysTemplateLibraryFieldTypeService;
 import com.yintu.rixing.system.SysTemplateLibraryFieldType;
 import com.yintu.rixing.vo.data.DataCommonFieldVo;
 import com.yintu.rixing.vo.data.DataCommonVo;
+import com.yintu.rixing.warehouse.IWareLibraryTreeService;
 import com.yintu.rixing.warehouse.IWareTemplateLibraryFieldService;
 import com.yintu.rixing.warehouse.WareTemplateLibraryField;
 
@@ -44,6 +46,11 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
     private ICommTableFieldService iCommTableFieldService;
     @Autowired
     private WareTemplateLibraryFiledMapper wareTemplateLibraryFiledMapper;
+    @Autowired
+    private IWareLibraryTreeService iWareLibraryTreeService;
+
+
+
 
     @Override
     public void inWarehouse(Integer id) {
@@ -126,7 +133,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonTitleVo3.setTitle(true);
         dataCommonTitleVo3.setForm(false);
         dataCommonTitleVo3.setTypeId(1);
-        dataCommonFieldVos.add(0,dataCommonTitleVo3);
+        dataCommonFieldVos.add(0, dataCommonTitleVo3);
         DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
         dataCommonTitleVo4.setTypeProp("int");
         dataCommonTitleVo4.setTypeLabel("文本框(数值)");
@@ -140,7 +147,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonFieldVos.add(dataCommonTitleVo4);
 
         JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
-        if (tableDates== null) {
+        if (tableDates == null) {
             DataCommonVo dataCommonVo = new DataCommonVo();
             dataCommonVo.setFields(dataCommonFieldVos);
             Page page = new Page();
@@ -166,6 +173,23 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             page.setSize(size);
             page.setCurrent(num);
             Page<Map<String, Object>> pages = wareTemplateLibraryFiledMapper.findOutWarehouseBySomethings(page, sb1);
+            for (Map<String, Object> record : pages.getRecords()) {
+                List<Integer> integerList = new ArrayList<>();
+                Integer ware_library_tree_id = (Integer) record.get("ware_library_tree_id");
+                integerList.add(ware_library_tree_id);
+                Integer parentId = iWareLibraryTreeService.findParentId(ware_library_tree_id);
+                if (parentId != -1)
+                    integerList.add(parentId);
+                for (int i = 0; i < 20; i++) {
+                    if (parentId != -1) {
+                        Integer parentId1 = iWareLibraryTreeService.findParentId(parentId);
+                        if (parentId1 != -1)
+                            integerList.add(parentId1);
+                        parentId = parentId1;
+                    }
+                }
+                record.put("warelibrarytreeid", integerList);
+            }
             dataCommonVo.setPage(pages);
             return dataCommonVo;
         }
@@ -218,7 +242,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonTitleVo3.setTitle(true);
             dataCommonTitleVo3.setForm(false);
             dataCommonTitleVo3.setTypeId(1);
-            dataCommonFieldVos.add(0,dataCommonTitleVo3);
+            dataCommonFieldVos.add(0, dataCommonTitleVo3);
             DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
             dataCommonTitleVo4.setTypeProp("int");
             dataCommonTitleVo4.setTypeLabel("文本框(数值)");
@@ -236,7 +260,25 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             Page page = new Page();
             page.setSize(size);
             page.setCurrent(num);
-            dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findOutWarehouse(page));
+            Page<Map<String, Object>> entityArchivesPages = wareTemplateLibraryFiledMapper.findAllEntityArchivesPage(page);
+            for (Map<String, Object> record : entityArchivesPages.getRecords()) {
+                List<Integer> integerList = new ArrayList<>();
+                Integer ware_library_tree_id = (Integer) record.get("ware_library_tree_id");
+                integerList.add(ware_library_tree_id);
+                Integer parentId = iWareLibraryTreeService.findParentId(ware_library_tree_id);
+                if (parentId != -1)
+                    integerList.add(parentId);
+                for (int i = 0; i < 20; i++) {
+                    if (parentId != -1) {
+                        Integer parentId1 = iWareLibraryTreeService.findParentId(parentId);
+                        if (parentId1 != -1)
+                            integerList.add(parentId1);
+                        parentId = parentId1;
+                    }
+                }
+                record.put("warelibrarytreeid", integerList);
+            }
+            dataCommonVo.setPage(entityArchivesPages);
             return dataCommonVo;
         }
     }
@@ -284,7 +326,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonTitleVo3.setTitle(true);
         dataCommonTitleVo3.setForm(false);
         dataCommonTitleVo3.setTypeId(1);
-        dataCommonFieldVos.add(0,dataCommonTitleVo3);
+        dataCommonFieldVos.add(0, dataCommonTitleVo3);
         DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
         dataCommonTitleVo4.setTypeProp("int");
         dataCommonTitleVo4.setTypeLabel("文本框(数值)");
@@ -298,7 +340,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonFieldVos.add(dataCommonTitleVo4);
 
         JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
-        if (tableDates==null) {
+        if (tableDates == null) {
             DataCommonVo dataCommonVo = new DataCommonVo();
             dataCommonVo.setFields(dataCommonFieldVos);
             Page page = new Page();
@@ -324,6 +366,23 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             page.setSize(size);
             page.setCurrent(num);
             Page<Map<String, Object>> pages = wareTemplateLibraryFiledMapper.findInWarehouseBySomethings(page, sb1);
+            for (Map<String, Object> record : pages.getRecords()) {
+                List<Integer> integerList = new ArrayList<>();
+                Integer ware_library_tree_id = (Integer) record.get("ware_library_tree_id");
+                integerList.add(ware_library_tree_id);
+                Integer parentId = iWareLibraryTreeService.findParentId(ware_library_tree_id);
+                if (parentId != -1)
+                    integerList.add(parentId);
+                for (int i = 0; i < 20; i++) {
+                    if (parentId != -1) {
+                        Integer parentId1 = iWareLibraryTreeService.findParentId(parentId);
+                        if (parentId1 != -1)
+                            integerList.add(parentId1);
+                        parentId = parentId1;
+                    }
+                }
+                record.put("warelibrarytreeid", integerList);
+            }
             dataCommonVo.setPage(pages);
             return dataCommonVo;
         }
@@ -376,7 +435,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonTitleVo3.setTitle(true);
             dataCommonTitleVo3.setForm(false);
             dataCommonTitleVo3.setTypeId(1);
-            dataCommonFieldVos.add(0,dataCommonTitleVo3);
+            dataCommonFieldVos.add(0, dataCommonTitleVo3);
             DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
             dataCommonTitleVo4.setTypeProp("int");
             dataCommonTitleVo4.setTypeLabel("文本框(数值)");
@@ -394,7 +453,25 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             Page page = new Page();
             page.setSize(size);
             page.setCurrent(num);
-            dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findInWarehousePage(page));
+            Page<Map<String, Object>> entityArchivesPages = wareTemplateLibraryFiledMapper.findAllEntityArchivesPage(page);
+            for (Map<String, Object> record : entityArchivesPages.getRecords()) {
+                List<Integer> integerList = new ArrayList<>();
+                Integer ware_library_tree_id = (Integer) record.get("ware_library_tree_id");
+                integerList.add(ware_library_tree_id);
+                Integer parentId = iWareLibraryTreeService.findParentId(ware_library_tree_id);
+                if (parentId != -1)
+                    integerList.add(parentId);
+                for (int i = 0; i < 20; i++) {
+                    if (parentId != -1) {
+                        Integer parentId1 = iWareLibraryTreeService.findParentId(parentId);
+                        if (parentId1 != -1)
+                            integerList.add(parentId1);
+                        parentId = parentId1;
+                    }
+                }
+                record.put("warelibrarytreeid", integerList);
+            }
+            dataCommonVo.setPage(entityArchivesPages);
             return dataCommonVo;
         }
     }
@@ -451,7 +528,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonTitleVo3.setTitle(true);
         dataCommonTitleVo3.setForm(false);
         dataCommonTitleVo3.setTypeId(1);
-        dataCommonFieldVos.add(0,dataCommonTitleVo3);
+        dataCommonFieldVos.add(0, dataCommonTitleVo3);
         dataCommonFieldVos.add(dataCommonTitleVo1);
         dataCommonFieldVos.add(dataCommonTitleVo2);
         DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
@@ -467,7 +544,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonFieldVos.add(dataCommonTitleVo4);
 
         JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
-        if (tableDates==null) {
+        if (tableDates == null) {
             DataCommonVo dataCommonVo = new DataCommonVo();
             dataCommonVo.setFields(dataCommonFieldVos);
             Page page = new Page();
@@ -481,7 +558,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                 Map<String, Object> map = JSONObject.parseObject(JSON.toJSONString(tableDate));
                 Set<String> key = map.keySet();
                 List<String> keys = new ArrayList<>(key);
-                System.out.println("kkkkkk"+keys);
+                System.out.println("kkkkkk" + keys);
                 for (int i = 0; i < keys.size(); i++) {
                     Object o = map.get(keys.get(i));
                     if (i == 0) {
@@ -496,8 +573,25 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             Page page = new Page();
             page.setSize(size);
             page.setCurrent(num);
-            System.out.println("ssssss"+sb1);
+            System.out.println("ssssss" + sb1);
             Page<Map<String, Object>> pages = wareTemplateLibraryFiledMapper.findAllEntityArchivesBySomethings(page, sb1);//findAllEntityArchivesBySomethings
+            for (Map<String, Object> record : pages.getRecords()) {
+                List<Integer> integerList = new ArrayList<>();
+                Integer ware_library_tree_id = (Integer) record.get("ware_library_tree_id");
+                integerList.add(ware_library_tree_id);
+                Integer parentId = iWareLibraryTreeService.findParentId(ware_library_tree_id);
+                if (parentId != -1)
+                    integerList.add(parentId);
+                for (int i = 0; i < 20; i++) {
+                    if (parentId != -1) {
+                        Integer parentId1 = iWareLibraryTreeService.findParentId(parentId);
+                        if (parentId1 != -1)
+                            integerList.add(parentId1);
+                        parentId = parentId1;
+                    }
+                }
+                record.put("warelibrarytreeid", integerList);
+            }
             dataCommonVo.setPage(pages);
             return dataCommonVo;
         }
@@ -559,7 +653,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonTitleVo3.setTitle(true);
             dataCommonTitleVo3.setForm(false);
             dataCommonTitleVo3.setTypeId(1);
-            dataCommonFieldVos.add(0,dataCommonTitleVo3);
+            dataCommonFieldVos.add(0, dataCommonTitleVo3);
             dataCommonFieldVos.add(dataCommonTitleVo1);
             dataCommonFieldVos.add(dataCommonTitleVo2);
             DataCommonFieldVo dataCommonTitleVo4 = new DataCommonFieldVo();
@@ -579,7 +673,26 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             Page page = new Page();
             page.setSize(size);
             page.setCurrent(num);
-            dataCommonVo.setPage(wareTemplateLibraryFiledMapper.findAllEntityArchivesPage(page));
+            Page<Map<String, Object>> entityArchivesPages = wareTemplateLibraryFiledMapper.findAllEntityArchivesPage(page);
+            for (Map<String, Object> record : entityArchivesPages.getRecords()) {
+                List<Integer> integerList = new ArrayList<>();
+                Integer ware_library_tree_id = (Integer) record.get("ware_library_tree_id");
+                integerList.add(ware_library_tree_id);
+                Integer parentId = iWareLibraryTreeService.findParentId(ware_library_tree_id);
+                if (parentId != -1)
+                    integerList.add(parentId);
+                for (int i = 0; i < 20; i++) {
+                    if (parentId != -1) {
+                        Integer parentId1 = iWareLibraryTreeService.findParentId(parentId);
+                        if (parentId1 != -1)
+                            integerList.add(parentId1);
+                        parentId = parentId1;
+                    }
+                }
+                Arrays.sort(integerList.toArray(),Collections.reverseOrder());
+                record.put("warelibrarytreeid", integerList);
+            }
+            dataCommonVo.setPage(entityArchivesPages);
             return dataCommonVo;
         }
     }
@@ -589,26 +702,26 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String format = sdf.format(date);
-        String archivesNum="";
+        String archivesNum = "";
         String tableName = "ware_physical_warehouse";
-        Map<String,Object> wareMap=wareTemplateLibraryFiledMapper.findLastWareDatas();
-        if (wareMap==null){
+        Map<String, Object> wareMap = wareTemplateLibraryFiledMapper.findLastWareDatas();
+        if (wareMap == null) {
             int day = DateUtil.dayOfMonth(date);
             int month = DateUtil.month(date) + 1;
             String yearStr = String.valueOf(DateUtil.year(date));
             String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
             String dayStr = Integer.toString(day).length() == 1 ? "0" + day : Integer.toString(day);
-            archivesNum="STDH-"+yearStr+monthStr+dayStr+"-10001";
-        }else {
+            archivesNum = "STDH-" + yearStr + monthStr + dayStr + "-10001";
+        } else {
             int day = DateUtil.dayOfMonth(date);
             int month = DateUtil.month(date) + 1;
             String yearStr = String.valueOf(DateUtil.year(date));
             String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
             String dayStr = Integer.toString(day).length() == 1 ? "0" + day : Integer.toString(day);
-            String archivesNum1 =(String) wareMap.get("archivesNum");
+            String archivesNum1 = (String) wareMap.get("archivesNum");
             String[] split = archivesNum1.split("-");
-            Integer integer1 = Integer.valueOf(split[2])+1;
-            archivesNum="STDH-"+yearStr+monthStr+dayStr+"-"+integer1.toString();
+            Integer integer1 = Integer.valueOf(split[2]) + 1;
+            archivesNum = "STDH-" + yearStr + monthStr + dayStr + "-" + integer1.toString();
         }
         JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
         for (Object tableDate : tableDates) {
