@@ -14,4 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface WareLibraryTreeMapper extends BaseMapper<WareLibraryTree> {
 
+    Integer findParentId(Integer integer);
 }
