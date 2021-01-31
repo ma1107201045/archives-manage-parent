@@ -131,7 +131,8 @@ public class SysRemoteUserServiceImpl extends ServiceImpl<SysRemoteUserMapper, S
     public SysRemoteUser getByCertificateNumber(String certificateNumber) {
         AssertUtil.notEmpty(certificateNumber, "证件号码不能为空");
         QueryWrapper<SysRemoteUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysRemoteUser::getCertificateNumber, certificateNumber);
+        queryWrapper.lambda()
+                .eq(SysRemoteUser::getCertificateNumber, certificateNumber);
         return this.getOne(queryWrapper);
     }
 }

@@ -1,9 +1,11 @@
 package com.yintu.rixing.config.jwt;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.rixing.exception.BaseRuntimeException;
+import com.yintu.rixing.system.SysRemoteUser;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.crypto.JwtSigner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -27,6 +30,12 @@ public class JwtTokenUtil {
     @Autowired
     private JwtProperties jwtProperties;
 
+    public String getSecretKey() {
+        String secret = jwtProperties.getSecret();//密钥
+        return Base64.getEncoder().encodeToString(secret.getBytes());
+
+    }
+
 
     /**
      * 生成token
@@ -34,28 +43,21 @@ public class JwtTokenUtil {
      * @param subject 一般为用户名
      * @return token字符串
      */
-    public String createToken(String subject) {
+    public String createToken(String subject, Map<String, Object> map) {
         long expire = jwtProperties.getExpire();//过期失效
         String issuer = jwtProperties.getIssuer();//发行人
         Date nowDate = DateUtil.date();
         Date expireDate = new Date(nowDate.getTime() + expire * 1000);//过期时间
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setSubject(subject)//主题
                 .setIssuer(issuer)//发行人
                 .setIssuedAt(nowDate) //发行时间
                 .setExpiration(expireDate)//过期时间
-                //.setClaims()
+                .setSubject(subject)//主题
+                .setClaims(map)//主体部分
                 .signWith(SignatureAlgorithm.HS256, getSecretKey())// 签名部分
                 .compact();
     }
-
-    public String getSecretKey() {
-        String secret = jwtProperties.getSecret();//密钥
-        return Base64.getEncoder().encodeToString(secret.getBytes());
-
-    }
-
 
     /**
      * 获取token中注册信息
@@ -82,7 +84,7 @@ public class JwtTokenUtil {
      * @param token token
      * @return 返回信息
      */
-    public JwsHeader parseJWTHeader(String token) {
+    public JwsHeader<?> parseJWTHeader(String token) {
         return parseJWT(token).getHeader();
     }
 

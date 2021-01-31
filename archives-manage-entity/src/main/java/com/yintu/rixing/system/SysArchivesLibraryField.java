@@ -62,7 +62,7 @@ public class SysArchivesLibraryField extends BaseEntity {
     private Short form;
 
     @ApiModelProperty(value = "字段是否默认", position = 15)
-    @TableField("system")
+    @TableField("`system`")
     private Short system;
 
     @ApiModelProperty(value = "档案库id", position = 16)

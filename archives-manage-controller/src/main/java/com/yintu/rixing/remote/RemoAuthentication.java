@@ -19,6 +19,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.Map;
+
 /**
  * @Author: mlf
  * @Date: 2021/1/28 16:01:01
@@ -41,9 +43,11 @@ public class RemoAuthentication {
     @ApiOperationSupport(order = 1)
     public ResultDataUtil<RemoAuthenticationVo> login(@Validated RemoAuthenticationLoginDto remoAuthenticationDto) {
         SysRemoteUser sysRemoteUser = iSysRemoteUserService.login(remoAuthenticationDto);
-        String token = jwtTokenUtil.createToken(sysRemoteUser.getId().toString());
+        sysRemoteUser.setPassword(null);
+        Map<String, Object> map = BeanUtil.beanToMap(sysRemoteUser);
+        String token = jwtTokenUtil.createToken(sysRemoteUser.getId().toString(), map);
         RemoAuthenticationVo remoAuthenticationVo = new RemoAuthenticationVo();
-        remoAuthenticationVo.setRemoteUser(BeanUtil.beanToMap(sysRemoteUser));
+        remoAuthenticationVo.setRemoteUser(map);
         remoAuthenticationVo.setToken(token);
         return ResultDataUtil.ok("远程用户登录成功", remoAuthenticationVo);
     }
