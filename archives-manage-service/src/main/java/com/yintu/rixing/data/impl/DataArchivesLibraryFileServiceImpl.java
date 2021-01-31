@@ -15,10 +15,12 @@ import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.util.AssertUtil;
+import com.yintu.rixing.util.FileParseUtil;
 import com.yintu.rixing.util.TableNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -51,6 +53,9 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
             dataArchivesLibraryFile.setUnit(dataArchivesLibraryFileFormDto.getUnits().get(i));
             dataArchivesLibraryFile.setName(dataArchivesLibraryFileFormDto.getNames().get(i));
             dataArchivesLibraryFile.setRequestMapping(dataArchivesLibraryFileFormDto.getRequestMappings().get(i));
+            String path = dataArchivesLibraryFile.getPath();
+            String name = dataArchivesLibraryFile.getName();
+            dataArchivesLibraryFile.setContext(FileParseUtil.parse(path + File.separator + name));
             dataArchivesLibraryFiles.add(dataArchivesLibraryFile);
         }
         this.saveBatch(dataArchivesLibraryFiles);
