@@ -54,7 +54,7 @@ public class AuthenticationTokenFilter implements Filter {
                         throw new BaseRuntimeException("token已过期，请重新获取");
                     }
                     request.setAttribute("identityId", claims.getSubject());//设置用户凭证id
-                } catch (BaseRuntimeException runtimeException) {
+                } catch (Exception exception) {
                     ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noJWTAuthentication("尚未认证，请先认证");
                     JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
                     response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);

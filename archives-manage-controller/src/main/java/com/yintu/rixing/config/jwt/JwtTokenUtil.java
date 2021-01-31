@@ -54,7 +54,7 @@ public class JwtTokenUtil {
                 .setIssuedAt(nowDate) //发行时间
                 .setExpiration(expireDate)//过期时间
                 .setSubject(subject)//主题
-                .setClaims(map)//主体部分
+                .addClaims(map)//主体部分
                 .signWith(SignatureAlgorithm.HS256, getSecretKey())// 签名部分
                 .compact();
     }
