@@ -1,16 +1,31 @@
 package com.yintu.rixing.demo;
 
 
+import cn.hutool.core.io.FileUtil;
 import com.yintu.rixing.config.jwt.JwtProperties;
 import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.ResponseDataUtil;
+import com.zhuozhengsoft.pageoffice.FileSaver;
+import com.zhuozhengsoft.pageoffice.OpenModeType;
+import com.zhuozhengsoft.pageoffice.PageOfficeCtrl;
+import com.zhuozhengsoft.pageoffice.wordreader.DataRegion;
+import com.zhuozhengsoft.pageoffice.wordreader.Table;
+import com.zhuozhengsoft.pageoffice.wordreader.WordDocument;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -59,5 +74,10 @@ public class DeTestController {
         log.debug("isSecure:" + request.isSecure());
         log.debug("-------------------------------------");
         return ResultDataUtil.ok("", null);
+    }
+
+    @PostMapping("/test4")
+    public ResultDataUtil<Map<String, Object>> test4(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return null;
     }
 }
