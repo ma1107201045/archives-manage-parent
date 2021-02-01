@@ -19,8 +19,6 @@ public interface ISysRemoteBorrowedInfoService extends IService<SysRemoteBorrowe
     @Transactional(rollbackFor = {Exception.class})
     void save(SysRemoteBorrowedInfoFormDto sysRemoteBorrowedInfoFormDto);
 
-    @Transactional(rollbackFor = {Exception.class})
-    void updateById(SysRemoteBorrowedInfoFormDto sysRemoteBorrowedInfoFormDto);
 
     Page<SysRemoteBorrowedInfo> page(SysRemoteBorrowedInfoQueryDto sysRemoteBorrowedInfoQueryDto);
 

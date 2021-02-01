@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysRemoteBorrowedInfoFormDto;
 import com.yintu.rixing.dto.system.SysRemoteBorrowedInfoQueryDto;
+import com.yintu.rixing.enumobject.EnumAuditStatus;
 import com.yintu.rixing.system.ISysRemoteBorrowedInfoService;
 import com.yintu.rixing.system.SysRemoteBorrowedInfo;
 import com.yintu.rixing.system.SysRemoteBorrowedInfoMapper;
@@ -27,13 +28,10 @@ public class SysRemoteBorrowedInfoServiceImpl extends ServiceImpl<SysRemoteBorro
     public void save(SysRemoteBorrowedInfoFormDto sysRemoteBorrowedInfoFormDto) {
         SysRemoteBorrowedInfo sysRemoteBorrowedInfo = new SysRemoteBorrowedInfo();
         BeanUtil.copyProperties(sysRemoteBorrowedInfoFormDto, sysRemoteBorrowedInfo);
+        sysRemoteBorrowedInfo.setAuditStatus(EnumAuditStatus.AUDIT_IN.getValue());
         this.save(sysRemoteBorrowedInfo);
     }
 
-    @Override
-    public void updateById(SysRemoteBorrowedInfoFormDto sysRemoteBorrowedInfoFormDto) {
-
-    }
 
     @Override
     public Page<SysRemoteBorrowedInfo> page(SysRemoteBorrowedInfoQueryDto sysRemoteBorrowedInfoQueryDto) {
