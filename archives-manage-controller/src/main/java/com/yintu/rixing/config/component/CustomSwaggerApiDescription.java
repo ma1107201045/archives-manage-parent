@@ -25,7 +25,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Component
-public class CustomSpringfoxApiDescription implements ApiListingScannerPlugin {
+public class CustomSwaggerApiDescription implements ApiListingScannerPlugin {
 
     @Value("${server.servlet.context-path}")
     private String contextPath;

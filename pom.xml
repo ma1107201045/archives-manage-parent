@@ -34,7 +34,6 @@
         <fastjson.version>1.2.62</fastjson.version>
         <poi-ooxml.version>3.17</poi-ooxml.version>
         <hutool-all.version>5.3.9</hutool-all.version>
-        <springfox-swagger-ui.version>3.0.0</springfox-swagger-ui.version>
         <knife4j-spring-boot-starter.version>3.0.2</knife4j-spring-boot-starter.version>
         <jjwt.version>0.9.1</jjwt.version>
     </properties>
@@ -112,11 +111,6 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-all.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${springfox-swagger-ui.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>

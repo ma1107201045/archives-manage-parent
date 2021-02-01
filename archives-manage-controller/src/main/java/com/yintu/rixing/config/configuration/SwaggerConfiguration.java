@@ -13,7 +13,7 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @Version: 1.0
  */
 @Configuration
-public class SpringfoxConfiguration {
+public class SwaggerConfiguration {
 
     @Bean
     public Docket demo() {
