@@ -34,7 +34,7 @@ import java.util.Map;
 @RequestMapping("/remote/remo-authentication")
 @Api(tags = "远程借阅接口")
 @ApiSort(1)
-public class RemoAuthentication {
+public class RemoAuthenticationController {
 
     @Autowired
     private ISysRemoteUserService iSysRemoteUserService;
