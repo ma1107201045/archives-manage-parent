@@ -33,7 +33,7 @@
         <druid-spring-boot-starter.version>1.1.21</druid-spring-boot-starter.version>
         <fastjson.version>1.2.62</fastjson.version>
         <poi-ooxml.version>3.17</poi-ooxml.version>
-        <hutool-all.version>5.3.9</hutool-all.version>
+        <hutool-all.version>5.5.8</hutool-all.version>
         <knife4j-spring-boot-starter.version>3.0.2</knife4j-spring-boot-starter.version>
         <jjwt.version>0.9.1</jjwt.version>
     </properties>
