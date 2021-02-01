@@ -32,7 +32,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/remote/remo-authentication")
-@Api(tags = "远程借阅接口")
+@Api(tags = "远程用户授权接口")
 @ApiSort(1)
 public class RemoAuthenticationController {
 
