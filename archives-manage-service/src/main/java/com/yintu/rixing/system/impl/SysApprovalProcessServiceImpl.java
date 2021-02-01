@@ -38,32 +38,16 @@ public class SysApprovalProcessServiceImpl extends ServiceImpl<SysApprovalProces
 
     @Override
     public void save(SysApprovalProcessFormDto sysApprovalProcessFormDto) {
-        this.parametersToProofread(sysApprovalProcessFormDto);
         SysApprovalProcess sysApprovalProcess = new SysApprovalProcess();
         BeanUtil.copyProperties(sysApprovalProcessFormDto, sysApprovalProcess);
         this.save(sysApprovalProcess);
         sysApprovalProcessFormDto.setId(sysApprovalProcess.getId());
         this.saveSysApprovalProcessConfigurations(sysApprovalProcessFormDto, true);
-
     }
 
-    @Override
-    public void parametersToProofread(SysApprovalProcessFormDto sysApprovalProcessFormDto) {
-        Short approvalModel = sysApprovalProcessFormDto.getApprovalModel();
-        if (approvalModel == 1) {
-            List<Integer> roleIds = sysApprovalProcessFormDto.getRoleIds();
-            List<Integer> userIds = sysApprovalProcessFormDto.getUserIds();
-            List<Integer> orders = sysApprovalProcessFormDto.getOrders();
-            if (roleIds == null || userIds == null || orders == null || roleIds.size() == 0 || userIds.size() == 0 || orders.size() == 0)
-                throw new BaseRuntimeException("角色或者用户或者顺序不能为空");
-            if (roleIds.size() != userIds.size() || userIds.size() != orders.size())
-                throw new BaseRuntimeException("角色或者用户或者顺序长度不一致");
-        }
-    }
 
     @Override
     public void updateById(SysApprovalProcessFormDto sysApprovalProcessFormDto) {
-        this.parametersToProofread(sysApprovalProcessFormDto);
         Integer id = sysApprovalProcessFormDto.getId();
         SysApprovalProcess sysApprovalProcess = this.getById(id);
         if (sysApprovalProcess != null) {
@@ -75,41 +59,61 @@ public class SysApprovalProcessServiceImpl extends ServiceImpl<SysApprovalProces
 
     @Override
     public void saveSysApprovalProcessConfigurations(SysApprovalProcessFormDto sysApprovalProcessFormDto, Boolean isSave) {
-        Short approvalModel = sysApprovalProcessFormDto.getApprovalModel();
-        if (approvalModel == 1) {
-            Integer id = sysApprovalProcessFormDto.getId();
-            List<Integer> roleIds = sysApprovalProcessFormDto.getRoleIds();
-            List<Integer> userIds = sysApprovalProcessFormDto.getUserIds();
-            List<Integer> orders = sysApprovalProcessFormDto.getOrders();
-            if (!isSave) {
-                QueryWrapper<SysApprovalProcessConfiguration> sysApprovalProcessConfigurationQueryWrapper = new QueryWrapper<>();
-                sysApprovalProcessConfigurationQueryWrapper.lambda().eq(SysApprovalProcessConfiguration::getApprovalProcessId, id);
-                iSysApprovalProcessConfigurationService.remove(sysApprovalProcessConfigurationQueryWrapper);
-            }
-            List<SysApprovalProcessConfiguration> sysApprovalProcessConfigurations = new ArrayList<>();
-            for (int i = 0; i < roleIds.size(); i++) {
-                SysApprovalProcessConfiguration sysApprovalProcessConfiguration = new SysApprovalProcessConfiguration();
-                sysApprovalProcessConfiguration.setApprovalProcessId(id);
-                sysApprovalProcessConfiguration.setRoleId(roleIds.get(i));
-                sysApprovalProcessConfiguration.setUserId(userIds.get(i));
-                sysApprovalProcessConfiguration.setOrder(orders.get(i));
-                sysApprovalProcessConfigurations.add(sysApprovalProcessConfiguration);
-            }
-            iSysApprovalProcessConfigurationService.saveBatch(sysApprovalProcessConfigurations);
+        Integer id = sysApprovalProcessFormDto.getId();
+        List<Integer> roleIds = sysApprovalProcessFormDto.getRoleIds();
+        List<Integer> userIds = sysApprovalProcessFormDto.getUserIds();
+        List<Integer> orders = sysApprovalProcessFormDto.getOrders();
+        if (roleIds == null || userIds == null || orders == null || roleIds.size() == 0 || userIds.size() == 0 || orders.size() == 0)
+            throw new BaseRuntimeException("角色或者用户或者顺序不能为空");
+        if (roleIds.size() != userIds.size() || userIds.size() != orders.size())
+            throw new BaseRuntimeException("角色或者用户或者顺序长度不一致");
+        List<Integer> ids = this.listByApprovalType((short) 2);
+        if (isSave) {
+            if (!ids.isEmpty())
+                throw new BaseRuntimeException("此审批类型只能配置一条");
+        } else {
+            if (!ids.isEmpty() && !ids.get(0).equals(id))
+                throw new BaseRuntimeException("此审批类型只能配置一条");
+            QueryWrapper<SysApprovalProcessConfiguration> sysApprovalProcessConfigurationQueryWrapper = new QueryWrapper<>();
+            sysApprovalProcessConfigurationQueryWrapper.lambda().eq(SysApprovalProcessConfiguration::getApprovalProcessId, id);
+            iSysApprovalProcessConfigurationService.remove(sysApprovalProcessConfigurationQueryWrapper);
         }
+        List<SysApprovalProcessConfiguration> sysApprovalProcessConfigurations = new ArrayList<>();
+        for (int i = 0; i < roleIds.size(); i++) {
+            SysApprovalProcessConfiguration sysApprovalProcessConfiguration = new SysApprovalProcessConfiguration();
+            sysApprovalProcessConfiguration.setApprovalProcessId(id);
+            sysApprovalProcessConfiguration.setRoleId(roleIds.get(i));
+            sysApprovalProcessConfiguration.setUserId(userIds.get(i));
+            sysApprovalProcessConfiguration.setOrder(orders.get(i));
+            sysApprovalProcessConfigurations.add(sysApprovalProcessConfiguration);
+        }
+        iSysApprovalProcessConfigurationService.saveBatch(sysApprovalProcessConfigurations);
+
     }
+
+    @Override
+    public List<Integer> listByApprovalType(Short approvalType) {
+        if (approvalType == null)
+            throw new BaseRuntimeException("审批类型不能为空");
+        QueryWrapper<SysApprovalProcess> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .select(SysApprovalProcess::getId)
+                .eq(SysApprovalProcess::getApprovalType, approvalType);
+        return this.listObjs(queryWrapper, id -> (Integer) id);
+    }
+
 
     @Override
     public Page<SysApprovalProcess> page(SysApprovalProcessQueryDto sysApprovalProcessQueryDto) {
         Integer num = sysApprovalProcessQueryDto.getNum();
         Integer size = sysApprovalProcessQueryDto.getSize();
         String name = sysApprovalProcessQueryDto.getName();
-        Short approvalModel = sysApprovalProcessQueryDto.getApprovalModel();
+        Short approvalType = sysApprovalProcessQueryDto.getApprovalType();
         QueryWrapper<SysApprovalProcess> queryWrapper = new QueryWrapper<>();
         LambdaQueryWrapper<SysApprovalProcess> lambdaQueryWrapper = queryWrapper.lambda();
         lambdaQueryWrapper.like(SysApprovalProcess::getName, name == null ? "" : name);
-        if (approvalModel != null)
-            lambdaQueryWrapper.eq(SysApprovalProcess::getApprovalModel, approvalModel);
+        if (approvalType != null)
+            lambdaQueryWrapper.eq(SysApprovalProcess::getApprovalType, approvalType);
         queryWrapper.orderByDesc("id");
         return this.page(new Page<>(num, size), queryWrapper);
     }
@@ -141,7 +145,7 @@ public class SysApprovalProcessServiceImpl extends ServiceImpl<SysApprovalProces
     public List<List<TreeUtil>> treeById(Integer id) {
         List<List<TreeUtil>> lists = new ArrayList<>();
         SysApprovalProcess sysApprovalProcess = this.getById(id);
-        if (sysApprovalProcess != null && sysApprovalProcess.getApprovalModel() == 1) {
+        if (sysApprovalProcess != null) {
             QueryWrapper<SysApprovalProcessConfiguration> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().eq(SysApprovalProcessConfiguration::getApprovalProcessId, id);
             List<SysApprovalProcessConfiguration> sysApprovalProcessConfigurations = iSysApprovalProcessConfigurationService.list(queryWrapper);

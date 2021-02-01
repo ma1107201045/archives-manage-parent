@@ -22,13 +22,13 @@ public interface ISysApprovalProcessService extends IService<SysApprovalProcess>
     @Transactional(rollbackFor = {Exception.class})
     void save(SysApprovalProcessFormDto sysApprovalProcessFormDto);
 
-    void parametersToProofread(SysApprovalProcessFormDto sysApprovalProcessFormDto);
-
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysApprovalProcessFormDto sysApprovalProcessFormDto);
 
     @Transactional(rollbackFor = {Exception.class})
     void saveSysApprovalProcessConfigurations(SysApprovalProcessFormDto sysApprovalProcessFormDto, Boolean isSave);
+
+    List<Integer> listByApprovalType(Short approvalType);
 
     Page<SysApprovalProcess> page(SysApprovalProcessQueryDto sysApprovalProcessQueryDto);
 

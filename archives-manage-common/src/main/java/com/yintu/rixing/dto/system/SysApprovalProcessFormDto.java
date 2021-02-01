@@ -24,9 +24,9 @@ public class SysApprovalProcessFormDto extends IdDto {
     @NotBlank
     private String name;
 
-    @ApiModelProperty(value = "审批模式 1.固定 2.灵活", required = true)
+    @ApiModelProperty(value = "审批类型 1.本地审批 2.远程审批", required = true)
     @NotNull
-    private Short approvalModel;
+    private Short approvalType;
 
     @ApiModelProperty(value = "是否审批 1.是 0.否", required = true)
     @NotNull

@@ -28,9 +28,9 @@ public class SysApprovalProcess extends BaseEntity {
     @TableField("name")
     private String name;
 
-    @ApiModelProperty(value = "审批模式 1.固定 2.灵活", position = 7)
-    @TableField("approval_model")
-    private Short approvalModel;
+    @ApiModelProperty(value = "审批类型 1.本地审批 2.远程审批", position = 7)
+    @TableField("approval_type")
+    private Short approvalType;
 
     @ApiModelProperty(value = "是否审批 1.是 0.否", position = 8)
     @TableField("approval")

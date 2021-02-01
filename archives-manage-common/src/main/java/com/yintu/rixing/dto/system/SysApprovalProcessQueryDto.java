@@ -20,10 +20,8 @@ import javax.validation.constraints.NotNull;
 public class SysApprovalProcessQueryDto extends PageDto {
 
     @ApiModelProperty(value = "配置名称")
-    @NotBlank
     private String name;
 
-    @ApiModelProperty(value = "审批模式 1.固定 2.灵活")
-    @NotNull
-    private Short approvalModel;
+    @ApiModelProperty(value = "审批类型 1.本地审批 2.远程审批")
+    private Short approvalType;
 }
