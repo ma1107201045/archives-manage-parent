@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yintu.rixing.config.jwt.JwtProperties;
 import com.yintu.rixing.config.jwt.JwtTokenUtil;
 import com.yintu.rixing.exception.BaseRuntimeException;
+import com.yintu.rixing.util.IdentityIdUtil;
 import com.yintu.rixing.util.PathIgnoringUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.jsonwebtoken.Claims;
@@ -42,6 +43,7 @@ public class AuthenticationTokenFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String path = StrUtil.split(request.getRequestURI(), '?').get(0);
         if (PathIgnoringUtil.antMatchers(request, path)) {
+
             List<String> ignores = jwtProperties.getIgnores();
             if (!PathIgnoringUtil.antMatchers(request, ignores, path)) {
                 String token = request.getHeader(jwtProperties.getHeader());
@@ -53,7 +55,7 @@ public class AuthenticationTokenFilter implements Filter {
                     if (claims.getExpiration().before(DateUtil.date())) {
                         throw new BaseRuntimeException("token已过期，请重新获取");
                     }
-                    request.setAttribute("identityId", claims.getSubject());//设置用户凭证id
+                    request.setAttribute(IdentityIdUtil.IDENTITY_ID_NAME, claims.getSubject());//设置用户凭证id
                 } catch (Exception exception) {
                     ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noJWTAuthentication("尚未认证，请先认证");
                     JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
@@ -65,6 +67,7 @@ public class AuthenticationTokenFilter implements Filter {
                     servletOutputStream.close();
                 }
             }
+
         }
         filterChain.doFilter(request, response);
     }

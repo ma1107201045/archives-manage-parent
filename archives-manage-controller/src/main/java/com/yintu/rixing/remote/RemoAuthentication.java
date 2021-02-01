@@ -11,6 +11,7 @@ import com.yintu.rixing.dto.remote.RemoAuthenticationRegisterDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysRemoteUserService;
 import com.yintu.rixing.system.SysRemoteUser;
+import com.yintu.rixing.util.IdentityIdUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.vo.remote.RemoAuthenticationVo;
 import io.swagger.annotations.Api;
@@ -20,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,10 +47,7 @@ public class RemoAuthentication {
     @ApiOperationSupport(order = 1)
     public ResultDataUtil<RemoAuthenticationVo> login(@Validated RemoAuthenticationLoginDto remoAuthenticationDto) {
         SysRemoteUser sysRemoteUser = iSysRemoteUserService.login(remoAuthenticationDto);
-        sysRemoteUser.setPassword(null);
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("userInfo", sysRemoteUser);
-        String token = jwtTokenUtil.createToken(sysRemoteUser.getId().toString(), userInfo);
+        String token = jwtTokenUtil.createToken(sysRemoteUser.getId().toString());
         RemoAuthenticationVo remoAuthenticationVo = new RemoAuthenticationVo();
         remoAuthenticationVo.setRemoteUser(BeanUtil.beanToMap(sysRemoteUser));
         remoAuthenticationVo.setToken(token);
@@ -66,7 +65,8 @@ public class RemoAuthentication {
 
     @GetMapping("/{id}")
     @ApiIgnore
-    public ResultDataUtil<SysRemoteUser> getById(@PathVariable Integer id) {
+    public ResultDataUtil<SysRemoteUser> getById(@PathVariable Integer id, HttpServletRequest request) {
+        Integer userId = IdentityIdUtil.get(request);
         SysRemoteUser sysRemoteUser = iSysRemoteUserService.getById(id);
         return ResultDataUtil.ok("获取远程用户成功", sysRemoteUser);
     }

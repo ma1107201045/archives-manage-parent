@@ -43,7 +43,7 @@ public class JwtTokenUtil {
      * @param subject 一般为用户名
      * @return token字符串
      */
-    public String createToken(String subject, Map<String, Object> map) {
+    public String createToken(String subject) {
         long expire = jwtProperties.getExpire();//过期失效
         String issuer = jwtProperties.getIssuer();//发行人
         Date nowDate = DateUtil.date();
@@ -54,7 +54,7 @@ public class JwtTokenUtil {
                 .setIssuedAt(nowDate) //发行时间
                 .setExpiration(expireDate)//过期时间
                 .setSubject(subject)//主题
-                .addClaims(map)//主体部分
+                //.addClaims(map)//主体部分
                 .signWith(SignatureAlgorithm.HS256, getSecretKey())// 签名部分
                 .compact();
     }
