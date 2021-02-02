@@ -3,6 +3,7 @@ package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.other.Authenticator;
@@ -33,7 +34,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-role")
 @Api(tags = "角色接口")
-@ApiSort(3)
+@ApiSupport(order = 3)
 public class SysRoleController extends Authenticator implements BaseController<SysRoleFormDto, SysRoleQueryDto, SysRole, Integer> {
     @Autowired
     private ISysRoleService iSysRoleService;

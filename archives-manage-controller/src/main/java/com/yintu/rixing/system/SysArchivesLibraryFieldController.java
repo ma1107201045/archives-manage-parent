@@ -4,6 +4,7 @@ package com.yintu.rixing.system;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.common.ICommTableFieldService;
@@ -32,8 +33,8 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/system/sys-archives-library-field")
-@ApiSort(10)
 @Api(tags = "档案库字段接口")
+@ApiSupport(order = 10)
 public class SysArchivesLibraryFieldController extends Authenticator implements BaseController<SysArchivesLibraryFieldFormDto, SysArchivesLibraryFieldQueryDto, SysArchivesLibraryField, Integer> {
 
     @Autowired

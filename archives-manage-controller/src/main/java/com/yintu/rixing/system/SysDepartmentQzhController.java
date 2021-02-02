@@ -3,6 +3,7 @@ package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.other.Authenticator;
@@ -29,8 +30,8 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/system/sys-department-qzh")
-@ApiSort(5)
 @Api(tags = "全宗号接口")
+@ApiSupport(order = 5)
 public class SysDepartmentQzhController extends Authenticator implements BaseController<SysDepartmentQzhFromDto, SysDepartmentQzhQueryDto, SysDepartmentQzh, Integer> {
 
     @Autowired

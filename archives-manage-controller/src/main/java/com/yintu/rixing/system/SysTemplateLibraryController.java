@@ -2,6 +2,7 @@ package com.yintu.rixing.system;
 
 
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.system.SysTemplateLibraryFormDto;
@@ -27,8 +28,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/system/sys-template-library")
-@ApiSort(7)
 @Api(tags = "模板库接口")
+@ApiSupport(order = 7)
 public class SysTemplateLibraryController extends Authenticator {
 
     @Autowired

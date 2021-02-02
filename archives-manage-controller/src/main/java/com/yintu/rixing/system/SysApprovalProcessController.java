@@ -3,6 +3,7 @@ package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.other.Authenticator;
@@ -32,7 +33,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-approval-process")
 @Api(tags = "审批流程接口")
-@ApiSort(6)
+@ApiSupport(order = 6)
 public class SysApprovalProcessController extends Authenticator implements BaseController<SysApprovalProcessFormDto, SysApprovalProcessQueryDto, SysApprovalProcess, Integer> {
 
     @Autowired

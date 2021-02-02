@@ -3,6 +3,7 @@ package com.yintu.rixing.security;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.security.SecLogQueryDto;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/security/sec-log")
 @Api(tags = "日志接口")
-@ApiSort(1)
 public class SecLogController extends Authenticator {
 
     @Autowired

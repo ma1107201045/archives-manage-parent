@@ -2,6 +2,7 @@ package com.yintu.rixing.system;
 
 
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFormDto;
@@ -27,8 +28,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/system/sys-archives-library")
-@ApiSort(9)
 @Api(tags = "档案库接口")
+@ApiSupport(order = 9)
 public class SysArchivesLibraryController extends Authenticator {
 
     @Autowired

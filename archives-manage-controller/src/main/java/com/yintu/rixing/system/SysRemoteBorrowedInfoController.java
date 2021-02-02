@@ -4,6 +4,7 @@ package com.yintu.rixing.system;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.system.SysRemoteBorrowedInfoQueryDto;
@@ -30,7 +31,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-remote-borrowed-info")
 @Api(tags = "远程用户借阅记录接口")
-@ApiSort(12)
+@ApiSupport(order = 12)
 public class SysRemoteBorrowedInfoController extends Authenticator {
 
     @Autowired

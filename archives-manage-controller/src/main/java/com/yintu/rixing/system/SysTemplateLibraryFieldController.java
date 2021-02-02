@@ -4,6 +4,7 @@ package com.yintu.rixing.system;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.other.Authenticator;
@@ -30,7 +31,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-template-library-field")
 @Api(tags = "模板库字段接口")
-@ApiSort(8)
+@ApiSupport(order = 8)
 public class SysTemplateLibraryFieldController extends Authenticator implements BaseController<SysTemplateLibraryFieldFormDto, SysTemplateLibraryFieldQueryDto, SysTemplateLibraryField, Integer> {
 
     @Autowired

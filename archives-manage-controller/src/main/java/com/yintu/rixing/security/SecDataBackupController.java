@@ -2,7 +2,9 @@ package com.yintu.rixing.security;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.base.PageDto;
@@ -29,7 +31,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/security/sec-data-backup")
 @Api(tags = "数据备份接口")
-@ApiSort(2)
+@ApiSupport(order = 2)
 public class SecDataBackupController extends Authenticator {
 
     @Autowired
@@ -38,7 +40,8 @@ public class SecDataBackupController extends Authenticator {
 
     @Log(level = EnumLogLevel.DEBUG, module = "安全中心", context = "数据备份")
     @PostMapping
-    @ApiOperation(value = "数据备份", notes = "数据备份", position = 1)
+    @ApiOperation(value = "数据备份", notes = "数据备份")
+    @ApiOperationSupport(order = 1)
     public ResultDataUtil<Object> backup(HttpServletRequest request) {
         iSecDataBackupService.backup(request, this.getLoginUserId(), this.getLoginUserName(), this.getLoginTrueName());
         return ResultDataUtil.ok("数据备份成功");
@@ -46,8 +49,9 @@ public class SecDataBackupController extends Authenticator {
 
     @Log(level = EnumLogLevel.WARN, module = "安全中心", context = "删除数据备份信息")
     @DeleteMapping("/{ids}")
-    @ApiOperation(value = "删除数据备份信息", notes = "删除数据备份信息", position = 2)
+    @ApiOperation(value = "删除数据备份信息", notes = "删除数据备份信息")
     @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
+    @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids) {
         iSecDataBackupService.remove(ids);
         return ResultDataUtil.ok("删除数据备份信息成功");
@@ -55,8 +59,9 @@ public class SecDataBackupController extends Authenticator {
 
     @Log(level = EnumLogLevel.INFO, module = "安全中心", context = " 数据还原")
     @PutMapping("/{id}")
-    @ApiOperation(value = "数据还原", notes = "数据还原", position = 3)
+    @ApiOperation(value = "数据还原", notes = "数据还原")
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    @ApiOperationSupport(order = 3)
     public ResultDataUtil<Object> restore(@PathVariable Integer id) {
         iSecDataBackupService.restore(id);
         return ResultDataUtil.ok("数据还原成功");
@@ -64,7 +69,8 @@ public class SecDataBackupController extends Authenticator {
 
     @Log(level = EnumLogLevel.TRACE, module = "安全中心", context = "查询数据备份列表信息")
     @GetMapping
-    @ApiOperation(value = "查询数据备份列表信息", notes = " 查询数据备份列表信息", position = 4)
+    @ApiOperation(value = "查询数据备份列表信息", notes = " 查询数据备份列表信息")
+    @ApiOperationSupport(order = 4)
     public ResultDataUtil<Page<SecDataBackup>> findPage(@Validated PageDto pageDto) {
         Page<SecDataBackup> page = iSecDataBackupService.page(pageDto);
         return ResultDataUtil.ok("查询数据备份列表信息成功", page);

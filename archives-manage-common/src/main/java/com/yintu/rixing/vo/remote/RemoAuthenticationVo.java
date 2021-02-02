@@ -15,7 +15,7 @@ import java.util.Map;
 @ApiModel
 public class RemoAuthenticationVo {
 
-    @ApiModelProperty(value = "远程用户", position = 1)
+    @ApiModelProperty(value = "远程用户信息", position = 1)
     private Map<String, Object> remoteUser;
 
     @ApiModelProperty(value = "token", position = 2)

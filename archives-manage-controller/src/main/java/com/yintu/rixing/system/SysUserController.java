@@ -4,6 +4,7 @@ package com.yintu.rixing.system;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.other.Authenticator;
@@ -33,7 +34,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/system/sys-user")
 @Api(tags = "用户接口")
-@ApiSort(2)
+@ApiSupport(order = 2)
 public class SysUserController extends Authenticator implements BaseController<SysUserFormDto, SysUserQueryDto, SysUser, Integer> {
     @Autowired
     private ISysUserService iSysUserService;

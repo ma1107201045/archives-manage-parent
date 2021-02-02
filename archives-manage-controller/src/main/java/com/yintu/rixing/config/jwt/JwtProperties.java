@@ -28,6 +28,7 @@ public class JwtProperties {
         List<String> ignores = new ArrayList<>();
         ignores.add("/remote/remo-authentication/login");
         ignores.add("/remote/remo-authentication/register");
+        ignores.add("/remote/remo-full-text-search");
         this.ignores = ignores;
     }
 }

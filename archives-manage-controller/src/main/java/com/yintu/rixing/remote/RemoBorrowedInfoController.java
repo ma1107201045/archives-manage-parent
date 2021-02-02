@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @Author: mlf
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/remote/remo-borrowed-info")
 @Api(tags = "远程用户借阅接口")
 @ApiSort(2)
+@ApiIgnore
 public class RemoBorrowedInfoController {
     @Autowired
     private ISysRemoteBorrowedInfoService iSysRemoteBorrowedInfoService;

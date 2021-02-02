@@ -3,6 +3,7 @@ package com.yintu.rixing.data;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
@@ -39,7 +40,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/data/data-archives-collection")
 @Api(tags = "档案收集接口")
-@ApiSort(0)
+@ApiSupport(order = 0)
 public class Data00ArchivesCollectionController extends Authenticator {
 
     @Autowired

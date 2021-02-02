@@ -2,6 +2,7 @@ package com.yintu.rixing.system;
 
 
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.system.SysDepartmentFormDto;
@@ -28,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/system/sys-department")
 @Api(tags = "组织机构接口（组织机构接口）")
-@ApiSort(1)
+@ApiSupport(order = 1)
 public class SysDepartmentController extends Authenticator {
     @Autowired
     private ISysDepartmentService iSysDepartmentService;

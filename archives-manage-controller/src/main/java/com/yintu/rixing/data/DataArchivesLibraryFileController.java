@@ -3,6 +3,7 @@ package com.yintu.rixing.data;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.config.other.Authenticator;
@@ -30,7 +31,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/data/data-archives-library-file")
 @Api(tags = "档案文件接口")
-@ApiSort(9)
+@ApiSupport(order = 9)
 public class DataArchivesLibraryFileController extends Authenticator implements BaseController<DataArchivesLibraryFileFormDto, DataArchivesLibraryFileQueryDto, DataArchivesLibraryFile, Integer> {
 
     @Autowired

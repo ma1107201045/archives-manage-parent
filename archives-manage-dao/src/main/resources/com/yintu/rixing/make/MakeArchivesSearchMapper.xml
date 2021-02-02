@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.rixing.make.MakeArchivesSearchMapper">
+
+    <select id="selectByKeyWord" resultType="com.yintu.rixing.pojo.MakeArchivesSearchPojo">
+        SELECT *
+        FROM (
+                 SELECT dalf.`id`                  AS archivesFileId,
+                        dalf.`create_time`,
+                        dalf.`original_name`       AS archivesFileOriginalName,
+                        dalf.`context`             AS archivesFileContext,
+                        dalf.`archives_library_id` AS archivesLibId,
+                        dalf.`data_id`             AS archivesDirectoryId,
+                        1                          AS archivesLibType
+                 FROM data_archives_library_file AS dalf
+                 WHERE MATCH(dalf.`original_name`, `context`)
+                             AGAINST(CONCAT('*', #{keyWord,jdbcType=VARCHAR}, '*') IN BOOLEAN MODE)
+                 UNION ALL
+                 SELECT dalf.`id`                  AS archivesFileId,
+                        dalf.`create_time`,
+                        dalf.`original_name`       AS archivesFileOriginalName,
+                        dalf.`context`             AS archivesFileContext,
+                        dalf.`archives_library_id` AS archivesLibId,
+                        dalf.`data_id`             AS archivesDirectoryId,
+                        2                          AS archivesLibType
+                 FROM data_archives_library_file AS dalf
+                 WHERE MATCH(dalf.`original_name`, `context`)
+                             AGAINST(CONCAT('*', #{keyWord,jdbcType=VARCHAR}, '*') IN BOOLEAN MODE)
+             ) AS make_result
+        ORDER BY create_time
+
+    </select>
+
+
+</mapper>

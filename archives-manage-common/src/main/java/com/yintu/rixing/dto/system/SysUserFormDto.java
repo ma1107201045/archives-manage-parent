@@ -24,11 +24,11 @@ import java.util.Set;
 @ApiModel
 public class SysUserFormDto extends IdDto {
 
-    @ApiModelProperty(value = "用户名", required = true)
+    @ApiModelProperty(value = "用户名", required = true, position = 1)
     @NotBlank
     private String username;
 
-    @ApiModelProperty(value = "密码")
+    @ApiModelProperty(value = "密码", position = 2)
     //@NotBlank 添加必须传 修改不需要
     private String password;
 

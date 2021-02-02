@@ -3,6 +3,7 @@ package com.yintu.rixing.data;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
@@ -34,7 +35,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/data/data-destruction-library")
 @Api(tags = "销毁库接口")
-@ApiSort(5)
+@ApiSupport(order = 5)
 public class Data05DestructionLibraryController extends Authenticator {
     @Autowired
     private IDataDestructionLibraryService dataDestructionLibraryService;

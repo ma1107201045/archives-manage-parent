@@ -41,7 +41,7 @@ public class RemoAuthenticationController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "远程借阅", context = "远程用户登陆")
+    @Log(level = EnumLogLevel.TRACE, module = "远程借阅", context = "远程用户登陆")
     @PostMapping("/login")
     @ApiOperation(value = "远程用户登陆", notes = "远程用户登陆")
     @ApiOperationSupport(order = 1)

@@ -3,6 +3,7 @@ package com.yintu.rixing.data;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumLogLevel;
@@ -33,7 +34,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/data/disease-archives-management")
 @Api(tags = "病档管理接口")
-@ApiSort(7)
+@ApiSupport(order = 7)
 public class Data06DiseaseArchivesManagementController extends Authenticator {
     @Autowired
     private IDataDiseaseArchivesManagementService iDataDiseaseArchivesManagementService;

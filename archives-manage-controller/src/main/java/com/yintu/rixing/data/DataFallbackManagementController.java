@@ -3,6 +3,7 @@ package com.yintu.rixing.data;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumLogLevel;
@@ -33,7 +34,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/data/data-fallback-management")
 @Api(tags = "回退管理接口")
-@ApiSort(6)
+@ApiSupport(order = 6)
 public class DataFallbackManagementController extends Authenticator {
 
     @Autowired

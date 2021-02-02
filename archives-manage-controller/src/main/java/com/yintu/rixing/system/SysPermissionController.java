@@ -2,6 +2,7 @@ package com.yintu.rixing.system;
 
 
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.system.SysPermissionFormDto;
@@ -29,7 +30,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/system/sys-permission")
 @Api(tags = "权限接口")
-@ApiSort(4)
+@ApiSupport(order = 4)
 public class SysPermissionController extends Authenticator {
 
     @Autowired

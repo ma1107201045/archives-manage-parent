@@ -3,6 +3,7 @@ package com.yintu.rixing.data;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
@@ -36,7 +37,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/data/data-temporary-library")
 @Api(tags = "临时库接口")
-@ApiSort(1)
+@ApiSupport(order = 1)
 public class Data01TemporaryLibraryController extends Authenticator {
 
     @Autowired
