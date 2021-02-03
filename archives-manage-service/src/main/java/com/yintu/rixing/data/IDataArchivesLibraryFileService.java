@@ -6,6 +6,7 @@ import com.yintu.rixing.dto.data.DataArchivesLibraryFileFormDto;
 import com.yintu.rixing.dto.data.DataArchivesLibraryFileQueryDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,6 +36,11 @@ public interface IDataArchivesLibraryFileService extends IService<DataArchivesLi
 
     @Transactional(rollbackFor = {Exception.class})
     void updateRemark(Integer id, String remark);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void updateFormalLibrary(Short formalLibrary, Integer archivesLibraryId, Integer dataId);
+
+    List<Integer> listByArchivesLibraryIdAndDataId(Integer archivesLibraryId, Integer dataId);
 
     Page<DataArchivesLibraryFile> page(DataArchivesLibraryFileQueryDto dataArchivesLibraryFileQueryDto);
 }

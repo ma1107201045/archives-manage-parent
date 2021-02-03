@@ -3,30 +3,15 @@
 <mapper namespace="com.yintu.rixing.make.MakeArchivesSearchMapper">
 
     <select id="selectByKeyWord" resultType="com.yintu.rixing.pojo.MakeArchivesSearchPojo">
-        SELECT *
-        FROM (
-                 SELECT dalf.`id`                  AS archivesFileId,
-                        dalf.`create_time`,
-                        dalf.`original_name`       AS archivesFileOriginalName,
-                        dalf.`context`             AS archivesFileContext,
-                        dalf.`archives_library_id` AS archivesLibId,
-                        dalf.`data_id`             AS archivesDirectoryId,
-                        1                          AS archivesLibType
-                 FROM data_archives_library_file AS dalf
-                 WHERE MATCH(dalf.`original_name`, `context`)
-                             AGAINST(CONCAT('*', #{keyWord,jdbcType=VARCHAR}, '*') IN BOOLEAN MODE)
-                 UNION ALL
-                 SELECT dalf.`id`                  AS archivesFileId,
-                        dalf.`create_time`,
-                        dalf.`original_name`       AS archivesFileOriginalName,
-                        dalf.`context`             AS archivesFileContext,
-                        dalf.`archives_library_id` AS archivesLibId,
-                        dalf.`data_id`             AS archivesDirectoryId,
-                        2                          AS archivesLibType
-                 FROM data_archives_library_file AS dalf
-                 WHERE MATCH(dalf.`original_name`, `context`)
-                             AGAINST(CONCAT('*', #{keyWord,jdbcType=VARCHAR}, '*') IN BOOLEAN MODE)
-             ) AS make_result
+        SELECT dalf.`id`                  AS archivesFileId,
+               dalf.`create_time`,
+               dalf.`original_name`       AS archivesFileOriginalName,
+               dalf.`context`             AS archivesFileContext,
+               dalf.`archives_library_id` AS archivesLibId,
+               dalf.`data_id`             AS archivesDirectoryId
+        FROM data_archives_library_file AS dalf
+        WHERE MATCH(dalf.`original_name`, `context`)
+                    AGAINST(CONCAT('*', #{keyWord,jdbcType=VARCHAR}, '*') IN BOOLEAN MODE)
         ORDER BY create_time
 
     </select>

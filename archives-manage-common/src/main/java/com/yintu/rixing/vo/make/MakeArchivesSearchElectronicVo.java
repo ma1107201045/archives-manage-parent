@@ -11,16 +11,13 @@ import lombok.Data;
  */
 @Data
 @ApiModel
-public class MakeArchivesSearchVo {
+public class MakeArchivesSearchElectronicVo {
 
     @ApiModelProperty(value = "档案库id", position = 1)
     private Integer archivesLibId;
 
     @ApiModelProperty(value = "档案库名称", position = 2)
     private String archivesLibName;
-
-    @ApiModelProperty(value = "档案库类型 1.电子档案库 2.实体档案库", position = 3)
-    private Short archivesLibType;
 
     @ApiModelProperty(value = "档案目录id", position = 4)
     private Integer archivesDirectoryId;

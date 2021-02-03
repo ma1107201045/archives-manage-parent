@@ -7,6 +7,7 @@ import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
+import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.system.SysDepartment;
 import com.yintu.rixing.vo.data.DataCommonFieldVo;
 import com.yintu.rixing.vo.data.DataCommonVo;
@@ -32,6 +33,8 @@ public class DataSortingLibraryServiceImpl extends DataCommonService implements 
     private DataSortingLibraryMapper dataSortingLibraryMapper;
     @Autowired
     private IDataFallbackManagementService iDataFallbackManagementService;
+    @Autowired
+    private IDataArchivesLibraryFileService iDataArchivesLibraryFileService;
 
     @Override
     public void save(DataCommonFormDto dataCommonFormDto) {
@@ -79,6 +82,10 @@ public class DataSortingLibraryServiceImpl extends DataCommonService implements 
             //从整理库回退到临时库时需要添加回退记录
             if (EnumArchivesOrder.TEMPORARY_LIBRARY.getValue().equals(status)) {
                 iDataFallbackManagementService.save(dataCommon.getTableName(), map);
+            }
+            //从整理库移交正式库 改变档案文件状态
+            if (EnumArchivesOrder.FORMAL_LIBRARY.getValue().equals(status)) {
+                iDataArchivesLibraryFileService.updateFormalLibrary(EnumFlag.True.getValue(), archivesLibraryId, id);
             }
             dataCommon.setDataCommonKVs(dataCommonKVS);
             dataSortingLibraryMapper.updateByPrimaryKeySelective(dataCommon);

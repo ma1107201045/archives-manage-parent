@@ -2,18 +2,16 @@ package com.yintu.rixing.make.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.IDataFormalLibraryService;
-import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
+import com.yintu.rixing.dto.make.MakeArchivesSearchElectronicDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
-import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.make.IMakeArchivesSearchService;
 import com.yintu.rixing.make.MakeArchivesSearchMapper;
 import com.yintu.rixing.pojo.MakeArchivesSearchPojo;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.system.SysArchivesLibrary;
-import com.yintu.rixing.vo.make.MakeArchivesSearchVo;
+import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,35 +34,28 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
     private IDataFormalLibraryService iDataFormalLibraryService;
 
     @Override
-    public IPage<MakeArchivesSearchVo> listByKeyWord(MakeArchivesSearchDto makeArchivesSearchDto) {
-        Page<MakeArchivesSearchVo> page1 = new Page<>();
+    public IPage<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchElectronicDto makeArchivesSearchDto) {
+
+
+        Page<MakeArchivesSearchElectronicVo> page1 = new Page<>();
         Integer num = makeArchivesSearchDto.getNum();
         Integer size = makeArchivesSearchDto.getSize();
         String keyWord = makeArchivesSearchDto.getKeyWord();
         Page<MakeArchivesSearchPojo> page2 = makeArchivesSearchMapper.selectByKeyWord(new Page<>(num, size), keyWord);
         BeanUtil.copyProperties(page2, page1, "records");
         List<MakeArchivesSearchPojo> makeArchivesSearchPojos = page2.getRecords();
-        List<MakeArchivesSearchVo> makeArchivesSearchVos = new ArrayList<>();
+        List<MakeArchivesSearchElectronicVo> makeArchivesSearchVos = new ArrayList<>();
         for (MakeArchivesSearchPojo makeArchivesSearchPojo : makeArchivesSearchPojos) {
             Integer archivesLibId = makeArchivesSearchPojo.getArchivesLibId();
-            Short archivesLibType = makeArchivesSearchPojo.getArchivesLibType();
             Integer archivesDirectoryId = makeArchivesSearchPojo.getArchivesDirectoryId();
-            MakeArchivesSearchVo makeArchivesSearchVo = new MakeArchivesSearchVo();
+            MakeArchivesSearchElectronicVo makeArchivesSearchVo = new MakeArchivesSearchElectronicVo();
             BeanUtil.copyProperties(makeArchivesSearchPojo, makeArchivesSearchVo);
-            if (archivesLibType.equals((short) 1)) { //电子档案
-                SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibId);
-                String name = sysArchivesLibrary.getName();
-                makeArchivesSearchVo.setArchivesLibName(name);
-                Map<String, Object> map = iDataFormalLibraryService.getById(archivesDirectoryId, archivesLibId);
-                if (map != null) {//如果文件
-                    if ((Integer) map.get(EnumArchivesLibraryDefaultField.STATUS.getDataKey()) != 3)//不是正式库过滤掉
-                        continue;
-                    else
-                        makeArchivesSearchVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
-                } else continue;
-
-            } else {// 实体档案
-
+            SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibId);
+            String name = sysArchivesLibrary.getName();
+            makeArchivesSearchVo.setArchivesLibName(name);
+            Map<String, Object> map = iDataFormalLibraryService.getById(archivesDirectoryId, archivesLibId);
+            if (map != null) {//如果文件
+                makeArchivesSearchVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
             }
             makeArchivesSearchVos.add(makeArchivesSearchVo);
         }

@@ -85,9 +85,9 @@ public class Data02SortingLibraryController extends Authenticator {
         return ResultDataUtil.ok("修改整理库信息成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "整理库信息回退整理库")
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "整理库信息回退临时库")
     @PatchMapping("/rollback/{id}")
-    @ApiOperation(value = "整理库信息回退整理库", notes = "整理库信息回退整理库")
+    @ApiOperation(value = "整理库信息回退临时库", notes = "整理库信息回退临时库")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
@@ -95,7 +95,7 @@ public class Data02SortingLibraryController extends Authenticator {
     @ApiOperationSupport(order = 4)
     public ResultDataUtil<Object> rollback(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
         iDataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
-        return ResultDataUtil.ok("整理库信息回退整理库成功");
+        return ResultDataUtil.ok("整理库信息回退临时库成功");
     }
 
     @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "整理库信息移交正式库")

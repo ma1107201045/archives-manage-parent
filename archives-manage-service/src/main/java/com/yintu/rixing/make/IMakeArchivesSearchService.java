@@ -1,8 +1,8 @@
 package com.yintu.rixing.make;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
-import com.yintu.rixing.vo.make.MakeArchivesSearchVo;
+import com.yintu.rixing.dto.make.MakeArchivesSearchElectronicDto;
+import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
 
 /**
  * @Author: mlf
@@ -12,5 +12,11 @@ import com.yintu.rixing.vo.make.MakeArchivesSearchVo;
 public interface IMakeArchivesSearchService {
 
 
-    IPage<MakeArchivesSearchVo> listByKeyWord(MakeArchivesSearchDto makeArchivesSearchDto);
+    /**
+     * 档案检索电子档
+     *
+     * @param makeArchivesSearchElectronicDto ..
+     * @return ..
+     */
+    IPage<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchElectronicDto makeArchivesSearchElectronicDto);
 }
