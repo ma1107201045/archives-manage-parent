@@ -2,6 +2,8 @@ package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 系统审批流程配置中间表 服务类
@@ -12,9 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysApprovalProcessConfigurationService extends IService<SysApprovalProcessConfiguration> {
 
-
-
-
-
-
+    List<SysApprovalProcessConfiguration> listByApprovalProcessId(Integer approvalProcessId);
 }
