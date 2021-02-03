@@ -49,8 +49,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             MakeArchivesSearchElectronicVo makeArchivesSearchVo = new MakeArchivesSearchElectronicVo();
             BeanUtil.copyProperties(makeArchivesSearchPojo, makeArchivesSearchVo);
             SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibId);
-            String name = sysArchivesLibrary.getName();
-            makeArchivesSearchVo.setArchivesLibName(name);
+            makeArchivesSearchVo.setArchivesLibName(sysArchivesLibrary.getName());
             Map<String, Object> map = iDataFormalLibraryService.getById(archivesDirectoryId, archivesLibId);
             if (map != null) {
                 makeArchivesSearchVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));

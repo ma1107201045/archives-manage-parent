@@ -36,7 +36,7 @@ public class MakeBorrowAuditor extends BaseEntity {
 
     @ApiModelProperty(value = "排序")
     @TableField("sort")
-    private Short sort;
+    private Integer sort;
 
     @ApiModelProperty(value = "当前人是否在审核中 1.是 0.否")
     @TableField("activate")

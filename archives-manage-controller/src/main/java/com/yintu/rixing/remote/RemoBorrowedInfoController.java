@@ -6,11 +6,15 @@ import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.dto.make.MakeBorrowRemoteFormDto;
 import com.yintu.rixing.dto.make.MakeBorrowRemoteQueryDto;
+import com.yintu.rixing.dto.system.SysUserQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
+import com.yintu.rixing.make.IMakeBorrowPurposeService;
 import com.yintu.rixing.make.IMakeBorrowService;
+import com.yintu.rixing.make.MakeBorrowPurpose;
+import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.IdentityIdUtil;
 import com.yintu.rixing.util.ResultDataUtil;
-import com.yintu.rixing.vo.make.MakeBorrowRemoteQueryVo;
+import com.yintu.rixing.vo.make.MakeBorrowRemoteVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,6 +38,8 @@ import java.util.Set;
 public class RemoBorrowedInfoController {
     @Autowired
     private IMakeBorrowService iMakeBorrowService;
+    @Autowired
+    private IMakeBorrowPurposeService iMakeBorrowPurposeService;
 
     @Log(level = EnumLogLevel.DEBUG, module = "远程借阅", context = "添加远程用户借阅信息")
     @PostMapping
@@ -48,6 +55,7 @@ public class RemoBorrowedInfoController {
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除用户信息", notes = "删除用户信息", position = 2)
     @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path")
+    @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids) {
         iMakeBorrowService.removeByIds(ids);
         return ResultDataUtil.ok("删除远程用户借阅信息成功");
@@ -56,10 +64,20 @@ public class RemoBorrowedInfoController {
     @Log(level = EnumLogLevel.DEBUG, module = "远程借阅", context = "查看我的借阅记录信息")
     @GetMapping
     @ApiOperation(value = "查看我的借阅记录信息", notes = "查看我的借阅记录信息")
-    @ApiOperationSupport(order = 2)
-    public ResultDataUtil<Object> findPage(HttpServletRequest request, @Validated MakeBorrowRemoteQueryDto makeBorrowRemoteQueryDto) {
+    @ApiOperationSupport(order = 3)
+    public ResultDataUtil<Page<MakeBorrowRemoteVo>> findPage(HttpServletRequest request, @Validated MakeBorrowRemoteQueryDto makeBorrowRemoteQueryDto) {
         makeBorrowRemoteQueryDto.setUserId(IdentityIdUtil.get(request));
-        Page<MakeBorrowRemoteQueryVo> makeBorrowRemoteQueryVoPage = iMakeBorrowService.pageRemote(makeBorrowRemoteQueryDto);
+        Page<MakeBorrowRemoteVo> makeBorrowRemoteQueryVoPage = iMakeBorrowService.pageRemote(makeBorrowRemoteQueryDto);
         return ResultDataUtil.ok("查看我的借阅记录信息成功", makeBorrowRemoteQueryVoPage);
     }
+
+    @Log(level = EnumLogLevel.TRACE, module = "远程借阅", context = "查询远程借阅利用列表信息")
+    @GetMapping
+    @ApiOperation(value = "查询远程借阅利用列表信息", notes = "查询远程借阅利用列表信息")
+    @ApiOperationSupport(order = 3)
+    public ResultDataUtil<List<MakeBorrowPurpose>> findBorrowPurposes() {
+        List<MakeBorrowPurpose> makeBorrowPurposes = iMakeBorrowPurposeService.list();
+        return ResultDataUtil.ok("查询远程借阅利用列表信息成功", makeBorrowPurposes);
+    }
+
 }
