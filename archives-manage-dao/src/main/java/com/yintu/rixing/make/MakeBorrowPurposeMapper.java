@@ -5,13 +5,13 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- * 利用中心的借阅申请表 Mapper 接口
+ * 利用目的表 Mapper 接口
  * </p>
  *
  * @author mlf
  * @since 2021-02-03
  */
 @Mapper
-public interface MakeBorrowMapper extends BaseMapper<MakeBorrow> {
+public interface MakeBorrowPurposeMapper extends BaseMapper<MakeBorrowPurpose> {
 
 }

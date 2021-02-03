@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 利用中心的借阅申请表 前端控制器
+ * 借阅申请文件和审核人中间表 前端控制器
  * </p>
  *
  * @author mlf
  * @since 2021-02-03
  */
 @RestController
-@RequestMapping("/make/make-borrow")
-public class MakeBorrowController {
+@RequestMapping("/make/make-borrow-auditor")
+public class MakeBorrowAuditorController {
 
 }

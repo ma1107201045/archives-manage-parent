@@ -4,13 +4,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- * 利用中心的借阅申请表 服务类
+ * 借阅申请文件和审核人中间表 服务类
  * </p>
  *
  * @author mlf
  * @since 2021-02-03
  */
-public interface IMakeBorrowService extends IService<MakeBorrow> {
-
+public interface IMakeBorrowAuditorService extends IService<MakeBorrowAuditor> {
 
 }

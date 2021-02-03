@@ -1,70 +1,42 @@
 package com.yintu.rixing.make;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.yintu.rixing.BaseEntity;
-import java.util.Date;
-
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Date;
 
 /**
  * <p>
  * 利用中心的借阅申请表
  * </p>
  *
- * @author Mr.liu
- * @since 2021-01-11
+ * @author mlf
+ * @since 2021-02-03
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("make_borrow")
-@ApiModel(value="UtilizationCenterBorrow对象", description="利用中心的借阅申请表")
+@ApiModel(value="MakeBorrow对象", description="利用中心的借阅申请表")
 public class MakeBorrow extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "借阅人id")
+    @TableField("user_id")
+    private Integer userId;
+
     @ApiModelProperty(value = "文件id")
-    @TableField("fileid")
-    private Integer fileid;
+    @TableField("file_id")
+    private Integer fileId;
 
-    @ApiModelProperty(value = "借阅人姓名")
-    @TableField("name")
-    private String name;
-
-    @ApiModelProperty(value = "借阅人身份")
-    @TableField("identity")
-    private Integer identity;
-
-    @ApiModelProperty(value = "证件类型")
-    @TableField("certificate_type")
-    private Integer certificateType;
-
-    @ApiModelProperty(value = "证件号码")
-    @TableField("certificate_number")
-    private String certificateNumber;
-
-    @ApiModelProperty(value = "学院或者单位")
-    @TableField("college_or_unit")
-    private String collegeOrUnit;
-
-    @ApiModelProperty(value = "联系电话")
-    @TableField("phone_number")
-    private String phoneNumber;
-
-    @ApiModelProperty(value = "查阅目的")
-    @TableField("purpose")
-    private String purpose;
-
-    @ApiModelProperty(value = "备注")
-    @TableField("remarks")
-    private String remarks;
-
-    @ApiModelProperty(value = "借阅类型 1：电子借阅  2：实体借阅")
-    @TableField("borrow_type")
-    private Integer borrowType;
+    @ApiModelProperty(value = "利用目的id")
+    @TableField("make_id")
+    private Integer makeId;
 
     @ApiModelProperty(value = "借阅开始时间")
     @TableField("borrow_start_time")
@@ -73,6 +45,30 @@ public class MakeBorrow extends BaseEntity {
     @ApiModelProperty(value = "借阅结束时间")
     @TableField("borrow_end_time")
     private Date borrowEndTime;
+
+    @ApiModelProperty(value = "借阅类型 1：电子借阅  2：实体借阅")
+    @TableField("borrow_type")
+    private Integer borrowType;
+
+    @ApiModelProperty(value = "内部和远程人员区分 1：内部   2：远程")
+    @TableField("user_type")
+    private Integer userType;
+
+    @ApiModelProperty(value = "预览类型 0：不可预览  1：可预览")
+    @TableField("preview_type")
+    private Integer previewType;
+
+    @ApiModelProperty(value = "备注")
+    @TableField("remarks")
+    private String remarks;
+
+    @ApiModelProperty(value = "审核状态 1.正常 2.审核中 3.通过 4.拒绝")
+    @TableField("audit_status")
+    private Integer auditStatus;
+
+    @ApiModelProperty(value = "审核完成时间")
+    @TableField("audit_finish_time")
+    private Date auditFinishTime;
 
 
 }
