@@ -34,7 +34,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
     private IDataFormalLibraryService iDataFormalLibraryService;
 
     @Override
-    public IPage<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchElectronicDto makeArchivesSearchDto) {
+    public Page<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchElectronicDto makeArchivesSearchDto) {
         Page<MakeArchivesSearchElectronicVo> page1 = new Page<>();
         Integer num = makeArchivesSearchDto.getNum();
         Integer size = makeArchivesSearchDto.getSize();

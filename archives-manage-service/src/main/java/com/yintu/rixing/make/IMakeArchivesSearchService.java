@@ -1,6 +1,7 @@
 package com.yintu.rixing.make;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.dto.make.MakeArchivesSearchElectronicDto;
 import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
 
@@ -18,5 +19,5 @@ public interface IMakeArchivesSearchService {
      * @param makeArchivesSearchElectronicDto ..
      * @return ..
      */
-    IPage<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchElectronicDto makeArchivesSearchElectronicDto);
+    Page<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchElectronicDto makeArchivesSearchElectronicDto);
 }

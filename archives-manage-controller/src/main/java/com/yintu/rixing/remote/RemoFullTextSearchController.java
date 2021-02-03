@@ -1,6 +1,7 @@
 package com.yintu.rixing.remote;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
@@ -35,9 +36,9 @@ public class RemoFullTextSearchController {
     @GetMapping
     @ApiOperation(value = "远程全文检索", notes = "远程全文检索")
     @ApiOperationSupport(order = 1)
-    public ResultDataUtil<IPage<MakeArchivesSearchElectronicVo>> login(@Validated MakeArchivesSearchElectronicDto makeArchivesSearchElectronicDto) {
-        IPage<MakeArchivesSearchElectronicVo> makeArchivesSearchVoIPage = iMakeArchivesSearchService.listElectronicByKeyWord(makeArchivesSearchElectronicDto);
-        return ResultDataUtil.ok("远程全文检索成功", makeArchivesSearchVoIPage);
+    public ResultDataUtil<Page<MakeArchivesSearchElectronicVo>> searchElectronic(@Validated MakeArchivesSearchElectronicDto makeArchivesSearchElectronicDto) {
+        Page<MakeArchivesSearchElectronicVo> makeArchivesSearchElectronicVoPage = iMakeArchivesSearchService.listElectronicByKeyWord(makeArchivesSearchElectronicDto);
+        return ResultDataUtil.ok("远程全文检索成功", makeArchivesSearchElectronicVoPage);
     }
 
 }
