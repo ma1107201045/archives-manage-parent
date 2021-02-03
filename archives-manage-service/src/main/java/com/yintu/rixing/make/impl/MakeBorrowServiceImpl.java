@@ -13,6 +13,7 @@ import com.yintu.rixing.system.ISysApprovalProcessConfigurationService;
 import com.yintu.rixing.system.ISysApprovalProcessService;
 import com.yintu.rixing.system.SysApprovalProcess;
 import com.yintu.rixing.system.SysApprovalProcessConfiguration;
+import com.yintu.rixing.vo.make.MakeBorrowRemoteQueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +70,7 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     }
 
     @Override
-    public Page<MakeBorrow> pageRemote(MakeBorrowRemoteQueryDto makeBorrowQueryElectronicDto) {
+    public Page<MakeBorrowRemoteQueryVo> pageRemote(MakeBorrowRemoteQueryDto makeBorrowQueryElectronicDto) {
         Integer num = makeBorrowQueryElectronicDto.getNum();
         Integer size = makeBorrowQueryElectronicDto.getSize();
         Integer userId = makeBorrowQueryElectronicDto.getUserId();

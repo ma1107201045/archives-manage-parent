@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.make.MakeBorrowRemoteFormDto;
 import com.yintu.rixing.dto.make.MakeBorrowRemoteQueryDto;
+import com.yintu.rixing.vo.make.MakeBorrowRemoteQueryVo;
 
 /**
  * <p>
@@ -15,8 +16,8 @@ import com.yintu.rixing.dto.make.MakeBorrowRemoteQueryDto;
  */
 public interface IMakeBorrowService extends IService<MakeBorrow> {
 
-    void saveRemote(MakeBorrowRemoteFormDto makeBorrowFormElectronicDto);
+    void saveRemote(MakeBorrowRemoteFormDto borrowRemoteFormDto);
 
-    Page<MakeBorrow> pageRemote(MakeBorrowRemoteQueryDto makeBorrowQueryElectronicDto);
+    Page<MakeBorrowRemoteQueryVo> pageRemote(MakeBorrowRemoteQueryDto makeBorrowQueryElectronicDto);
 
 }

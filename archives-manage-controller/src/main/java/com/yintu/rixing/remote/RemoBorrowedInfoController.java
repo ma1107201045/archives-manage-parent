@@ -1,5 +1,6 @@
 package com.yintu.rixing.remote;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
@@ -9,15 +10,16 @@ import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.make.IMakeBorrowService;
 import com.yintu.rixing.util.IdentityIdUtil;
 import com.yintu.rixing.util.ResultDataUtil;
+import com.yintu.rixing.vo.make.MakeBorrowRemoteQueryVo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 /**
  * @Author: mlf
@@ -42,13 +44,22 @@ public class RemoBorrowedInfoController {
         return ResultDataUtil.ok("添加远程用户借阅信息成功");
     }
 
+    @Log(level = EnumLogLevel.WARN, module = "远程借阅", context = "删除远程用户借阅信息")
+    @DeleteMapping("/{ids}")
+    @ApiOperation(value = "删除用户信息", notes = "删除用户信息", position = 2)
+    @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path")
+    public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids) {
+        iMakeBorrowService.removeByIds(ids);
+        return ResultDataUtil.ok("删除远程用户借阅信息成功");
+    }
+
     @Log(level = EnumLogLevel.DEBUG, module = "远程借阅", context = "查看我的借阅记录信息")
-    @PostMapping
+    @GetMapping
     @ApiOperation(value = "查看我的借阅记录信息", notes = "查看我的借阅记录信息")
     @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> findPage(HttpServletRequest request, @Validated MakeBorrowRemoteQueryDto makeBorrowRemoteQueryDto) {
         makeBorrowRemoteQueryDto.setUserId(IdentityIdUtil.get(request));
-        iMakeBorrowService.pageRemote(makeBorrowRemoteQueryDto);
-        return ResultDataUtil.ok("查看我的借阅记录信息成功");
+        Page<MakeBorrowRemoteQueryVo> makeBorrowRemoteQueryVoPage = iMakeBorrowService.pageRemote(makeBorrowRemoteQueryDto);
+        return ResultDataUtil.ok("查看我的借阅记录信息成功", makeBorrowRemoteQueryVoPage);
     }
 }
