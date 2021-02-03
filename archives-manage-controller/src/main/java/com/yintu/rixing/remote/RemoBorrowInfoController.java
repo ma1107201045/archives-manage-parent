@@ -32,10 +32,10 @@ import java.util.Set;
  * @Version: 1.0
  */
 @RestController
-@RequestMapping("/remote/remo-borrowed-info")
+@RequestMapping("/remote/remo-borrow-info")
 @Api(tags = "远程用户借阅接口")
 @ApiSupport(order = 3)
-public class RemoBorrowedInfoController {
+public class RemoBorrowInfoController {
     @Autowired
     private IMakeBorrowService iMakeBorrowService;
     @Autowired
@@ -72,7 +72,7 @@ public class RemoBorrowedInfoController {
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "远程借阅", context = "查询远程借阅利用列表信息")
-    @GetMapping
+    @GetMapping("/remo-borrow-purpose")
     @ApiOperation(value = "查询远程借阅利用列表信息", notes = "查询远程借阅利用列表信息")
     @ApiOperationSupport(order = 3)
     public ResultDataUtil<List<MakeBorrowPurpose>> findBorrowPurposes() {
