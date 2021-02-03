@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.IDataFormalLibraryService;
 import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
+import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.make.IMakeArchivesSearchService;
 import com.yintu.rixing.make.MakeArchivesSearchMapper;
 import com.yintu.rixing.pojo.MakeArchivesSearchPojo;
@@ -52,12 +53,16 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             BeanUtil.copyProperties(makeArchivesSearchPojo, makeArchivesSearchVo);
             if (archivesLibType.equals((short) 1)) { //电子档案
                 SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibId);
-                if (sysArchivesLibrary != null) {
-                    String name = sysArchivesLibrary.getName();
-                    makeArchivesSearchVo.setArchivesLibName(name);
-                    Map<String, Object> map = iDataFormalLibraryService.getById(archivesDirectoryId, archivesLibId);
-                    makeArchivesSearchVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
-                }
+                String name = sysArchivesLibrary.getName();
+                makeArchivesSearchVo.setArchivesLibName(name);
+                Map<String, Object> map = iDataFormalLibraryService.getById(archivesDirectoryId, archivesLibId);
+                if (map != null) {//如果文件
+                    if ((Integer) map.get(EnumArchivesLibraryDefaultField.STATUS.getDataKey()) != 3)//不是正式库过滤掉
+                        continue;
+                    else
+                        makeArchivesSearchVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
+                } else continue;
+
             } else {// 实体档案
 
             }
@@ -66,4 +71,5 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
         page1.setRecords(makeArchivesSearchVos);
         return page1;
     }
+
 }
