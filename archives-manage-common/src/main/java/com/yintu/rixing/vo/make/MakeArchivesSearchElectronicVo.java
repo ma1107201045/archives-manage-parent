@@ -25,12 +25,27 @@ public class MakeArchivesSearchElectronicVo {
     @ApiModelProperty(value = "档案目录编号", position = 5)
     private String archivesDirectoryNum;
 
-    @ApiModelProperty(value = "档案文件id", position = 6)
+    @ApiModelProperty(value = "档案目录题名", position = 6)
+    private String archivesDirectoryTopicName;
+
+    @ApiModelProperty(value = "档案目录保管期限", position = 7)
+    private Object archivesDirectoryRetentionPeriod;
+
+    @ApiModelProperty(value = "档案目录有效期", position = 8)
+    private Object archivesDirectoryValidPeriod;
+
+    @ApiModelProperty(value = "档案目录密级", position = 9)
+    private Object archivesDirectorySecurityLevel;
+
+    @ApiModelProperty(value = "档案目录归档年份", position = 10)
+    private String archivesDirectoryFilingAnnual;
+
+    @ApiModelProperty(value = "档案文件id", position = 11)
     private Integer archivesFileId;
 
-    @ApiModelProperty(value = "档案文件名", position = 7)
+    @ApiModelProperty(value = "档案文件名", position = 12)
     private String archivesFileOriginalName;
 
-    @ApiModelProperty(value = "档案文件内容", position = 8)
+    @ApiModelProperty(value = "档案文件内容", position = 13)
     private String archivesFileContext;
 }

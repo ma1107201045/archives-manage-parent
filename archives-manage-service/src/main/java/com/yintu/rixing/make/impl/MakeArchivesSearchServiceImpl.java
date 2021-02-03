@@ -35,8 +35,6 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
 
     @Override
     public IPage<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchElectronicDto makeArchivesSearchDto) {
-
-
         Page<MakeArchivesSearchElectronicVo> page1 = new Page<>();
         Integer num = makeArchivesSearchDto.getNum();
         Integer size = makeArchivesSearchDto.getSize();
@@ -54,8 +52,13 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             String name = sysArchivesLibrary.getName();
             makeArchivesSearchVo.setArchivesLibName(name);
             Map<String, Object> map = iDataFormalLibraryService.getById(archivesDirectoryId, archivesLibId);
-            if (map != null) {//如果文件
+            if (map != null) {
                 makeArchivesSearchVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
+                makeArchivesSearchVo.setArchivesDirectoryTopicName((String) map.get(EnumArchivesLibraryDefaultField.TOPIC_NAME.getDataKey()));
+                makeArchivesSearchVo.setArchivesDirectoryRetentionPeriod(map.get(EnumArchivesLibraryDefaultField.RETENTION_PERIOD.getDataKey()));
+                makeArchivesSearchVo.setArchivesDirectoryValidPeriod(map.get(EnumArchivesLibraryDefaultField.VALID_PERIOD.getDataKey()));
+                makeArchivesSearchVo.setArchivesDirectorySecurityLevel(map.get(EnumArchivesLibraryDefaultField.SECURITY_LEVEL.getDataKey()));
+                makeArchivesSearchVo.setArchivesDirectoryFilingAnnual((String) map.get(EnumArchivesLibraryDefaultField.FILING_ANNUAL.getDataKey()));
             }
             makeArchivesSearchVos.add(makeArchivesSearchVo);
         }

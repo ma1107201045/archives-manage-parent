@@ -4,16 +4,17 @@
 
     <select id="selectByKeyWord" resultType="com.yintu.rixing.pojo.MakeArchivesSearchPojo">
         SELECT dalf.`id`                  AS archivesFileId,
-               dalf.`create_time`,
+               dalf.`modified_time`,
                dalf.`original_name`       AS archivesFileOriginalName,
                dalf.`context`             AS archivesFileContext,
                dalf.`archives_library_id` AS archivesLibId,
                dalf.`data_id`             AS archivesDirectoryId
         FROM data_archives_library_file AS dalf
-        WHERE MATCH(dalf.`original_name`, `context`)
-                    AGAINST(CONCAT('*', #{keyWord,jdbcType=VARCHAR}, '*') IN BOOLEAN MODE)
-        ORDER BY create_time
-
+        WHERE dalf.`formal_library` = 1
+          AND MATCH(dalf.`original_name`, `context`)
+                    AGAINST(CONCAT('*', #{keyWord,jdbcType=VARCHAR}
+                                , '*') IN BOOLEAN MODE)
+        ORDER BY `modified_time`
     </select>
 
 </mapper>

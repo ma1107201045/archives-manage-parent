@@ -84,7 +84,7 @@ public class DataDestructionLibraryServiceImpl extends DataCommonService impleme
             if (map.containsKey(dataKey)) {
                 Object o = map.get(dataKey);
                 if (o != null) {
-                    if (DateUtil.parseDate(DateUtil.today()).isBeforeOrEquals((Date) o)) {
+                    if (DateUtil.parseDate(DateUtil.today()).isAfterOrEquals((Date) o)) {
                         DataCommonKV dataCommonKV = new DataCommonKV();
                         dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
                         dataCommonKV.setFieldValue(EnumArchivesOrder.DESTRUCTION_LIBRARY.getValue());
