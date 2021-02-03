@@ -2,6 +2,7 @@ package com.yintu.rixing.make;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
+import com.yintu.rixing.vo.data.DataCommonVo;
 import com.yintu.rixing.vo.make.MakeArchivesSearchVo;
 
 /**
@@ -13,4 +14,7 @@ public interface IMakeArchivesSearchService {
 
 
     IPage<MakeArchivesSearchVo> listByKeyWord(MakeArchivesSearchDto makeArchivesSearchDto);
+
+    DataCommonVo searchEntityArchives(Integer num, Integer size, String searchThings);
+
 }

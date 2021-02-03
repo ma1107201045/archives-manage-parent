@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.enumobject.EnumLogLevel;
+import com.yintu.rixing.system.ISysUserService;
+import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.ResponseDataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -13,6 +15,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,6 +34,8 @@ import java.util.Set;
 public class MakeBorrowController {
     @Autowired
     private IMakeBorrowService iMakeBorrowService;
+    @Autowired
+    private ISysUserService iSysUserService;
 
 
     @PostMapping("/add")
@@ -66,37 +72,82 @@ public class MakeBorrowController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
-            @ApiImplicitParam(name = "name", value = "姓名"),
-            @ApiImplicitParam(name = "certificateNumber", value = "证件号码")
+            @ApiImplicitParam(name = "name", value = "姓名")
     })
-    public Map<String, Object> findElectronicBorrowDatas(@RequestParam Integer num, @RequestParam Integer size, String name, String certificateNumber) {
-        QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().like(MakeBorrow::getName, name == null ? "" : name);
-        queryWrapper.lambda().like(MakeBorrow::getCertificateNumber, certificateNumber == null ? "" : certificateNumber);
-        queryWrapper.orderByDesc("id");
-        queryWrapper.eq("borrow_type", "1");
-        Page<MakeBorrow> page = iMakeBorrowService.page(new Page<>(num, size), queryWrapper);
-        return ResponseDataUtil.ok("查询借阅申请的电子借阅信息列表成功", page);
+    public Map<String, Object> findElectronicBorrowDatas(@RequestParam Integer num, @RequestParam Integer size, String name) {
+        if (name!=null){
+            QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().like(SysUser::getNickname, name == null ? "" : name);
+            List<SysUser> sysUserList = iSysUserService.list(queryWrapper);
+            if (sysUserList.size()==0){
+                return ResponseDataUtil.ok("查询借阅申请的电子借阅信息列表成功", null);
+            }else {
+                List<Integer>userids=new ArrayList<>();
+                for (SysUser sysUser : sysUserList) {
+                    Integer id = sysUser.getId();
+                    userids.add(id);
+                }
+                QueryWrapper<MakeBorrow> queryWrapper1 = new QueryWrapper<>();
+                queryWrapper1.in("user_id",userids);
+                queryWrapper1.eq("borrow_type", "1");
+                queryWrapper1.orderByDesc("id");
+                Page<MakeBorrow> page = iMakeBorrowService.page(new Page<>(num, size),queryWrapper1);
+                return ResponseDataUtil.ok("查询借阅申请的电子借阅信息列表成功", page);
+            }
+        }else {
+            QueryWrapper<MakeBorrow> queryWrapper1 = new QueryWrapper<>();
+            queryWrapper1.eq("borrow_type", "1");
+            queryWrapper1.orderByDesc("id");
+            Page<MakeBorrow> page = iMakeBorrowService.page(new Page<>(num, size),queryWrapper1);
+            for (MakeBorrow record : page.getRecords()) {
+                Integer userId = record.getUserId();
+                SysUser sysUser = iSysUserService.getById(userId);
+                record.setSysUser(sysUser);
+            }
+            return ResponseDataUtil.ok("查询借阅申请的电子借阅信息列表成功", page);
+        }
+
     }
 
     @Log(level = EnumLogLevel.DEBUG, module = "借阅申请", context = "查询借阅申请的实体借阅信息列表")
     @GetMapping("/findEntityBorrowDatas")
-    @ApiOperation(value = "查询借阅申请的电子借阅信息列表", notes = " 查询借阅申请的实体借阅信息列表")
+    @ApiOperation(value = "查询借阅申请的实体借阅信息列表", notes = " 查询借阅申请的实体借阅信息列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
-            @ApiImplicitParam(name = "name", value = "姓名"),
-            @ApiImplicitParam(name = "certificateNumber", value = "证件号码")
+            @ApiImplicitParam(name = "name", value = "姓名")
     })
-    public Map<String, Object> findEntityBorrowDatas(@RequestParam Integer num, @RequestParam Integer size, String name, String certificateNumber) {
-        QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().like(MakeBorrow::getName, name == null ? "" : name);
-        queryWrapper.lambda().like(MakeBorrow::getCertificateNumber, certificateNumber == null ? "" : certificateNumber);
-        queryWrapper.orderByDesc("id");
-        queryWrapper.eq("borrow_type", "2");
-        Page<MakeBorrow> page = iMakeBorrowService.page(new Page<>(num, size), queryWrapper);
-        return ResponseDataUtil.ok("查询借阅申请的实体借阅信息列表成功", page);
+    public Map<String, Object> findEntityBorrowDatas(@RequestParam Integer num, @RequestParam Integer size, String name) {
+        if (name!=null){
+            QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().like(SysUser::getNickname, name == null ? "" : name);
+            List<SysUser> sysUserList = iSysUserService.list(queryWrapper);
+            if (sysUserList.size()==0){
+                return ResponseDataUtil.ok("查询借阅申请的实体借阅信息列表成功", null);
+            }else {
+                List<Integer>userids=new ArrayList<>();
+                for (SysUser sysUser : sysUserList) {
+                    Integer id = sysUser.getId();
+                    userids.add(id);
+                }
+                QueryWrapper<MakeBorrow> queryWrapper1 = new QueryWrapper<>();
+                queryWrapper1.in("user_id",userids);
+                queryWrapper1.eq("borrow_type", "2");
+                queryWrapper1.orderByDesc("id");
+                Page<MakeBorrow> page = iMakeBorrowService.page(new Page<>(num, size),queryWrapper1);
+                return ResponseDataUtil.ok("查询借阅申请的实体借阅信息列表成功", page);
+            }
+        }else {
+            QueryWrapper<MakeBorrow> queryWrapper1 = new QueryWrapper<>();
+            queryWrapper1.eq("borrow_type", "2");
+            queryWrapper1.orderByDesc("id");
+            Page<MakeBorrow> page = iMakeBorrowService.page(new Page<>(num, size),queryWrapper1);
+            for (MakeBorrow record : page.getRecords()) {
+                Integer userId = record.getUserId();
+                SysUser sysUser = iSysUserService.getById(userId);
+                record.setSysUser(sysUser);
+            }
+            return ResponseDataUtil.ok("查询借阅申请的实体借阅信息列表成功", page);
+        }
     }
-
-
 }

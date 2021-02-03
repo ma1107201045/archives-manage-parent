@@ -129,6 +129,7 @@ public class WareTemplateLibraryFieldController {
         wareTemplateLibraryField2.setForm((short)0);
         wareTemplateLibraryField2.setTypeId(3);
         wareTemplateLibraryFieldPage.add(wareTemplateLibraryField2);
+        //添加档案号
         WareTemplateLibraryField wareTemplateLibraryField3=new WareTemplateLibraryField();
         QueryWrapper<SysTemplateLibraryFieldType> queryWrapper2 = new QueryWrapper<>();
         queryWrapper2.like("data_key","varchar");
@@ -145,6 +146,21 @@ public class WareTemplateLibraryFieldController {
         wareTemplateLibraryField3.setForm((short)0);
         wareTemplateLibraryField3.setTypeId(3);
         wareTemplateLibraryFieldPage.add(wareTemplateLibraryField3);
+        //添加档案名
+        WareTemplateLibraryField wareTemplateLibraryField4=new WareTemplateLibraryField();
+        wareTemplateLibraryField4.setId(time1.intValue()+3);
+        wareTemplateLibraryField4.setName("档案名称");
+        wareTemplateLibraryField4.setDataKey("archivesName");
+        wareTemplateLibraryField4.setLength(255);
+        wareTemplateLibraryField4.setIndex(1);
+        wareTemplateLibraryField4.setRequired(1);
+        wareTemplateLibraryField4.setTemplateLibraryFieldTypeId(sysTemplateLibraryFieldType1.getId());
+        wareTemplateLibraryField4.setQuery((short)1);
+        wareTemplateLibraryField4.setTitle((short)1);
+        wareTemplateLibraryField4.setForm((short)1);
+        wareTemplateLibraryField4.setTypeId(3);
+        wareTemplateLibraryFieldPage.add(wareTemplateLibraryField4);
+
         return ResponseDataUtil.ok("查询库房管理实体表字段列表信息成功", wareTemplateLibraryFieldPage);
     }
 

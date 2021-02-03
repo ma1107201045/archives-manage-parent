@@ -5,6 +5,8 @@ import com.yintu.rixing.BaseEntity;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.yintu.rixing.system.SysTemplateLibraryFieldType;
+import com.yintu.rixing.system.SysUser;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -30,33 +32,29 @@ public class MakeBorrow extends BaseEntity {
     @TableField("fileid")
     private Integer fileid;
 
-    @ApiModelProperty(value = "借阅人姓名")
-    @TableField("name")
-    private String name;
+    @ApiModelProperty(value = "利用目的id")
+    @TableField("make_id")
+    private Integer makeId;
 
-    @ApiModelProperty(value = "借阅人身份")
-    @TableField("identity")
-    private Integer identity;
+    @ApiModelProperty(value = "内部和远程人员区分 1：内部   2：远程")
+    @TableField("user_type")
+    private Integer userType;
 
-    @ApiModelProperty(value = "证件类型")
-    @TableField("certificate_type")
-    private Integer certificateType;
+    @ApiModelProperty(value = "预览类型 0：不可预览  1：可预览")
+    @TableField("preview_type")
+    private Integer previewType;
 
-    @ApiModelProperty(value = "证件号码")
-    @TableField("certificate_number")
-    private String certificateNumber;
+    @ApiModelProperty(value = "借阅人id")
+    @TableField("user_id")
+    private Integer userId;
 
-    @ApiModelProperty(value = "学院或者单位")
-    @TableField("college_or_unit")
-    private String collegeOrUnit;
+    @ApiModelProperty(value = "审核状态 1.正常 2.审核中 3.通过 4.拒绝")
+    @TableField("audit_status")
+    private Integer auditStatus;
 
-    @ApiModelProperty(value = "联系电话")
-    @TableField("phone_number")
-    private String phoneNumber;
-
-    @ApiModelProperty(value = "查阅目的")
-    @TableField("purpose")
-    private String purpose;
+    @ApiModelProperty(value = "审核完成时间")
+    @TableField("audit_finish_time")
+    private Date auditFinishTime;
 
     @ApiModelProperty(value = "备注")
     @TableField("remarks")
@@ -74,5 +72,7 @@ public class MakeBorrow extends BaseEntity {
     @TableField("borrow_end_time")
     private Date borrowEndTime;
 
-
+    @ApiModelProperty(value = "借阅人员")
+    @TableField(exist = false)
+    private SysUser sysUser;
 }
