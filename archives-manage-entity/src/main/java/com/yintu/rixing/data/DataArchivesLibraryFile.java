@@ -74,4 +74,8 @@ public class DataArchivesLibraryFile extends BaseEntity {
     @TableField("data_id")
     private Integer dataId;
 
+    @ApiModelProperty(value = "是否正式库", position = 17)
+    @TableField("formal_library")
+    private Short formalLibrary;
+
 }

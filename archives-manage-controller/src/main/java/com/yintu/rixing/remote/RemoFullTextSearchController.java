@@ -1,15 +1,15 @@
 package com.yintu.rixing.remote;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
-import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
+import com.yintu.rixing.dto.make.MakeArchivesSearchElectronicDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.make.IMakeArchivesSearchService;
 import com.yintu.rixing.util.ResultDataUtil;
-import com.yintu.rixing.vo.make.MakeArchivesSearchVo;
+import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +36,9 @@ public class RemoFullTextSearchController {
     @GetMapping
     @ApiOperation(value = "远程全文检索", notes = "远程全文检索")
     @ApiOperationSupport(order = 1)
-    public ResultDataUtil<IPage<MakeArchivesSearchVo>> login(@Validated MakeArchivesSearchDto makeArchivesSearchDto) {
-        IPage<MakeArchivesSearchVo> makeArchivesSearchVoIPage = iMakeArchivesSearchService.listByKeyWord(makeArchivesSearchDto);
-        return ResultDataUtil.ok("远程全文检索成功", makeArchivesSearchVoIPage);
+    public ResultDataUtil<Page<MakeArchivesSearchElectronicVo>> searchElectronic(@Validated MakeArchivesSearchElectronicDto makeArchivesSearchElectronicDto) {
+        Page<MakeArchivesSearchElectronicVo> makeArchivesSearchElectronicVoPage = iMakeArchivesSearchService.listElectronicByKeyWord(makeArchivesSearchElectronicDto);
+        return ResultDataUtil.ok("远程全文检索成功", makeArchivesSearchElectronicVoPage);
     }
 
 }

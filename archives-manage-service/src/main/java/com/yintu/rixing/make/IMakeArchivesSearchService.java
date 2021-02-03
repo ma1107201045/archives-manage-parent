@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import com.yintu.rixing.vo.make.MakeArchivesSearchVo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yintu.rixing.dto.make.MakeArchivesSearchElectronicDto;
+import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
 
 /**
  * @Author: mlf
@@ -17,4 +20,11 @@ public interface IMakeArchivesSearchService {
 
     DataCommonVo searchEntityArchives(Integer num, Integer size, String searchThings);
 
+    /**
+     * 档案检索电子档
+     *
+     * @param makeArchivesSearchElectronicDto ..
+     * @return ..
+     */
+    Page<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchElectronicDto makeArchivesSearchElectronicDto);
 }

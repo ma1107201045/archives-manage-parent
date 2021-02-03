@@ -19,19 +19,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
  * 利用中心的借阅申请表 前端控制器
  * </p>
  *
- * @author Mr.liu
- * @since 2021-01-11
+ * @author mlf
+ * @since 2021-02-03
  */
 @RestController
-@RequestMapping("/make/BorrowAll")
-@Api("通知公告有关接口")
+@RequestMapping("/make/make-borrow")
 public class MakeBorrowController {
+
     @Autowired
     private IMakeBorrowService iMakeBorrowService;
     @Autowired

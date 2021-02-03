@@ -63,13 +63,4 @@ public class RemoAuthenticationController {
         return ResultDataUtil.ok("远程用户注册成功");
     }
 
-    @GetMapping("/{id}")
-    @ApiIgnore
-    public ResultDataUtil<SysRemoteUser> getById(@PathVariable Integer id, HttpServletRequest request) {
-        Integer userId = IdentityIdUtil.get(request);
-        SysRemoteUser sysRemoteUser = iSysRemoteUserService.getById(id);
-        return ResultDataUtil.ok("获取远程用户成功", sysRemoteUser);
-    }
-
-
 }

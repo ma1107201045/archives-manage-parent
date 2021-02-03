@@ -2,7 +2,9 @@ package com.yintu.rixing.data.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.data.DataArchivesLibraryFileMapper;
@@ -11,13 +13,16 @@ import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.IDataArchivesLibraryFileService;
 import com.yintu.rixing.dto.data.DataArchivesLibraryFileFormDto;
 import com.yintu.rixing.dto.data.DataArchivesLibraryFileQueryDto;
+import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.system.SysArchivesLibrary;
+import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.AssertUtil;
 import com.yintu.rixing.util.FileParseUtil;
 import com.yintu.rixing.util.TableNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -56,6 +61,7 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
             String path = dataArchivesLibraryFile.getPath();
             String name = dataArchivesLibraryFile.getName();
             dataArchivesLibraryFile.setContext(FileParseUtil.parse(path + File.separator + name));
+            dataArchivesLibraryFile.setFormalLibrary(EnumFlag.False.getValue());
             dataArchivesLibraryFiles.add(dataArchivesLibraryFile);
         }
         this.saveBatch(dataArchivesLibraryFiles);
@@ -108,6 +114,7 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
         this.updateById(dataArchivesLibraryFile);
     }
 
+
     @Override
     public void moveById(Integer id1, Integer id2) {
         DataArchivesLibraryFile dataArchivesLibraryFile1 = this.getById(id1);
@@ -158,6 +165,30 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
             dataArchivesLibraryFile.setRemark(remark);
             this.saveOrUpdate(dataArchivesLibraryFile);
         }
+    }
+
+    @Override
+    public void updateFormalLibrary(Short formalLibrary, Integer archivesLibraryId, Integer dataId) {
+        List<Integer> ids = this.listByArchivesLibraryIdAndDataId(archivesLibraryId, dataId);
+        if (!ids.isEmpty()) {
+            UpdateWrapper<DataArchivesLibraryFile> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.lambda().set(DataArchivesLibraryFile::getFormalLibrary, formalLibrary)
+                    .eq(DataArchivesLibraryFile::getArchivesLibraryId, archivesLibraryId)
+                    .eq(DataArchivesLibraryFile::getDataId, dataId);
+            this.update(updateWrapper);
+        }
+    }
+
+    @Override
+    public List<Integer> listByArchivesLibraryIdAndDataId(Integer archivesLibraryId, Integer dataId) {
+        AssertUtil.notNull(archivesLibraryId, "档案库id不能为空");
+        AssertUtil.notNull(dataId, "档案目录不能为空");
+        QueryWrapper<DataArchivesLibraryFile> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .select(DataArchivesLibraryFile::getId)
+                .eq(DataArchivesLibraryFile::getArchivesLibraryId, archivesLibraryId)
+                .eq(DataArchivesLibraryFile::getDataId, dataId);
+        return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 
     @Override

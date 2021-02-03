@@ -7,6 +7,7 @@ import com.yintu.rixing.dto.data.DataCommonFormDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
+import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.system.SysDepartment;
 import com.yintu.rixing.vo.data.DataCommonFieldVo;
 import com.yintu.rixing.vo.data.DataCommonVo;
@@ -30,6 +31,9 @@ public class DataDestructionLibraryServiceImpl extends DataCommonService impleme
 
     @Autowired
     private IDataFormalLibraryService iDataFormalLibraryService;
+
+    @Autowired
+    private IDataArchivesLibraryFileService iDataArchivesLibraryFileService;
 
 
     @Override
@@ -65,13 +69,14 @@ public class DataDestructionLibraryServiceImpl extends DataCommonService impleme
 
     @Override
     public DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto) {
-        DataCommon dataCommon = this.page(dataCommonPageDto);
+        Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
+        DataCommon queryDataCommon = this.page(dataCommonPageDto);
         //销毁库查询时候 去检测正式库中超过期限的数据
-        DataCommon d = new DataCommon();
-        d.setTableName(dataCommon.getTableName());
-        d.setDataCommonKVs(new ArrayList<>());
-        d.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.FORMAL_LIBRARY.getValue()));
-        List<Map<String, Object>> list = iDataFormalLibraryService.getList(d);
+        DataCommon changeDataCommon = new DataCommon();
+        changeDataCommon.setTableName(queryDataCommon.getTableName());
+        changeDataCommon.setDataCommonKVs(new ArrayList<>());
+        changeDataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.FORMAL_LIBRARY.getValue()));
+        List<Map<String, Object>> list = iDataFormalLibraryService.getList(queryDataCommon);
         //判断有效期是否过期
         for (Map<String, Object> map : list) {
             List<DataCommonKV> dataCommonKVS = new ArrayList<>();
@@ -79,27 +84,30 @@ public class DataDestructionLibraryServiceImpl extends DataCommonService impleme
             if (map.containsKey(dataKey)) {
                 Object o = map.get(dataKey);
                 if (o != null) {
-                    if (DateUtil.parseDate(DateUtil.today()).isBeforeOrEquals((Date) o)) {
+                    if (DateUtil.parseDate(DateUtil.today()).isAfterOrEquals((Date) o)) {
                         DataCommonKV dataCommonKV = new DataCommonKV();
                         dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
                         dataCommonKV.setFieldValue(EnumArchivesOrder.DESTRUCTION_LIBRARY.getValue());
                         dataCommonKVS.add(dataCommonKV);
-                        d.setId((Integer) map.get(EnumArchivesLibraryDefaultField.ID.getDataKey()));
-                        d.setDataCommonKVs(dataCommonKVS);
-                        iDataFormalLibraryService.updateById(d);
+                        Integer id = (Integer) map.get(EnumArchivesLibraryDefaultField.ID.getDataKey());
+                        changeDataCommon.setId(id);
+                        changeDataCommon.setDataCommonKVs(dataCommonKVS);
+                        //更新正式库到销毁库
+                        iDataFormalLibraryService.updateById(changeDataCommon);
+                        //更新正式库到销毁库 改变档案文件状态
+                        iDataArchivesLibraryFileService.updateFormalLibrary(EnumFlag.False.getValue(), archivesLibraryId, id);
                     }
                 }
             }
         }
 
 
-        dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.DESTRUCTION_LIBRARY.getValue()));
-        Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
+        queryDataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.DESTRUCTION_LIBRARY.getValue()));
         Integer num = dataCommonPageDto.getNum();
         Integer size = dataCommonPageDto.getSize();
         DataCommonVo dataCommonVo = new DataCommonVo();
         List<DataCommonFieldVo> dataCommonFieldVos = this.getDataCommonFieldVos(archivesLibraryId);
-        Page<Map<String, Object>> page = this.destructionLibraryMapper.selectPage(new Page<>(num, size), dataCommon);
+        Page<Map<String, Object>> page = this.destructionLibraryMapper.selectPage(new Page<>(num, size), queryDataCommon);
         //特殊字段需要处理
         page.getRecords().forEach(map -> {
             String dataKey = EnumArchivesLibraryDefaultField.DEPARTMENT_ID.getDataKey();

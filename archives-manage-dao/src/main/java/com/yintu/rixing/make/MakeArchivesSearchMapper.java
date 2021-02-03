@@ -1,6 +1,5 @@
 package com.yintu.rixing.make;
 
-import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.pojo.MakeArchivesSearchPojo;
 import org.apache.ibatis.annotations.Mapper;

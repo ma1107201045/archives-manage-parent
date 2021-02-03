@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_approval_process_configuration")
-@ApiModel(value="SysApprovalProcessConfiguration对象", description="系统审批流程配置中间表")
+@ApiModel(value = "SysApprovalProcessConfiguration对象", description = "系统审批流程配置中间表")
 public class SysApprovalProcessConfiguration extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

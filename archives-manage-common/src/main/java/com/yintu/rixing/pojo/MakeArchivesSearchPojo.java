@@ -17,11 +17,6 @@ public class MakeArchivesSearchPojo {
     private Integer archivesLibId;
 
     /**
-     * 档案库类型 1.电子 2.实体
-     */
-    private Short archivesLibType;
-
-    /**
      * 档案目录id
      */
     private Integer archivesDirectoryId;
