@@ -3,6 +3,7 @@ package com.yintu.rixing.make;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.yintu.rixing.BaseEntity;
+
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -51,10 +53,6 @@ public class MakeBorrow extends BaseEntity {
     @ApiModelProperty(value = "借阅结束时间", position = 9)
     @TableField("borrow_end_time")
     private Date borrowEndTime;
-
-    @ApiModelProperty(value = "利用目的id", position = 10)
-    @TableField("borrow_purpose_id")
-    private Integer borrowPurposeId;
 
     @ApiModelProperty(value = "内部和远程人员区分 1：内部 2：远程", position = 11)
     @TableField("user_type")

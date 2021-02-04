@@ -3,6 +3,7 @@ package com.yintu.rixing.vo.make;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -14,6 +15,9 @@ import java.util.Date;
 @Data
 @ApiModel
 public class MakeBorrowRemoteVo {
+    @ApiModelProperty(value = "借阅申请id", position = 0)
+    private Integer id;
+
     @ApiModelProperty(value = "档案库名称", position = 1)
     private String archivesLibName;
 

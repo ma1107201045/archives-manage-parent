@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class MakeBorrowRemoteFormDto extends IdDto {
 
     @ApiModelProperty(value = "利用目的id")
     @NotNull
-    private Integer borrowPurposeId;
+    private Integer makeId;
 
     @ApiModelProperty(value = "内部和远程人员区分 1：内部 2：远程", hidden = true)
     private Short userType;

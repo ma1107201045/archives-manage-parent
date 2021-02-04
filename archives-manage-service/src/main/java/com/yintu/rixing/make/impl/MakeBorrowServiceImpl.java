@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -96,7 +97,7 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
         List<MakeBorrowRemoteVo> makeBorrowRemoteVos = new ArrayList<>();
         for (MakeBorrow makeBorrow : makeBorrows) {
             Integer fileId = makeBorrow.getFileid();
-            Integer borrowPurposeId = makeBorrow.getBorrowPurposeId();
+            Integer makeId = makeBorrow.getMakeId();
             MakeBorrowRemoteVo makeBorrowRemoteVo = new MakeBorrowRemoteVo();
             BeanUtil.copyProperties(makeBorrow, makeBorrowRemoteVo);
             DataArchivesLibraryFile dataArchivesLibraryFile = iDataArchivesLibraryFileService.getById(fileId);
@@ -121,7 +122,7 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
                 makeBorrowRemoteVo.setUserName(sysRemoteUser.getUsername());
                 makeBorrowRemoteVo.setCertificateNumber(sysRemoteUser.getCertificateNumber());
             }
-            MakeBorrowPurpose makeBorrowPurpose = iMakeBorrowPurposeService.getById(borrowPurposeId);
+            MakeBorrowPurpose makeBorrowPurpose = iMakeBorrowPurposeService.getById(makeId);
             if (makeBorrowPurpose != null) {
                 makeBorrowRemoteVo.setBorrowPurposeName(makeBorrowPurpose.getName());
             }
