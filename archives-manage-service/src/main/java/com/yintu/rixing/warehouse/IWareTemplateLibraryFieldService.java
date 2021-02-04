@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.vo.data.DataCommonVo;
 
+import java.util.Map;
+
 /**
  * <p>
  * 库房管理实体库字段表 服务类
@@ -43,6 +45,8 @@ public interface IWareTemplateLibraryFieldService extends IService<WareTemplateL
     DataCommonVo findInWarehouseBySomethings(Integer num, Integer size, JSONObject jsonObject);
 
     DataCommonVo findOutWarehouseBySomethings(Integer num, Integer size, JSONObject jsonObject);
+
+    Map<String, Object> findByIdAndTableName(Integer id, String tableName);
 
 
 }

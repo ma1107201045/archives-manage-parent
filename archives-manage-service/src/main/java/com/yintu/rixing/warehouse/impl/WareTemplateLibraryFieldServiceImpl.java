@@ -47,8 +47,6 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
     private IWareLibraryTreeService iWareLibraryTreeService;
 
 
-
-
     @Override
     public void inWarehouse(Integer id) {
         wareTemplateLibraryFiledMapper.inWarehouse(id);
@@ -191,6 +189,12 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             return dataCommonVo;
         }
     }
+
+    @Override
+    public Map<String, Object> findByIdAndTableName(Integer id, String tableName) {
+        return wareTemplateLibraryFiledMapper.selectByIdAndTableName(id, tableName);
+    }
+
 
     @Override
     public DataCommonVo findOutWarehouse(Integer num, Integer size) {
@@ -686,7 +690,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                         parentId = parentId1;
                     }
                 }
-                Arrays.sort(integerList.toArray(),Collections.reverseOrder());
+                Arrays.sort(integerList.toArray(), Collections.reverseOrder());
                 record.put("warelibrarytreeid", integerList);
             }
             dataCommonVo.setPage(entityArchivesPages);

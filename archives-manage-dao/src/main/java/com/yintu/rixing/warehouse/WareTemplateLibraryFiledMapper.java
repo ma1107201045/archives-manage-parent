@@ -41,4 +41,6 @@ public interface WareTemplateLibraryFiledMapper extends BaseMapper<WareTemplateL
 
     Map<String, Object> findLastWareDatas();
 
+    Map<String, Object> selectByIdAndTableName(Integer id, String tableName);
+
 }

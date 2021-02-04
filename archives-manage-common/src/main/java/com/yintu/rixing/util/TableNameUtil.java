@@ -12,6 +12,8 @@ public class TableNameUtil {
     public static final String ROLLBACK_SUFFIX = "_rollback_info";
     public static final String ROLLBACK_COMMENT_SUFFIX = "-回退管理记录表";
 
+    public static final String tableName = "ware_physical_warehouse";
+
 
     /**
      * @param tName 表名

@@ -15,7 +15,9 @@ import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.make.*;
 import com.yintu.rixing.system.*;
+import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.make.MakeBorrowVo;
+import com.yintu.rixing.warehouse.IWareTemplateLibraryFieldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +51,10 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     private ISysRemoteUserService iSysRemoteUserService;
     @Autowired
     private IMakeBorrowPurposeService iMakeBorrowPurposeService;
+    @Autowired
+    private IWareTemplateLibraryFieldService iWareTemplateLibraryFieldService;
+    @Autowired
+    private ISysUserService iSysUserService;
 
     @Override
     public void saveRemote(MakeBorrowRemoteFormDto makeBorrowRemoteFormDto) {
@@ -125,34 +131,72 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
         for (MakeBorrow makeBorrow : makeBorrows) {
             Integer fileId = makeBorrow.getFileid();
             Integer makeId = makeBorrow.getMakeId();
+            Short b = makeBorrow.getBorrowType();
+            Integer uId = makeBorrow.getUserId();
+            Short uType = makeBorrow.getUserType();
             MakeBorrowVo makeBorrowVo = new MakeBorrowVo();
             BeanUtil.copyProperties(makeBorrow, makeBorrowVo);
-            DataArchivesLibraryFile dataArchivesLibraryFile = iDataArchivesLibraryFileService.getById(fileId);
-            if (dataArchivesLibraryFile != null) {
-                makeBorrowVo.setArchivesFileId(fileId);
-                makeBorrowVo.setArchivesFileOriginalName(dataArchivesLibraryFile.getOriginalName());
-                Integer archivesLibraryId = dataArchivesLibraryFile.getArchivesLibraryId();
-                Integer dataId = dataArchivesLibraryFile.getDataId();
-                SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
-                makeBorrowVo.setArchivesLibName(sysArchivesLibrary.getName());
-                Map<String, Object> map = iDataFormalLibraryService.getById(dataId, archivesLibraryId);
-                if (map != null) {
-                    makeBorrowVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
-                    makeBorrowVo.setArchivesDirectoryTopicName((String) map.get(EnumArchivesLibraryDefaultField.TOPIC_NAME.getDataKey()));
-                    makeBorrowVo.setArchivesDirectoryRetentionPeriod(map.get(EnumArchivesLibraryDefaultField.RETENTION_PERIOD.getDataKey()));
-                    makeBorrowVo.setArchivesDirectoryValidPeriod(map.get(EnumArchivesLibraryDefaultField.VALID_PERIOD.getDataKey()));
-                    makeBorrowVo.setArchivesDirectorySecurityLevel(map.get(EnumArchivesLibraryDefaultField.SECURITY_LEVEL.getDataKey()));
-                    makeBorrowVo.setArchivesDirectoryFilingAnnual((String) map.get(EnumArchivesLibraryDefaultField.FILING_ANNUAL.getDataKey()));
+            if (b == 1) {//电子借阅
+                DataArchivesLibraryFile dataArchivesLibraryFile = iDataArchivesLibraryFileService.getById(fileId);
+                if (dataArchivesLibraryFile != null) {
+                    makeBorrowVo.setArchivesFileId(fileId);
+                    makeBorrowVo.setArchivesFileOriginalName(dataArchivesLibraryFile.getOriginalName());
+                    Integer archivesLibraryId = dataArchivesLibraryFile.getArchivesLibraryId();
+                    Integer dataId = dataArchivesLibraryFile.getDataId();
+                    SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
+                    makeBorrowVo.setArchivesLibName(sysArchivesLibrary.getName());
+                    Map<String, Object> map = iDataFormalLibraryService.getById(dataId, archivesLibraryId);
+                    if (map != null) {
+                        makeBorrowVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
+                        makeBorrowVo.setArchivesDirectoryTopicName((String) map.get(EnumArchivesLibraryDefaultField.TOPIC_NAME.getDataKey()));
+                        makeBorrowVo.setArchivesDirectoryRetentionPeriod(map.get(EnumArchivesLibraryDefaultField.RETENTION_PERIOD.getDataKey()));
+                        makeBorrowVo.setArchivesDirectoryValidPeriod(map.get(EnumArchivesLibraryDefaultField.VALID_PERIOD.getDataKey()));
+                        makeBorrowVo.setArchivesDirectorySecurityLevel(map.get(EnumArchivesLibraryDefaultField.SECURITY_LEVEL.getDataKey()));
+                        makeBorrowVo.setArchivesDirectoryFilingAnnual((String) map.get(EnumArchivesLibraryDefaultField.FILING_ANNUAL.getDataKey()));
+                    }
                 }
-            }
-            SysRemoteUser sysRemoteUser = iSysRemoteUserService.getById(userId);
-            if (sysRemoteUser != null) {
-                makeBorrowVo.setUserName(sysRemoteUser.getUsername());
-                makeBorrowVo.setCertificateNumber(sysRemoteUser.getCertificateNumber());
-            }
-            MakeBorrowPurpose makeBorrowPurpose = iMakeBorrowPurposeService.getById(makeId);
-            if (makeBorrowPurpose != null) {
-                makeBorrowVo.setBorrowPurposeName(makeBorrowPurpose.getName());
+                //内部人员
+                if (uType == 1) {
+                    SysUser sysUser = iSysUserService.getById(uId);
+                    if (sysUser != null) {
+                        makeBorrowVo.setUserName(sysUser.getUsername());
+                        makeBorrowVo.setCertificateNumber(sysUser.getCertificateNumber());
+                    }
+                } else {//远程人员
+                    SysRemoteUser sysRemoteUser = iSysRemoteUserService.getById(uId);
+                    if (sysRemoteUser != null) {
+                        makeBorrowVo.setUserName(sysRemoteUser.getUsername());
+                        makeBorrowVo.setCertificateNumber(sysRemoteUser.getCertificateNumber());
+                    }
+                }
+                MakeBorrowPurpose makeBorrowPurpose = iMakeBorrowPurposeService.getById(makeId);
+                if (makeBorrowPurpose != null) {
+                    makeBorrowVo.setBorrowPurposeName(makeBorrowPurpose.getName());
+                }
+            } else { //实体借阅
+                String tableName = TableNameUtil.tableName;
+                Integer count = iWareTemplateLibraryFieldService.findTable(tableName);
+                if (count == 0)
+                    throw new BaseRuntimeException("请先创建实体库表");
+                Map<String, Object> map = iWareTemplateLibraryFieldService.findByIdAndTableName(fileId, tableName);
+                if (map != null) {
+                    makeBorrowVo.setArchivesLibName((String) map.get("archivesName"));
+                    makeBorrowVo.setArchivesDirectoryNum((String) map.get("archivesNum"));
+                }
+                //内部人员
+                if (uType == 1) {
+                    SysUser sysUser = iSysUserService.getById(uId);
+                    if (sysUser != null) {
+                        makeBorrowVo.setUserName(sysUser.getUsername());
+                        makeBorrowVo.setCertificateNumber(sysUser.getCertificateNumber());
+                    }
+                } else {//远程人员
+                    SysRemoteUser sysRemoteUser = iSysRemoteUserService.getById(uId);
+                    if (sysRemoteUser != null) {
+                        makeBorrowVo.setUserName(sysRemoteUser.getUsername());
+                        makeBorrowVo.setCertificateNumber(sysRemoteUser.getCertificateNumber());
+                    }
+                }
             }
             makeBorrowVos.add(makeBorrowVo);
         }

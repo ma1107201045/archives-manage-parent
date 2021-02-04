@@ -49,7 +49,6 @@ public class RemoBorrowInfoController {
         return ResultDataUtil.ok("添加远程借阅信息成功");
     }
 
-
     @Log(level = EnumLogLevel.WARN, module = "远程借阅", context = "删除远程用户借阅信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除用户信息", notes = "删除用户信息", position = 2)

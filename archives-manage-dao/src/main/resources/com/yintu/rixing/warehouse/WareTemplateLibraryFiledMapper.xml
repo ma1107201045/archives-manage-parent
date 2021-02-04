@@ -1,133 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.warehouse.WareTemplateLibraryFiledMapper">
-  <resultMap id="BaseResultMap" type="com.yintu.rixing.warehouse.WareTemplateLibraryField">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="data_key" jdbcType="VARCHAR" property="dataKey" />
-    <result column="length" jdbcType="INTEGER" property="length" />
-    <result column="required" jdbcType="SMALLINT" property="required" />
-    <result column="index" jdbcType="SMALLINT" property="index" />
-    <result column="order" jdbcType="INTEGER" property="order" />
-    <result column="template_library_field_type_id" jdbcType="INTEGER" property="templateLibraryFieldTypeId" />
-    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
-    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, name, data_key, length, required, index, order, template_library_field_type_id,
+    <resultMap id="BaseResultMap" type="com.yintu.rixing.warehouse.WareTemplateLibraryField">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="data_key" jdbcType="VARCHAR" property="dataKey"/>
+        <result column="length" jdbcType="INTEGER" property="length"/>
+        <result column="required" jdbcType="SMALLINT" property="required"/>
+        <result column="index" jdbcType="SMALLINT" property="index"/>
+        <result column="order" jdbcType="INTEGER" property="order"/>
+        <result column="template_library_field_type_id" jdbcType="INTEGER" property="templateLibraryFieldTypeId"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, name, data_key, length, required, index, order, template_library_field_type_id,
     create_by, create_time, modified_by, modified_time
-  </sql>
+    </sql>
 
-  <!--查询表里最后一个数据-->
-  <select id="findLastWareDatas" resultType="java.util.Map">
-    select *
-    from ware_physical_warehouse
-    order by id desc limit 1
-  </select>
+    <!--查询表里最后一个数据-->
+    <select id="findLastWareDatas" resultType="java.util.Map">
+        select *
+        from ware_physical_warehouse
+        order by id desc
+        limit 1
+    </select>
 
-  <!--多条件查询分页查询 实体档案出库管理-->
-  <select id="findOutWarehouseBySomethings" resultType="java.util.Map">
-    select *
-    from ware_physical_warehouse
-    where ${sb1}
-    order by id desc
-  </select>
-
-
-
-  <!--多条件查询分页查询 实体档案入库管理-->
-  <select id="findInWarehouseBySomethings" resultType="java.util.Map">
-    select *
-    from ware_physical_warehouse
-    where ${sb1}
-    order by id desc
-  </select>
+    <!--多条件查询分页查询 实体档案出库管理-->
+    <select id="findOutWarehouseBySomethings" resultType="java.util.Map">
+        select *
+        from ware_physical_warehouse
+        where ${sb1}
+        order by id desc
+    </select>
 
 
-  <!--多条件查询分页查询 实体档案管理-->
-  <select id="findAllEntityArchivesBySomethings" resultType="java.util.Map">
-    select *
-    from ware_physical_warehouse
-    where ${sb1}
-    order by id desc
-  </select>
-
-  <!--根据id 将数据由出库变为入库-->
-  <update id="inWarehouse" >
-    update ware_physical_warehouse
-    set warehouseType=1 , inWarehouseTime= now()
-    where id=#{id}
-  </update>
+    <!--多条件查询分页查询 实体档案入库管理-->
+    <select id="findInWarehouseBySomethings" resultType="java.util.Map">
+        select *
+        from ware_physical_warehouse
+        where ${sb1}
+        order by id desc
+    </select>
 
 
-  <!--根据id 将数据由入库变为出库-->
-  <update id="outWarehouse" >
-    update ware_physical_warehouse
-    set warehouseType=2 , outWarehouseTime= now()
-    where id=#{id}
-  </update>
+    <!--多条件查询分页查询 实体档案管理-->
+    <select id="findAllEntityArchivesBySomethings" resultType="java.util.Map">
+        select *
+        from ware_physical_warehouse
+        where ${sb1}
+        order by id desc
+    </select>
 
-  <!--根据id 删除对应的实体档案库数据-->
-  <delete id="deleteWarehouse" >
-    DELETE
-    FROM
-        ware_physical_warehouse
-    WHERE
-       id=#{id}
-  </delete>
+    <!--根据id 将数据由出库变为入库-->
+    <update id="inWarehouse">
+        update ware_physical_warehouse
+        set warehouseType=1,
+            inWarehouseTime= now()
+        where id = #{id}
+    </update>
 
-  <!--根据id 编辑对应的实体档案库数据-->
-  <update id="updateWarehouse" >
-    update ${tableName}
-    set ${sb1}
-    where id=${id}
-  </update>
 
-  <!--分页查询实体档案入库数据-->
-  <select id="findOutWarehouse" resultType="java.util.Map">
-    select *
-    from ware_physical_warehouse
-    where warehouseType=2
-    order by id desc
-  </select>
+    <!--根据id 将数据由入库变为出库-->
+    <update id="outWarehouse">
+        update ware_physical_warehouse
+        set warehouseType=2,
+            outWarehouseTime= now()
+        where id = #{id}
+    </update>
 
-  <!--分页查询实体档案入库数据-->
-  <select id="findInWarehousePage" resultType="java.util.Map">
-    select *
-    from ware_physical_warehouse
-    where warehouseType=1
-    order by id desc
-  </select>
+    <!--根据id 删除对应的实体档案库数据-->
+    <delete id="deleteWarehouse">
+        DELETE
+        FROM ware_physical_warehouse
+        WHERE id = #{id}
+    </delete>
 
-  <!--分页查询实体档案表里所有数据-->
-  <select id="findAllEntityArchivesPage" resultType="java.util.Map">
-    select *
-    from ware_physical_warehouse
-    order by id desc
-  </select>
+    <!--根据id 编辑对应的实体档案库数据-->
+    <update id="updateWarehouse">
+        update ${tableName}
+        set ${sb1}
+        where id = ${id}
+    </update>
 
-  <!--新增入库数据-->
-  <insert id="addWarehousee" >
-    insert into `${tableName}`
-    (${sb1})
-    VALUES
-    (${sb2})
-  </insert>
+    <!--分页查询实体档案入库数据-->
+    <select id="findOutWarehouse" resultType="java.util.Map">
+        select *
+        from ware_physical_warehouse
+        where warehouseType = 2
+        order by id desc
+    </select>
 
-  <!--查询表是否存在-->
-  <select id="findTable" parameterType="string" resultType="int">
+    <!--分页查询实体档案入库数据-->
+    <select id="findInWarehousePage" resultType="java.util.Map">
+        select *
+        from ware_physical_warehouse
+        where warehouseType = 1
+        order by id desc
+    </select>
+
+    <!--分页查询实体档案表里所有数据-->
+    <select id="findAllEntityArchivesPage" resultType="java.util.Map">
+        select *
+        from ware_physical_warehouse
+        order by id desc
+    </select>
+
+    <!--新增入库数据-->
+    <insert id="addWarehousee">
+        insert into `${tableName}`
+            (${sb1})
+        VALUES (${sb2})
+    </insert>
+
+    <!--查询表是否存在-->
+    <select id="findTable" parameterType="string" resultType="int">
         select count(*)
         from information_schema.TABLES
         where table_name = #{tableName}
     </select>
 
-  <!--查询表里是否有数据-->
-  <select id="findTurnLeftState" resultType="java.util.Map">
-    select *
-    from `${tableName}`
-  </select>
+    <!--查询表里是否有数据-->
+    <select id="findTurnLeftState" resultType="java.util.Map">
+        select *
+        from `${tableName}`
+    </select>
+
+    <select id="selectByIdAndTableName" resultType="java.util.Map">
+        select *
+        from `${tableName}`
+        where id = #{id,jdbcType=INTEGER}
+    </select>
 
 
 </mapper>
