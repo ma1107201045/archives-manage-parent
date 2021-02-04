@@ -4,10 +4,13 @@ package com.yintu.rixing.make;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
+import com.yintu.rixing.data.DataArchivesLibraryFile;
+import com.yintu.rixing.data.IDataArchivesLibraryFileService;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysUserService;
 import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.ResponseDataUtil;
+import com.yintu.rixing.warehouse.IWareTemplateLibraryFieldService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -27,8 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
  * 利用中心的借阅申请表 前端控制器
  * </p>
  *
- * @author mlf
- * @since 2021-02-03
+ * @author Mr.liu
+ * @since 2021-01-11
  */
 @RestController
 @RequestMapping("/make/make-borrow")
@@ -38,7 +41,10 @@ public class MakeBorrowController {
     private IMakeBorrowService iMakeBorrowService;
     @Autowired
     private ISysUserService iSysUserService;
-
+    @Autowired
+    private IDataArchivesLibraryFileService iDataArchivesLibraryFileService;
+    @Autowired
+    private IWareTemplateLibraryFieldService iWareTemplateLibraryFieldService;
 
     @PostMapping("/add")
     @Log(level = EnumLogLevel.INFO, module = "借阅申请", context = "添加新的借阅申请信息")
@@ -82,7 +88,7 @@ public class MakeBorrowController {
             queryWrapper.lambda().like(SysUser::getNickname, name == null ? "" : name);
             List<SysUser> sysUserList = iSysUserService.list(queryWrapper);
             if (sysUserList.size()==0){
-                return ResponseDataUtil.ok("查询借阅申请的电子借阅信息列表成功", null);
+                return ResponseDataUtil.ok("暂无数据", null);
             }else {
                 List<Integer>userids=new ArrayList<>();
                 for (SysUser sysUser : sysUserList) {
@@ -94,6 +100,14 @@ public class MakeBorrowController {
                 queryWrapper1.eq("borrow_type", "1");
                 queryWrapper1.orderByDesc("id");
                 Page<MakeBorrow> page = iMakeBorrowService.page(new Page<>(num, size),queryWrapper1);
+                for (MakeBorrow record : page.getRecords()) {
+                    Integer userId = record.getUserId();
+                    SysUser sysUser = iSysUserService.getById(userId);
+                    record.setSysUser(sysUser);
+                    Integer fileid = record.getFileid();
+                    DataArchivesLibraryFile byId = iDataArchivesLibraryFileService.getById(fileid);
+                    record.setDataArchivesLibraryFile(byId);
+                }
                 return ResponseDataUtil.ok("查询借阅申请的电子借阅信息列表成功", page);
             }
         }else {
@@ -105,6 +119,9 @@ public class MakeBorrowController {
                 Integer userId = record.getUserId();
                 SysUser sysUser = iSysUserService.getById(userId);
                 record.setSysUser(sysUser);
+                Integer fileid = record.getFileid();
+                DataArchivesLibraryFile byId = iDataArchivesLibraryFileService.getById(fileid);
+                record.setDataArchivesLibraryFile(byId);
             }
             return ResponseDataUtil.ok("查询借阅申请的电子借阅信息列表成功", page);
         }
@@ -125,7 +142,7 @@ public class MakeBorrowController {
             queryWrapper.lambda().like(SysUser::getNickname, name == null ? "" : name);
             List<SysUser> sysUserList = iSysUserService.list(queryWrapper);
             if (sysUserList.size()==0){
-                return ResponseDataUtil.ok("查询借阅申请的实体借阅信息列表成功", null);
+                return ResponseDataUtil.ok("暂无数据", null);
             }else {
                 List<Integer>userids=new ArrayList<>();
                 for (SysUser sysUser : sysUserList) {
@@ -137,6 +154,14 @@ public class MakeBorrowController {
                 queryWrapper1.eq("borrow_type", "2");
                 queryWrapper1.orderByDesc("id");
                 Page<MakeBorrow> page = iMakeBorrowService.page(new Page<>(num, size),queryWrapper1);
+                for (MakeBorrow record : page.getRecords()) {
+                    Integer userId = record.getUserId();
+                    SysUser sysUser = iSysUserService.getById(userId);
+                    record.setSysUser(sysUser);
+                    Integer fileid = record.getFileid();
+                   Map<String,Object> EntityArchives= iWareTemplateLibraryFieldService.findEntityArchivesById(fileid);
+                   record.setDataEntityFile(EntityArchives);
+                }
                 return ResponseDataUtil.ok("查询借阅申请的实体借阅信息列表成功", page);
             }
         }else {

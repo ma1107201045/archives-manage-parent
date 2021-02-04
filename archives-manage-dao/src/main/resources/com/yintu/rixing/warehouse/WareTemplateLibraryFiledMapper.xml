@@ -20,6 +20,29 @@
     create_by, create_time, modified_by, modified_time
     </sql>
 
+  <!--根据id  查询实体档案表里所有数据-->
+  <select id="findEntityArchivesById" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    where id=#{fileid}
+    order by id desc
+  </select>
+
+
+  <!--分页查询实体档案表里所有数据-->
+  <select id="searchEntityArchives" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    where archivesNum like concat('%',#{searchThings},'%') or archivesName like concat('%',#{searchThings},'%')
+    order by id desc
+  </select>
+
+  <!--查询表里最后一个数据-->
+  <select id="findLastWareDatas" resultType="java.util.Map">
+    select *
+    from ware_physical_warehouse
+    order by id desc limit 1
+  </select>
     <!--查询表里最后一个数据-->
     <select id="findLastWareDatas" resultType="java.util.Map">
         select *

@@ -118,13 +118,24 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             dataCommonTitleVo4.setForm(true);
             dataCommonTitleVo4.setTypeId(5);
             dataCommonFieldVos.add(dataCommonTitleVo4);
+            DataCommonFieldVo dataCommonTitleVo5 = new DataCommonFieldVo();
+            dataCommonTitleVo5.setTypeProp("varchar");
+            dataCommonTitleVo5.setTypeLabel("文本框(文本)");
+            dataCommonTitleVo5.setNotNull(true);
+            dataCommonTitleVo5.setProp("archivesName");
+            dataCommonTitleVo5.setLabel("档案名称");
+            dataCommonTitleVo5.setQuery(true);
+            dataCommonTitleVo5.setTitle(true);
+            dataCommonTitleVo5.setForm(true);
+            dataCommonTitleVo5.setTypeId(1);
+            dataCommonFieldVos.add(1, dataCommonTitleVo5);
 
             DataCommonVo dataCommonVo = new DataCommonVo();
             dataCommonVo.setFields(dataCommonFieldVos);
             Page page = new Page();
             page.setSize(size);
             page.setCurrent(num);
-            Page<Map<String, Object>> entityArchivesPages = wareTemplateLibraryFiledMapper.findAllEntityArchivesPage(page);
+            Page<Map<String, Object>> entityArchivesPages = wareTemplateLibraryFiledMapper.searchEntityArchives(page,searchThings);
             for (Map<String, Object> record : entityArchivesPages.getRecords()) {
                 List<Integer> integerList = new ArrayList<>();
                 Integer ware_library_tree_id = (Integer) record.get("ware_library_tree_id");

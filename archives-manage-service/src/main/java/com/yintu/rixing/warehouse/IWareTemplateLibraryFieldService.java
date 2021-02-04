@@ -49,4 +49,5 @@ public interface IWareTemplateLibraryFieldService extends IService<WareTemplateL
     Map<String, Object> findByIdAndTableName(Integer id, String tableName);
 
 
+    Map<String, Object> findEntityArchivesById(Integer fileid);
 }

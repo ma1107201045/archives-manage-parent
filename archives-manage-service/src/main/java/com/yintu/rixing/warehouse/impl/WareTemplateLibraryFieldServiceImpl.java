@@ -45,7 +45,15 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
     private WareTemplateLibraryFiledMapper wareTemplateLibraryFiledMapper;
     @Autowired
     private IWareLibraryTreeService iWareLibraryTreeService;
-
+    @Override
+    public Map<String, Object> findEntityArchivesById(Integer fileid) {
+        String tableName = "ware_physical_warehouse";
+        if (wareTemplateLibraryFiledMapper.findTable(tableName) == 0) {
+            throw new BaseRuntimeException("请先创建实体库表");
+        } else {
+            return wareTemplateLibraryFiledMapper.findEntityArchivesById(fileid);
+        }
+    }
 
     @Override
     public void inWarehouse(Integer id) {
@@ -140,6 +148,17 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonTitleVo4.setForm(true);
         dataCommonTitleVo4.setTypeId(5);
         dataCommonFieldVos.add(dataCommonTitleVo4);
+        DataCommonFieldVo dataCommonTitleVo5 = new DataCommonFieldVo();
+        dataCommonTitleVo5.setTypeProp("varchar");
+        dataCommonTitleVo5.setTypeLabel("文本框(文本)");
+        dataCommonTitleVo5.setNotNull(true);
+        dataCommonTitleVo5.setProp("archivesName");
+        dataCommonTitleVo5.setLabel("档案名称");
+        dataCommonTitleVo5.setQuery(true);
+        dataCommonTitleVo5.setTitle(true);
+        dataCommonTitleVo5.setForm(true);
+        dataCommonTitleVo5.setTypeId(1);
+        dataCommonFieldVos.add(1, dataCommonTitleVo5);
 
         JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
         if (tableDates == null) {
@@ -255,6 +274,17 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonTitleVo4.setForm(true);
             dataCommonTitleVo4.setTypeId(5);
             dataCommonFieldVos.add(dataCommonTitleVo4);
+            DataCommonFieldVo dataCommonTitleVo5 = new DataCommonFieldVo();
+            dataCommonTitleVo5.setTypeProp("varchar");
+            dataCommonTitleVo5.setTypeLabel("文本框(文本)");
+            dataCommonTitleVo5.setNotNull(true);
+            dataCommonTitleVo5.setProp("archivesName");
+            dataCommonTitleVo5.setLabel("档案名称");
+            dataCommonTitleVo5.setQuery(true);
+            dataCommonTitleVo5.setTitle(true);
+            dataCommonTitleVo5.setForm(true);
+            dataCommonTitleVo5.setTypeId(1);
+            dataCommonFieldVos.add(1, dataCommonTitleVo5);
 
             DataCommonVo dataCommonVo = new DataCommonVo();
             dataCommonVo.setFields(dataCommonFieldVos);
@@ -339,6 +369,17 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonTitleVo4.setForm(true);
         dataCommonTitleVo4.setTypeId(5);
         dataCommonFieldVos.add(dataCommonTitleVo4);
+        DataCommonFieldVo dataCommonTitleVo5 = new DataCommonFieldVo();
+        dataCommonTitleVo5.setTypeProp("varchar");
+        dataCommonTitleVo5.setTypeLabel("文本框(文本)");
+        dataCommonTitleVo5.setNotNull(true);
+        dataCommonTitleVo5.setProp("archivesName");
+        dataCommonTitleVo5.setLabel("档案名称");
+        dataCommonTitleVo5.setQuery(true);
+        dataCommonTitleVo5.setTitle(true);
+        dataCommonTitleVo5.setForm(true);
+        dataCommonTitleVo5.setTypeId(1);
+        dataCommonFieldVos.add(1, dataCommonTitleVo5);
 
         JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
         if (tableDates == null) {
@@ -448,6 +489,17 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonTitleVo4.setForm(true);
             dataCommonTitleVo4.setTypeId(5);
             dataCommonFieldVos.add(dataCommonTitleVo4);
+            DataCommonFieldVo dataCommonTitleVo5 = new DataCommonFieldVo();
+            dataCommonTitleVo5.setTypeProp("varchar");
+            dataCommonTitleVo5.setTypeLabel("文本框(文本)");
+            dataCommonTitleVo5.setNotNull(true);
+            dataCommonTitleVo5.setProp("archivesName");
+            dataCommonTitleVo5.setLabel("档案名称");
+            dataCommonTitleVo5.setQuery(true);
+            dataCommonTitleVo5.setTitle(true);
+            dataCommonTitleVo5.setForm(true);
+            dataCommonTitleVo5.setTypeId(1);
+            dataCommonFieldVos.add(1, dataCommonTitleVo5);
 
             DataCommonVo dataCommonVo = new DataCommonVo();
             dataCommonVo.setFields(dataCommonFieldVos);
@@ -543,6 +595,17 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         dataCommonTitleVo4.setForm(true);
         dataCommonTitleVo4.setTypeId(5);
         dataCommonFieldVos.add(dataCommonTitleVo4);
+        DataCommonFieldVo dataCommonTitleVo5 = new DataCommonFieldVo();
+        dataCommonTitleVo5.setTypeProp("varchar");
+        dataCommonTitleVo5.setTypeLabel("文本框(文本)");
+        dataCommonTitleVo5.setNotNull(true);
+        dataCommonTitleVo5.setProp("archivesName");
+        dataCommonTitleVo5.setLabel("档案名称");
+        dataCommonTitleVo5.setQuery(true);
+        dataCommonTitleVo5.setTitle(true);
+        dataCommonTitleVo5.setForm(true);
+        dataCommonTitleVo5.setTypeId(1);
+        dataCommonFieldVos.add(1, dataCommonTitleVo5);
 
         JSONArray tableDates = jsonObject.getJSONArray("jsonObject");
         if (tableDates == null) {
@@ -668,6 +731,17 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             dataCommonTitleVo4.setForm(true);
             dataCommonTitleVo4.setTypeId(5);
             dataCommonFieldVos.add(dataCommonTitleVo4);
+            DataCommonFieldVo dataCommonTitleVo5 = new DataCommonFieldVo();
+            dataCommonTitleVo5.setTypeProp("varchar");
+            dataCommonTitleVo5.setTypeLabel("文本框(文本)");
+            dataCommonTitleVo5.setNotNull(true);
+            dataCommonTitleVo5.setProp("archivesName");
+            dataCommonTitleVo5.setLabel("档案名称");
+            dataCommonTitleVo5.setQuery(true);
+            dataCommonTitleVo5.setTitle(true);
+            dataCommonTitleVo5.setForm(true);
+            dataCommonTitleVo5.setTypeId(1);
+            dataCommonFieldVos.add(1, dataCommonTitleVo5);
 
             DataCommonVo dataCommonVo = new DataCommonVo();
             dataCommonVo.setFields(dataCommonFieldVos);

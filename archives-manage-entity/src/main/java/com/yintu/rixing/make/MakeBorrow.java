@@ -7,6 +7,7 @@ import com.yintu.rixing.BaseEntity;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.yintu.rixing.data.DataArchivesLibraryFile;
 import com.yintu.rixing.system.SysTemplateLibraryFieldType;
 import com.yintu.rixing.system.SysUser;
 import io.swagger.annotations.ApiModel;
@@ -16,6 +17,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * <p>
@@ -82,4 +84,12 @@ public class MakeBorrow extends BaseEntity {
     @ApiModelProperty(value = "借阅人员")
     @TableField(exist = false)
     private SysUser sysUser;
+
+    @ApiModelProperty(value = "电子档案")
+    @TableField(exist = false)
+    private DataArchivesLibraryFile dataArchivesLibraryFile;
+
+    @ApiModelProperty(value = "实体档案")
+    @TableField(exist = false)
+    private Map<String,Object> dataEntityFile;
 }

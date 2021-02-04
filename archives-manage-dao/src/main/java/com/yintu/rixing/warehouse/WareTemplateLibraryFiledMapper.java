@@ -43,4 +43,7 @@ public interface WareTemplateLibraryFiledMapper extends BaseMapper<WareTemplateL
 
     Map<String, Object> selectByIdAndTableName(Integer id, String tableName);
 
+    Page<Map<String, Object>> searchEntityArchives(Page page, String searchThings);
+
+    Map<String, Object> findEntityArchivesById(Integer fileid);
 }
