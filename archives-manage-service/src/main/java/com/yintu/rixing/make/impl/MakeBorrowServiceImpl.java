@@ -53,6 +53,19 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
 
     @Override
     public void saveRemote(MakeBorrowRemoteFormDto makeBorrowFormElectronicDto) {
+        //判断同一个人是否借阅同一文件
+        Integer userId = makeBorrowFormElectronicDto.getUserId();
+        Short userType = makeBorrowFormElectronicDto.getUserType();
+        Short borrowType = makeBorrowFormElectronicDto.getBorrowType();
+        QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(MakeBorrow::getUserId, userId).eq(MakeBorrow::getUserType, userType).eq(MakeBorrow::getBorrowType, borrowType);
+        List<MakeBorrow> makeBorrows = this.list(queryWrapper);
+        if (!makeBorrows.isEmpty()) {
+            MakeBorrow makeBorrow = makeBorrows.get(makeBorrows.size() - 1);
+            //审核中或者审核拒绝或者可预览都不能借阅（审批通过并且不可预览才可以借阅）
+            if (!EnumAuditStatus.AUDIT_PASS.getValue().equals(makeBorrow.getAuditStatus()) || EnumFlag.True.getValue().equals(makeBorrow.getPreviewType()))
+                throw new BaseRuntimeException("无需重复借阅");
+        }
         MakeBorrow makeBorrow = new MakeBorrow();
         BeanUtil.copyProperties(makeBorrowFormElectronicDto, makeBorrow);
         makeBorrow.setUserType((short) 1);
@@ -89,8 +102,9 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
         Integer num = makeBorrowQueryElectronicDto.getNum();
         Integer size = makeBorrowQueryElectronicDto.getSize();
         Integer userId = makeBorrowQueryElectronicDto.getUserId();
+        Short userType = makeBorrowQueryElectronicDto.getUserType();
         QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(MakeBorrow::getUserId, userId);
+        queryWrapper.lambda().eq(MakeBorrow::getUserId, userId).eq(MakeBorrow::getUserType, userType);
         Page<MakeBorrow> page2 = this.page(new Page<>(num, size), queryWrapper);
         BeanUtil.copyProperties(page2, page1, "records");
         List<MakeBorrow> makeBorrows = page2.getRecords();

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysApprovalProcessFormDto;
 import com.yintu.rixing.dto.system.SysApprovalProcessQueryDto;
+import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.TreeUtil;
@@ -104,7 +105,8 @@ public class SysApprovalProcessServiceImpl extends ServiceImpl<SysApprovalProces
         QueryWrapper<SysApprovalProcess> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysApprovalProcess::getId)
-                .eq(SysApprovalProcess::getApprovalType, approvalType);
+                .eq(SysApprovalProcess::getApprovalType, approvalType)
+                .eq(SysApprovalProcess::getApproval, EnumFlag.True.getValue());
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
 

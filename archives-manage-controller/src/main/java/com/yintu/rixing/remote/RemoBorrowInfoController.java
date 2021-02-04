@@ -39,21 +39,32 @@ public class RemoBorrowInfoController {
     @Autowired
     private IMakeBorrowPurposeService iMakeBorrowPurposeService;
 
-    @Log(level = EnumLogLevel.DEBUG, module = "远程借阅", context = "远程借阅")
+    @Log(level = EnumLogLevel.DEBUG, module = "远程借阅", context = "添加远程借阅信息")
     @PostMapping
-    @ApiOperation(value = "远程借阅", notes = "远程借阅")
+    @ApiOperation(value = "添加远程借阅信息", notes = "添加远程借阅信息")
     @ApiOperationSupport(order = 1)
     public ResultDataUtil<Object> add(HttpServletRequest request, @Validated MakeBorrowRemoteFormDto makeBorrowElectronicFormDto) {
         makeBorrowElectronicFormDto.setUserId(IdentityIdUtil.get(request));
         iMakeBorrowService.saveRemote(makeBorrowElectronicFormDto);
-        return ResultDataUtil.ok("远程借阅成功");
+        return ResultDataUtil.ok("添加远程借阅信息成功");
+    }
+
+
+    @Log(level = EnumLogLevel.WARN, module = "远程借阅", context = "审批远程借阅信息")
+    @PatchMapping("/{id}")
+    @ApiOperation(value = "审批远程借阅信息", notes = "审批远程借阅信息")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    @ApiOperationSupport(order = 2)
+    public ResultDataUtil<Object> approve(@PathVariable Integer id) {
+
+        return ResultDataUtil.ok("审批远程借阅信息成功");
     }
 
     @Log(level = EnumLogLevel.WARN, module = "远程借阅", context = "删除远程用户借阅信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除用户信息", notes = "删除用户信息", position = 2)
     @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path")
-    @ApiOperationSupport(order = 2)
+    @ApiOperationSupport(order = 3)
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids) {
         iMakeBorrowService.removeByIds(ids);
         return ResultDataUtil.ok("删除远程用户借阅信息成功");

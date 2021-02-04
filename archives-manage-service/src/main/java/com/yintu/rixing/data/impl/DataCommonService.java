@@ -91,10 +91,16 @@ public class DataCommonService {
                     newValue = Integer.valueOf(value);
                     break;
                 case DATETIME:
-                    newValue = DateUtil.parseDateTime(value);
+                    if ("".equals(value))
+                        newValue = null;
+                    else
+                        newValue = DateUtil.parseDateTime(value);
                     break;
                 case DATE:
-                    newValue = DateUtil.parseDate(value);
+                    if ("".equals(value))
+                        newValue = null;
+                    else
+                        newValue = DateUtil.parseDate(value);
                     break;
             }
             DataCommonKV dataCommonKV = new DataCommonKV();
@@ -251,10 +257,16 @@ public class DataCommonService {
                         newValue = Integer.valueOf(value);
                         break;
                     case DATETIME:
-                        newValue = DateUtil.parseDateTime(value);
+                        if ("".equals(value))
+                            newValue = null;
+                        else
+                            newValue = DateUtil.parseDateTime(value);
                         break;
                     case DATE:
-                        newValue = DateUtil.parseDate(value);
+                        if ("".equals(value))
+                            newValue = null;
+                        else
+                            newValue = DateUtil.parseDate(value);
                         break;
                 }
                 DataCommonKV dataCommon = new DataCommonKV();
