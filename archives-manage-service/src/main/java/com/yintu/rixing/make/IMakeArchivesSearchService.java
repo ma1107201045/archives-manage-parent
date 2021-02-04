@@ -3,7 +3,7 @@ package com.yintu.rixing.make;
 
 import com.yintu.rixing.vo.data.DataCommonVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yintu.rixing.dto.make.MakeArchivesSearchElectronicDto;
+import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
 import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
 
 /**
@@ -14,15 +14,13 @@ import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
 public interface IMakeArchivesSearchService {
 
 
-
-
     DataCommonVo searchEntityArchives(Integer num, Integer size, String searchThings);
 
     /**
      * 档案检索电子档
      *
-     * @param makeArchivesSearchElectronicDto ..
+     * @param makeArchivesSearchDto ..
      * @return ..
      */
-    Page<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchElectronicDto makeArchivesSearchElectronicDto);
+    Page<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchDto makeArchivesSearchDto);
 }

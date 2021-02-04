@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel
-public class MakeArchivesSearchElectronicDto extends PageDto {
+public class MakeArchivesSearchDto extends PageDto {
 
     @ApiModelProperty(value = "关键字（至少输入两个字）", required = true)
     @NotBlank

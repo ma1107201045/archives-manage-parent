@@ -1,10 +1,9 @@
 package com.yintu.rixing.make.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.data.IDataFormalLibraryService;
-import com.yintu.rixing.dto.make.MakeArchivesSearchElectronicDto;
+import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
@@ -150,7 +149,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
     }
 
     @Override
-    public Page<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchElectronicDto makeArchivesSearchDto) {
+    public Page<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchDto makeArchivesSearchDto) {
         Page<MakeArchivesSearchElectronicVo> page1 = new Page<>();
         Integer num = makeArchivesSearchDto.getNum();
         Integer size = makeArchivesSearchDto.getSize();
