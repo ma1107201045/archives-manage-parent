@@ -132,9 +132,10 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
                 makeBorrowVo.setArchivesFileId(fileId);
                 makeBorrowVo.setArchivesFileOriginalName(dataArchivesLibraryFile.getOriginalName());
                 Integer archivesLibraryId = dataArchivesLibraryFile.getArchivesLibraryId();
+                Integer dataId = dataArchivesLibraryFile.getDataId();
                 SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
                 makeBorrowVo.setArchivesLibName(sysArchivesLibrary.getName());
-                Map<String, Object> map = iDataFormalLibraryService.getById(fileId, archivesLibraryId);
+                Map<String, Object> map = iDataFormalLibraryService.getById(dataId, archivesLibraryId);
                 if (map != null) {
                     makeBorrowVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
                     makeBorrowVo.setArchivesDirectoryTopicName((String) map.get(EnumArchivesLibraryDefaultField.TOPIC_NAME.getDataKey()));
