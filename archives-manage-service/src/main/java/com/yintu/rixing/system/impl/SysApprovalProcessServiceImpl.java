@@ -38,6 +38,12 @@ public class SysApprovalProcessServiceImpl extends ServiceImpl<SysApprovalProces
 
     @Override
     public void save(SysApprovalProcessFormDto sysApprovalProcessFormDto) {
+        Short approvalType = sysApprovalProcessFormDto.getApprovalType();
+        if (approvalType == 2) {
+            List<Integer> ids = this.listByApprovalType((short) 2);
+            if (!ids.isEmpty())
+                throw new BaseRuntimeException("此审批类型只能配置一条");
+        }
         SysApprovalProcess sysApprovalProcess = new SysApprovalProcess();
         BeanUtil.copyProperties(sysApprovalProcessFormDto, sysApprovalProcess);
         this.save(sysApprovalProcess);
@@ -49,6 +55,12 @@ public class SysApprovalProcessServiceImpl extends ServiceImpl<SysApprovalProces
     @Override
     public void updateById(SysApprovalProcessFormDto sysApprovalProcessFormDto) {
         Integer id = sysApprovalProcessFormDto.getId();
+        Short approvalType = sysApprovalProcessFormDto.getApprovalType();
+        if (approvalType == 2) {
+            List<Integer> ids = this.listByApprovalType((short) 2);
+            if (!ids.isEmpty() && !ids.get(0).equals(id))
+                throw new BaseRuntimeException("此审批类型只能配置一条");
+        }
         SysApprovalProcess sysApprovalProcess = this.getById(id);
         if (sysApprovalProcess != null) {
             BeanUtil.copyProperties(sysApprovalProcessFormDto, sysApprovalProcess);
@@ -67,13 +79,7 @@ public class SysApprovalProcessServiceImpl extends ServiceImpl<SysApprovalProces
             throw new BaseRuntimeException("角色或者用户或者顺序不能为空");
         if (roleIds.size() != userIds.size() || userIds.size() != orders.size())
             throw new BaseRuntimeException("角色或者用户或者顺序长度不一致");
-        List<Integer> ids = this.listByApprovalType((short) 2);
-        if (isSave) {
-            if (!ids.isEmpty())
-                throw new BaseRuntimeException("此审批类型只能配置一条");
-        } else {
-            if (!ids.isEmpty() && !ids.get(0).equals(id))
-                throw new BaseRuntimeException("此审批类型只能配置一条");
+        if (!isSave) {
             QueryWrapper<SysApprovalProcessConfiguration> sysApprovalProcessConfigurationQueryWrapper = new QueryWrapper<>();
             sysApprovalProcessConfigurationQueryWrapper.lambda().eq(SysApprovalProcessConfiguration::getApprovalProcessId, id);
             iSysApprovalProcessConfigurationService.remove(sysApprovalProcessConfigurationQueryWrapper);
@@ -178,4 +184,6 @@ public class SysApprovalProcessServiceImpl extends ServiceImpl<SysApprovalProces
         }
         return lists;
     }
+
+
 }

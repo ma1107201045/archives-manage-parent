@@ -20,7 +20,7 @@ import java.util.Date;
 public class MakeBorrowRemoteFormDto extends IdDto {
     @ApiModelProperty(value = "文件id")
     @NotNull
-    private Integer fileId;
+    private Integer fileid;
 
     @ApiModelProperty(value = "借阅人id", hidden = true)
     private Integer userId;
@@ -35,7 +35,7 @@ public class MakeBorrowRemoteFormDto extends IdDto {
 
     @ApiModelProperty(value = "利用目的id")
     @NotNull
-    private Date borrowPurposeId;
+    private Integer borrowPurposeId;
 
     @ApiModelProperty(value = "内部和远程人员区分 1：内部 2：远程", hidden = true)
     private Short userType;
