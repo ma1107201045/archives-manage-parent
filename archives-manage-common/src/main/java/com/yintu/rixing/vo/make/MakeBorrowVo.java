@@ -1,8 +1,10 @@
 package com.yintu.rixing.vo.make;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -13,8 +15,8 @@ import java.util.Date;
  */
 @Data
 @ApiModel
-public class MakeBorrowRemoteVo {
-    @ApiModelProperty(value = "借阅申请id", position = 0)
+public class MakeBorrowVo {
+    @ApiModelProperty(value = "借阅申请id")
     private Integer id;
 
     @ApiModelProperty(value = "档案库名称", position = 1)
@@ -51,9 +53,11 @@ public class MakeBorrowRemoteVo {
     private String certificateNumber;
 
     @ApiModelProperty(value = "借阅开始时间", position = 12)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date borrowStartTime;
 
     @ApiModelProperty(value = "借阅结束时间", position = 13)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date borrowEndTime;
 
     @ApiModelProperty(value = "利用目的名称", position = 14)

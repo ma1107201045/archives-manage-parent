@@ -12,7 +12,7 @@ import com.yintu.rixing.make.IMakeBorrowService;
 import com.yintu.rixing.make.MakeBorrowPurpose;
 import com.yintu.rixing.util.IdentityIdUtil;
 import com.yintu.rixing.util.ResultDataUtil;
-import com.yintu.rixing.vo.make.MakeBorrowRemoteVo;
+import com.yintu.rixing.vo.make.MakeBorrowVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -64,10 +64,10 @@ public class RemoBorrowInfoController {
     @GetMapping
     @ApiOperation(value = "查看我的借阅信息", notes = "查看我的借阅信息")
     @ApiOperationSupport(order = 3)
-    public ResultDataUtil<Page<MakeBorrowRemoteVo>> findPage(HttpServletRequest request, @Validated MakeBorrowQueryDto makeBorrowRemoteQueryDto) {
+    public ResultDataUtil<Page<MakeBorrowVo>> findPage(HttpServletRequest request, @Validated MakeBorrowQueryDto makeBorrowRemoteQueryDto) {
         makeBorrowRemoteQueryDto.setUserId(IdentityIdUtil.get(request));
         makeBorrowRemoteQueryDto.setUserType((short) 2);
-        Page<MakeBorrowRemoteVo> makeBorrowRemoteQueryVoPage = iMakeBorrowService.page(makeBorrowRemoteQueryDto);
+        Page<MakeBorrowVo> makeBorrowRemoteQueryVoPage = iMakeBorrowService.page(makeBorrowRemoteQueryDto);
         return ResultDataUtil.ok("查看我的借阅信息成功", makeBorrowRemoteQueryVoPage);
     }
 

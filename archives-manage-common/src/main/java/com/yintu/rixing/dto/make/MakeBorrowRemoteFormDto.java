@@ -29,12 +29,10 @@ public class MakeBorrowRemoteFormDto extends IdDto {
 
     @ApiModelProperty(value = "借阅开始时间")
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date borrowStartTime;
 
     @ApiModelProperty(value = "借阅结束时间")
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date borrowEndTime;
 
     @ApiModelProperty(value = "利用目的id")
