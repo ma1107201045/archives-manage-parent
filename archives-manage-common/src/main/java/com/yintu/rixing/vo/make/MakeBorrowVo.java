@@ -19,6 +19,7 @@ public class MakeBorrowVo {
     @ApiModelProperty(value = "借阅申请id")
     private Integer id;
 
+
     @ApiModelProperty(value = "档案库名称", position = 1)
     private String archivesLibName;
 
@@ -45,6 +46,8 @@ public class MakeBorrowVo {
 
     @ApiModelProperty(value = "档案文件名", position = 9)
     private String archivesFileOriginalName;
+
+
 
     @ApiModelProperty(value = "借阅人姓名", position = 10)
     private String userName;
