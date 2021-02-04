@@ -52,13 +52,17 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     private IMakeBorrowPurposeService iMakeBorrowPurposeService;
 
     @Override
-    public void saveRemote(MakeBorrowRemoteFormDto makeBorrowFormElectronicDto) {
+    public void saveRemote(MakeBorrowRemoteFormDto makeBorrowRemoteFormDto) {
         //判断同一个人是否借阅同一文件
-        Integer userId = makeBorrowFormElectronicDto.getUserId();
-        Short userType = makeBorrowFormElectronicDto.getUserType();
-        Short borrowType = makeBorrowFormElectronicDto.getBorrowType();
+        Integer fileId = makeBorrowRemoteFormDto.getFileid();
+        Integer userId = makeBorrowRemoteFormDto.getUserId();
+        Short borrowType = makeBorrowRemoteFormDto.getBorrowType();
         QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(MakeBorrow::getUserId, userId).eq(MakeBorrow::getUserType, userType).eq(MakeBorrow::getBorrowType, borrowType);
+        queryWrapper.lambda()
+                .eq(MakeBorrow::getFileid, fileId)
+                .eq(MakeBorrow::getUserId, userId)
+                .eq(MakeBorrow::getUserType, (short) 2)
+                .eq(MakeBorrow::getBorrowType, borrowType);
         List<MakeBorrow> makeBorrows = this.list(queryWrapper);
         if (!makeBorrows.isEmpty()) {
             MakeBorrow makeBorrow = makeBorrows.get(makeBorrows.size() - 1);
@@ -67,8 +71,8 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
                 throw new BaseRuntimeException("无需重复借阅");
         }
         MakeBorrow makeBorrow = new MakeBorrow();
-        BeanUtil.copyProperties(makeBorrowFormElectronicDto, makeBorrow);
-        makeBorrow.setUserType((short) 1);
+        BeanUtil.copyProperties(makeBorrowRemoteFormDto, makeBorrow);
+        makeBorrow.setUserType((short) 2);
         makeBorrow.setAuditStatus(EnumAuditStatus.AUDIT_IN.getValue());
         makeBorrow.setPreviewType(EnumFlag.False.getValue());
         this.save(makeBorrow);
@@ -102,9 +106,8 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
         Integer num = makeBorrowQueryElectronicDto.getNum();
         Integer size = makeBorrowQueryElectronicDto.getSize();
         Integer userId = makeBorrowQueryElectronicDto.getUserId();
-        Short userType = makeBorrowQueryElectronicDto.getUserType();
         QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(MakeBorrow::getUserId, userId).eq(MakeBorrow::getUserType, userType);
+        queryWrapper.lambda().eq(MakeBorrow::getUserId, userId).eq(MakeBorrow::getUserType, (short) 2);
         Page<MakeBorrow> page2 = this.page(new Page<>(num, size), queryWrapper);
         BeanUtil.copyProperties(page2, page1, "records");
         List<MakeBorrow> makeBorrows = page2.getRecords();

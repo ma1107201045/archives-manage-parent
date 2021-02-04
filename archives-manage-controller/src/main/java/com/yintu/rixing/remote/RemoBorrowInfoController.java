@@ -56,7 +56,6 @@ public class RemoBorrowInfoController {
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> approve(@PathVariable Integer id) {
-
         return ResultDataUtil.ok("审批远程借阅信息成功");
     }
 
