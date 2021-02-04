@@ -96,7 +96,7 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
         List<MakeBorrow> makeBorrows = page2.getRecords();
         List<MakeBorrowRemoteVo> makeBorrowRemoteVos = new ArrayList<>();
         for (MakeBorrow makeBorrow : makeBorrows) {
-            Integer fileId = makeBorrow.getFileId();
+            Integer fileId = makeBorrow.getFileid();
             Integer borrowPurposeId = makeBorrow.getBorrowPurposeId();
             MakeBorrowRemoteVo makeBorrowRemoteVo = new MakeBorrowRemoteVo();
             BeanUtil.copyProperties(makeBorrow, makeBorrowRemoteVo);

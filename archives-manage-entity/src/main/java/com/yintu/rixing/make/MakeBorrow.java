@@ -31,9 +31,7 @@ public class MakeBorrow extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "文件id", position = 6)
-    @TableField("file_id")
-    private Integer fileId;
+
     @ApiModelProperty(value = "文件id")
     @TableField("fileid")
     private Integer fileid;
@@ -41,26 +39,6 @@ public class MakeBorrow extends BaseEntity {
     @ApiModelProperty(value = "利用目的id")
     @TableField("make_id")
     private Integer makeId;
-
-    @ApiModelProperty(value = "内部和远程人员区分 1：内部   2：远程")
-    @TableField("user_type")
-    private Integer userType;
-
-    @ApiModelProperty(value = "预览类型 0：不可预览  1：可预览")
-    @TableField("preview_type")
-    private Integer previewType;
-
-    @ApiModelProperty(value = "借阅人id")
-    @TableField("user_id")
-    private Integer userId;
-
-    @ApiModelProperty(value = "审核状态 1.正常 2.审核中 3.通过 4.拒绝")
-    @TableField("audit_status")
-    private Integer auditStatus;
-
-    @ApiModelProperty(value = "审核完成时间")
-    @TableField("audit_finish_time")
-    private Date auditFinishTime;
 
     @ApiModelProperty(value = "借阅人id", position = 7)
     @TableField("user_id")

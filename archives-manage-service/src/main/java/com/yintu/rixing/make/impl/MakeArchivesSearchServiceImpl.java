@@ -18,7 +18,6 @@ import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
 import com.yintu.rixing.system.SysTemplateLibraryFieldType;
 import com.yintu.rixing.vo.data.DataCommonFieldVo;
 import com.yintu.rixing.vo.data.DataCommonVo;
-import com.yintu.rixing.vo.make.MakeArchivesSearchVo;
 import com.yintu.rixing.warehouse.IWareLibraryTreeService;
 import com.yintu.rixing.warehouse.IWareTemplateLibraryFieldService;
 import com.yintu.rixing.warehouse.WareTemplateLibraryField;
