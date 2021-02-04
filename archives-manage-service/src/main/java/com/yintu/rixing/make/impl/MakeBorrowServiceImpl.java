@@ -112,7 +112,7 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
         Integer size = makeBorrowQueryElectronicDto.getSize();
         Integer userId = makeBorrowQueryElectronicDto.getUserId();
         Short userType = makeBorrowQueryElectronicDto.getUserType();
-        Short borrowType = makeBorrowQueryElectronicDto.getUserType();
+        Short borrowType = makeBorrowQueryElectronicDto.getBorrowType();
         QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
         if (userId != null && userType != null)
             queryWrapper.lambda().eq(MakeBorrow::getUserId, userId).eq(MakeBorrow::getUserType, userType);

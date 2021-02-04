@@ -54,7 +54,7 @@ public class RemoBorrowInfoController {
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除用户信息", notes = "删除用户信息", position = 2)
     @ApiImplicitParam(name = "ids", allowMultiple = true, dataType = "int", value = "主键id集", required = true, paramType = "path")
-    @ApiOperationSupport(order = 3)
+    @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids) {
         iMakeBorrowService.removeByIds(ids);
         return ResultDataUtil.ok("删除远程用户借阅信息成功");
@@ -74,7 +74,7 @@ public class RemoBorrowInfoController {
     @Log(level = EnumLogLevel.TRACE, module = "远程借阅", context = "查询远程借阅利用列表信息")
     @GetMapping("/remo-borrow-purpose")
     @ApiOperation(value = "查询远程借阅利用列表信息", notes = "查询远程借阅利用列表信息")
-    @ApiOperationSupport(order = 3)
+    @ApiOperationSupport(order = 4)
     public ResultDataUtil<List<MakeBorrowPurpose>> findBorrowPurposes() {
         List<MakeBorrowPurpose> makeBorrowPurposes = iMakeBorrowPurposeService.list();
         return ResultDataUtil.ok("查询远程借阅利用列表信息成功", makeBorrowPurposes);
