@@ -18,6 +18,8 @@ public interface IMakeBorrowService extends IService<MakeBorrow> {
 
     void saveRemote(MakeBorrowRemoteFormDto borrowRemoteFormDto);
 
-    Page<MakeBorrowRemoteVo> pageRemote(MakeBorrowRemoteQueryDto makeBorrowQueryElectronicDto);
+    void approve(Integer id);
+
+    Page<MakeBorrowRemoteVo> page(MakeBorrowRemoteQueryDto makeBorrowQueryElectronicDto);
 
 }

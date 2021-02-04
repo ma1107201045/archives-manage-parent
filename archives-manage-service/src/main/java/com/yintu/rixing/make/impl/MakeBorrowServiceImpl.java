@@ -101,13 +101,23 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     }
 
     @Override
-    public Page<MakeBorrowRemoteVo> pageRemote(MakeBorrowRemoteQueryDto makeBorrowQueryElectronicDto) {
+    public void approve(Integer id) {
+
+    }
+
+    @Override
+    public Page<MakeBorrowRemoteVo> page(MakeBorrowRemoteQueryDto makeBorrowQueryElectronicDto) {
         Page<MakeBorrowRemoteVo> page1 = new Page<>();
         Integer num = makeBorrowQueryElectronicDto.getNum();
         Integer size = makeBorrowQueryElectronicDto.getSize();
         Integer userId = makeBorrowQueryElectronicDto.getUserId();
+        Short userType = makeBorrowQueryElectronicDto.getUserType();
+        Short borrowType = makeBorrowQueryElectronicDto.getUserType();
         QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(MakeBorrow::getUserId, userId).eq(MakeBorrow::getUserType, (short) 2);
+        if (userId != null && userType != null)
+            queryWrapper.lambda().eq(MakeBorrow::getUserId, userId).eq(MakeBorrow::getUserType, userType);
+        if (borrowType != null)
+            queryWrapper.lambda().eq(MakeBorrow::getBorrowType, borrowType);
         Page<MakeBorrow> page2 = this.page(new Page<>(num, size), queryWrapper);
         BeanUtil.copyProperties(page2, page1, "records");
         List<MakeBorrow> makeBorrows = page2.getRecords();

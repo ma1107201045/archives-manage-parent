@@ -50,15 +50,6 @@ public class RemoBorrowInfoController {
     }
 
 
-    @Log(level = EnumLogLevel.WARN, module = "远程借阅", context = "审批远程借阅信息")
-    @PatchMapping("/{id}")
-    @ApiOperation(value = "审批远程借阅信息", notes = "审批远程借阅信息")
-    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
-    @ApiOperationSupport(order = 2)
-    public ResultDataUtil<Object> approve(@PathVariable Integer id) {
-        return ResultDataUtil.ok("审批远程借阅信息成功");
-    }
-
     @Log(level = EnumLogLevel.WARN, module = "远程借阅", context = "删除远程用户借阅信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除用户信息", notes = "删除用户信息", position = 2)
@@ -75,7 +66,8 @@ public class RemoBorrowInfoController {
     @ApiOperationSupport(order = 3)
     public ResultDataUtil<Page<MakeBorrowRemoteVo>> findPage(HttpServletRequest request, @Validated MakeBorrowRemoteQueryDto makeBorrowRemoteQueryDto) {
         makeBorrowRemoteQueryDto.setUserId(IdentityIdUtil.get(request));
-        Page<MakeBorrowRemoteVo> makeBorrowRemoteQueryVoPage = iMakeBorrowService.pageRemote(makeBorrowRemoteQueryDto);
+        makeBorrowRemoteQueryDto.setUserType((short) 2);
+        Page<MakeBorrowRemoteVo> makeBorrowRemoteQueryVoPage = iMakeBorrowService.page(makeBorrowRemoteQueryDto);
         return ResultDataUtil.ok("查看我的借阅信息成功", makeBorrowRemoteQueryVoPage);
     }
 
