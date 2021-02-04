@@ -1,5 +1,6 @@
 package com.yintu.rixing.dto.make;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yintu.rixing.dto.base.IdDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -28,10 +29,12 @@ public class MakeBorrowRemoteFormDto extends IdDto {
 
     @ApiModelProperty(value = "借阅开始时间")
     @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date borrowStartTime;
 
     @ApiModelProperty(value = "借阅结束时间")
     @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date borrowEndTime;
 
     @ApiModelProperty(value = "利用目的id")
@@ -45,14 +48,5 @@ public class MakeBorrowRemoteFormDto extends IdDto {
     @ApiModelProperty(value = "备注")
     private String remarks;
 
-//    @ApiModelProperty(value = "审核人id集")
-//    @NotNull
-//    @Size(min = 1)
-//    private List<Integer> auditorIds;
-//
-//    @ApiModelProperty(value = "排序集")
-//    @NotNull
-//    @Size(min = 1)
-//    private List<Integer> sortIds;
 
 }

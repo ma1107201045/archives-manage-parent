@@ -5,7 +5,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.dto.make.MakeBorrowRemoteFormDto;
-import com.yintu.rixing.dto.make.MakeBorrowRemoteQueryDto;
+import com.yintu.rixing.dto.make.MakeBorrowQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.make.IMakeBorrowPurposeService;
 import com.yintu.rixing.make.IMakeBorrowService;
@@ -64,7 +64,7 @@ public class RemoBorrowInfoController {
     @GetMapping
     @ApiOperation(value = "查看我的借阅信息", notes = "查看我的借阅信息")
     @ApiOperationSupport(order = 3)
-    public ResultDataUtil<Page<MakeBorrowRemoteVo>> findPage(HttpServletRequest request, @Validated MakeBorrowRemoteQueryDto makeBorrowRemoteQueryDto) {
+    public ResultDataUtil<Page<MakeBorrowRemoteVo>> findPage(HttpServletRequest request, @Validated MakeBorrowQueryDto makeBorrowRemoteQueryDto) {
         makeBorrowRemoteQueryDto.setUserId(IdentityIdUtil.get(request));
         makeBorrowRemoteQueryDto.setUserType((short) 2);
         Page<MakeBorrowRemoteVo> makeBorrowRemoteQueryVoPage = iMakeBorrowService.page(makeBorrowRemoteQueryDto);

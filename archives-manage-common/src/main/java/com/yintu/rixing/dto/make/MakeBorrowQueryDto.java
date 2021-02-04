@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel
-public class MakeBorrowRemoteQueryDto extends PageDto {
+public class MakeBorrowQueryDto extends PageDto {
 
     @ApiModelProperty(value = "借阅人id", hidden = true)
     private Integer userId;

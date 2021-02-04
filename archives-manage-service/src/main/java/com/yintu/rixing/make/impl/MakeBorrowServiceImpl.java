@@ -8,7 +8,7 @@ import com.yintu.rixing.data.DataArchivesLibraryFile;
 import com.yintu.rixing.data.IDataArchivesLibraryFileService;
 import com.yintu.rixing.data.IDataFormalLibraryService;
 import com.yintu.rixing.dto.make.MakeBorrowRemoteFormDto;
-import com.yintu.rixing.dto.make.MakeBorrowRemoteQueryDto;
+import com.yintu.rixing.dto.make.MakeBorrowQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumAuditStatus;
 import com.yintu.rixing.enumobject.EnumFlag;
@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -103,16 +102,18 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     @Override
     public void approve(Integer id) {
 
+
+
     }
 
     @Override
-    public Page<MakeBorrowRemoteVo> page(MakeBorrowRemoteQueryDto makeBorrowQueryElectronicDto) {
+    public Page<MakeBorrowRemoteVo> page(MakeBorrowQueryDto makeBorrowQueryDto) {
         Page<MakeBorrowRemoteVo> page1 = new Page<>();
-        Integer num = makeBorrowQueryElectronicDto.getNum();
-        Integer size = makeBorrowQueryElectronicDto.getSize();
-        Integer userId = makeBorrowQueryElectronicDto.getUserId();
-        Short userType = makeBorrowQueryElectronicDto.getUserType();
-        Short borrowType = makeBorrowQueryElectronicDto.getBorrowType();
+        Integer num = makeBorrowQueryDto.getNum();
+        Integer size = makeBorrowQueryDto.getSize();
+        Integer userId = makeBorrowQueryDto.getUserId();
+        Short userType = makeBorrowQueryDto.getUserType();
+        Short borrowType = makeBorrowQueryDto.getBorrowType();
         QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
         if (userId != null && userType != null)
             queryWrapper.lambda().eq(MakeBorrow::getUserId, userId).eq(MakeBorrow::getUserType, userType);
