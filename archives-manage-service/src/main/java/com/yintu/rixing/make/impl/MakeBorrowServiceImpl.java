@@ -248,6 +248,7 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
                     SysUser sysUser = iSysUserService.getById(uId);
                     if (sysUser != null) {
                         makeBorrowVo.setUserName(sysUser.getUsername());
+                        makeBorrowVo.setCertificateNumber(sysUser.getCertificateNumber());
                     }
                 } else {//远程人员
                     SysRemoteUser sysRemoteUser = iSysRemoteUserService.getById(uId);

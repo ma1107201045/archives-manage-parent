@@ -22,6 +22,9 @@ public class PerBorrowManagementQueryDto extends PageDto {
     @NotNull
     private Short type;
 
+    @ApiModelProperty(value = "内部和远程人员区分 1：内部 2：远程", hidden = true)
+    private Short userType;
+
     @ApiModelProperty(value = "借阅人id", hidden = true)
     private Integer userId;
 

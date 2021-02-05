@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: mlf
@@ -47,7 +48,6 @@ public class MakeBorrowVo {
     private String archivesFileOriginalName;
 
 
-
     @ApiModelProperty(value = "借阅人姓名", position = 10)
     private String userName;
 
@@ -79,4 +79,7 @@ public class MakeBorrowVo {
 
     @ApiModelProperty(value = "预览类型 0：不可预览  1：可预览", position = 19)
     private Short previewType;
+
+    @ApiModelProperty(value = "审核详情", position = 20)
+    private List<?> list;
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.rixing.person.PerBorrowManagementMapper">
+
+    <resultMap id="PageResultMap" type="com.yintu.rixing.make.MakeBorrow">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="fileid" jdbcType="INTEGER" property="fileid"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="make_id" jdbcType="INTEGER" property="makeId"/>
+        <result column="borrow_start_time" jdbcType="TIMESTAMP" property="borrowStartTime"/>
+        <result column="borrow_end_time" jdbcType="TIMESTAMP" property="borrowEndTime"/>
+        <result column="user_type" jdbcType="SMALLINT" property="userType"/>
+        <result column="borrow_type" jdbcType="SMALLINT" property="borrowType"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+        <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
+        <result column="preview_type" jdbcType="SMALLINT" property="previewType"/>
+        <collection property="makeBorrowAuditors" ofType="com.yintu.rixing.make.MakeBorrowAuditor"/>
+        <collection property="makeBorrowAuditors" ofType="com.yintu.rixing.make.MakeBorrowAuditor"
+                    select="selectPageById" column="id"/>
+    </resultMap>
+
+    <resultMap id="selectPageByIdMap" type="com.yintu.rixing.make.MakeBorrowAuditor">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="make_borrow_id" jdbcType="INTEGER" property="makeBorrowId"/>
+        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
+        <result column="context" jdbcType="VARCHAR" property="context"/>
+        <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
+        <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="activate" jdbcType="INTEGER" property="activate"/>
+        <result column="is_dispose" jdbcType="SMALLINT" property="isDispose"/>
+        <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+        <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
+    </resultMap>
+
+    <select id="selectPage" resultMap="PageResultMap">
+        SELECT *
+        FROM make_borrow mb INNER JOIN make_borrow_auditor mba on mb.id = mba.make_borrow_id
+        <where>
+            <if test="perBorrowManagementQueryDto.type == 1">
+                and mba.is_dispose = 0 and mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
+            </if>
+            <if test="perBorrowManagementQueryDto.type == 2">
+                and mba.is_dispose = 1 and mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
+            </if>
+            <if test="perBorrowManagementQueryDto.type == 3">
+                and mb.user_type = #{perBorrowManagementQueryDto.userType,jdbcType=INTEGER} and
+                mb.user_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
+            </if>
+            <if test="perBorrowManagementQueryDto.borrowType!=null">
+                and mb.borrow_type = #{borrowType,jdbcType=SMALLINT}
+            </if>
+        </where>
+    </select>
+    <select id="selectPageById" resultMap="selectPageByIdMap">
+        SELECT *
+        FROM make_borrow_auditor mba
+        where mba.make_borrow_id = #{id,jdbcType=INTEGER}
+    </select>
+
+</mapper>
