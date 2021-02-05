@@ -17,13 +17,6 @@ public class MakeBorrowApproveDto {
     @ApiModelProperty(value = "审核记录id", required = true, hidden = true)
     private Integer id;
 
-    @ApiModelProperty(value = " 转交人id ", required = true)
-    private Integer auditorId;
-
-    @ApiModelProperty(value = "1.审核中 2.通过 3.拒绝 4.转交", required = true)
-    @NotNull
-    private Short auditStatus;
-
     @ApiModelProperty(value = "审批内容")
     private String context;
 
@@ -32,6 +25,13 @@ public class MakeBorrowApproveDto {
 
     @ApiModelProperty(value = "附件地址")
     private String accessoryPath;
+
+    @ApiModelProperty(value = "2.通过 3.拒绝 4.转交", required = true)
+    @NotNull
+    private Short auditStatus;
+
+    @ApiModelProperty(value = " 转交人id ", required = true)
+    private Integer auditorId;
 
 }
 
