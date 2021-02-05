@@ -62,6 +62,51 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     private ISysUserService iSysUserService;
 
     @Override
+    public void add(MakeBorrow makeBorrow) {
+        //判断同一个人是否借阅同一文件
+        Integer fileId = makeBorrow.getFileid();
+        Integer userId = makeBorrow.getUserId();
+        Short borrowType = makeBorrow.getBorrowType();
+        QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(MakeBorrow::getFileid, fileId)
+                .eq(MakeBorrow::getUserId, userId)
+                .eq(MakeBorrow::getUserType, (short) 1)
+                .eq(MakeBorrow::getBorrowType, borrowType);
+        List<MakeBorrow> makeBorrows = this.list(queryWrapper);
+        if (!makeBorrows.isEmpty()) {
+            MakeBorrow makeBorrow1 = makeBorrows.get(makeBorrows.size() - 1);
+            //审核中或者审核拒绝或者可预览都不能借阅（审批通过并且不可预览才可以借阅）
+            if (!EnumAuditStatus.AUDIT_PASS.getValue().equals(makeBorrow1.getAuditStatus()) || EnumFlag.True.getValue().equals(makeBorrow.getPreviewType()))
+                throw new BaseRuntimeException("无需重复借阅");
+        }
+        makeBorrow.setUserType((short) 2);
+        makeBorrow.setAuditStatus(EnumAuditStatus.AUDIT_IN.getValue());
+        makeBorrow.setPreviewType(EnumFlag.False.getValue());
+        this.save(makeBorrow);
+        Integer approvalId = makeBorrow.getApprovalId();//审批流id
+        List<SysApprovalProcessConfiguration> sysApprovalProcessConfigurations = iSysApprovalProcessConfigurationService.listByApprovalProcessId(approvalId);
+        List<MakeBorrowAuditor> makeBorrowAuditors = new ArrayList<>();
+        Integer makeBorrowId = makeBorrow.getId();
+        for (SysApprovalProcessConfiguration sysApprovalProcessConfiguration : sysApprovalProcessConfigurations) {
+            MakeBorrowAuditor makeBorrowAuditor = new MakeBorrowAuditor();
+            makeBorrowAuditor.setMakeBorrowId(makeBorrowId);
+            makeBorrowAuditor.setAuditorId(sysApprovalProcessConfiguration.getUserId());
+            Integer order = sysApprovalProcessConfiguration.getOrder();
+            makeBorrowAuditor.setSort(order);
+            if (order == 1) {
+                makeBorrowAuditor.setActivate(EnumFlag.True.getValue());
+            } else {
+                makeBorrowAuditor.setActivate(EnumFlag.False.getValue());
+            }
+            makeBorrowAuditor.setIsDispose(EnumFlag.False.getValue());
+            makeBorrowAuditor.setAuditStatus(EnumAuditStatus.AUDIT_IN.getValue());
+            makeBorrowAuditors.add(makeBorrowAuditor);
+        }
+        iMakeBorrowAuditorService.saveBatch(makeBorrowAuditors);
+    }
+
+    @Override
     public void saveRemote(MakeBorrowRemoteFormDto makeBorrowRemoteFormDto) {
         //判断同一个人是否借阅同一文件
         Integer fileId = makeBorrowRemoteFormDto.getFileid();

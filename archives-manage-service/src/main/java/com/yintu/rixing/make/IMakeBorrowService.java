@@ -52,4 +52,5 @@ public interface IMakeBorrowService extends IService<MakeBorrow> {
     Page<MakeBorrowVo> page(MakeBorrowQueryDto makeBorrowQueryElectronicDto);
 
 
+    void add(MakeBorrow makeBorrow);
 }

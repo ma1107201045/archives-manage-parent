@@ -80,16 +80,13 @@ public class MakeBorrow extends BaseEntity {
     @TableField("preview_type")
     private Short previewType;
 
-
-    @ApiModelProperty(value = "借阅人员")
+    @ApiModelProperty(value = "审批流id")
     @TableField(exist = false)
-    private SysUser sysUser;
+    private Integer approvalId;
 
-    @ApiModelProperty(value = "电子档案")
-    @TableField(exist = false)
-    private DataArchivesLibraryFile dataArchivesLibraryFile;
 
-    @ApiModelProperty(value = "实体档案")
-    @TableField(exist = false)
-    private Map<String,Object> dataEntityFile;
+
+
+
+
 }
