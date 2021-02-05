@@ -10,7 +10,10 @@ import com.yintu.rixing.data.impl.DataCommonService;
 import com.yintu.rixing.demo.DeTest;
 import com.yintu.rixing.demo.DeTestMapper;
 import com.yintu.rixing.demo.IDeTestService;
+import com.yintu.rixing.dto.person.PerBorrowManagementQueryDto;
 import com.yintu.rixing.enumobject.EnumFlag;
+import com.yintu.rixing.make.MakeBorrow;
+import com.yintu.rixing.person.PerBorrowManagementMapper;
 import com.yintu.rixing.pojo.SysPermissionPojo;
 import com.yintu.rixing.system.ISysPermissionService;
 import com.yintu.rixing.system.ISysUserService;
@@ -40,6 +43,8 @@ public class ArchivesManageApplicationTests {
     private DataCommonService dataCommonService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private PerBorrowManagementMapper perBorrowManagementMapper;
 
     @Test
     void contextLoads() {
@@ -184,6 +189,11 @@ public class ArchivesManageApplicationTests {
 
     @Test
     void test7() {
-
+        PerBorrowManagementQueryDto perBorrowManagementQueryDto = new PerBorrowManagementQueryDto();
+        perBorrowManagementQueryDto.setType((short) 1);
+        perBorrowManagementQueryDto.setUserId(3);
+        perBorrowManagementQueryDto.setBorrowType(null);
+        Page<MakeBorrow> makeBorrows = perBorrowManagementMapper.selectPage(new Page<>(1, 10), perBorrowManagementQueryDto);
+        System.out.println(JSONObject.toJSON(makeBorrows));
     }
 }

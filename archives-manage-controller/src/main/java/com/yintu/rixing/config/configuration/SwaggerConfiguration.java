@@ -40,10 +40,26 @@ public class SwaggerConfiguration {
     }
 
     @Bean
+    public Docket index() {
+        return new Docket(DocumentationType.OAS_30)
+                .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.index")).paths(PathSelectors.any()).build()
+                .groupName("04.首页模块");
+
+    }
+
+    @Bean
+    public Docket person() {
+        return new Docket(DocumentationType.OAS_30)
+                .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.person")).paths(PathSelectors.any()).build()
+                .groupName("05.个人中心模块");
+
+    }
+
+    @Bean
     public Docket make() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.make")).paths(PathSelectors.any()).build()
-                .groupName("04.利用中心模块");
+                .groupName("06.利用中心模块");
 
     }
 
@@ -51,7 +67,7 @@ public class SwaggerConfiguration {
     public Docket data() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.data")).paths(PathSelectors.any()).build()
-                .groupName("05.数据中心模块");
+                .groupName("07.数据中心模块");
 
     }
 
@@ -59,7 +75,7 @@ public class SwaggerConfiguration {
     public Docket warehouse() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.warehouse")).paths(PathSelectors.any()).build()
-                .groupName("06.库房管理模块");
+                .groupName("08.库房管理模块");
 
     }
 
@@ -67,7 +83,7 @@ public class SwaggerConfiguration {
     public Docket archives() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.archives")).paths(PathSelectors.any()).build()
-                .groupName("07.档案统计模板");
+                .groupName("09.档案统计模板");
 
     }
 
@@ -75,7 +91,7 @@ public class SwaggerConfiguration {
     public Docket security() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.security")).paths(PathSelectors.any()).build()
-                .groupName("08.安全中心模块");
+                .groupName("10.安全中心模块");
 
     }
 
@@ -83,7 +99,7 @@ public class SwaggerConfiguration {
     public Docket notification() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.notification")).paths(PathSelectors.any()).build()
-                .groupName("09.通知公告模块");
+                .groupName("11.通知公告模块");
 
     }
 
@@ -91,7 +107,7 @@ public class SwaggerConfiguration {
     public Docket system() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.system")).paths(PathSelectors.any()).build()
-                .groupName("10.系统设置模块");
+                .groupName("12.系统设置模块");
 
     }
 
@@ -99,7 +115,7 @@ public class SwaggerConfiguration {
     public Docket remote() {
         return new Docket(DocumentationType.OAS_30)
                 .select().apis(RequestHandlerSelectors.basePackage("com.yintu.rixing.remote")).paths(PathSelectors.any()).build()
-                .groupName("11.远程借阅模块");
+                .groupName("13.远程借阅模块");
 
     }
 

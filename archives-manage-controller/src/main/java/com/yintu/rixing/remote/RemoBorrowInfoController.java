@@ -64,8 +64,8 @@ public class RemoBorrowInfoController {
     @ApiOperation(value = "查看我的借阅信息", notes = "查看我的借阅信息")
     @ApiOperationSupport(order = 3)
     public ResultDataUtil<Page<MakeBorrowVo>> findPage(HttpServletRequest request, @Validated MakeBorrowQueryDto makeBorrowRemoteQueryDto) {
-        makeBorrowRemoteQueryDto.setUserId(IdentityIdUtil.get(request));
         makeBorrowRemoteQueryDto.setUserType((short) 2);
+        makeBorrowRemoteQueryDto.setUserId(IdentityIdUtil.get(request));
         Page<MakeBorrowVo> makeBorrowRemoteQueryVoPage = iMakeBorrowService.page(makeBorrowRemoteQueryDto);
         return ResultDataUtil.ok("查看我的借阅信息成功", makeBorrowRemoteQueryVoPage);
     }

@@ -288,23 +288,6 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
                         makeBorrowVo.setArchivesDirectoryFilingAnnual((String) map.get(EnumArchivesLibraryDefaultField.FILING_ANNUAL.getDataKey()));
                     }
                 }
-                //内部人员
-                if (uType == 1) {
-                    SysUser sysUser = iSysUserService.getById(uId);
-                    if (sysUser != null) {
-                        makeBorrowVo.setUserName(sysUser.getUsername());
-                    }
-                } else {//远程人员
-                    SysRemoteUser sysRemoteUser = iSysRemoteUserService.getById(uId);
-                    if (sysRemoteUser != null) {
-                        makeBorrowVo.setUserName(sysRemoteUser.getUsername());
-                        makeBorrowVo.setCertificateNumber(sysRemoteUser.getCertificateNumber());
-                    }
-                }
-                MakeBorrowPurpose makeBorrowPurpose = iMakeBorrowPurposeService.getById(makeId);
-                if (makeBorrowPurpose != null) {
-                    makeBorrowVo.setBorrowPurposeName(makeBorrowPurpose.getName());
-                }
             } else { //实体借阅
                 String tableName = TableNameUtil.tableName;
                 Integer count = iWareTemplateLibraryFieldService.findTable(tableName);
@@ -315,6 +298,25 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
                     makeBorrowVo.setArchivesLibName((String) map.get("archivesName"));
                     makeBorrowVo.setArchivesDirectoryNum((String) map.get("archivesNum"));
                 }
+            }
+            //内部人员
+            if (uType == 1) {
+                SysUser sysUser = iSysUserService.getById(uId);
+                if (sysUser != null) {
+                    makeBorrowVo.setUserName(sysUser.getUsername());
+                    makeBorrowVo.setCertificateNumber(sysUser.getCertificateNumber());
+                }
+            } else {//远程人员
+                SysRemoteUser sysRemoteUser = iSysRemoteUserService.getById(uId);
+                if (sysRemoteUser != null) {
+                    makeBorrowVo.setUserName(sysRemoteUser.getUsername());
+                    makeBorrowVo.setCertificateNumber(sysRemoteUser.getCertificateNumber());
+                }
+            }
+            //利用
+            MakeBorrowPurpose makeBorrowPurpose = iMakeBorrowPurposeService.getById(makeId);
+            if (makeBorrowPurpose != null) {
+                makeBorrowVo.setBorrowPurposeName(makeBorrowPurpose.getName());
             }
             makeBorrowVos.add(makeBorrowVo);
         }

@@ -17,6 +17,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,7 +35,6 @@ import java.util.Map;
 public class MakeBorrow extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
 
     @ApiModelProperty(value = "文件id")
     @TableField("fileid")
@@ -89,4 +89,11 @@ public class MakeBorrow extends BaseEntity {
 
 
 
+    @ApiModelProperty(value = "实体档案")
+    @TableField(exist = false)
+    private Map<String, Object> dataEntityFile;
+
+    @ApiModelProperty(value = "审核人信息")
+    @TableField(exist = false)
+    private List<MakeBorrowAuditor> makeBorrowAuditors;
 }
