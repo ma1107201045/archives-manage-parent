@@ -1,5 +1,6 @@
 package com.yintu.rixing.person;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
@@ -10,7 +11,7 @@ import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.make.IMakeBorrowService;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.vo.make.MakeBorrowTransferVo;
-import com.yintu.rixing.vo.person.PerBorrowManagementVo;
+import com.yintu.rixing.vo.make.MakeBorrowVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +31,8 @@ import java.util.List;
 @Api(tags = "借阅管理接口")
 @ApiSupport(order = 1)
 public class PerBorrowManagementController extends Authenticator {
+    @Autowired
+    private IPerBorrowManagementService iPerBorrowManagementService;
     @Autowired
     private IMakeBorrowService iMakeBorrowService;
 
@@ -49,10 +51,9 @@ public class PerBorrowManagementController extends Authenticator {
     @GetMapping
     @ApiOperation(value = "查询借阅管理列表信息", notes = "查询借阅管理列表信息")
     @ApiOperationSupport(order = 2)
-    public ResultDataUtil<List<PerBorrowManagementVo>> page(@Validated PerBorrowManagementQueryDto perBorrowManagementQueryDto) {
-        perBorrowManagementQueryDto = null;
-        List<PerBorrowManagementVo> perBorrowManagementVos = new ArrayList<>();
-        return ResultDataUtil.ok("查询借阅管理列表信息成功", perBorrowManagementVos);
+    public ResultDataUtil<Page<MakeBorrowVo>> page(@Validated PerBorrowManagementQueryDto perBorrowManagementQueryDto) {
+        Page<MakeBorrowVo> makeBorrowVoPage = iPerBorrowManagementService.page(perBorrowManagementQueryDto);
+        return ResultDataUtil.ok("查询借阅管理列表信息成功", makeBorrowVoPage);
     }
 
 

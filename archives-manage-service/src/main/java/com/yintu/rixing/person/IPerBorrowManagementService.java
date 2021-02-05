@@ -3,7 +3,6 @@ package com.yintu.rixing.person;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.dto.person.PerBorrowManagementQueryDto;
 import com.yintu.rixing.vo.make.MakeBorrowVo;
-import com.yintu.rixing.vo.person.PerBorrowManagementVo;
 
 /**
  * @Author: mlf
@@ -13,7 +12,7 @@ import com.yintu.rixing.vo.person.PerBorrowManagementVo;
 public interface IPerBorrowManagementService {
 
 
-    Page<MakeBorrowVo> selectPage(PerBorrowManagementQueryDto perBorrowManagementQueryDto);
+    Page<MakeBorrowVo> page(PerBorrowManagementQueryDto perBorrowManagementQueryDto);
 
 
 }

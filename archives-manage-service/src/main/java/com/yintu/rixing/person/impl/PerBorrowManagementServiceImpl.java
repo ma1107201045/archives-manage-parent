@@ -47,7 +47,7 @@ public class PerBorrowManagementServiceImpl implements IPerBorrowManagementServi
     private ISysUserService iSysUserService;
 
     @Override
-    public Page<MakeBorrowVo> selectPage(PerBorrowManagementQueryDto perBorrowManagementQueryDto) {
+    public Page<MakeBorrowVo> page(PerBorrowManagementQueryDto perBorrowManagementQueryDto) {
         Page<MakeBorrowVo> page1 = new Page<>();
         Integer num = perBorrowManagementQueryDto.getNum();
         Integer size = perBorrowManagementQueryDto.getSize();
