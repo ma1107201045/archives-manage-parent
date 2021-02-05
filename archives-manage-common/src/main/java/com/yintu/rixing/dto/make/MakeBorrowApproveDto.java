@@ -20,7 +20,7 @@ public class MakeBorrowApproveDto {
     @ApiModelProperty(value = " 转交人id ", required = true)
     private Integer auditorId;
 
-    @ApiModelProperty(value = "1.转交 2.通过 3.拒绝 ", required = true)
+    @ApiModelProperty(value = "1.审核中 2.通过 3.拒绝 4.转交", required = true)
     @NotNull
     private Short auditStatus;
 
