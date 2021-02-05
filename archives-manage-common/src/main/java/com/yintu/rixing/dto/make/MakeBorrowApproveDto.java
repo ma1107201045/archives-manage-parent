@@ -14,16 +14,15 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel
 public class MakeBorrowApproveDto {
-    @ApiModelProperty(value = "主键id", required = true)
-    @NotNull
+    @ApiModelProperty(value = "审核记录id", required = true, hidden = true)
     private Integer id;
+
+    @ApiModelProperty(value = " 转交人id ", required = true)
+    private Integer auditorId;
 
     @ApiModelProperty(value = "1.转交 2.通过 3.拒绝 ", required = true)
     @NotNull
     private Short auditStatus;
-
-    @ApiModelProperty(value = " 转交人id ", required = true)
-    private Integer auditorId;
 
     @ApiModelProperty(value = "审批内容")
     private String context;

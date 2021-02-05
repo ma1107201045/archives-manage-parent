@@ -1,10 +1,14 @@
 package com.yintu.rixing.make.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.make.MakeBorrowAuditorMapper;
 import com.yintu.rixing.make.MakeBorrowAuditor;
 import com.yintu.rixing.make.IMakeBorrowAuditorService;
+import com.yintu.rixing.pojo.MakeBorrowAuditorPojo;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +21,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class MakeBorrowAuditorServiceImpl extends ServiceImpl<MakeBorrowAuditorMapper, MakeBorrowAuditor> implements IMakeBorrowAuditorService {
 
+    @Override
+    public List<MakeBorrowAuditor> listByMakeBorrowAuditorPojo(MakeBorrowAuditorPojo makeBorrowAuditorPojo) {
+        Integer makeBorrowId = makeBorrowAuditorPojo.getMakeBorrowId();
+        Integer auditorId = makeBorrowAuditorPojo.getAuditorId();
+        Integer sort = makeBorrowAuditorPojo.getSort();
+        Short activate = makeBorrowAuditorPojo.getActivate();
+        QueryWrapper<MakeBorrowAuditor> queryWrapper = new QueryWrapper<>();
+        if (makeBorrowId != null)
+            queryWrapper.lambda().eq(MakeBorrowAuditor::getMakeBorrowId, makeBorrowId);
+        if (auditorId != null)
+            queryWrapper.lambda().eq(MakeBorrowAuditor::getAuditorId, auditorId);
+        if (sort != null)
+            queryWrapper.lambda().eq(MakeBorrowAuditor::getSort, sort);
+        if (activate != null)
+            queryWrapper.lambda().eq(MakeBorrowAuditor::getActivate, activate);
+        return this.list(queryWrapper);
+    }
 }

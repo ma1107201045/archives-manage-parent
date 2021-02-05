@@ -1,6 +1,9 @@
 package com.yintu.rixing.make;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yintu.rixing.pojo.MakeBorrowAuditorPojo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,4 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMakeBorrowAuditorService extends IService<MakeBorrowAuditor> {
 
+
+    List<MakeBorrowAuditor> listByMakeBorrowAuditorPojo(MakeBorrowAuditorPojo makeBorrowAuditorPojo);
 }

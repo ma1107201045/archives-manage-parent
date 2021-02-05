@@ -1,12 +1,14 @@
 package com.yintu.rixing.make.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.data.DataArchivesLibraryFile;
 import com.yintu.rixing.data.IDataArchivesLibraryFileService;
 import com.yintu.rixing.data.IDataFormalLibraryService;
+import com.yintu.rixing.dto.make.MakeBorrowApproveDto;
 import com.yintu.rixing.dto.make.MakeBorrowRemoteFormDto;
 import com.yintu.rixing.dto.make.MakeBorrowQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
@@ -14,14 +16,17 @@ import com.yintu.rixing.enumobject.EnumAuditStatus;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.make.*;
+import com.yintu.rixing.pojo.MakeBorrowAuditorPojo;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.make.MakeBorrowVo;
 import com.yintu.rixing.warehouse.IWareTemplateLibraryFieldService;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -106,10 +111,78 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     }
 
     @Override
-    public void approve(Integer id) {
+    public void approve(MakeBorrowApproveDto makeBorrowApproveDto) {
+        Integer id = makeBorrowApproveDto.getId();
+        Integer auditorId = makeBorrowApproveDto.getAuditorId();
+        Short auditStatus = makeBorrowApproveDto.getAuditStatus();
+        String context = makeBorrowApproveDto.getContext();
+        String accessoryName = makeBorrowApproveDto.getAccessoryName();
+        String accessoryPath = makeBorrowApproveDto.getAccessoryPath();
+        if (auditStatus != 2 && auditStatus != 3 && auditStatus != 4)
+            throw new BaseRuntimeException("审核状态错误");
+        MakeBorrow makeBorrow = this.getById(id);
+        if (makeBorrow != null) {
+            //1.判断此文件是否审批过
+            List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.listByMakeBorrowAuditorPojo(new MakeBorrowAuditorPojo(id, null, EnumFlag.True.getValue()));
+            if (makeBorrowAuditors.isEmpty()) {
+                throw new BaseRuntimeException("此文件已审核，无需重复审核");
+            }
+            //2.更改当前顺序的审核人群的状态
+            Integer sort = null;
+            for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
+                // 3.当前人需要同步附件等其他信息
+                if (auditorId.equals(makeBorrowAuditor.getAuditorId())) {
+                    sort = makeBorrowAuditor.getSort();
+                    makeBorrowAuditor.setContext(context);
+                    makeBorrowAuditor.setAccessoryName(accessoryName);
+                    makeBorrowAuditor.setAccessoryPath(accessoryPath);
+                }
+                makeBorrowAuditor.setActivate(EnumFlag.False.getValue());
+                makeBorrowAuditor.setIsDispose(EnumFlag.True.getValue());
+                makeBorrowAuditor.setAuditStatus(auditStatus);
+                makeBorrowAuditor.setAuditFinishTime(DateUtil.date());
+            }
+            if (sort == null)
+                throw new BaseRuntimeException("你无权审核此文件或已被其他人审批");
+            iMakeBorrowAuditorService.updateBatchById(makeBorrowAuditors);
 
-
+            //4.判断审核状态
+            //4.1如果通过状态，进行判断是否还有下一批人
+            if (auditStatus == 2) {
+                makeBorrowAuditors = iMakeBorrowAuditorService.listByMakeBorrowAuditorPojo(new MakeBorrowAuditorPojo(id, sort + 1, null));
+                //4.2 如果没有人则审核完全通过，回写审核记录状态----------------
+                if (makeBorrowAuditors.isEmpty()) {
+                    makeBorrow.setAuditStatus(auditStatus);
+                    makeBorrow.setAuditFinishTime(DateUtil.date());
+                    makeBorrow.setPreviewType(EnumFlag.True.getValue());
+                    this.updateById(makeBorrow);
+                    //4.3 如果有人则审核进行下一批
+                } else {
+                    for (MakeBorrowAuditor eachMakeBorrowAuditor : makeBorrowAuditors) {//更改当前顺序的审核人群的激活状态
+                        eachMakeBorrowAuditor.setActivate(EnumFlag.True.getValue());
+                        iMakeBorrowAuditorService.updateById(eachMakeBorrowAuditor);
+                    }
+                }
+            } else if (auditStatus == 3) {
+                //4.4 如果拒绝状态，直接回写审核记录状态
+                makeBorrow.setAuditStatus(auditStatus);
+                makeBorrow.setAuditFinishTime(DateUtil.date());
+                this.updateById(makeBorrow);
+            } else {
+                //4.5 如果转交状态，添加转交人信息（此人顺序跟当前转交人信息一致）
+                MakeBorrowAuditor makeBorrowAuditor = new MakeBorrowAuditor();
+                makeBorrowAuditor.setMakeBorrowId(id);
+                makeBorrowAuditor.setAuditorId(auditorId);
+                makeBorrowAuditor.setSort(sort);
+                makeBorrowAuditor.setActivate(EnumFlag.True.getValue());
+                makeBorrowAuditor.setIsDispose(EnumFlag.False.getValue());
+                makeBorrowAuditor.setAuditStatus(EnumAuditStatus.AUDIT_IN.getValue());
+                makeBorrowAuditor.setAuditFinishTime(DateUtil.date());
+                iMakeBorrowAuditorService.save(makeBorrowAuditor);
+            }
+        }
     }
+
 
     @Override
     public Page<MakeBorrowVo> page(MakeBorrowQueryDto makeBorrowQueryDto) {
@@ -188,4 +261,6 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
         page1.setRecords(makeBorrowVos);
         return page1;
     }
+
+
 }
