@@ -11,6 +11,7 @@ import com.yintu.rixing.dto.system.SysUserQueryDto;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
+import com.yintu.rixing.util.AssertUtil;
 import com.yintu.rixing.util.TreeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -149,6 +150,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .select(SysUser.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
                 .eq(SysUser::getUsername, username);
         return this.listObjs(queryWrapper, id -> (Integer) id);
+    }
+
+    @Override
+    public List<SysUser> listByNotIds(List<Integer> ids) {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().notIn(SysUser::getId, ids);
+        return this.list(queryWrapper);
     }
 
     @Override

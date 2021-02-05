@@ -41,10 +41,11 @@ public interface ISysUserService extends IService<SysUser>, UserDetailsService {
 
     List<Integer> listByUsername(String username);
 
+    List<SysUser> listByNotIds(List<Integer> ids);
+
     Page<SysUser> page(SysUserQueryDto sysUserDto);
 
     List<SysRole> sysRolesById(Integer id);
-
 
     List<SysDepartment> sysDepartmentsByIdAndDepartmentId(Integer id, Integer departmentId);
 

@@ -94,7 +94,7 @@ public class JwtTokenUtil {
      * @param token token
      * @return 返回信息
      */
-    public Claims parseJWTBody(String token) {
+    public Claims parseJWTPayLoad(String token) {
         return parseJWT(token).getBody();
     }
 

@@ -19,6 +19,7 @@ import com.yintu.rixing.make.*;
 import com.yintu.rixing.pojo.MakeBorrowAuditorPojo;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.TableNameUtil;
+import com.yintu.rixing.vo.make.MakeBorrowTransferVo;
 import com.yintu.rixing.vo.make.MakeBorrowVo;
 import com.yintu.rixing.warehouse.IWareTemplateLibraryFieldService;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -181,6 +183,21 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
                 iMakeBorrowAuditorService.save(makeBorrowAuditor);
             }
         }
+    }
+
+    @Override
+    public List<MakeBorrowTransferVo> listTransferById(Integer id, Integer currentUserId) {
+        List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.listByMakeBorrowAuditorPojo(new MakeBorrowAuditorPojo(id, null, null));
+        List<Integer> ids = makeBorrowAuditors.stream().map(MakeBorrowAuditor::getAuditorId).collect(Collectors.toList());
+        ids.add(currentUserId);
+        List<SysUser> sysUsers = iSysUserService.listByNotIds(ids);
+        return sysUsers.stream().map(sysUser -> {
+            MakeBorrowTransferVo makeBorrowTransferVo = new MakeBorrowTransferVo();
+            makeBorrowTransferVo.setId(sysUser.getId());
+            makeBorrowTransferVo.setUsername(sysUser.getUsername());
+            makeBorrowTransferVo.setNickName(sysUser.getNickname());
+            return makeBorrowTransferVo;
+        }).collect(Collectors.toList());
     }
 
 

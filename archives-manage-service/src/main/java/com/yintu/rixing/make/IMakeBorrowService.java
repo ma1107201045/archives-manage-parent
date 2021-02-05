@@ -5,7 +5,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.make.MakeBorrowApproveDto;
 import com.yintu.rixing.dto.make.MakeBorrowQueryDto;
 import com.yintu.rixing.dto.make.MakeBorrowRemoteFormDto;
+import com.yintu.rixing.system.SysUser;
+import com.yintu.rixing.vo.make.MakeBorrowTransferVo;
 import com.yintu.rixing.vo.make.MakeBorrowVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,10 +21,34 @@ import com.yintu.rixing.vo.make.MakeBorrowVo;
  */
 public interface IMakeBorrowService extends IService<MakeBorrow> {
 
+    /**
+     * 远程借阅
+     *
+     * @param borrowRemoteFormDto ...
+     */
     void saveRemote(MakeBorrowRemoteFormDto borrowRemoteFormDto);
 
+    /**
+     * 审核
+     *
+     * @param makeBorrowApproveDto ..
+     */
     void approve(MakeBorrowApproveDto makeBorrowApproveDto);
 
+    /**
+     * 转交列表
+     *
+     * @param id 借阅记录id
+     * @return ..
+     */
+    List<MakeBorrowTransferVo> listTransferById(Integer id, Integer currentUserId);
+
+    /**
+     * 借阅列表
+     *
+     * @param makeBorrowQueryElectronicDto ...
+     * @return ..
+     */
     Page<MakeBorrowVo> page(MakeBorrowQueryDto makeBorrowQueryElectronicDto);
 
 
