@@ -24,14 +24,11 @@ public class MakeBorrowAuditorServiceImpl extends ServiceImpl<MakeBorrowAuditorM
     @Override
     public List<MakeBorrowAuditor> listByMakeBorrowAuditorPojo(MakeBorrowAuditorPojo makeBorrowAuditorPojo) {
         Integer makeBorrowId = makeBorrowAuditorPojo.getMakeBorrowId();
-        Integer auditorId = makeBorrowAuditorPojo.getAuditorId();
         Integer sort = makeBorrowAuditorPojo.getSort();
         Short activate = makeBorrowAuditorPojo.getActivate();
         QueryWrapper<MakeBorrowAuditor> queryWrapper = new QueryWrapper<>();
         if (makeBorrowId != null)
             queryWrapper.lambda().eq(MakeBorrowAuditor::getMakeBorrowId, makeBorrowId);
-        if (auditorId != null)
-            queryWrapper.lambda().eq(MakeBorrowAuditor::getAuditorId, auditorId);
         if (sort != null)
             queryWrapper.lambda().eq(MakeBorrowAuditor::getSort, sort);
         if (activate != null)
