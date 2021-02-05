@@ -51,7 +51,7 @@ public class PerBorrowManagementController extends Authenticator {
     @GetMapping
     @ApiOperation(value = "查询借阅管理列表信息", notes = "查询借阅管理列表信息")
     @ApiOperationSupport(order = 2)
-    public ResultDataUtil<Page<MakeBorrowVo>> page(@Validated PerBorrowManagementQueryDto perBorrowManagementQueryDto) {
+    public ResultDataUtil<Page<MakeBorrowVo>> findPage(@Validated PerBorrowManagementQueryDto perBorrowManagementQueryDto) {
         perBorrowManagementQueryDto.setUserType((short) 1);
         perBorrowManagementQueryDto.setUserId(this.getLoginUserId());
         Page<MakeBorrowVo> makeBorrowVoPage = iPerBorrowManagementService.page(perBorrowManagementQueryDto);
