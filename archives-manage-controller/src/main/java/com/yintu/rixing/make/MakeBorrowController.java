@@ -193,7 +193,7 @@ public class MakeBorrowController extends Authenticator {
                     for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
                         userAuditors.add(makeBorrowAuditor.getAuditorId());
                     }
-                    makeBorrowVo.setMakeBorrowAuditorVos(userAuditors);
+                    makeBorrowVo.setList(userAuditors);
                     makeBorrowVos.add(makeBorrowVo);
                 }
                 page1.setRecords(makeBorrowVos);
@@ -259,7 +259,7 @@ public class MakeBorrowController extends Authenticator {
                 for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
                     userAuditors.add(makeBorrowAuditor.getAuditorId());
                 }
-                makeBorrowVo.setMakeBorrowAuditorVos(userAuditors);
+                makeBorrowVo.setList(userAuditors);
                 makeBorrowVos.add(makeBorrowVo);
 
             }
@@ -334,7 +334,7 @@ public class MakeBorrowController extends Authenticator {
                     for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
                         userAuditors.add(makeBorrowAuditor.getAuditorId());
                     }
-                    makeBorrowVo.setMakeBorrowAuditorVos(userAuditors);
+                    makeBorrowVo.setList(userAuditors);
 
                     makeBorrowVos.add(makeBorrowVo);
                 }
@@ -385,7 +385,7 @@ public class MakeBorrowController extends Authenticator {
                 for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
                     userAuditors.add(makeBorrowAuditor.getAuditorId());
                 }
-                makeBorrowVo.setMakeBorrowAuditorVos(userAuditors);
+                makeBorrowVo.setList(userAuditors);
 
                 makeBorrowVos.add(makeBorrowVo);
             }

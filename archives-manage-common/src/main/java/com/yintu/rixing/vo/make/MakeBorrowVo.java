@@ -80,5 +80,5 @@ public class MakeBorrowVo {
     private Short previewType;
 
     @ApiModelProperty(value = "审核详情", position = 20)
-    private List<?> makeBorrowAuditorVos;
+    private List<?> list;
 }

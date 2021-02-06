@@ -101,7 +101,7 @@ public class PerBorrowManagementServiceImpl implements IPerBorrowManagementServi
             if (makeBorrowPurpose != null) {
                 makeBorrowVo.setBorrowPurposeName(makeBorrowPurpose.getName());
             }
-            makeBorrowVo.setMakeBorrowAuditorVos(makeBorrow.getMakeBorrowAuditorVos());
+            makeBorrowVo.setList(makeBorrow.getMakeBorrowAuditorVos());
             makeBorrowVos.add(makeBorrowVo);
         }
         page1.setRecords(makeBorrowVos);
