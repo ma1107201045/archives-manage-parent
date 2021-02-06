@@ -186,14 +186,14 @@ public class MakeBorrowController extends Authenticator {
                     makeBorrowVo.setBorrowEndTime(record.getBorrowEndTime());
                     makeBorrowVo.setAuditStatus(record.getAuditStatus());
 
-                    List<Integer>userAuditors=new ArrayList<>();
-                    QueryWrapper<MakeBorrowAuditor> queryWrapper2=new QueryWrapper<>();
-                    queryWrapper2.eq("make_borrow_id",record.getId());
+                    List<Integer> userAuditors = new ArrayList<>();
+                    QueryWrapper<MakeBorrowAuditor> queryWrapper2 = new QueryWrapper<>();
+                    queryWrapper2.eq("make_borrow_id", record.getId());
                     List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper2);
                     for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
-                        userAuditors.add( makeBorrowAuditor.getAuditorId());
+                        userAuditors.add(makeBorrowAuditor.getAuditorId());
                     }
-                    makeBorrowVo.setList(userAuditors);
+                    makeBorrowVo.setMakeBorrowAuditorVos(userAuditors);
                     makeBorrowVos.add(makeBorrowVo);
                 }
                 page1.setRecords(makeBorrowVos);
@@ -252,14 +252,14 @@ public class MakeBorrowController extends Authenticator {
                 makeBorrowVo.setBorrowEndTime(record.getBorrowEndTime());
                 makeBorrowVo.setAuditStatus(record.getAuditStatus());
 
-                List<Integer>userAuditors=new ArrayList<>();
-                QueryWrapper<MakeBorrowAuditor> queryWrapper=new QueryWrapper<>();
-                queryWrapper.eq("make_borrow_id",record.getId());
+                List<Integer> userAuditors = new ArrayList<>();
+                QueryWrapper<MakeBorrowAuditor> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("make_borrow_id", record.getId());
                 List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper);
                 for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
-                   userAuditors.add( makeBorrowAuditor.getAuditorId());
+                    userAuditors.add(makeBorrowAuditor.getAuditorId());
                 }
-                makeBorrowVo.setList(userAuditors);
+                makeBorrowVo.setMakeBorrowAuditorVos(userAuditors);
                 makeBorrowVos.add(makeBorrowVo);
 
             }
@@ -299,7 +299,7 @@ public class MakeBorrowController extends Authenticator {
                 List<MakeBorrowVo> makeBorrowVos = new ArrayList<>();
 
                 for (MakeBorrow record : page.getRecords()) {
-                    MakeBorrowVo makeBorrowVo=new MakeBorrowVo();
+                    MakeBorrowVo makeBorrowVo = new MakeBorrowVo();
                     Integer userId = record.getUserId();
                     Integer fileid = record.getFileid();
                     Short userType = record.getUserType();
@@ -318,7 +318,7 @@ public class MakeBorrowController extends Authenticator {
                         }
                     }
                     Map<String, Object> EntityArchives = iWareTemplateLibraryFieldService.findEntityArchivesById(fileid);
-                    if (EntityArchives!=null){
+                    if (EntityArchives != null) {
                         makeBorrowVo.setArchivesDirectoryTopicName((String) EntityArchives.get("archivesName"));
                         makeBorrowVo.setArchivesDirectoryNum((String) EntityArchives.get("archivesNum"));
                         makeBorrowVo.setId(record.getId());
@@ -327,14 +327,14 @@ public class MakeBorrowController extends Authenticator {
                         makeBorrowVo.setBorrowEndTime(record.getBorrowEndTime());
                         makeBorrowVo.setAuditStatus(record.getAuditStatus());
                     }
-                    List<Integer>userAuditors=new ArrayList<>();
-                    QueryWrapper<MakeBorrowAuditor> queryWrapper2=new QueryWrapper<>();
+                    List<Integer> userAuditors = new ArrayList<>();
+                    QueryWrapper<MakeBorrowAuditor> queryWrapper2 = new QueryWrapper<>();
                     queryWrapper2.eq("make_borrow_id", record.getId());
                     List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper2);
                     for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
-                        userAuditors.add( makeBorrowAuditor.getAuditorId());
+                        userAuditors.add(makeBorrowAuditor.getAuditorId());
                     }
-                    makeBorrowVo.setList(userAuditors);
+                    makeBorrowVo.setMakeBorrowAuditorVos(userAuditors);
 
                     makeBorrowVos.add(makeBorrowVo);
                 }
@@ -350,7 +350,7 @@ public class MakeBorrowController extends Authenticator {
             List<MakeBorrowVo> makeBorrowVos = new ArrayList<>();
 
             for (MakeBorrow record : page.getRecords()) {
-                MakeBorrowVo makeBorrowVo=new MakeBorrowVo();
+                MakeBorrowVo makeBorrowVo = new MakeBorrowVo();
                 Integer userId = record.getUserId();
                 Integer fileid = record.getFileid();
                 Short userType = record.getUserType();
@@ -369,7 +369,7 @@ public class MakeBorrowController extends Authenticator {
                     }
                 }
                 Map<String, Object> EntityArchives = iWareTemplateLibraryFieldService.findEntityArchivesById(fileid);
-                if (EntityArchives!=null){
+                if (EntityArchives != null) {
                     makeBorrowVo.setArchivesDirectoryTopicName((String) EntityArchives.get("archivesName"));
                     makeBorrowVo.setArchivesDirectoryNum((String) EntityArchives.get("archivesNum"));
                     makeBorrowVo.setId(record.getId());
@@ -378,14 +378,14 @@ public class MakeBorrowController extends Authenticator {
                     makeBorrowVo.setBorrowEndTime(record.getBorrowEndTime());
                     makeBorrowVo.setAuditStatus(record.getAuditStatus());
                 }
-                List<Integer>userAuditors=new ArrayList<>();
-                QueryWrapper<MakeBorrowAuditor> queryWrapper2=new QueryWrapper<>();
+                List<Integer> userAuditors = new ArrayList<>();
+                QueryWrapper<MakeBorrowAuditor> queryWrapper2 = new QueryWrapper<>();
                 queryWrapper2.eq("make_borrow_id", record.getId());
                 List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper2);
                 for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
-                    userAuditors.add( makeBorrowAuditor.getAuditorId());
+                    userAuditors.add(makeBorrowAuditor.getAuditorId());
                 }
-                makeBorrowVo.setList(userAuditors);
+                makeBorrowVo.setMakeBorrowAuditorVos(userAuditors);
 
                 makeBorrowVos.add(makeBorrowVo);
             }

@@ -67,8 +67,5 @@ public class MakeBorrowAuditor extends BaseEntity {
     @TableField("audit_finish_time")
     private Date auditFinishTime;
 
-    @ApiModelProperty(value = "审核人详情")
-    @TableField(exist = true)
-    private SysUser sysUser;
 
 }

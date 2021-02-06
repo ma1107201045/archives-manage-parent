@@ -19,19 +19,16 @@
         <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
         <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
         <result column="preview_type" jdbcType="SMALLINT" property="previewType"/>
-        <collection property="makeBorrowAuditors" ofType="com.yintu.rixing.make.MakeBorrowAuditor"/>
-        <collection property="makeBorrowAuditors" ofType="com.yintu.rixing.make.MakeBorrowAuditor"
+        <collection property="makeBorrowAuditorVos" ofType="com.yintu.rixing.vo.make.MakeBorrowAuditorVo"/>
+        <collection property="makeBorrowAuditorVos" ofType="com.yintu.rixing.vo.make.MakeBorrowAuditorVo"
                     select="selectPageById" column="id"/>
     </resultMap>
 
-    <resultMap id="selectPageByIdMap" type="com.yintu.rixing.make.MakeBorrowAuditor">
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
-        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+    <resultMap id="selectPageByIdMap" type="com.yintu.rixing.vo.make.MakeBorrowAuditorVo">
         <result column="make_borrow_id" jdbcType="INTEGER" property="makeBorrowId"/>
         <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
         <result column="context" jdbcType="VARCHAR" property="context"/>
         <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
         <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
@@ -40,11 +37,6 @@
         <result column="is_dispose" jdbcType="SMALLINT" property="isDispose"/>
         <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
         <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
-        <association column="auditorId" property="sysUser">
-            <result column="su_id" jdbcType="INTEGER" property="id"/>
-            <result column="su_username" jdbcType="VARCHAR" property="username"/>
-            <result column="su_nickname" jdbcType="VARCHAR" property="nickname"/>
-        </association>
     </resultMap>
 
     <select id="selectPage" resultMap="PageResultMap">
@@ -67,7 +59,7 @@
         </where>
     </select>
     <select id="selectPageById" resultMap="selectPageByIdMap">
-        SELECT mba.*, su.id AS su_id, su.username AS su_username, su.nickname AS su_nickname
+        SELECT mba.*, su.username, su.nickname
         FROM make_borrow_auditor mba
                  INNER JOIN sys_user su on mba.auditor_id = su.id
         where mba.make_borrow_id = #{id,jdbcType=INTEGER}

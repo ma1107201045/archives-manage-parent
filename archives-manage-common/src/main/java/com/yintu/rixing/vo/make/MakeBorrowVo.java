@@ -19,7 +19,6 @@ public class MakeBorrowVo {
     @ApiModelProperty(value = "借阅申请id")
     private Integer id;
 
-
     @ApiModelProperty(value = "档案库名称", position = 1)
     private String archivesLibName;
 
@@ -81,5 +80,5 @@ public class MakeBorrowVo {
     private Short previewType;
 
     @ApiModelProperty(value = "审核详情", position = 20)
-    private List<?> list;
+    private List<?> makeBorrowAuditorVos;
 }
