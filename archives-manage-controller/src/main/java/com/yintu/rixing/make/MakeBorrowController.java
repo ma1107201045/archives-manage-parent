@@ -14,6 +14,7 @@ import com.yintu.rixing.data.IDataFormalLibraryService;
 import com.yintu.rixing.dto.make.MakeBorrowApproveDto;
 import com.yintu.rixing.dto.system.SysApprovalProcessQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
+import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.ResponseDataUtil;
@@ -329,7 +330,7 @@ public class MakeBorrowController extends Authenticator {
                     }
                     List<Integer> userAuditors = new ArrayList<>();
                     QueryWrapper<MakeBorrowAuditor> queryWrapper2 = new QueryWrapper<>();
-                    queryWrapper2.eq("make_borrow_id", record.getId());
+                    queryWrapper2.eq("make_borrow_id", record.getId()).eq("activate", EnumFlag.True.getValue());
                     List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper2);
                     for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
                         userAuditors.add(makeBorrowAuditor.getAuditorId());
@@ -380,7 +381,7 @@ public class MakeBorrowController extends Authenticator {
                 }
                 List<Integer> userAuditors = new ArrayList<>();
                 QueryWrapper<MakeBorrowAuditor> queryWrapper2 = new QueryWrapper<>();
-                queryWrapper2.eq("make_borrow_id", record.getId());
+                queryWrapper2.eq("make_borrow_id", record.getId()).eq("activate", EnumFlag.True.getValue());
                 List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper2);
                 for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
                     userAuditors.add(makeBorrowAuditor.getAuditorId());
