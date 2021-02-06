@@ -3,6 +3,7 @@ package com.yintu.rixing.make;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.yintu.rixing.BaseEntity;
+import com.yintu.rixing.system.SysUser;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -66,5 +67,8 @@ public class MakeBorrowAuditor extends BaseEntity {
     @TableField("audit_finish_time")
     private Date auditFinishTime;
 
+    @ApiModelProperty(value = "审核人详情")
+    @TableField(exist = true)
+    private SysUser sysUser;
 
 }

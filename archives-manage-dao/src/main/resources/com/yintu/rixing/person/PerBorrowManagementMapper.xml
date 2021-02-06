@@ -40,6 +40,11 @@
         <result column="is_dispose" jdbcType="SMALLINT" property="isDispose"/>
         <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
         <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
+        <association column="auditorId" property="sysUser">
+            <result column="su_id" jdbcType="INTEGER" property="id"/>
+            <result column="su_username" jdbcType="VARCHAR" property="username"/>
+            <result column="su_nickname" jdbcType="VARCHAR" property="nickname"/>
+        </association>
     </resultMap>
 
     <select id="selectPage" resultMap="PageResultMap">
@@ -62,8 +67,9 @@
         </where>
     </select>
     <select id="selectPageById" resultMap="selectPageByIdMap">
-        SELECT *
+        SELECT mba.*, su.id AS su_id, su.username AS su_username, su.nickname AS su_nickname
         FROM make_borrow_auditor mba
+                 INNER JOIN sys_user su on mba.auditor_id = su.id
         where mba.make_borrow_id = #{id,jdbcType=INTEGER}
     </select>
 
