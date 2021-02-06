@@ -54,7 +54,7 @@
                 mb.user_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
             </if>
             <if test="perBorrowManagementQueryDto.borrowType!=null">
-                and mb.borrow_type = #{borrowType,jdbcType=SMALLINT}
+                and mb.borrow_type = #{perBorrowManagementQueryDto.borrowType,jdbcType=SMALLINT}
             </if>
         </where>
     </select>
