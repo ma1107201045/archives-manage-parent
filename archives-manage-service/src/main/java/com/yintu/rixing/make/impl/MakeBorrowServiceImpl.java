@@ -3,6 +3,7 @@ package com.yintu.rixing.make.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.data.DataArchivesLibraryFile;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -65,13 +67,14 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     public void saveRemote(MakeBorrowRemoteFormDto makeBorrowRemoteFormDto) {
         //判断同一个人是否借阅同一文件
         Integer fileId = makeBorrowRemoteFormDto.getFileid();
+        Short userType = makeBorrowRemoteFormDto.getUserType();
         Integer userId = makeBorrowRemoteFormDto.getUserId();
         Short borrowType = makeBorrowRemoteFormDto.getBorrowType();
         QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(MakeBorrow::getFileid, fileId)
                 .eq(MakeBorrow::getUserId, userId)
-                .eq(MakeBorrow::getUserType, (short) 2)
+                .eq(MakeBorrow::getUserType, userType)
                 .eq(MakeBorrow::getBorrowType, borrowType);
         List<MakeBorrow> makeBorrows = this.list(queryWrapper);
         if (!makeBorrows.isEmpty()) {
@@ -277,6 +280,29 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
         }
         page1.setRecords(makeBorrowVos);
         return page1;
+    }
+
+    @Override
+    public void execute() {
+        QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .select(MakeBorrow::getId)
+                .select(MakeBorrow::getBorrowEndTime)
+                .eq(MakeBorrow::getAuditStatus, EnumAuditStatus.AUDIT_PASS)
+                .eq(MakeBorrow::getPreviewType, EnumFlag.True.getValue());
+        List<MakeBorrow> makeBorrows = this.list(queryWrapper);
+        List<Integer> ids = new ArrayList<>();
+        makeBorrows.forEach(makeBorrow -> {
+            Date date = DateUtil.parseDate(DateUtil.formatDate(DateUtil.date()));
+            if (date.getTime() == makeBorrow.getBorrowEndTime().getTime()) {
+                ids.add(makeBorrow.getId());
+            }
+        });
+        UpdateWrapper<MakeBorrow> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.lambda()
+                .set(MakeBorrow::getPreviewType, EnumFlag.False.getValue())
+                .in(MakeBorrow::getId, ids);
+        this.update(updateWrapper);
     }
 
 
