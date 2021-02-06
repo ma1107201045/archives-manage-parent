@@ -21,11 +21,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SpringBootTest
 public class ArchivesManageApplicationTests {
@@ -45,6 +48,7 @@ public class ArchivesManageApplicationTests {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private PerBorrowManagementMapper perBorrowManagementMapper;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     @Test
     void contextLoads() {
@@ -195,5 +199,21 @@ public class ArchivesManageApplicationTests {
         perBorrowManagementQueryDto.setBorrowType(null);
         Page<MakeBorrow> makeBorrows = perBorrowManagementMapper.selectPage(new Page<>(1, 10), perBorrowManagementQueryDto);
         System.out.println(JSONObject.toJSON(makeBorrows));
+    }
+
+    @Test
+    void test8() {
+        executorService.submit(() -> {
+            System.out.println("!111111111111111111111111");
+            QueryWrapper<DeTest> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("name", "zs");
+            List<DeTest> deTests = deTestMapper.selectList(queryWrapper);
+            System.out.println(deTests.size());
+            if (deTests.size() == 1) {
+                deTestMapper.insert(new DeTest());
+            }
+        });
+        executorService.shutdown();
+
     }
 }

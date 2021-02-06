@@ -30,7 +30,7 @@ public class MakeBorrowApproveDto {
     @NotNull
     private Short auditStatus;
 
-    @ApiModelProperty(value = " 转交人id ", required = true)
+    @ApiModelProperty(value = " 转交人id ")
     private Integer auditorId;
 
 }
