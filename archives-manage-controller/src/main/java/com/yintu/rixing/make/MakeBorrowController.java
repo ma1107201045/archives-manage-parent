@@ -5,17 +5,20 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.data.DataArchivesLibraryFile;
 import com.yintu.rixing.data.IDataArchivesLibraryFileService;
 import com.yintu.rixing.data.IDataFormalLibraryService;
+import com.yintu.rixing.dto.make.MakeBorrowApproveDto;
 import com.yintu.rixing.dto.system.SysApprovalProcessQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.ResultDataUtil;
+import com.yintu.rixing.vo.make.MakeBorrowTransferVo;
 import com.yintu.rixing.vo.make.MakeBorrowVo;
 import com.yintu.rixing.warehouse.IWareTemplateLibraryFieldService;
 import io.swagger.annotations.Api;
@@ -24,6 +27,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -64,7 +68,8 @@ public class MakeBorrowController extends Authenticator {
     private IMakeBorrowPurposeService iMakeBorrowPurposeService;
     @Autowired
     private ISysApprovalProcessService iSysApprovalProcessService;
-
+    @Autowired
+    private IMakeBorrowAuditorService iMakeBorrowAuditorService;
 
     //查询审批流
     @Log(level = EnumLogLevel.TRACE, module = "借阅申请", context = "查询审批流程列表信息")
@@ -141,9 +146,10 @@ public class MakeBorrowController extends Authenticator {
                     Short userType = record.getUserType();
                     Integer userId = record.getUserId();
                     Integer makeId = record.getMakeId();
+                    Integer id = record.getId();
                     DataArchivesLibraryFile dataArchivesLibraryFile = iDataArchivesLibraryFileService.getById(fileid1);
                     if (dataArchivesLibraryFile != null) {
-                        makeBorrowVo.setArchivesFileId(fileid1);
+                        makeBorrowVo.setArchivesFileId(id);
                         makeBorrowVo.setArchivesFileOriginalName(dataArchivesLibraryFile.getOriginalName());
                         Integer archivesLibraryId = dataArchivesLibraryFile.getArchivesLibraryId();
                         Integer dataId = dataArchivesLibraryFile.getDataId();
@@ -176,6 +182,18 @@ public class MakeBorrowController extends Authenticator {
                     if (makeBorrowPurpose != null) {
                         makeBorrowVo.setBorrowPurposeName(makeBorrowPurpose.getName());
                     }
+                    makeBorrowVo.setBorrowStartTime(record.getBorrowStartTime());
+                    makeBorrowVo.setBorrowEndTime(record.getBorrowEndTime());
+                    makeBorrowVo.setAuditStatus(record.getAuditStatus());
+
+                    List<Integer>userAuditors=new ArrayList<>();
+                    QueryWrapper<MakeBorrowAuditor> queryWrapper2=new QueryWrapper<>();
+                    queryWrapper2.eq("make_borrow_id",record.getId());
+                    List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper2);
+                    for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
+                        userAuditors.add( makeBorrowAuditor.getAuditorId());
+                    }
+                    makeBorrowVo.setList(userAuditors);
                     makeBorrowVos.add(makeBorrowVo);
                 }
                 page1.setRecords(makeBorrowVos);
@@ -194,9 +212,10 @@ public class MakeBorrowController extends Authenticator {
                 Short userType = record.getUserType();
                 Integer userId = record.getUserId();
                 Integer makeId = record.getMakeId();
+                Integer id = record.getId();
                 DataArchivesLibraryFile dataArchivesLibraryFile = iDataArchivesLibraryFileService.getById(fileid1);
                 if (dataArchivesLibraryFile != null) {
-                    makeBorrowVo.setArchivesFileId(fileid1);
+                    makeBorrowVo.setArchivesFileId(id);
                     makeBorrowVo.setArchivesFileOriginalName(dataArchivesLibraryFile.getOriginalName());
                     Integer archivesLibraryId = dataArchivesLibraryFile.getArchivesLibraryId();
                     Integer dataId = dataArchivesLibraryFile.getDataId();
@@ -229,7 +248,20 @@ public class MakeBorrowController extends Authenticator {
                 if (makeBorrowPurpose != null) {
                     makeBorrowVo.setBorrowPurposeName(makeBorrowPurpose.getName());
                 }
+                makeBorrowVo.setBorrowStartTime(record.getBorrowStartTime());
+                makeBorrowVo.setBorrowEndTime(record.getBorrowEndTime());
+                makeBorrowVo.setAuditStatus(record.getAuditStatus());
+
+                List<Integer>userAuditors=new ArrayList<>();
+                QueryWrapper<MakeBorrowAuditor> queryWrapper=new QueryWrapper<>();
+                queryWrapper.eq("make_borrow_id",record.getId());
+                List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper);
+                for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
+                   userAuditors.add( makeBorrowAuditor.getAuditorId());
+                }
+                makeBorrowVo.setList(userAuditors);
                 makeBorrowVos.add(makeBorrowVo);
+
             }
             page1.setRecords(makeBorrowVos);
         }
@@ -287,10 +319,23 @@ public class MakeBorrowController extends Authenticator {
                     }
                     Map<String, Object> EntityArchives = iWareTemplateLibraryFieldService.findEntityArchivesById(fileid);
                     if (EntityArchives!=null){
-                        makeBorrowVo.setArchivesLibName((String) EntityArchives.get("archivesName"));
+                        makeBorrowVo.setArchivesDirectoryTopicName((String) EntityArchives.get("archivesName"));
                         makeBorrowVo.setArchivesDirectoryNum((String) EntityArchives.get("archivesNum"));
+                        makeBorrowVo.setId(record.getId());
                         makeBorrowVo.setArchivesLibName("实体库房");
+                        makeBorrowVo.setBorrowStartTime(record.getBorrowStartTime());
+                        makeBorrowVo.setBorrowEndTime(record.getBorrowEndTime());
+                        makeBorrowVo.setAuditStatus(record.getAuditStatus());
                     }
+                    List<Integer>userAuditors=new ArrayList<>();
+                    QueryWrapper<MakeBorrowAuditor> queryWrapper2=new QueryWrapper<>();
+                    queryWrapper2.eq("make_borrow_id", record.getId());
+                    List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper2);
+                    for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
+                        userAuditors.add( makeBorrowAuditor.getAuditorId());
+                    }
+                    makeBorrowVo.setList(userAuditors);
+
                     makeBorrowVos.add(makeBorrowVo);
                 }
                 page1.setRecords(makeBorrowVos);
@@ -325,10 +370,23 @@ public class MakeBorrowController extends Authenticator {
                 }
                 Map<String, Object> EntityArchives = iWareTemplateLibraryFieldService.findEntityArchivesById(fileid);
                 if (EntityArchives!=null){
-                    makeBorrowVo.setArchivesLibName((String) EntityArchives.get("archivesName"));
+                    makeBorrowVo.setArchivesDirectoryTopicName((String) EntityArchives.get("archivesName"));
                     makeBorrowVo.setArchivesDirectoryNum((String) EntityArchives.get("archivesNum"));
+                    makeBorrowVo.setId(record.getId());
                     makeBorrowVo.setArchivesLibName("实体库房");
+                    makeBorrowVo.setBorrowStartTime(record.getBorrowStartTime());
+                    makeBorrowVo.setBorrowEndTime(record.getBorrowEndTime());
+                    makeBorrowVo.setAuditStatus(record.getAuditStatus());
                 }
+                List<Integer>userAuditors=new ArrayList<>();
+                QueryWrapper<MakeBorrowAuditor> queryWrapper2=new QueryWrapper<>();
+                queryWrapper2.eq("make_borrow_id", record.getId());
+                List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper2);
+                for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
+                    userAuditors.add( makeBorrowAuditor.getAuditorId());
+                }
+                makeBorrowVo.setList(userAuditors);
+
                 makeBorrowVos.add(makeBorrowVo);
             }
             page1.setRecords(makeBorrowVos);
@@ -336,7 +394,27 @@ public class MakeBorrowController extends Authenticator {
         }
     }
 
+    //审核借阅信息
+    @Log(level = EnumLogLevel.INFO, module = "借阅申请", context = "审核借阅信息")
+    @PatchMapping("/{id}")
+    @ApiOperation(value = "审核借阅信息", notes = "审核借阅信息")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    public ResultDataUtil<Object> approve(@Validated MakeBorrowApproveDto makeBorrowApproveDto) {
+        Integer userId = this.getLoginUserId();
+        makeBorrowApproveDto.setUserId(userId);
+        iMakeBorrowService.approve(makeBorrowApproveDto);
+        return ResultDataUtil.ok("审核借阅信息成功");
+    }
 
-
+    //查询转交人员信息
+    @Log(level = EnumLogLevel.TRACE, module = "借阅申请", context = "查询转交用户列表信息")
+    @GetMapping("/{id}/sys-user")
+    @ApiOperation(value = "查询转交用户列表信息", notes = "查询转交用户列表信息")
+    @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
+    @ApiOperationSupport(order = 3)
+    public ResultDataUtil<List<MakeBorrowTransferVo>> findUsers(@PathVariable Integer id) {
+        List<MakeBorrowTransferVo> makeBorrowTransferVos = iMakeBorrowService.listTransferById(id, this.getLoginUserId());
+        return ResultDataUtil.ok("查询转交用户列表信息成功", makeBorrowTransferVos);
+    }
 
 }

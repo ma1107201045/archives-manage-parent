@@ -33,6 +33,9 @@ public class MakeBorrowApproveDto {
     @ApiModelProperty(value = " 转交人id ", required = true)
     private Integer auditorId;
 
+    @ApiModelProperty(value = " 审核人id ", required = true)
+    private Integer userId;
+
 }
 
 

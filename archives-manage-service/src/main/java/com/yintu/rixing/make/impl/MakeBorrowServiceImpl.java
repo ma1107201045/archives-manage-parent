@@ -25,6 +25,7 @@ import com.yintu.rixing.warehouse.IWareTemplateLibraryFieldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.Authenticator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +81,7 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
             if (!EnumAuditStatus.AUDIT_PASS.getValue().equals(makeBorrow1.getAuditStatus()) || EnumFlag.True.getValue().equals(makeBorrow.getPreviewType()))
                 throw new BaseRuntimeException("无需重复借阅");
         }
-        makeBorrow.setUserType((short) 2);
+        makeBorrow.setUserType((short) 1);
         makeBorrow.setAuditStatus(EnumAuditStatus.AUDIT_IN.getValue());
         makeBorrow.setPreviewType(EnumFlag.False.getValue());
         this.save(makeBorrow);
@@ -158,6 +159,7 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     @Override
     public void approve(MakeBorrowApproveDto makeBorrowApproveDto) {
         Integer id = makeBorrowApproveDto.getId();
+        Integer userId = makeBorrowApproveDto.getUserId();
         Integer auditorId = makeBorrowApproveDto.getAuditorId();
         Short auditStatus = makeBorrowApproveDto.getAuditStatus();
         String context = makeBorrowApproveDto.getContext();
@@ -176,7 +178,7 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
             Integer sort = null;
             for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
                 // 3.当前人需要同步附件等其他信息
-                if (auditorId.equals(makeBorrowAuditor.getAuditorId())) {
+                if (userId.equals(makeBorrowAuditor.getAuditorId())) {
                     sort = makeBorrowAuditor.getSort();
                     makeBorrowAuditor.setContext(context);
                     makeBorrowAuditor.setAccessoryName(accessoryName);
