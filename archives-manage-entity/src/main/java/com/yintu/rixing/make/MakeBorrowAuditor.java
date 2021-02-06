@@ -58,7 +58,7 @@ public class MakeBorrowAuditor extends BaseEntity {
     @TableField("is_dispose")
     private Short isDispose;
 
-    @ApiModelProperty(value = "2.审核中 3.通过 4.拒绝 5.转交")
+    @ApiModelProperty(value = "1.审核中 2.通过 3.拒绝 4.转交")
     @TableField("audit_status")
     private Short auditStatus;
 

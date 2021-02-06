@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.make.MakeBorrowApproveDto;
 import com.yintu.rixing.dto.make.MakeBorrowQueryDto;
 import com.yintu.rixing.dto.make.MakeBorrowRemoteFormDto;
-import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.vo.make.MakeBorrowTransferVo;
 import com.yintu.rixing.vo.make.MakeBorrowVo;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

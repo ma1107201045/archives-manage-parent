@@ -85,10 +85,6 @@ public class MakeBorrow extends BaseEntity {
     private Integer approvalId;
 
 
-
-
-
-
     @ApiModelProperty(value = "实体档案")
     @TableField(exist = false)
     private Map<String, Object> dataEntityFile;
