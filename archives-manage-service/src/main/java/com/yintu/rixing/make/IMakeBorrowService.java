@@ -8,7 +8,6 @@ import com.yintu.rixing.dto.make.MakeBorrowRemoteFormDto;
 import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.vo.make.MakeBorrowTransferVo;
 import com.yintu.rixing.vo.make.MakeBorrowVo;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +20,9 @@ import java.util.List;
  * @since 2021-02-03
  */
 public interface IMakeBorrowService extends IService<MakeBorrow> {
+
+    @Transactional(rollbackFor = {Exception.class})
+    void add(MakeBorrow makeBorrow);
 
     /**
      * 远程借阅
@@ -53,7 +55,6 @@ public interface IMakeBorrowService extends IService<MakeBorrow> {
      * @return ..
      */
     Page<MakeBorrowVo> page(MakeBorrowQueryDto makeBorrowQueryElectronicDto);
-
 
     /**
      * 凌晨执行借阅到期的

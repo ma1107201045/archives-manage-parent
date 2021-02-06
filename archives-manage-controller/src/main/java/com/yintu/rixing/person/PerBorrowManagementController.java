@@ -42,6 +42,7 @@ public class PerBorrowManagementController extends Authenticator {
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     @ApiOperationSupport(order = 1)
     public ResultDataUtil<Object> approve(@Validated MakeBorrowApproveDto makeBorrowApproveDto) {
+        makeBorrowApproveDto.setUserId(this.getLoginUserId());
         iMakeBorrowService.approve(makeBorrowApproveDto);
         return ResultDataUtil.ok("审核借阅管理信息成功");
     }
