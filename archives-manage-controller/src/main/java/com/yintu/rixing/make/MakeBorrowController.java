@@ -189,7 +189,7 @@ public class MakeBorrowController extends Authenticator {
 
                     List<Integer> userAuditors = new ArrayList<>();
                     QueryWrapper<MakeBorrowAuditor> queryWrapper2 = new QueryWrapper<>();
-                    queryWrapper2.eq("make_borrow_id", record.getId());
+                    queryWrapper2.eq("make_borrow_id", record.getId()).eq("activate", EnumFlag.True.getValue());
                     List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper2);
                     for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
                         userAuditors.add(makeBorrowAuditor.getAuditorId());
@@ -255,7 +255,7 @@ public class MakeBorrowController extends Authenticator {
 
                 List<Integer> userAuditors = new ArrayList<>();
                 QueryWrapper<MakeBorrowAuditor> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("make_borrow_id", record.getId());
+                queryWrapper.eq("make_borrow_id", record.getId()).eq("activate", EnumFlag.True.getValue());
                 List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.list(queryWrapper);
                 for (MakeBorrowAuditor makeBorrowAuditor : makeBorrowAuditors) {
                     userAuditors.add(makeBorrowAuditor.getAuditorId());
