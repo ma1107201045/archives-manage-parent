@@ -20,6 +20,6 @@ public class CustomScheduled {
     @Scheduled(cron = "0 0 0 * * ?")
     public void task01() {
         iMakeBorrowService.execute();
-        log.info("凌晨过滤借阅过期信息");
+        log.info("凌晨检查借阅过期信息..........");
     }
 }
