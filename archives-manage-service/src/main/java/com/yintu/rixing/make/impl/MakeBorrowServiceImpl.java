@@ -237,13 +237,27 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     public void giveBack(Integer id) {
         MakeBorrow makeBorrow = this.getById(id);
         if (makeBorrow != null) {
-            Short auditStatus = makeBorrow.getAuditStatus();
             Short previewType = makeBorrow.getPreviewType();
-            if (!auditStatus.equals(EnumAuditStatus.AUDIT_PASS.getValue()) || !previewType.equals(EnumFlag.True.getValue()))
+            if (!previewType.equals(EnumFlag.True.getValue())) {
                 throw new BaseRuntimeException("归还有误");
+            }
             makeBorrow.setPreviewType(EnumFlag.False.getValue());
             this.saveOrUpdate(makeBorrow);
         }
+    }
+
+    @Override
+    public String preview(Integer id) {
+        MakeBorrow makeBorrow = this.getById(id);
+        if (makeBorrow != null) {
+            Short previewType = makeBorrow.getPreviewType();
+            Short borrowType = makeBorrow.getBorrowType();
+            if (previewType.equals(EnumFlag.True.getValue()) && borrowType.equals((short) 1)) {
+                Integer fileId = makeBorrow.getFileid();
+                return iDataArchivesLibraryFileService.getById(fileId).getRequestMapping();
+            }
+        }
+        return null;
     }
 
     @Override

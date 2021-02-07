@@ -49,6 +49,14 @@ public interface IMakeBorrowService extends IService<MakeBorrow> {
     void giveBack(Integer id);
 
     /**
+     * 获取文件的地址
+     *
+     * @param id 记录id
+     * @return
+     */
+    String preview(Integer id);
+
+    /**
      * 转交列表
      *
      * @param id 借阅记录id

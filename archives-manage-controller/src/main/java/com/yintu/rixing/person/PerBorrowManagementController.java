@@ -51,16 +51,25 @@ public class PerBorrowManagementController extends Authenticator {
     @PatchMapping("/{id}")
     @ApiOperation(value = "归还借阅管理信息", notes = "归还借阅管理信息")
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
-    @ApiOperationSupport(order = 1)
+    @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> giveBack(@PathVariable Integer id) {
         iMakeBorrowService.giveBack(id);
         return ResultDataUtil.ok("归还借阅管理信息成功");
     }
 
+    @Log(level = EnumLogLevel.TRACE, module = "个人中心", context = "预览借阅管理信息")
+    @GetMapping("/{id}")
+    @ApiOperation(value = "预览借阅管理信息", notes = "预览借阅管理信息")
+    @ApiOperationSupport(order = 3)
+    public ResultDataUtil<String> preview(@PathVariable Integer id) {
+        String requestMapping = iMakeBorrowService.preview(id);
+        return ResultDataUtil.ok("预览借阅管理信息成功", requestMapping);
+    }
+
     @Log(level = EnumLogLevel.TRACE, module = "个人中心", context = "查询借阅管理列表信息")
     @GetMapping
     @ApiOperation(value = "查询借阅管理列表信息", notes = "查询借阅管理列表信息")
-    @ApiOperationSupport(order = 2)
+    @ApiOperationSupport(order = 4)
     public ResultDataUtil<Page<MakeBorrowVo>> findPage(@Validated PerBorrowManagementQueryDto perBorrowManagementQueryDto) {
         perBorrowManagementQueryDto.setUserType((short) 1);
         perBorrowManagementQueryDto.setUserId(this.getLoginUserId());
@@ -73,7 +82,7 @@ public class PerBorrowManagementController extends Authenticator {
     @GetMapping("/{id}/sys-user")
     @ApiOperation(value = "查询转交用户列表信息", notes = "查询转交用户列表信息")
     @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
-    @ApiOperationSupport(order = 3)
+    @ApiOperationSupport(order = 5)
     public ResultDataUtil<List<MakeBorrowTransferVo>> findUsers(@PathVariable Integer id) {
         List<MakeBorrowTransferVo> makeBorrowTransferVos = iMakeBorrowService.listTransferById(id, this.getLoginUserId());
         return ResultDataUtil.ok("查询转交用户列表信息成功", makeBorrowTransferVos);

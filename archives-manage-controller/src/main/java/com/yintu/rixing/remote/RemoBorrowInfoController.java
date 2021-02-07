@@ -60,10 +60,19 @@ public class RemoBorrowInfoController {
         return ResultDataUtil.ok("删除远程用户借阅信息成功");
     }
 
+    @Log(level = EnumLogLevel.DEBUG, module = "远程借阅", context = "预览远程用户借阅信息")
+    @GetMapping("/{id}")
+    @ApiOperation(value = "预览远程用户借阅信息", notes = "预览远程用户借阅信息")
+    @ApiOperationSupport(order = 3)
+    public ResultDataUtil<String> preview(@PathVariable Integer id) {
+        String requestMapping = iMakeBorrowService.preview(id);
+        return ResultDataUtil.ok("预览远程用户借阅信息成功", requestMapping);
+    }
+
     @Log(level = EnumLogLevel.DEBUG, module = "远程借阅", context = "查看我的借阅信息")
     @GetMapping
     @ApiOperation(value = "查看我的借阅信息", notes = "查看我的借阅信息")
-    @ApiOperationSupport(order = 3)
+    @ApiOperationSupport(order = 4)
     public ResultDataUtil<Page<MakeBorrowVo>> findPage(HttpServletRequest request, @Validated MakeBorrowQueryDto makeBorrowRemoteQueryDto) {
         makeBorrowRemoteQueryDto.setUserType((short) 2);
         makeBorrowRemoteQueryDto.setUserId(IdentityIdUtil.get(request));
@@ -74,7 +83,7 @@ public class RemoBorrowInfoController {
     @Log(level = EnumLogLevel.TRACE, module = "远程借阅", context = "查询远程借阅利用列表信息")
     @GetMapping("/remo-borrow-purpose")
     @ApiOperation(value = "查询远程借阅利用列表信息", notes = "查询远程借阅利用列表信息")
-    @ApiOperationSupport(order = 4)
+    @ApiOperationSupport(order = 5)
     public ResultDataUtil<List<MakeBorrowPurpose>> findBorrowPurposes() {
         List<MakeBorrowPurpose> makeBorrowPurposes = iMakeBorrowPurposeService.list();
         return ResultDataUtil.ok("查询远程借阅利用列表信息成功", makeBorrowPurposes);
