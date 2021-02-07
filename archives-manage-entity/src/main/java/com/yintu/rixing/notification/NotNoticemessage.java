@@ -3,10 +3,13 @@ package com.yintu.rixing.notification;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.yintu.rixing.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.yintu.rixing.vo.make.MakeBorrowAuditorVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 /**
  * <p>
@@ -32,9 +35,17 @@ public class NotNoticemessage extends BaseEntity {
     @TableField("context")
     private String context;
 
-    @ApiModelProperty(value = "部门")
-    @TableField("department")
-    private String department;
+    @ApiModelProperty(value = "部门id")
+    @TableField("department_id")
+    private Integer departmentId;
+
+    @ApiModelProperty(value = "部门名")
+    @TableField(exist = false)
+    private String departmentName;
+
+    @ApiModelProperty(value = "父ids")
+    @TableField(exist = false)
+    private List<Integer> parentIds;
 
 
 }

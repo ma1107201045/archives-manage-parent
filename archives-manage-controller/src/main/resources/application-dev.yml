@@ -16,13 +16,13 @@ spring:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
       #本地
-      url: jdbc:mysql://127.0.0.1/rixing?serverTimezone=Asia/Shanghai
-      username: root
-      password: root
+      #url: jdbc:mysql://127.0.0.1/rixing?serverTimezone=Asia/Shanghai
+      #username: root
+      #password: root
       #线上
-      #url: jdbc:mysql://121.89.223.9/rixing?serverTimezone=Asia/Shanghai
-      #username: rixing
-      #password: J2m6hNsY2rDnhkc5
+      url: jdbc:mysql://121.89.223.9/rixing?serverTimezone=Asia/Shanghai
+      username: rixing
+      password: J2m6hNsY2rDnhkc5
       initial-size: 5  #默认值0。初始化时建立物理连接的个数，初始化发生在显示调用init方法，或者第一次getConnection时。
       max-active: 20 #默认值8。最大连接池数量。
       min-idle: 5 #最小连接池数量。 #spring.datasource.druid.maxIdle: 已经不再使用，配置了也没效果，可忽略。说明：maxIdle是Druid为了方便DBCP用户迁移而增加的，maxIdle是一个混乱的概念。连接池只应该有maxPoolSize和minPoolSize，druid只保留了maxActive和minIdle，分别相当于maxPoolSize和minPoolSize。

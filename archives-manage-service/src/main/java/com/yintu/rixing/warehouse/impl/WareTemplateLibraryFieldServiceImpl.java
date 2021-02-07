@@ -756,7 +756,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                 Integer parentId = iWareLibraryTreeService.findParentId(ware_library_tree_id);
                 if (parentId != -1)
                     integerList.add(parentId);
-                for (int i = 0; i < 20; i++) {
+                for (int i = 0; i < 30; i++) {
                     if (parentId != -1) {
                         Integer parentId1 = iWareLibraryTreeService.findParentId(parentId);
                         if (parentId1 != -1)
