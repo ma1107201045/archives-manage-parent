@@ -241,7 +241,7 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
             Short previewType = makeBorrow.getPreviewType();
             if (!auditStatus.equals(EnumAuditStatus.AUDIT_PASS.getValue()) || !previewType.equals(EnumFlag.True.getValue()))
                 throw new BaseRuntimeException("归还有误");
-            makeBorrow.setBorrowType(EnumFlag.False.getValue());
+            makeBorrow.setPreviewType(EnumFlag.False.getValue());
             this.saveOrUpdate(makeBorrow);
         }
     }
