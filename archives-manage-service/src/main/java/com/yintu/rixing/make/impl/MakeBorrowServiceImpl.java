@@ -234,6 +234,19 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     }
 
     @Override
+    public void giveBack(Integer id) {
+        MakeBorrow makeBorrow = this.getById(id);
+        if (makeBorrow != null) {
+            Short auditStatus = makeBorrow.getAuditStatus();
+            Short previewType = makeBorrow.getPreviewType();
+            if (!auditStatus.equals(EnumAuditStatus.AUDIT_PASS.getValue()) || !previewType.equals(EnumFlag.True.getValue()))
+                throw new BaseRuntimeException("归还有误");
+            makeBorrow.setBorrowType(EnumFlag.False.getValue());
+            this.saveOrUpdate(makeBorrow);
+        }
+    }
+
+    @Override
     public List<MakeBorrowTransferVo> listTransferById(Integer id, Integer currentUserId) {
         List<MakeBorrowAuditor> makeBorrowAuditors = iMakeBorrowAuditorService.listByMakeBorrowAuditorPojo(new MakeBorrowAuditorPojo(id, null, null));
         List<Integer> ids = makeBorrowAuditors.stream().map(MakeBorrowAuditor::getAuditorId).collect(Collectors.toList());

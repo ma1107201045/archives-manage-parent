@@ -44,10 +44,10 @@
         FROM make_borrow mb INNER JOIN make_borrow_auditor mba on mb.id = mba.make_borrow_id
         <where>
             <if test="perBorrowManagementQueryDto.type == 1">
-                and mba.is_dispose = 0 and mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
+                and mba.activate = 1 and mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
             </if>
             <if test="perBorrowManagementQueryDto.type == 2">
-                and mba.is_dispose = 1 and mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
+                and mba.activate = 0 and mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
             </if>
             <if test="perBorrowManagementQueryDto.type == 3">
                 and mb.user_type = #{perBorrowManagementQueryDto.userType,jdbcType=INTEGER} and
@@ -56,6 +56,7 @@
             <if test="perBorrowManagementQueryDto.borrowType!=null">
                 and mb.borrow_type = #{perBorrowManagementQueryDto.borrowType,jdbcType=SMALLINT}
             </if>
+            ORDER BY mb.id DESC
         </where>
     </select>
     <select id="selectPageById" resultMap="selectPageByIdMap">

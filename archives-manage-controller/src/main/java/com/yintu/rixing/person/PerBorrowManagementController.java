@@ -37,7 +37,7 @@ public class PerBorrowManagementController extends Authenticator {
     private IMakeBorrowService iMakeBorrowService;
 
     @Log(level = EnumLogLevel.INFO, module = "个人中心", context = "审核借阅管理信息")
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     @ApiOperation(value = "审核借阅管理信息", notes = "审核借阅管理信息")
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     @ApiOperationSupport(order = 1)
@@ -47,6 +47,15 @@ public class PerBorrowManagementController extends Authenticator {
         return ResultDataUtil.ok("审核借阅管理信息成功");
     }
 
+    @Log(level = EnumLogLevel.INFO, module = "个人中心", context = "归还借阅管理信息")
+    @PatchMapping("/{id}")
+    @ApiOperation(value = "归还借阅管理信息", notes = "归还借阅管理信息")
+    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    @ApiOperationSupport(order = 1)
+    public ResultDataUtil<Object> giveBack(@PathVariable Integer id) {
+        iMakeBorrowService.giveBack(id);
+        return ResultDataUtil.ok("归还借阅管理信息成功");
+    }
 
     @Log(level = EnumLogLevel.TRACE, module = "个人中心", context = "查询借阅管理列表信息")
     @GetMapping

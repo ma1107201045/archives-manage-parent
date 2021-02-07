@@ -40,6 +40,14 @@ public interface IMakeBorrowService extends IService<MakeBorrow> {
     @Transactional(rollbackFor = {Exception.class})
     void approve(MakeBorrowApproveDto makeBorrowApproveDto);
 
+
+    /**
+     * 归还
+     *
+     * @param id 记录id
+     */
+    void giveBack(Integer id);
+
     /**
      * 转交列表
      *
