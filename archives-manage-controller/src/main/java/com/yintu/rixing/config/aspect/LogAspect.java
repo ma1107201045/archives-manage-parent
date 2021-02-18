@@ -70,6 +70,8 @@ public class LogAspect extends Authenticator {
             case ERROR:
                 level = 5;
                 break;
+            default:
+                return;
         }
         String module = log.module();
         String context = log.context();
