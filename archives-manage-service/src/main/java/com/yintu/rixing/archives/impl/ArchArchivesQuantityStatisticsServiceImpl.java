@@ -46,12 +46,12 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
             Long count2 = null;
             Long count3 = null;
             for (Map<String, Object> map : maps) {
-                Integer auditStatus = (Integer) map.get("auditStatus");
-                if (auditStatus.equals(EnumAuditStatus.AUDIT_IN.getValue().intValue())) {
+                Integer status = (Integer) map.get(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
+                if (status.equals(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue().intValue())) {
                     count1 = (Long) map.get("count");
-                } else if (auditStatus.equals(EnumAuditStatus.AUDIT_PASS.getValue().intValue())) {
+                } else if (status.equals(EnumArchivesOrder.SORTING_LIBRARY.getValue().intValue())) {
                     count2 = (Long) map.get("count");
-                } else if (auditStatus.equals(EnumAuditStatus.AUDIT_REFUSE.getValue().intValue())) {
+                } else if (status.equals(EnumArchivesOrder.FORMAL_LIBRARY.getValue().intValue())) {
                     count3 = (Long) map.get("count");
                 }
             }

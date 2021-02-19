@@ -6,6 +6,7 @@ import com.yintu.rixing.archives.IArchArchivesBorrowStatisticsService;
 import com.yintu.rixing.dto.archives.ArchCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
+import com.yintu.rixing.enumobject.EnumAuditStatus;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.archives.ArchArchivesBorrowStatisticsDataVo;
@@ -48,12 +49,12 @@ public class ArchArchivesBorrowStatisticsServiceImpl extends ArchAbstractService
             Long count2 = null;
             Long count3 = null;
             for (Map<String, Object> map : maps) {
-                Integer status = (Integer) map.get(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
-                if (status.equals(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue().intValue())) {
+                Integer auditStatus = (Integer) map.get("auditStatus");
+                if (auditStatus.equals(EnumAuditStatus.AUDIT_IN.getValue().intValue())) {
                     count1 = (Long) map.get("count");
-                } else if (status.equals(EnumArchivesOrder.SORTING_LIBRARY.getValue().intValue())) {
+                } else if (auditStatus.equals(EnumAuditStatus.AUDIT_PASS.getValue().intValue())) {
                     count2 = (Long) map.get("count");
-                } else if (status.equals(EnumArchivesOrder.FORMAL_LIBRARY.getValue().intValue())) {
+                } else if (auditStatus.equals(EnumAuditStatus.AUDIT_REFUSE.getValue().intValue())) {
                     count3 = (Long) map.get("count");
                 }
             }
