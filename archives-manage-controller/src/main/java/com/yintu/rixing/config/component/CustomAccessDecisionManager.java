@@ -52,7 +52,7 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
                 List<ConfigAttribute> roles = (List<ConfigAttribute>) configAttributes;
                 if (!roles.isEmpty()) {
                     String roleName = roles.get(0).getAttribute();
-                    if (roleName.equals("URL_NOT_AUTHORIZATION")) {
+                    if ("URL_NOT_AUTHORIZATION".equals(roleName)) {
                         return;
                     }
                 }

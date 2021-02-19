@@ -180,8 +180,9 @@ public class DataCommonService {
             String dataKey = sysArchivesLibraryField.getDataKey();
             Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
             String value = params.get(dataKey);
-            if (value == null || value.equals(""))
+            if (value == null || "".equals(value)) {
                 continue;
+            }
             Object newValue = value;
             switch (EnumDataType.get(dataType)) {
                 case VARCHAR:
@@ -201,6 +202,8 @@ public class DataCommonService {
                     break;
                 case DATE:
                     newValue = DateUtil.parseDate(value);
+                    break;
+                default:
                     break;
             }
             DataCommonKV dataCommonKV = new DataCommonKV();
