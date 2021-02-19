@@ -11,6 +11,7 @@ import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.archives.ArchArchivesBorrowStatisticsDataVo;
 import com.yintu.rixing.vo.archives.ArchArchivesQuantityStatisticsDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  * @Date: 2021/2/19 17:11:43
  * @Version: 1.0
  */
+@Service
 public class ArchArchivesBorrowStatisticsServiceImpl extends ArchAbstractService implements IArchArchivesBorrowStatisticsService {
 
     @Autowired
