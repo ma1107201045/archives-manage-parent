@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Data
 @ApiModel
-public class ArchQuantityStatisticsQueryDto {
+public class ArchCommonQueryDto {
 
     @ApiModelProperty(value = "开始日期")
     private Date startDate;

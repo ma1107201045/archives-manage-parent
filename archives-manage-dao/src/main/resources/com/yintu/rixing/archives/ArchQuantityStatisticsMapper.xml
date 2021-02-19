@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yintu.rixing.archives.ArchQuantityStatisticsMapper">
+<mapper namespace="ArchArchivesQuantityStatisticsMapper">
 
 
-    <select id="findArchivesData" resultType="java.util.Map">
+    <select id="selectArchivesQuantityStatisticsData" resultType="java.util.Map">
         SELECT count(*) as `count`, `status`
-        FROM ${tableName}
+        FROM ${tableName} as t INNER JOIN data_archives_library_file dalf ON t.id = dalf.data_id
         <where>
             <if test="startDate!=null and endDate!=null">
-                DATE(`create_time`) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
+                DATE(dalf.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
             </if>
         </where>
         GROUP BY `status`
