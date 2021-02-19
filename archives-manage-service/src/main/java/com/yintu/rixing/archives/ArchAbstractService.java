@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class ArchAbstractService {
 
     @Autowired
-    protected ISysArchivesLibraryService iSysArchivesLibraryService;
+    public ISysArchivesLibraryService iSysArchivesLibraryService;
 
     public List<ArchArchivesQuantityStatisticsQueryVo> findArchivesName() {
         List<SysArchivesLibrary> sysArchivesLibraries = this.iSysArchivesLibraryService.listByType((short) 2);
