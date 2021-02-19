@@ -2,7 +2,7 @@ package com.yintu.rixing.archives;
 
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.system.SysArchivesLibrary;
-import com.yintu.rixing.vo.archives.ArchCommonQueryVo;
+import com.yintu.rixing.vo.archives.ArchCommonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -18,11 +18,11 @@ public abstract class ArchAbstractService {
     @Autowired
     public ISysArchivesLibraryService iSysArchivesLibraryService;
 
-    public List<ArchCommonQueryVo> findArchivesName() {
+    public List<ArchCommonVo> findArchivesName() {
         List<SysArchivesLibrary> sysArchivesLibraries = this.iSysArchivesLibraryService.listByType((short) 2);
-        List<ArchCommonQueryVo> archQuantityStatisticsQueryVos = new ArrayList<>();
+        List<ArchCommonVo> archQuantityStatisticsQueryVos = new ArrayList<>();
         for (SysArchivesLibrary sysArchivesLibrary : sysArchivesLibraries) {
-            ArchCommonQueryVo archQuantityStatisticsQueryVo = new ArchCommonQueryVo();
+            ArchCommonVo archQuantityStatisticsQueryVo = new ArchCommonVo();
             archQuantityStatisticsQueryVo.setArchivesId(sysArchivesLibrary.getId());
             archQuantityStatisticsQueryVo.setArchivesName(sysArchivesLibrary.getName());
             archQuantityStatisticsQueryVos.add(archQuantityStatisticsQueryVo);

@@ -8,7 +8,7 @@ import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.util.TableNameUtil;
-import com.yintu.rixing.vo.archives.ArchCommonDataVo;
+import com.yintu.rixing.vo.archives.ArchArchivesQuantityStatisticsDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +29,11 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
     private ArchArchivesQuantityStatisticsMapper archArchivesQuantityStatisticsMapper;
 
     @Override
-    public ArchCommonDataVo findArchivesData(ArchCommonQueryDto archCommonQueryDto) {
+    public ArchArchivesQuantityStatisticsDataVo findArchivesData(ArchCommonQueryDto archCommonQueryDto) {
         Date startDate = archCommonQueryDto.getStartDate();
         Date endDate = archCommonQueryDto.getEndDate();
         List<Integer> archivesIds = archCommonQueryDto.getArchivesIds();
         List<SysArchivesLibrary> archivesLibraries = iSysArchivesLibraryService.listByIds(archivesIds);
-        List<String> archivesLibraryNames = archivesLibraries.stream().map(SysArchivesLibrary::getName).collect(Collectors.toList());
         List<List<Long>> lists = new ArrayList<>();
         List<Long> list1 = new ArrayList<>();
         List<Long> list2 = new ArrayList<>();
@@ -46,39 +45,26 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
             Long count2 = null;
             Long count3 = null;
             for (Map<String, Object> map : maps) {
-                String countName = "count";
                 Integer status = (Integer) map.get(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
                 if (status.equals(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue().intValue())) {
-                    count1 = (Long) map.get(countName);
+                    count1 = (Long) map.get("count");
                 } else if (status.equals(EnumArchivesOrder.SORTING_LIBRARY.getValue().intValue())) {
-                    count2 = (Long) map.get(countName);
+                    count2 = (Long) map.get("count");
                 } else if (status.equals(EnumArchivesOrder.FORMAL_LIBRARY.getValue().intValue())) {
-                    count3 = (Long) map.get(countName);
+                    count3 = (Long) map.get("count");
                 }
             }
-            if (count1 == null) {
-                list1.add(0L);
-            } else {
-                list1.add(count1);
-            }
-            if (count2 == null) {
-                list2.add(0L);
-            } else {
-                list2.add(count2);
-            }
-            if (count3 == null) {
-                list3.add(0L);
-            } else {
-                list3.add(count3);
-            }
+            list1.add(count1 == null ? 0L : count1);
+            list2.add(count2 == null ? 0L : count2);
+            list3.add(count3 == null ? 0L : count3);
         }
         lists.add(list1);
         lists.add(list2);
         lists.add(list3);
-        ArchCommonDataVo archQuantityStatisticsDataVo = new ArchCommonDataVo();
-        archQuantityStatisticsDataVo.setNames(archivesLibraryNames);
-        archQuantityStatisticsDataVo.setValues(lists);
-        return archQuantityStatisticsDataVo;
+        ArchArchivesQuantityStatisticsDataVo archArchivesQuantityStatisticsDataVo = new ArchArchivesQuantityStatisticsDataVo();
+        archArchivesQuantityStatisticsDataVo.setNames(archivesLibraries.stream().map(SysArchivesLibrary::getName).collect(Collectors.toList()));
+        archArchivesQuantityStatisticsDataVo.setValues(lists);
+        return archArchivesQuantityStatisticsDataVo;
     }
 
 

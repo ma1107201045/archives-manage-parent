@@ -1,8 +1,8 @@
 package com.yintu.rixing.archives;
 
 import com.yintu.rixing.dto.archives.ArchCommonQueryDto;
-import com.yintu.rixing.vo.archives.ArchCommonDataVo;
-import com.yintu.rixing.vo.archives.ArchCommonQueryVo;
+import com.yintu.rixing.vo.archives.ArchArchivesQuantityStatisticsDataVo;
+import com.yintu.rixing.vo.archives.ArchCommonVo;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public interface IArchArchivesQuantityStatisticsService {
      *
      * @return 名称集
      */
-    List<ArchCommonQueryVo> findArchivesName();
+    List<ArchCommonVo> findArchivesName();
 
     /**
      * 查询每个流程中每个档案库的统计个数
@@ -27,7 +27,7 @@ public interface IArchArchivesQuantityStatisticsService {
      * @param archCommonQueryDto 入参
      * @return 统计值集
      */
-    ArchCommonDataVo findArchivesData(ArchCommonQueryDto archCommonQueryDto);
+    ArchArchivesQuantityStatisticsDataVo findArchivesData(ArchCommonQueryDto archCommonQueryDto);
 
 
 }

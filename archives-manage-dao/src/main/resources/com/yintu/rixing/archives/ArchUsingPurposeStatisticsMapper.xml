@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.rixing.archives.ArchUsingPurposeStatisticsMapper">
+
+
+    <select id="selectArchUsingPurposeStatisticsData" resultType="java.util.Map">
+        SELECT count(*) as `count`, mb.id
+        FROM ${tableName} as t INNER JOIN data_archives_library_file dalf ON t.id = dalf.data_id
+        INNER JOIN make_borrow mb ON dalf.id=mb.fileid
+        <where>
+            <if test="status!=null">
+                AND t.status = #{status,jdbcType=SMALLINT}
+            </if>
+            <if test="startDate!=null and endDate!=null">
+                AND DATE(mb.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        GROUP BY mb.id
+    </select>
+
+
+</mapper>
