@@ -3,7 +3,7 @@ package com.yintu.rixing.archives.impl;
 import com.yintu.rixing.archives.ArchAbstractService;
 import com.yintu.rixing.archives.IArchUsingPurposeStatisticsService;
 import com.yintu.rixing.dto.archives.ArchCommonQueryDto;
-import com.yintu.rixing.vo.archives.ArchArchivesQuantityStatisticsDataVo;
+import com.yintu.rixing.vo.archives.ArchCommonDataVo;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class ArchUsingPurposeStatisticsServiceImpl extends ArchAbstractService implements IArchUsingPurposeStatisticsService {
 
     @Override
-    public ArchArchivesQuantityStatisticsDataVo findUsingPurposeData(ArchCommonQueryDto archCommonQueryDto) {
+    public ArchCommonDataVo findUsingPurposeData(ArchCommonQueryDto archCommonQueryDto) {
         return null;
     }
 }

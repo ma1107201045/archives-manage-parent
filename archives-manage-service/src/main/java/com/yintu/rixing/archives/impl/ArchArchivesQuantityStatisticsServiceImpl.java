@@ -8,7 +8,7 @@ import com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.util.TableNameUtil;
-import com.yintu.rixing.vo.archives.ArchArchivesQuantityStatisticsDataVo;
+import com.yintu.rixing.vo.archives.ArchCommonDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +26,14 @@ import java.util.stream.Collectors;
 @Service
 public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractService implements IArchArchivesQuantityStatisticsService {
     @Autowired
-    private ArchArchivesQuantityStatisticsMapper archQuantityStatisticsMapper;
+    private ArchArchivesQuantityStatisticsMapper archArchivesQuantityStatisticsMapper;
 
     @Override
-    public ArchArchivesQuantityStatisticsDataVo findArchivesData(ArchCommonQueryDto archCommonQueryDto) {
+    public ArchCommonDataVo findArchivesData(ArchCommonQueryDto archCommonQueryDto) {
         Date startDate = archCommonQueryDto.getStartDate();
         Date endDate = archCommonQueryDto.getEndDate();
         List<Integer> archivesIds = archCommonQueryDto.getArchivesIds();
         List<SysArchivesLibrary> archivesLibraries = iSysArchivesLibraryService.listByIds(archivesIds);
-        ArchArchivesQuantityStatisticsDataVo archQuantityStatisticsDataVo = new ArchArchivesQuantityStatisticsDataVo();
         List<String> archivesLibraryNames = archivesLibraries.stream().map(SysArchivesLibrary::getName).collect(Collectors.toList());
         List<List<Long>> lists = new ArrayList<>();
         List<Long> list1 = new ArrayList<>();
@@ -42,7 +41,7 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
         List<Long> list3 = new ArrayList<>();
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             String dataKey = archivesLibrary.getDataKey();
-            List<Map<String, Object>> maps = archQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(TableNameUtil.getFullTableName(dataKey), startDate, endDate);
+            List<Map<String, Object>> maps = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(TableNameUtil.getFullTableName(dataKey), startDate, endDate);
             Long count1 = null;
             Long count2 = null;
             Long count3 = null;
@@ -76,6 +75,7 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
         lists.add(list1);
         lists.add(list2);
         lists.add(list3);
+        ArchCommonDataVo archQuantityStatisticsDataVo = new ArchCommonDataVo();
         archQuantityStatisticsDataVo.setNames(archivesLibraryNames);
         archQuantityStatisticsDataVo.setValues(lists);
         return archQuantityStatisticsDataVo;

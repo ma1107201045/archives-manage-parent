@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 @ApiModel
-public class ArchArchivesQuantityStatisticsDataVo {
+public class ArchCommonDataVo {
     @ApiModelProperty(value = "档案库名称", position = 1)
     private List<String> names;
     @ApiModelProperty(value = "每个流程中的每个档案库值", position = 2)

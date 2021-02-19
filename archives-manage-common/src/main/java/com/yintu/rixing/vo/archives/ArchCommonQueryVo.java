@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel
-public class ArchArchivesQuantityStatisticsQueryVo {
+public class ArchCommonQueryVo {
 
     @ApiModelProperty(value = "档案库id", position = 1)
     private Integer archivesId;
