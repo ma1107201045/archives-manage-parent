@@ -53,8 +53,8 @@ public class ArchUsingPurposeStatisticsServiceImpl extends ArchAbstractService i
                 List<Map<String, Object>> maps = archUsingPurposeStatisticsMapper.selectArchUsingPurposeStatisticsData(TableNameUtil.getFullTableName(dataKey), EnumArchivesOrder.FORMAL_LIBRARY.getValue(), startDate, endDate);
                 Long count = null;
                 for (Map<String, Object> map : maps) {
-                    Integer idV = (Integer) map.get(EnumArchivesLibraryDefaultField.ID.getDataKey());
-                    if (idV.equals(id)) {
+                    Integer makeId = (Integer) map.get("makeId");
+                    if (makeId.equals(id)) {
                         count = (Long) map.get("count");
                     }
                 }

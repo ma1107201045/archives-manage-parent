@@ -4,8 +4,8 @@
 
 
     <select id="selectArchUsingPurposeStatisticsData" resultType="java.util.Map">
-        SELECT count(*) as `count`, mb.id
-        FROM ${tableName} as t INNER JOIN data_archives_library_file dalf ON t.id = dalf.data_id
+        SELECT count(*) AS `count`, mb.make_id AS makeId
+        FROM ${tableName} AS t INNER JOIN data_archives_library_file dalf ON t.id = dalf.data_id
         INNER JOIN make_borrow mb ON dalf.id=mb.fileid
         <where>
             <if test="status!=null">
@@ -15,7 +15,7 @@
                 AND DATE(mb.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
             </if>
         </where>
-        GROUP BY mb.id
+        GROUP BY mb.make_id
     </select>
 
 
