@@ -4,12 +4,12 @@
 
 
     <select id="selectArchUsingPurposeStatisticsData" resultType="java.util.Map">
-        SELECT count(*) AS `count`, mb.make_id AS makeId
+        SELECT COUNT(*) AS `count`, mb.make_id AS makeId
         FROM ${tableName} AS t INNER JOIN data_archives_library_file dalf ON t.id = dalf.data_id
         INNER JOIN make_borrow mb ON dalf.id=mb.fileid
         <where>
-            <if test="status!=null">
-                AND t.status = #{status,jdbcType=SMALLINT}
+            <if test="borrowType!=null">
+                AND mb.borrow_type=#{borrowType,jdbcType=SMALLINT}
             </if>
             <if test="startDate!=null and endDate!=null">
                 AND DATE(mb.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}

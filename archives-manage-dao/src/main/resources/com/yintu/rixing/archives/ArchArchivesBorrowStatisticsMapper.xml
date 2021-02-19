@@ -2,15 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.archives.ArchArchivesBorrowStatisticsMapper">
 
-    <select id="selectArchivesQuantityStatisticsData" resultType="java.util.Map">
-        SELECT count(*) as `count`, `status`
-        FROM ${tableName} as t INNER JOIN data_archives_library_file dalf ON t.id = dalf.data_id
+    <select id="selectArchivesBorrowStatisticsData" resultType="java.util.Map">
+        SELECT COUNT(*) AS `count`, mb.audit_status AS auditStatus
+        FROM ${tableName} AS t INNER JOIN data_archives_library_file dalf ON t.id = dalf.data_id
+        INNER JOIN make_borrow mb ON dalf.id=mb.fileid
         <where>
+            <if test="borrowType!=null">
+                AND mb.borrow_type=#{borrowType,jdbcType=SMALLINT}
+            </if>
             <if test="startDate!=null and endDate!=null">
-                DATE(dalf.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
+                AND DATE(mb.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
             </if>
         </where>
-        GROUP BY `status`
+        GROUP BY mb.audit_status
     </select>
 
 </mapper>

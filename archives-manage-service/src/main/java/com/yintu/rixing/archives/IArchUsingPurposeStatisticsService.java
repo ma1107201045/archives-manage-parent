@@ -26,5 +26,5 @@ public interface IArchUsingPurposeStatisticsService {
      * @param archCommonQueryDto 入参
      * @return 统计值集
      */
-    ArchUsingPurposeStatisticsDataVo findUsingPurposeData(ArchCommonQueryDto archCommonQueryDto);
+    ArchUsingPurposeStatisticsDataVo findArchUsingPurposeStatisticsData(ArchCommonQueryDto archCommonQueryDto);
 }

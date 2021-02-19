@@ -44,7 +44,7 @@ public class ArchArchivesQuantityStatisticsController {
     @ApiOperation(value = "查询档案数量统计-数据", notes = "查询档案数量统计-数据")
     @ApiOperationSupport(order = 2)
     public ResultDataUtil<ArchArchivesQuantityStatisticsDataVo> findArchivesName(@Validated ArchCommonQueryDto archCommonQueryDto) {
-        ArchArchivesQuantityStatisticsDataVo archArchivesQuantityStatisticsDataVo = iArchQuantityStatisticsService.findArchivesData(archCommonQueryDto);
+        ArchArchivesQuantityStatisticsDataVo archArchivesQuantityStatisticsDataVo = iArchQuantityStatisticsService.findArchivesQuantityStatisticsData(archCommonQueryDto);
         return ResultDataUtil.ok("查询档案数量统计-数据成功", archArchivesQuantityStatisticsDataVo);
     }
 

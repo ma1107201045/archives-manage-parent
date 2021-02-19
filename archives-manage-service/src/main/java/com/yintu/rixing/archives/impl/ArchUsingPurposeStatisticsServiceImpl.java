@@ -37,7 +37,7 @@ public class ArchUsingPurposeStatisticsServiceImpl extends ArchAbstractService i
     private IMakeBorrowPurposeService iMakeBorrowPurposeService;
 
     @Override
-    public ArchUsingPurposeStatisticsDataVo findUsingPurposeData(ArchCommonQueryDto archCommonQueryDto) {
+    public ArchUsingPurposeStatisticsDataVo findArchUsingPurposeStatisticsData(ArchCommonQueryDto archCommonQueryDto) {
         Date startDate = archCommonQueryDto.getStartDate();
         Date endDate = archCommonQueryDto.getEndDate();
         List<Integer> archivesIds = archCommonQueryDto.getArchivesIds();
@@ -50,7 +50,7 @@ public class ArchUsingPurposeStatisticsServiceImpl extends ArchAbstractService i
             List<Long> values = new ArrayList<>();
             for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
                 String dataKey = archivesLibrary.getDataKey();
-                List<Map<String, Object>> maps = archUsingPurposeStatisticsMapper.selectArchUsingPurposeStatisticsData(TableNameUtil.getFullTableName(dataKey), EnumArchivesOrder.FORMAL_LIBRARY.getValue(), startDate, endDate);
+                List<Map<String, Object>> maps = archUsingPurposeStatisticsMapper.selectArchUsingPurposeStatisticsData(TableNameUtil.getFullTableName(dataKey), (short) 1, startDate, endDate);
                 Long count = null;
                 for (Map<String, Object> map : maps) {
                     Integer makeId = (Integer) map.get("makeId");

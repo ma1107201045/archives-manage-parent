@@ -3,7 +3,7 @@
 <mapper namespace="com.yintu.rixing.archives.ArchArchivesQuantityStatisticsMapper">
 
     <select id="selectArchivesQuantityStatisticsData" resultType="java.util.Map">
-        SELECT count(*) as `count`, `status`
+        SELECT COUNT(*) as `count`, `status`
         FROM ${tableName} as t INNER JOIN data_archives_library_file dalf ON t.id = dalf.data_id
         <where>
             <if test="startDate!=null and endDate!=null">
