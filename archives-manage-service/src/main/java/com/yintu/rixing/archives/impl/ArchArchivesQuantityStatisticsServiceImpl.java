@@ -43,7 +43,7 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
             String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
-            List<Map<String, Object>> maps = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(tableName, departmentId, id, startDate, endDate);
+            List<Map<String, Object>> maps = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(tableName, id, departmentId, startDate, endDate);
             Long count1 = null;
             Long count2 = null;
             Long count3 = null;
