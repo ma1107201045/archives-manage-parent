@@ -6,13 +6,13 @@
         SELECT COUNT(*) as `count`
         FROM sys_archives_library AS sal
         INNER JOIN data_archives_library_file AS dalf ON sal.id = dalf.archives_library_id
-        INNER JOIN data_archives_library_file_search AS dalfs on dalf.id = dalfs.archives_library_file_id
+        INNER JOIN data_archives_library_file_search AS dalfs ON dalf.id = dalfs.archives_library_file_id
         <where>
             <if test="archivesLibraryId!=null">
                 AND dalf.archives_library_id=#{archivesLibraryId,jdbcType=INTEGER}
             </if>
             <if test="startDate!=null and endDate!=null">
-                AND DATE(dalf.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
+                AND DATE(dalfs.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
             </if>
         </where>
     </select>
