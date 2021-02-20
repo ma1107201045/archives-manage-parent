@@ -26,7 +26,6 @@ public class ArchCommonQueryDto {
     private Date endDate;
 
     @ApiModelProperty(value = "档案库id集合")
-
     @Size(min = 1, message = "请选择一个档案库")
     @NotNull
     private List<Integer> archivesIds;

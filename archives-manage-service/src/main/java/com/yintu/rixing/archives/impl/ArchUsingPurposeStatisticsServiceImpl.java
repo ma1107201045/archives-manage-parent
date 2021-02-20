@@ -45,16 +45,17 @@ public class ArchUsingPurposeStatisticsServiceImpl extends ArchAbstractService i
         List<MakeBorrowPurpose> makeBorrowPurposes = iMakeBorrowPurposeService.list();
         List<ArchUsingPurposeDataVo> archUsingPurposeDataVos = new ArrayList<>();
         for (MakeBorrowPurpose makeBorrowPurpose : makeBorrowPurposes) {
-            Integer id = makeBorrowPurpose.getId();
+            Integer makeId1 = makeBorrowPurpose.getId();
             String name = makeBorrowPurpose.getName();
             List<Long> values = new ArrayList<>();
             for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
+                Integer id = archivesLibrary.getId();
                 String dataKey = archivesLibrary.getDataKey();
-                List<Map<String, Object>> maps = archUsingPurposeStatisticsMapper.selectArchUsingPurposeStatisticsData(TableNameUtil.getFullTableName(dataKey), (short) 1, startDate, endDate);
+                List<Map<String, Object>> maps = archUsingPurposeStatisticsMapper.selectArchUsingPurposeStatisticsData(TableNameUtil.getFullTableName(dataKey), id, (short) 1, startDate, endDate);
                 Long count = null;
                 for (Map<String, Object> map : maps) {
-                    Integer makeId = (Integer) map.get("makeId");
-                    if (makeId.equals(id)) {
+                    Integer makeId2 = (Integer) map.get("makeId");
+                    if (makeId2.equals(makeId1)) {
                         count = (Long) map.get("count");
                     }
                 }

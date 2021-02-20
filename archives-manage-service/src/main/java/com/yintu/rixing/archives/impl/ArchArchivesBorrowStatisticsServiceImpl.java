@@ -43,8 +43,9 @@ public class ArchArchivesBorrowStatisticsServiceImpl extends ArchAbstractService
         List<Long> list2 = new ArrayList<>();
         List<Long> list3 = new ArrayList<>();
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
+            Integer id = archivesLibrary.getId();
             String dataKey = archivesLibrary.getDataKey();
-            List<Map<String, Object>> maps = archArchivesBorrowStatisticsMapper.selectArchivesBorrowStatisticsData(TableNameUtil.getFullTableName(dataKey), startDate, endDate);
+            List<Map<String, Object>> maps = archArchivesBorrowStatisticsMapper.selectArchivesBorrowStatisticsData(TableNameUtil.getFullTableName(dataKey), id, (short) 1, startDate, endDate);
             Long count1 = null;
             Long count2 = null;
             Long count3 = null;

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yintu.rixing.archives.ArchArchivesQuantityStatisticsMapper">
+<mapper namespace="com.yintu.rixing.archives.ArchSearchArchivesQuantityStatisticsMapper">
 
-    <select id="selectArchivesQuantityStatisticsData" resultType="java.util.Map">
-        SELECT COUNT(*) as `count`,t.status
+    <select id="selectSearchArchivesQuantityStatisticsData" resultType="java.lang.Long">
+        SELECT COUNT(*) as `count`
         FROM sys_archives_library AS sal
         INNER JOIN data_archives_library_file AS dalf ON sal.id = dalf.archives_library_id
-        INNER JOIN ${tableName} AS t ON t.id = dalf.data_id
+        INNER JOIN data_archives_library_file_search AS dalfs on dalf.id = dalfs.archives_library_file_id
         <where>
             <if test="archivesLibraryId!=null">
                 AND dalf.archives_library_id=#{archivesLibraryId,jdbcType=INTEGER}
@@ -15,7 +15,6 @@
                 AND DATE(dalf.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
             </if>
         </where>
-        GROUP BY t.status
     </select>
 
 </mapper>

@@ -3,25 +3,23 @@ package com.yintu.rixing.archives;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: mlf
- * @Date: 2021/1/30 15:38:31
+ * @Date: 2021/2/20 15:16:25
  * @Version: 1.0
  */
 @Mapper
-public interface ArchArchivesQuantityStatisticsMapper {
+public interface ArchSearchArchivesQuantityStatisticsMapper {
+
 
     /**
      * 查询档案统计数量数据
      *
-     * @param tableName         表名
      * @param archivesLibraryId 档案库id
      * @param startDate         开始日期
      * @param endDate           结束日期
      * @return ..
      */
-    List<Map<String, Object>> selectArchivesQuantityStatisticsData(String tableName, Integer archivesLibraryId, Date startDate, Date endDate);
+    Long selectSearchArchivesQuantityStatisticsData(Integer archivesLibraryId, Date startDate, Date endDate);
 }

@@ -40,8 +40,9 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
         List<Long> list2 = new ArrayList<>();
         List<Long> list3 = new ArrayList<>();
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
+            Integer id = archivesLibrary.getId();
             String dataKey = archivesLibrary.getDataKey();
-            List<Map<String, Object>> maps = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(TableNameUtil.getFullTableName(dataKey), startDate, endDate);
+            List<Map<String, Object>> maps = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(TableNameUtil.getFullTableName(dataKey), id, startDate, endDate);
             Long count1 = null;
             Long count2 = null;
             Long count3 = null;
