@@ -50,8 +50,7 @@ public class ArchUsingPurposeStatisticsServiceImpl extends ArchAbstractService i
             List<Long> values = new ArrayList<>();
             for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
                 Integer id = archivesLibrary.getId();
-                String dataKey = archivesLibrary.getDataKey();
-                List<Map<String, Object>> maps = archUsingPurposeStatisticsMapper.selectArchUsingPurposeStatisticsData(TableNameUtil.getFullTableName(dataKey), id, (short) 1, startDate, endDate);
+                List<Map<String, Object>> maps = archUsingPurposeStatisticsMapper.selectArchUsingPurposeStatisticsData(id, (short) 1, startDate, endDate);
                 Long count = null;
                 for (Map<String, Object> map : maps) {
                     Integer makeId2 = (Integer) map.get("makeId");
