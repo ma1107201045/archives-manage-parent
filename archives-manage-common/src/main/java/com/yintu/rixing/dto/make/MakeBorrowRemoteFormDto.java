@@ -1,12 +1,10 @@
 package com.yintu.rixing.dto.make;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yintu.rixing.dto.base.IdDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -23,9 +21,6 @@ public class MakeBorrowRemoteFormDto extends IdDto {
     @ApiModelProperty(value = "文件id")
     @NotNull
     private Integer fileid;
-
-    @ApiModelProperty(value = "内部和远程人员区分 1：内部 2：远程", hidden = true)
-    private Short userType;
 
     @ApiModelProperty(value = "借阅人id", hidden = true)
     private Integer userId;

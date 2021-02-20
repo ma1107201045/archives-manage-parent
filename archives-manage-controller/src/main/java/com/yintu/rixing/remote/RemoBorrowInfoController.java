@@ -43,10 +43,9 @@ public class RemoBorrowInfoController {
     @PostMapping
     @ApiOperation(value = "添加远程借阅信息", notes = "添加远程借阅信息")
     @ApiOperationSupport(order = 1)
-    public ResultDataUtil<Object> add(HttpServletRequest request, @Validated MakeBorrowRemoteFormDto makeBorrowElectronicFormDto) {
-        makeBorrowElectronicFormDto.setUserType((short) 2);
-        makeBorrowElectronicFormDto.setUserId(IdentityIdUtil.get(request));
-        iMakeBorrowService.saveRemote(makeBorrowElectronicFormDto);
+    public ResultDataUtil<Object> add(HttpServletRequest request, @Validated MakeBorrowRemoteFormDto makeBorrowRemoteFormDto) {
+        makeBorrowRemoteFormDto.setUserId(IdentityIdUtil.get(request));
+        iMakeBorrowService.addRemote(makeBorrowRemoteFormDto);
         return ResultDataUtil.ok("添加远程借阅信息成功");
     }
 

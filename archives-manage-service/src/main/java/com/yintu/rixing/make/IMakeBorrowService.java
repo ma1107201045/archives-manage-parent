@@ -30,7 +30,7 @@ public interface IMakeBorrowService extends IService<MakeBorrow> {
      * @param borrowRemoteFormDto ...
      */
     @Transactional(rollbackFor = {Exception.class})
-    void saveRemote(MakeBorrowRemoteFormDto borrowRemoteFormDto);
+    void addRemote(MakeBorrowRemoteFormDto borrowRemoteFormDto);
 
     /**
      * 审核

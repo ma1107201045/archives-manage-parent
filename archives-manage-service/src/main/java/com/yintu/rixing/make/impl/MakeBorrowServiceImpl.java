@@ -68,20 +68,22 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     public void add(MakeBorrow makeBorrow) {
         //判断同一个人是否借阅同一文件
         Integer fileId = makeBorrow.getFileid();
-        Integer userId = makeBorrow.getUserId();
         Short borrowType = makeBorrow.getBorrowType();
+        Integer userId = makeBorrow.getUserId();
         QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(MakeBorrow::getFileid, fileId)
+                .eq(MakeBorrow::getBorrowType, borrowType)
                 .eq(MakeBorrow::getUserId, userId)
-                .eq(MakeBorrow::getUserType, (short) 1)
-                .eq(MakeBorrow::getBorrowType, borrowType);
+                .eq(MakeBorrow::getUserType, (short) 1);
         List<MakeBorrow> makeBorrows = this.list(queryWrapper);
         if (!makeBorrows.isEmpty()) {
-            MakeBorrow makeBorrow1 = makeBorrows.get(makeBorrows.size() - 1);
-            //审核中或者审核拒绝或者可预览都不能借阅（审批通过并且不可预览才可以借阅）
-            if (!EnumAuditStatus.AUDIT_PASS.getValue().equals(makeBorrow1.getAuditStatus()) || EnumFlag.True.getValue().equals(makeBorrow.getPreviewType()))
-                throw new BaseRuntimeException("无需重复借阅");
+            for (MakeBorrow makeBorrow1 : makeBorrows) {
+                //审核中或者审核拒绝或者可预览都不能借阅（审批通过并且不可预览才可以借阅）
+                if (!EnumAuditStatus.AUDIT_PASS.getValue().equals(makeBorrow1.getAuditStatus()) || EnumFlag.True.getValue().equals(makeBorrow1.getPreviewType())) {
+                    throw new BaseRuntimeException("无需重复借阅");
+                }
+            }
         }
         makeBorrow.setUserType((short) 1);
         makeBorrow.setAuditStatus(EnumAuditStatus.AUDIT_IN.getValue());
@@ -110,24 +112,25 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
     }
 
     @Override
-    public void saveRemote(MakeBorrowRemoteFormDto makeBorrowRemoteFormDto) {
+    public void addRemote(MakeBorrowRemoteFormDto makeBorrowRemoteFormDto) {
         //判断同一个人是否借阅同一文件
         Integer fileId = makeBorrowRemoteFormDto.getFileid();
-        Short userType = makeBorrowRemoteFormDto.getUserType();
-        Integer userId = makeBorrowRemoteFormDto.getUserId();
         Short borrowType = makeBorrowRemoteFormDto.getBorrowType();
+        Integer userId = makeBorrowRemoteFormDto.getUserId();
         QueryWrapper<MakeBorrow> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(MakeBorrow::getFileid, fileId)
+                .eq(MakeBorrow::getBorrowType, borrowType)
                 .eq(MakeBorrow::getUserId, userId)
-                .eq(MakeBorrow::getUserType, userType)
-                .eq(MakeBorrow::getBorrowType, borrowType);
+                .eq(MakeBorrow::getUserType, (short) 2);
         List<MakeBorrow> makeBorrows = this.list(queryWrapper);
         if (!makeBorrows.isEmpty()) {
-            MakeBorrow makeBorrow = makeBorrows.get(makeBorrows.size() - 1);
-            //审核中或者审核拒绝或者可预览都不能借阅（审批通过并且不可预览才可以借阅）
-            if (!EnumAuditStatus.AUDIT_PASS.getValue().equals(makeBorrow.getAuditStatus()) || EnumFlag.True.getValue().equals(makeBorrow.getPreviewType()))
-                throw new BaseRuntimeException("无需重复借阅");
+            for (MakeBorrow makeBorrow : makeBorrows) {
+                //审核中或者审核拒绝或者可预览都不能借阅（审批通过并且不可预览才可以借阅）
+                if (!EnumAuditStatus.AUDIT_PASS.getValue().equals(makeBorrow.getAuditStatus()) || EnumFlag.True.getValue().equals(makeBorrow.getPreviewType())) {
+                    throw new BaseRuntimeException("无需重复借阅");
+                }
+            }
         }
         MakeBorrow makeBorrow = new MakeBorrow();
         BeanUtil.copyProperties(makeBorrowRemoteFormDto, makeBorrow);
@@ -136,8 +139,9 @@ public class MakeBorrowServiceImpl extends ServiceImpl<MakeBorrowMapper, MakeBor
         makeBorrow.setPreviewType(EnumFlag.False.getValue());
         this.save(makeBorrow);
         List<Integer> ids = iSysApprovalProcessService.listByApprovalType((short) 2);
-        if (ids.isEmpty())
+        if (ids.isEmpty()) {
             throw new BaseRuntimeException("管理员没有设置审批人员");
+        }
         List<SysApprovalProcessConfiguration> sysApprovalProcessConfigurations = iSysApprovalProcessConfigurationService.listByApprovalProcessId(ids.get(0));
         List<MakeBorrowAuditor> makeBorrowAuditors = new ArrayList<>();
         Integer makeBorrowId = makeBorrow.getId();
