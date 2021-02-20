@@ -10,11 +10,9 @@ import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.make.IMakeArchivesSearchService;
 import com.yintu.rixing.make.MakeArchivesSearchMapper;
 import com.yintu.rixing.pojo.MakeArchivesSearchPojo;
-import com.yintu.rixing.system.ISysArchivesLibraryService;
-import com.yintu.rixing.system.ISysTemplateLibraryFieldTypeService;
-import com.yintu.rixing.system.SysArchivesLibrary;
+import com.yintu.rixing.system.*;
+import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
-import com.yintu.rixing.system.SysTemplateLibraryFieldType;
 import com.yintu.rixing.vo.data.DataCommonFieldVo;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import com.yintu.rixing.warehouse.IWareLibraryTreeService;
@@ -47,6 +45,69 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
     private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
     @Autowired
     private IWareTemplateLibraryFieldService iWareTemplateLibraryFieldService;
+    @Autowired
+    private ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
+    @Autowired
+    protected ISysDepartmentService iSysDepartmentService;
+
+    @Override
+    public DataCommonVo findElectronicsDatasBySomethings(Integer num, Integer size, Integer archiveId, String searchThings) {
+        SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archiveId);
+        String dataKey1 = sysArchivesLibrary.getDataKey();
+        String fullTableName = TableNameUtil.getFullTableName(dataKey1);
+        if (wareTemplateLibraryFiledMapper.findTable(fullTableName) == 0) {
+            throw new BaseRuntimeException("请先创建实相关表");
+        } else {
+            DataCommonVo dataCommonVo = new DataCommonVo();
+            List<DataCommonFieldVo> dataCommonFieldVos = new ArrayList<>();
+
+            List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryId(archiveId);
+            for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
+                String dataKey = sysArchivesLibraryField.getDataKey();
+                String name = sysArchivesLibraryField.getName();
+                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysTemplateLibraryFieldType();
+                Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
+                String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
+                String fieldTypeName = sysTemplateLibraryFieldType.getName();
+
+                Short query = sysArchivesLibraryField.getQuery();
+                Short title = sysArchivesLibraryField.getTitle();
+                Short form = sysArchivesLibraryField.getForm();
+
+                DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
+                dataCommonTitleVo.setProp(dataKey);
+                dataCommonTitleVo.setLabel(name);
+
+                dataCommonTitleVo.setTypeId(fieldTypeId);
+                dataCommonTitleVo.setTypeProp(fieldTypeDataKey);
+                dataCommonTitleVo.setTypeLabel(fieldTypeName);
+                dataCommonTitleVo.setNotNull(sysArchivesLibraryField.getRequired().equals(EnumFlag.True.getValue()));
+
+                dataCommonTitleVo.setQuery(query.equals(EnumFlag.True.getValue()));
+                dataCommonTitleVo.setTitle(title.equals(EnumFlag.True.getValue()));
+                dataCommonTitleVo.setForm(form.equals(EnumFlag.True.getValue()));
+                dataCommonFieldVos.add(dataCommonTitleVo);
+            }
+
+            Page page = new Page();
+            page.setSize(size);
+            page.setCurrent(num);
+            Page<Map<String, Object>> entityArchivesPages = makeArchivesSearchMapper.findElectronicsDatasBySomethings(page,searchThings,fullTableName);
+            //特殊字段需要处理
+            entityArchivesPages.getRecords().forEach(map -> {
+                String dataKey = EnumArchivesLibraryDefaultField.DEPARTMENT_ID.getDataKey();
+                if (map.containsKey(dataKey)) {
+                    Integer departmentId = (Integer) map.get(dataKey);
+                    SysDepartment sysDepartment = iSysDepartmentService.getById(departmentId);
+                    map.put(dataKey, sysDepartment.getName());
+                }
+            });
+
+            dataCommonVo.setFields(dataCommonFieldVos);
+            dataCommonVo.setPage(entityArchivesPages);
+            return dataCommonVo;
+        }
+    }
 
     @Override
     public DataCommonVo searchEntityArchives(Integer num, Integer size, String searchThings) {

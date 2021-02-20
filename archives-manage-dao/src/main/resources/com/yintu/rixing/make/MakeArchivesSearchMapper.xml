@@ -17,4 +17,16 @@
         ORDER BY `modified_time`
     </select>
 
+    <select id="findElectronicsDatasBySomethings" resultType="java.util.Map">
+    select *
+    from ${fullTableName}
+    <where>
+        <if test="searchThings!=null">
+            ${searchThings}
+        </if>
+    </where>
+    order by id desc
+  </select>
+
+
 </mapper>
