@@ -19,6 +19,7 @@ public interface ArchArchivesQuantityStatisticsMapper {
      *
      * @param tableName         表名
      * @param archivesLibraryId 档案库id
+     * @param departmentId      部门id
      * @param startDate         开始日期
      * @param endDate           结束日期
      * @return ..

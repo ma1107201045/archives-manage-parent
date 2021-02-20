@@ -31,6 +31,7 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
 
     @Override
     public ArchArchivesQuantityStatisticsDataVo findArchivesQuantityStatisticsData(ArchCommonQueryDto archCommonQueryDto) {
+        Integer departmentId = archCommonQueryDto.getDepartmentId();
         Date startDate = archCommonQueryDto.getStartDate();
         Date endDate = archCommonQueryDto.getEndDate();
         List<Integer> archivesIds = archCommonQueryDto.getArchivesIds();
@@ -41,8 +42,8 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
         List<Long> list3 = new ArrayList<>();
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
-            String dataKey = archivesLibrary.getDataKey();
-            List<Map<String, Object>> maps = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(TableNameUtil.getFullTableName(dataKey), id, startDate, endDate);
+            String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
+            List<Map<String, Object>> maps = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(tableName, departmentId, id, startDate, endDate);
             Long count1 = null;
             Long count2 = null;
             Long count3 = null;
