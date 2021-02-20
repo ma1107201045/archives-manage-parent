@@ -23,5 +23,5 @@ public interface ArchArchivesQuantityStatisticsMapper {
      * @param endDate           结束日期
      * @return ..
      */
-    List<Map<String, Object>> selectArchivesQuantityStatisticsData(String tableName, Integer archivesLibraryId, Date startDate, Date endDate);
+    List<Map<String, Object>> selectArchivesQuantityStatisticsData(String tableName, Integer archivesLibraryId, Integer departmentId, Date startDate, Date endDate);
 }

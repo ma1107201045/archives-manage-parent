@@ -34,6 +34,7 @@ public class ArchArchivesBorrowStatisticsServiceImpl extends ArchAbstractService
 
     @Override
     public ArchArchivesBorrowStatisticsDataVo findArchivesBorrowStatisticsData(ArchCommonQueryDto archCommonQueryDto) {
+        Integer departmentId = archCommonQueryDto.getDepartmentId();
         Date startDate = archCommonQueryDto.getStartDate();
         Date endDate = archCommonQueryDto.getEndDate();
         List<Integer> archivesIds = archCommonQueryDto.getArchivesIds();
@@ -44,7 +45,8 @@ public class ArchArchivesBorrowStatisticsServiceImpl extends ArchAbstractService
         List<Long> list3 = new ArrayList<>();
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
-            List<Map<String, Object>> maps = archArchivesBorrowStatisticsMapper.selectArchivesBorrowStatisticsData(id, (short) 1, startDate, endDate);
+            String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
+            List<Map<String, Object>> maps = archArchivesBorrowStatisticsMapper.selectArchivesBorrowStatisticsData(id, tableName, (short) 1, departmentId, startDate, endDate);
             Long count1 = null;
             Long count2 = null;
             Long count3 = null;

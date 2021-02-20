@@ -38,6 +38,7 @@ public class ArchUsingPurposeStatisticsServiceImpl extends ArchAbstractService i
 
     @Override
     public ArchUsingPurposeStatisticsDataVo findArchUsingPurposeStatisticsData(ArchCommonQueryDto archCommonQueryDto) {
+        Integer departmentId = archCommonQueryDto.getDepartmentId();
         Date startDate = archCommonQueryDto.getStartDate();
         Date endDate = archCommonQueryDto.getEndDate();
         List<Integer> archivesIds = archCommonQueryDto.getArchivesIds();
@@ -50,7 +51,8 @@ public class ArchUsingPurposeStatisticsServiceImpl extends ArchAbstractService i
             List<Long> values = new ArrayList<>();
             for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
                 Integer id = archivesLibrary.getId();
-                List<Map<String, Object>> maps = archUsingPurposeStatisticsMapper.selectArchUsingPurposeStatisticsData(id, (short) 1, startDate, endDate);
+                String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
+                List<Map<String, Object>> maps = archUsingPurposeStatisticsMapper.selectArchUsingPurposeStatisticsData(id, tableName, (short) 1, departmentId, startDate, endDate);
                 Long count = null;
                 for (Map<String, Object> map : maps) {
                     Integer makeId2 = (Integer) map.get("makeId");

@@ -6,6 +6,7 @@
         SELECT COUNT(*) AS `count`, mb.audit_status AS auditStatus
         FROM sys_archives_library AS sal
         INNER JOIN data_archives_library_file dalf ON sal.id = dalf.archives_library_id
+        INNER JOIN ${tableName} AS t ON t.id=dalf.data_id
         INNER JOIN make_borrow mb ON dalf.id=mb.fileid
         <where>
             <if test="archivesLibraryId!=null">
@@ -13,6 +14,9 @@
             </if>
             <if test="borrowType!=null">
                 AND mb.borrow_type=#{borrowType,jdbcType=SMALLINT}
+            </if>
+            <if test="departmentId != null">
+                AND t.department_id=#{departmentId,jdbcType=INTEGER}
             </if>
             <if test="startDate!=null and endDate!=null">
                 AND DATE(mb.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}

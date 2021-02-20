@@ -12,6 +12,7 @@ import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.archives.ArchArchivesQuantityStatisticsDataVo;
 import com.yintu.rixing.vo.archives.ArchSearchArchivesQuantityStatisticsDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * @Date: 2021/2/20 15:09:44
  * @Version: 1.0
  */
+@Service
 public class ArchSearchArchivesQuantityStatisticsServiceImpl extends ArchAbstractService implements IArchSearchArchivesQuantityStatisticsService {
 
     @Autowired
@@ -31,6 +33,7 @@ public class ArchSearchArchivesQuantityStatisticsServiceImpl extends ArchAbstrac
 
     @Override
     public ArchSearchArchivesQuantityStatisticsDataVo findSearchArchivesQuantityStatisticsData(ArchCommonQueryDto archCommonQueryDto) {
+        Integer departmentId = archCommonQueryDto.getDepartmentId();
         Date startDate = archCommonQueryDto.getStartDate();
         Date endDate = archCommonQueryDto.getEndDate();
         List<Integer> archivesIds = archCommonQueryDto.getArchivesIds();
@@ -38,7 +41,8 @@ public class ArchSearchArchivesQuantityStatisticsServiceImpl extends ArchAbstrac
         List<Long> values = new ArrayList<>();
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
-            Long count = archSearchArchivesQuantityStatisticsMapper.selectSearchArchivesQuantityStatisticsData(id, startDate, endDate);
+            String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
+            Long count = archSearchArchivesQuantityStatisticsMapper.selectSearchArchivesQuantityStatisticsData(id, tableName, departmentId, startDate, endDate);
             values.add(count);
         }
         ArchSearchArchivesQuantityStatisticsDataVo archArchivesQuantityStatisticsDataVo = new ArchSearchArchivesQuantityStatisticsDataVo();
