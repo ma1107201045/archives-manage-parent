@@ -23,7 +23,6 @@
                 AND DATE(dalf.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
             </if>
         </where>
-        GROUP BY t.status_field1
     </select>
 
 </mapper>

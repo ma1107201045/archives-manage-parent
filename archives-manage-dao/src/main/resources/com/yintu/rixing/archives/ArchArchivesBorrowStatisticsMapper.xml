@@ -25,7 +25,6 @@
                 AND DATE(mb.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
             </if>
         </where>
-        GROUP BY mb.audit_status
     </select>
 
 </mapper>
