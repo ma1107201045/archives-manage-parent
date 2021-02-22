@@ -5,14 +5,11 @@ import com.yintu.rixing.archives.ArchDiseaseArchivesAppraisalMapper;
 import com.yintu.rixing.archives.IArchDiseaseArchivesAppraisalService;
 import com.yintu.rixing.dto.archives.ArchCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
-import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.util.TableNameUtil;
-import com.yintu.rixing.vo.archives.ArchArchivesBorrowStatisticsDataVo;
 import com.yintu.rixing.vo.archives.ArchDiseaseArchivesAppraisalDataVo;
-import com.yintu.rixing.vo.archives.ArchUsingPurposeStatisticsDataVo;
-import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ import java.util.stream.Collectors;
  * @Date: 2021/2/22 10:36:05
  * @Version: 1.0
  */
-@Server
+@Service
 public class ArchDiseaseArchivesAppraisalServiceImpl extends ArchAbstractService implements IArchDiseaseArchivesAppraisalService {
 
     @Autowired
