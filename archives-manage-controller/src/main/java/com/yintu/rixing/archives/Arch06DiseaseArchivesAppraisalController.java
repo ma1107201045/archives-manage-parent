@@ -15,4 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "病档鉴定")
 @ApiSort(6)
 public class Arch06DiseaseArchivesAppraisalController {
+
+
 }

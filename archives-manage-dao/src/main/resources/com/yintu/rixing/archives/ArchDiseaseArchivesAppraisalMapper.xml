@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.rixing.archives.ArchDiseaseArchivesAppraisalMapper">
+
+    <select id="selectDiseaseArchivesAppraisalData" resultType="java.util.Map">
+        SELECT COUNT(*) AS `count`,t.status_field1
+        SUM(IF(t.status_field1 = 1,1,0)) AS '1',
+        SUM(IF(t.status_field1 = 2,1,0)) AS '2',
+        FROM sys_archives_library AS sal
+        INNER JOIN data_archives_library_file AS dalf ON sal.id = dalf.archives_library_id
+        INNER JOIN ${tableName} AS t ON t.id = dalf.data_id
+        <where>
+            <if test="archivesLibraryId!=null">
+                AND dalf.archives_library_id=#{archivesLibraryId,jdbcType=INTEGER}
+            </if>
+            <if test="status != null">
+                AND t.status=#{status,jdbcType=SMALLINT}
+            </if>
+            <if test="departmentId != null">
+                AND t.department_id=#{departmentId,jdbcType=INTEGER}
+            </if>
+            <if test="startDate!=null and endDate!=null">
+                AND DATE(dalf.create_time) BETWEEN #{startDate,jdbcType=TIMESTAMP} AND #{endDate,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        GROUP BY t.status
+    </select>
+
+</mapper>
