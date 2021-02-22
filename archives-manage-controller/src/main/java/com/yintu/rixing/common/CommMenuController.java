@@ -36,23 +36,9 @@ public class CommMenuController extends Authenticator {
     @Log(level = EnumLogLevel.TRACE, module = "公共模块", context = "查询菜单栏以及权限信息")
     @GetMapping
     @ApiOperation(value = "查询菜单栏以及权限信息", notes = "查询菜单栏以及权限信息")
-    public ResultDataUtil<CommPermissionVo> findPage() {
-        CommPermissionVo commPermissionVo = new CommPermissionVo();
+    public ResultDataUtil<CommPermissionVo> findPermissions() {
         SysUser sysUser = Authenticator.getPrincipal();
-        List<TreeUtil> treeUtils = null;
-        List<CommAuthorityVo> commAuthorityVos = null;
-        if (sysUser != null) {
-            if (sysUser.getAuthType().equals(EnumAuthType.ADMIN.getValue())) {
-                treeUtils = iCommMenuService.findMenus(-1, null);
-                commAuthorityVos = iCommMenuService.findAuthorities(null);
-            } else {
-                Integer userId = sysUser.getId();
-                treeUtils = iCommMenuService.findMenus(-1, userId);
-                iCommMenuService.findAuthorities(userId);
-            }
-        }
-        commPermissionVo.setMenu(treeUtils);
-        commPermissionVo.setAuthorities(commAuthorityVos);
+        CommPermissionVo commPermissionVo = iCommMenuService.findPermissions(sysUser);
         return ResultDataUtil.ok("查询菜单栏信息以及权限成功", commPermissionVo);
     }
 

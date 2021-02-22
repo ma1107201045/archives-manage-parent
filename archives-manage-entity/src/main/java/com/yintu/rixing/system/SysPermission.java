@@ -57,7 +57,11 @@ public class SysPermission extends BaseEntity {
     @TableField("path")
     private String path;
 
-    @ApiModelProperty(value = "优先级", position = 14)
+    @ApiModelProperty(value = "前端路由转向名称", position = 14)
+    @TableField("path_name")
+    private String pathName;
+
+    @ApiModelProperty(value = "优先级", position = 15)
     @TableField("priority")
     private Integer priority;
 

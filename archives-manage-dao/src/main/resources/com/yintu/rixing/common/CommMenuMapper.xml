@@ -6,10 +6,11 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="icon_cls" jdbcType="VARCHAR" property="iconCls"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="path_name" jdbcType="VARCHAR" property="pathName"/>
     </resultMap>
 
     <select id="selectByExample" resultMap="BaseResultMap">
-        SELECT sp.id, sp.name, sp.icon_cls, sp.path
+        SELECT sp.id, sp.name, sp.icon_cls, sp.path, sp.path_name
         FROM sys_permission sp
         where sp.parent_id = #{permissionId,jdbcType=INTEGER}
           and sp.menu = #{menu,jdbcType=SMALLINT}
@@ -17,7 +18,7 @@
     </select>
 
     <select id="selectByExampleAndUserId" resultMap="BaseResultMap">
-        SELECT sp.id, sp.name, sp.icon_cls, sp.path
+        SELECT sp.id, sp.name, sp.icon_cls, sp.path, sp.path_name
         FROM sys_user su
                  INNER JOIN sys_user_role sur ON su.id = sur.user_id
                  INNER JOIN sys_role sr ON sur.role_id = sr.id
@@ -40,13 +41,13 @@
     </resultMap>
 
     <select id="selectAuthorityByExample" resultMap="BaseResultMap1">
-        SELECT sp.id, sp.name, sp.icon_cls, sp.path
+        SELECT sp.id, sp.name, sp.url, sp.method, sp.authorized_name
         FROM sys_permission sp
         where sp.menu = #{menu,jdbcType=SMALLINT}
     </select>
 
     <select id="selectAuthorityByExampleAndUserId" resultMap="BaseResultMap1">
-        SELECT sp.id, sp.name, sp.icon_cls, sp.path
+        SELECT sp.id, sp.name, sp.url, sp.method, sp.authorized_name
         FROM sys_user su
                  INNER JOIN sys_user_role sur ON su.id = sur.user_id
                  INNER JOIN sys_role sr ON sur.role_id = sr.id

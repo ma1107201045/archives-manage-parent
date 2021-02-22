@@ -1,7 +1,9 @@
 package com.yintu.rixing.common;
 
+import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.common.CommAuthorityVo;
+import com.yintu.rixing.vo.common.CommPermissionVo;
 
 import java.util.List;
 
@@ -28,6 +30,14 @@ public interface ICommMenuService {
      * @return 权限树信息集
      */
     List<CommAuthorityVo> findAuthorities(Integer userId);
+
+    /**
+     * 获取菜单跟权限
+     *
+     * @param sysUser 系统用户信息
+     * @return ..
+     */
+    CommPermissionVo findPermissions(SysUser sysUser);
 
 
 }

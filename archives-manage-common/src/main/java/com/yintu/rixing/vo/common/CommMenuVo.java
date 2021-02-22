@@ -20,4 +20,6 @@ public class CommMenuVo {
     private String iconCls;
     @ApiModelProperty(value = "前端路由转向", position = 4)
     private String path;
+    @ApiModelProperty(value = "前端路由转向名称", position = 5)
+    private String pathName;
 }

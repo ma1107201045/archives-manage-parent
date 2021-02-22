@@ -3,10 +3,13 @@ package com.yintu.rixing.common.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.yintu.rixing.common.CommMenuMapper;
 import com.yintu.rixing.common.ICommMenuService;
+import com.yintu.rixing.enumobject.EnumAuthType;
 import com.yintu.rixing.enumobject.EnumFlag;
+import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.common.CommAuthorityVo;
 import com.yintu.rixing.vo.common.CommMenuVo;
+import com.yintu.rixing.vo.common.CommPermissionVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +49,26 @@ public class CommMenuServiceImpl implements ICommMenuService {
         Short menu = EnumFlag.False.getValue();
         return userId == null ? commMenuDao.selectAuthorityByExample(menu)
                 : commMenuDao.selectAuthorityByExampleAndUserId(menu, userId);
+    }
+
+
+    @Override
+    public CommPermissionVo findPermissions(SysUser sysUser) {
+        CommPermissionVo commPermissionVo = new CommPermissionVo();
+        List<TreeUtil> treeUtils = null;
+        List<CommAuthorityVo> commAuthorityVos = null;
+        if (sysUser != null) {
+            if (sysUser.getAuthType().equals(EnumAuthType.ADMIN.getValue())) {
+                treeUtils = this.findMenus(-1, null);
+                commAuthorityVos = this.findAuthorities(null);
+            } else {
+                Integer userId = sysUser.getId();
+                treeUtils = this.findMenus(-1, userId);
+                this.findAuthorities(userId);
+            }
+        }
+        commPermissionVo.setMenu(treeUtils);
+        commPermissionVo.setAuthorities(commAuthorityVos);
+        return commPermissionVo;
     }
 }

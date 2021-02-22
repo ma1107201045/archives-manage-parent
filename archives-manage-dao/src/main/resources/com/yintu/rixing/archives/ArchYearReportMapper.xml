@@ -16,7 +16,7 @@
                 AND t.department_id=#{departmentId,jdbcType=INTEGER}
             </if>
             <if test="year!=null">
-                AND DATE(dalfs.create_time)=#{year,jdbcType=INTEGER}
+                AND YEAR(dalfs.create_time)=#{year,jdbcType=INTEGER}
             </if>
         </where>
         UNION ALL
@@ -37,7 +37,7 @@
                 AND t.department_id=#{departmentId,jdbcType=INTEGER}
             </if>
             <if test="year!=null">
-                AND DATE(mb.create_time)=#{year,jdbcType=INTEGER}
+                AND YEAR(mb.create_time)=#{year,jdbcType=INTEGER}
             </if>
         </where>
         UNION ALL
@@ -58,7 +58,7 @@
                 AND t.department_id=#{departmentId,jdbcType=INTEGER}
             </if>
             <if test="year!=null">
-                AND DATE(mb.create_time)=#{year,jdbcType=INTEGER}
+                AND YEAR(mb.create_time)=#{year,jdbcType=INTEGER}
             </if>
         </where>
         UNION ALL
@@ -81,7 +81,7 @@
                 AND t.department_id=#{departmentId,jdbcType=INTEGER}
             </if>
             <if test="year!=null">
-                AND DATE(dalf.create_time)=#{year,jdbcType=INTEGER}
+                AND YEAR(dalf.create_time)=#{year,jdbcType=INTEGER}
             </if>
         </where>
         UNION ALL
@@ -101,7 +101,7 @@
                 AND t.department_id=#{departmentId,jdbcType=INTEGER}
             </if>
             <if test="year!=null">
-                AND DATE(dalf.create_time)=#{year,jdbcType=INTEGER}
+                AND YEAR(dalf.create_time)=#{year,jdbcType=INTEGER}
             </if>
         </where>
     </select>
