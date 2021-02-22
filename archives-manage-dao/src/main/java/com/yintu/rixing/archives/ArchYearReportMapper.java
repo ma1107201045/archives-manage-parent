@@ -3,7 +3,6 @@ package com.yintu.rixing.archives;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: mlf
@@ -26,6 +25,6 @@ public interface ArchYearReportMapper {
      * @param year              开始日期
      * @return ..
      */
-    List<Map<String, Long>> selectYearReportData(Integer archivesLibraryId, String tableName, Short borrowType, List<Short> statusList, Short status, Integer departmentId, Integer year);
+    List<Long> selectYearReportData(Integer archivesLibraryId, String tableName, Short borrowType, List<Short> statusList, Short status, Integer departmentId, Integer year);
 
 }
