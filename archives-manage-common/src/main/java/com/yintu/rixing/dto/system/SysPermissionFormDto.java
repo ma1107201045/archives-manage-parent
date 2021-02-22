@@ -46,6 +46,9 @@ public class SysPermissionFormDto extends IdDto {
     @ApiModelProperty(value = "前端路由转向")
     private String path;
 
+    @ApiModelProperty(value = "前端路由转向名称")
+    private String pathName;
+
     @ApiModelProperty(value = "优先级")
     private Integer priority;
 
