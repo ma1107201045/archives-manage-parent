@@ -22,7 +22,7 @@ public interface IArchYearReportService {
     List<ArchCommonVo> findArchivesName();
 
     /**
-     * 查询每个流程中每个档案库的统计个数
+     * 年报
      *
      * @param archCommonQueryDto 入参
      * @return 统计值集
