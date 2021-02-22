@@ -2,6 +2,7 @@ package com.yintu.rixing.archives;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,5 +27,5 @@ public interface ArchArchivesBorrowStatisticsMapper {
      * @param endDate           结束日期
      * @return ..
      */
-    Map<String, Long> selectArchivesBorrowStatisticsData(Integer archivesLibraryId, String tableName, Short borrowType, Integer departmentId, Date startDate, Date endDate);
+    Map<String, BigDecimal> selectArchivesBorrowStatisticsData(Integer archivesLibraryId, String tableName, Short borrowType, Integer departmentId, Date startDate, Date endDate);
 }

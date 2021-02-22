@@ -13,6 +13,7 @@ import com.yintu.rixing.vo.archives.ArchArchivesQuantityStatisticsDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,10 +44,10 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
             String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
-            Map<String, Long> map = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(id, tableName, departmentId, startDate, endDate);
-            list1.add(map.get("1"));
-            list2.add(map.get("2"));
-            list3.add(map.get("3"));
+            Map<String, BigDecimal> map = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(id, tableName, departmentId, startDate, endDate);
+            list1.add(map == null ? 0L : map.get("1").longValue());
+            list2.add(map == null ? 0L : map.get("2").longValue());
+            list3.add(map == null ? 0L : map.get("3").longValue());
         }
         lists.add(list1);
         lists.add(list2);
