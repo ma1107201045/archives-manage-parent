@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.rixing.archives.ArchYearReportMapper">
+    <select id="selectYearReportData" resultType="java.util.Map">
+        <!-- 1.查档数量统计-->
+        SELECT COUNT(*) AS `count`
+        FROM sys_archives_library AS sal
+        INNER JOIN data_archives_library_file AS dalf ON sal.id = dalf.archives_library_id
+        INNER JOIN ${tableName} AS t ON t.id = dalf.data_id
+        INNER JOIN data_archives_library_file_search AS dalfs ON dalf.id = dalfs.archives_library_file_id
+        <where>
+            <if test="archivesLibraryId != null">
+                AND dalf.archives_library_id=#{archivesLibraryId,jdbcType=INTEGER}
+            </if>
+            <if test="departmentId != null">
+                AND t.department_id=#{departmentId,jdbcType=INTEGER}
+            </if>
+            <if test="year!=null">
+                AND DATE(dalfs.create_time)=#{year,jdbcType=INTEGER}
+            </if>
+        </where>
+        UNION ALL
+        <!-- 2.利用目的统计-->
+        SELECT COUNT(*) AS `count`
+        FROM sys_archives_library AS sal
+        INNER JOIN data_archives_library_file dalf ON sal.id = dalf.archives_library_id
+        INNER JOIN ${tableName} AS t ON t.id=dalf.data_id
+        INNER JOIN make_borrow mb ON dalf.id=mb.fileid
+        <where>
+            <if test="archivesLibraryId!=null">
+                AND dalf.archives_library_id=#{archivesLibraryId,jdbcType=INTEGER}
+            </if>
+            <if test="borrowType!=null">
+                AND mb.borrow_type=#{borrowType,jdbcType=SMALLINT}
+            </if>
+            <if test="departmentId != null">
+                AND t.department_id=#{departmentId,jdbcType=INTEGER}
+            </if>
+            <if test="year!=null">
+                AND DATE(mb.create_time)=#{year,jdbcType=INTEGER}
+            </if>
+        </where>
+        UNION ALL
+        <!-- 3.档案借阅统计-->
+        SELECT COUNT(*) AS `count`
+        FROM sys_archives_library AS sal
+        INNER JOIN data_archives_library_file dalf ON sal.id = dalf.archives_library_id
+        INNER JOIN ${tableName} AS t ON t.id=dalf.data_id
+        INNER JOIN make_borrow mb ON dalf.id=mb.fileid
+        <where>
+            <if test="archivesLibraryId!=null">
+                AND dalf.archives_library_id=#{archivesLibraryId,jdbcType=INTEGER}
+            </if>
+            <if test="borrowType!=null">
+                AND mb.borrow_type=#{borrowType,jdbcType=SMALLINT}
+            </if>
+            <if test="departmentId != null">
+                AND t.department_id=#{departmentId,jdbcType=INTEGER}
+            </if>
+            <if test="year!=null">
+                AND DATE(mb.create_time)=#{year,jdbcType=INTEGER}
+            </if>
+        </where>
+        UNION ALL
+        <!--4.档案数量统计-->
+        SELECT COUNT(*) AS `count`
+        FROM sys_archives_library AS sal
+        INNER JOIN data_archives_library_file AS dalf ON sal.id = dalf.archives_library_id
+        INNER JOIN ${tableName} AS t ON t.id = dalf.data_id
+        <where>
+            <if test="archivesLibraryId!=null">
+                AND dalf.archives_library_id=#{archivesLibraryId,jdbcType=INTEGER}
+            </if>
+            <if test="statusList != null">
+                AND t.status IN
+                <foreach collection="statusList" open="(" close=")" separator="," item="status">
+                    #{status,jdbcType=SMALLINT}
+                </foreach>
+            </if>
+            <if test="departmentId != null">
+                AND t.department_id=#{departmentId,jdbcType=INTEGER}
+            </if>
+            <if test="year!=null">
+                AND DATE(dalf.create_time)=#{year,jdbcType=INTEGER}
+            </if>
+        </where>
+        UNION ALL
+        <!--5.病档鉴定统计-->
+        SELECT COUNT(*) AS `count`
+        FROM sys_archives_library AS sal
+        INNER JOIN data_archives_library_file AS dalf ON sal.id = dalf.archives_library_id
+        INNER JOIN ${tableName} AS t ON t.id = dalf.data_id
+        <where>
+            <if test="archivesLibraryId!=null">
+                AND dalf.archives_library_id=#{archivesLibraryId,jdbcType=INTEGER}
+            </if>
+            <if test="status != null">
+                AND t.status=#{status,jdbcType=SMALLINT}
+            </if>
+            <if test="departmentId != null">
+                AND t.department_id=#{departmentId,jdbcType=INTEGER}
+            </if>
+            <if test="year!=null">
+                AND DATE(dalf.create_time)=#{year,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+</mapper>

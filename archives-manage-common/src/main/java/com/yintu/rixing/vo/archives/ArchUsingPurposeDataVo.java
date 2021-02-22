@@ -12,10 +12,8 @@ import java.util.List;
  * @Version: 1.0
  */
 @Data
-@ApiModel
 public class ArchUsingPurposeDataVo {
 
-    @ApiModelProperty(value = "利用目的名称", position = 1)
     private String name;
 
     private List<Long> values;

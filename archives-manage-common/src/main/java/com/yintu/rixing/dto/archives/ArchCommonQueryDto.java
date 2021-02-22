@@ -22,6 +22,9 @@ public class ArchCommonQueryDto {
     @ApiModelProperty(value = "部门id")
     private Integer departmentId;
 
+    @ApiModelProperty(value = "年份")
+    private Integer year;
+
     @ApiModelProperty(value = "开始日期")
     private Date startDate;
 

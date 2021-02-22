@@ -29,7 +29,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/archives/arch-disease-archives-appraisal")
-@Api(tags = "病档鉴定")
+@Api(tags = "病档鉴定统计")
 @ApiSort(6)
 public class Arch06DiseaseArchivesAppraisalController {
 
@@ -38,32 +38,32 @@ public class Arch06DiseaseArchivesAppraisalController {
     @Autowired
     private ISysDepartmentService iSysDepartmentService;
 
-    @Log(level = EnumLogLevel.TRACE, module = "档案统计", context = "查询病档鉴定组织机构列表信息")
+    @Log(level = EnumLogLevel.TRACE, module = "档案统计", context = "查询病档鉴定统计组织机构列表信息")
     @GetMapping("/sys-department")
-    @ApiOperation(value = "查询病档鉴定组织机构列表信息", notes = "查询病档鉴定组织机构列表信息")
+    @ApiOperation(value = "查询病档鉴定统计组织机构列表信息", notes = "查询病档鉴定统计组织机构列表信息")
     @ApiOperationSupport(order = 1)
     public ResultDataUtil<List<SysDepartment>> findList() {
         List<SysDepartment> sysDepartments = iSysDepartmentService.list(new QueryWrapper<SysDepartment>().orderByDesc("id"));
-        return ResultDataUtil.ok("查询病档鉴定组织机构列表信息成功", sysDepartments);
+        return ResultDataUtil.ok("查询病档鉴定统计组织机构列表信息成功", sysDepartments);
     }
 
 
-    @Log(level = EnumLogLevel.TRACE, module = "档案统计", context = "查询病档鉴定-名称")
+    @Log(level = EnumLogLevel.TRACE, module = "档案统计", context = "查询病档鉴定统计-名称")
     @GetMapping("/archives-name")
-    @ApiOperation(value = "查询病档鉴定-名称", notes = "查询病档鉴定-名称")
+    @ApiOperation(value = "查询病档鉴定统计-名称", notes = "查询病档鉴定统计-名称")
     @ApiOperationSupport(order = 2)
     public ResultDataUtil<List<ArchCommonVo>> findArchivesName() {
         List<ArchCommonVo> archArchivesQuantityStatisticsQueryVos = iArchDiseaseArchivesAppraisalService.findArchivesName();
-        return ResultDataUtil.ok("查询病档鉴定-名称成功", archArchivesQuantityStatisticsQueryVos);
+        return ResultDataUtil.ok("查询病档鉴定统计-名称成功", archArchivesQuantityStatisticsQueryVos);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "档案统计", context = "查询病档鉴定-数据")
+    @Log(level = EnumLogLevel.TRACE, module = "档案统计", context = "查询病档鉴定统计-数据")
     @GetMapping("/data")
-    @ApiOperation(value = "查询病档鉴定-数据", notes = "查询病档鉴定-数据")
+    @ApiOperation(value = "查询病档鉴定统计-数据", notes = "查询病档鉴定统计-数据")
     @ApiOperationSupport(order = 3)
     public ResultDataUtil<ArchDiseaseArchivesAppraisalDataVo> findArchivesName(@Validated ArchCommonQueryDto archCommonQueryDto) {
         ArchDiseaseArchivesAppraisalDataVo archDiseaseArchivesAppraisalDataVo = iArchDiseaseArchivesAppraisalService.findArchDiseaseArchivesAppraisalData(archCommonQueryDto);
-        return ResultDataUtil.ok("查询病档鉴定-数据成功", archDiseaseArchivesAppraisalDataVo);
+        return ResultDataUtil.ok("查询病档鉴定统计-数据成功", archDiseaseArchivesAppraisalDataVo);
     }
 
 }
