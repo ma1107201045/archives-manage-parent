@@ -65,6 +65,15 @@ public interface IMakeBorrowService extends IService<MakeBorrow> {
     List<MakeBorrowTransferVo> listTransferById(Integer id, Integer currentUserId);
 
     /**
+     * @param fileid      文件id
+     * @param borrowType  是否可预览
+     * @param auditStatus 审批状态
+     * @param previewType 是否预览
+     * @return ..
+     */
+    List<Integer> listByAuditStatusOrPreviewType(Integer fileid, Short borrowType);
+
+    /**
      * 借阅列表
      *
      * @param makeBorrowQueryElectronicDto ...
