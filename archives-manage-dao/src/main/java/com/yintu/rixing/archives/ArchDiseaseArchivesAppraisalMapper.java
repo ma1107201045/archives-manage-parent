@@ -17,14 +17,14 @@ public interface ArchDiseaseArchivesAppraisalMapper {
     /**
      * 查询档案统计数量数据
      *
-     * @param tableName         表名
      * @param archivesLibraryId 档案库id
+     * @param tableName         表名
      * @param departmentId      部门id
      * @param startDate         开始日期
      * @param endDate           结束日期
      * @param status            档案状态：0.档案收集 1.临时库 2.整理库 3.正式库 4.回收站 5.销毁库 6.回退管理 7.病档管理 8.档案销毁
      * @return ..
      */
-    Map<String, Long> selectArchDiseaseArchivesAppraisalData(String tableName, Integer archivesLibraryId, Integer departmentId, Date startDate, Date endDate, Short status);
+    Map<String, Long> selectArchDiseaseArchivesAppraisalData(Integer archivesLibraryId, String tableName, Integer departmentId, Date startDate, Date endDate, Short status);
 
 }

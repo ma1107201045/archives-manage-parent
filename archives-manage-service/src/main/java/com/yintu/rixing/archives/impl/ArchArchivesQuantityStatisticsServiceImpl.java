@@ -43,23 +43,10 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
             String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
-            List<Map<String, Object>> maps = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(tableName, id, departmentId, startDate, endDate);
-            Long count1 = null;
-            Long count2 = null;
-            Long count3 = null;
-            for (Map<String, Object> map : maps) {
-                Integer status = (Integer) map.get(EnumArchivesLibraryDefaultField.STATUS.getDataKey());
-                if (status.equals(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue().intValue())) {
-                    count1 = (Long) map.get("count");
-                } else if (status.equals(EnumArchivesOrder.SORTING_LIBRARY.getValue().intValue())) {
-                    count2 = (Long) map.get("count");
-                } else if (status.equals(EnumArchivesOrder.FORMAL_LIBRARY.getValue().intValue())) {
-                    count3 = (Long) map.get("count");
-                }
-            }
-            list1.add(count1 == null ? 0L : count1);
-            list2.add(count2 == null ? 0L : count2);
-            list3.add(count3 == null ? 0L : count3);
+            Map<String, Long> map = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(id, tableName, departmentId, startDate, endDate);
+            list1.add(map.get("1"));
+            list2.add(map.get("2"));
+            list3.add(map.get("3"));
         }
         lists.add(list1);
         lists.add(list2);

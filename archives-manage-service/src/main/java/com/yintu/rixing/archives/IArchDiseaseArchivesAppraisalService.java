@@ -1,10 +1,8 @@
 package com.yintu.rixing.archives;
 
 import com.yintu.rixing.dto.archives.ArchCommonQueryDto;
-import com.yintu.rixing.vo.archives.ArchArchivesBorrowStatisticsDataVo;
 import com.yintu.rixing.vo.archives.ArchCommonVo;
 import com.yintu.rixing.vo.archives.ArchDiseaseArchivesAppraisalDataVo;
-import com.yintu.rixing.vo.archives.ArchUsingPurposeStatisticsDataVo;
 
 import java.util.List;
 

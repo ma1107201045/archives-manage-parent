@@ -3,7 +3,10 @@
 <mapper namespace="com.yintu.rixing.archives.ArchArchivesQuantityStatisticsMapper">
 
     <select id="selectArchivesQuantityStatisticsData" resultType="java.util.Map">
-        SELECT COUNT(*) AS `count`,t.status
+        SELECT COUNT(*) AS `count`,
+        SUM(IF(t.status = 1,1,0)) AS '1',
+        SUM(IF(t.status = 2,1,0)) AS '2',
+        SUM(IF(t.status = 3,1,0)) AS '3',
         FROM sys_archives_library AS sal
         INNER JOIN data_archives_library_file AS dalf ON sal.id = dalf.archives_library_id
         INNER JOIN ${tableName} AS t ON t.id = dalf.data_id

@@ -3,7 +3,7 @@
 <mapper namespace="com.yintu.rixing.archives.ArchDiseaseArchivesAppraisalMapper">
 
     <select id="selectDiseaseArchivesAppraisalData" resultType="java.util.Map">
-        SELECT COUNT(*) AS `count`,t.status_field1
+        SELECT
         SUM(IF(t.status_field1 = 1,1,0)) AS '1',
         SUM(IF(t.status_field1 = 2,1,0)) AS '2',
         FROM sys_archives_library AS sal

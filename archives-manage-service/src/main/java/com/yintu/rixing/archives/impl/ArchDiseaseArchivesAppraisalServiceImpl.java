@@ -44,7 +44,7 @@ public class ArchDiseaseArchivesAppraisalServiceImpl extends ArchAbstractService
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
             String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
-            Map<String, Long> map = archDiseaseArchivesAppraisalMapper.selectArchDiseaseArchivesAppraisalData(tableName, id, departmentId, startDate, endDate, EnumArchivesOrder.DISEASE_ARCHIVES.getValue());
+            Map<String, Long> map = archDiseaseArchivesAppraisalMapper.selectArchDiseaseArchivesAppraisalData(id, tableName, departmentId, startDate, endDate, EnumArchivesOrder.DISEASE_ARCHIVES.getValue());
             list1.add(map.get("1"));
             list2.add(map.get("2"));
         }
