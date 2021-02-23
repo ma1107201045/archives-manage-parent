@@ -23,12 +23,15 @@ import java.nio.charset.StandardCharsets;
 @WebFilter
 @Component
 public class CommonFilter implements Filter {
+
+    private final String machineCode = MachineCodeUtil.getMachineCode();
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String path = StrUtil.split(request.getRequestURI(), '?').get(0);
-        if (!MachineCodeUtil.MACHINE_CODE.equals(MachineCodeUtil.getMachineCode()) &&
+        if (!MachineCodeUtil.MACHINE_CODE.equals(machineCode) &&
                 !(request.getContextPath() + "/captcha").equals(path)) {
             ResultDataUtil<Object> resultDataUtil = ResultDataUtil.error("机器码有误，请联系管理员");
             JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
