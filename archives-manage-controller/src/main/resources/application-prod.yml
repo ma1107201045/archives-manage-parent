@@ -51,5 +51,3 @@ mybatis-plus:
   type-aliases-package: com.yintu.rixing
 knife4j:
   enable: true
-machine:
-   code: 3c3c6965ebc713166c4bfeb4705e53f0
