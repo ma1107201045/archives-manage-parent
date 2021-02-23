@@ -39,4 +39,9 @@ public class SysRoleFormDto extends IdDto {
     @NotNull
     @Size(min = 1)
     private Set<Integer> permissionIds;
+
+    @ApiModelProperty(value = "档案库id集", required = true)
+    @NotNull
+    @Size(min = 1)
+    private Set<Integer> archivesLibraryIds;
 }

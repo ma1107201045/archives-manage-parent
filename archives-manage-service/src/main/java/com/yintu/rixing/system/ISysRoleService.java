@@ -29,6 +29,8 @@ public interface ISysRoleService extends IService<SysRole> {
     @Transactional(rollbackFor = {Exception.class})
     void saveSysRolePermissionsById(Integer id, Set<Integer> permissionIds);
 
+    void saveSysArchivesLibraryById(Integer id, Set<Integer> archivesIds);
+
     Page<SysRole> page(SysRoleQueryDto sysRoleQueryDto);
 
     List<SysUser> sysUsersById(Integer id);
@@ -36,6 +38,10 @@ public interface ISysRoleService extends IService<SysRole> {
     List<SysPermission> sysPermissionsByIdAndPermissionId(Integer id, Integer permissionId);
 
     void sysPermissionTreeByIdAndPermissionId(Integer id, Integer permissionId, List<TreeUtil> treeUtils);
+
+    List<SysArchivesLibrary> sysArchivesLibraryByIdAndArchivesLibraryId(Integer id, Integer archivesLibraryId);
+
+    void sysPermissionTreeByIdAndArchivesLibraryId(Integer id, Integer archivesLibraryId, List<TreeUtil> treeUtils);
 
 
 }

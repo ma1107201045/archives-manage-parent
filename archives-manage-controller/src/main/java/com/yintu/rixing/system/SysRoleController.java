@@ -2,6 +2,7 @@ package com.yintu.rixing.system;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
@@ -41,63 +42,99 @@ public class SysRoleController extends Authenticator implements BaseController<S
     @Autowired
     private ISysPermissionService iSysPermissionService;
 
+    @Override
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加角色信息")
     @PostMapping
-    @ApiOperation(value = "添加角色信息", notes = "添加角色信息", position = 1)
+    @ApiOperation(value = "添加角色信息", notes = "添加角色信息")
+    @ApiOperationSupport(order = 1)
     public ResultDataUtil<Object> add(@Validated SysRoleFormDto formDto) {
         iSysRoleService.save(formDto);
         return ResultDataUtil.ok("添加角色信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "删除角色信息")
     @DeleteMapping("/{ids}")
-    @ApiOperation(value = "删除角色信息", notes = "删除角色信息", position = 2)
+    @ApiOperation(value = "删除角色信息", notes = "删除角色信息")
+    @ApiOperationSupport(order = 2)
     @ApiImplicitParam(name = "ids", allowMultiple = true, value = "主键id集", required = true, paramType = "path")
     public ResultDataUtil<Object> remove(@PathVariable Set<Integer> ids) {
         iSysRoleService.removeByIds(ids);
         return ResultDataUtil.ok("删除用户信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = " 修改角色信息")
     @PutMapping("/{id}")
-    @ApiOperation(value = "修改角色信息", notes = "修改角色信息", position = 3)
+    @ApiOperation(value = "修改角色信息", notes = "修改角色信息")
+    @ApiOperationSupport(order = 3)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<Object> edit(@PathVariable Integer id, @Validated SysRoleFormDto dto) {
         iSysRoleService.updateById(dto);
         return ResultDataUtil.ok("修改角色信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询角色单条信息")
     @GetMapping("/{id}")
-    @ApiOperation(value = "查询角色单条信息", notes = " 查询角色单条信息", position = 4, response = SysRole.class)
+    @ApiOperation(value = "查询角色单条信息", notes = " 查询角色单条信息")
+    @ApiOperationSupport(order = 4)
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<SysRole> findById(@PathVariable Integer id) {
         SysRole sysRole = iSysRoleService.getById(id);
         return ResultDataUtil.ok("查询角色单条信息成功", sysRole);
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询角色列表信息")
     @GetMapping
     @ApiOperation(value = "查询角色列表信息", notes = "查询角色列表信息", position = 5, response = SysRole.class)
+    @ApiOperationSupport(order = 5)
     public ResultDataUtil<Page<SysRole>> findPage(@Validated SysRoleQueryDto queryDto) {
         return ResultDataUtil.ok("查询角色列表信息成功", iSysRoleService.page(queryDto));
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询角色权限列表树信息")
+
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询角色拥有权限树信息")
     @GetMapping("/sys-permission")
-    @ApiOperation(value = "查询角色权限列表树信息", notes = "查询角色权限列表树信息", position = 6)
+    @ApiOperation(value = "查询角色拥有权限树信息", notes = "查询角色拥有权限树信息")
+    @ApiOperationSupport(order = 6)
     public ResultDataUtil<List<TreeUtil>> findPermissionTree() {
         List<TreeUtil> treeNodeUtils = iSysPermissionService.listTree(-1);
-        return ResultDataUtil.ok("查询角色权限列表树信息成功", treeNodeUtils);
+        return ResultDataUtil.ok("查询角色拥有权限树信息成功", treeNodeUtils);
     }
+
 
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询角色拥有权限列表信息")
     @GetMapping("/{id}/sys-permission")
-    @ApiOperation(value = "查询角色拥有权限列表信息", notes = "查询角色拥有权限列表信息", position = 7)
+    @ApiOperation(value = "查询角色拥有权限列表信息", notes = "查询角色拥有权限列表信息")
+    @ApiOperationSupport(order = 7)
     @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<List<TreeUtil>> findPermissionTreeById(@PathVariable Integer id) {
         List<TreeUtil> treeNodeUtils = new ArrayList<>();
         iSysRoleService.sysPermissionTreeByIdAndPermissionId(id, -1, treeNodeUtils);
         return ResultDataUtil.ok("查询角色拥有权限列表信息成功", treeNodeUtils);
+    }
+
+
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询角色档案库树信息")
+    @GetMapping("/sys-archives-library")
+    @ApiOperation(value = "查询角色档案库树信息", notes = "查询角色档案库树信息")
+    @ApiOperationSupport(order = 8)
+    public ResultDataUtil<List<TreeUtil>> findArchivesLibraryTree() {
+        List<TreeUtil> treeNodeUtils = iSysPermissionService.listTree(-1);
+        return ResultDataUtil.ok("查询角色档案库树信息成功", treeNodeUtils);
+    }
+
+
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询角色拥有档案库树信息")
+    @GetMapping("/{id}/sys-archives-library")
+    @ApiOperation(value = "查询角色拥有档案库树信息", notes = "查询角色拥有档案库树信息")
+    @ApiOperationSupport(order = 9)
+    @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
+    public ResultDataUtil<List<TreeUtil>> findArchivesLibraryTreeById(@PathVariable Integer id) {
+        List<TreeUtil> treeNodeUtils = new ArrayList<>();
+        iSysRoleService.sysPermissionTreeByIdAndPermissionId(id, -1, treeNodeUtils);
+        return ResultDataUtil.ok("查询角色拥有档案库树信息成功", treeNodeUtils);
     }
 }
