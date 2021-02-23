@@ -9,7 +9,7 @@
                dalf.`context`             AS archivesFileContext,
                dalf.`archives_library_id` AS archivesLibId,
                dalf.`data_id`             AS archivesDirectoryId,
-               dalf.`path`                AS archivesFilePath
+               dalf.`request_mapping`     AS archivesFileRequestMapping
         FROM data_archives_library_file AS dalf
         WHERE dalf.`formal_library` = 1
           AND MATCH(dalf.`original_name`, `context`)

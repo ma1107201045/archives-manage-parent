@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.yintu.rixing.BaseEntity;
 import java.util.Date;
+import java.util.List;
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
@@ -75,5 +77,12 @@ public class MakeCompilation extends BaseEntity {
     @TableField("isnotAudit")
     private Integer isnotAudit;
 
+    @ApiModelProperty(value = "当前审核批次人的id集合")
+    @TableField(exist = false)
+    private List<Integer> auditorIds;
+
+    @ApiModelProperty(value = "父ids")
+    @TableField(exist = false)
+    private List<Integer> parentIds;
 
 }
