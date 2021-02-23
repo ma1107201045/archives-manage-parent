@@ -13,10 +13,6 @@ import java.io.*;
  */
 public class MachineCodeUtil {
 
-    /**
-     * 机器码
-     */
-    public static final String MACHINE_CODE = "3c3c6965ebc713166c4bfeb4705e53f0";
 
     public static void main(String[] args) {
         System.out.println(getMachineCode());

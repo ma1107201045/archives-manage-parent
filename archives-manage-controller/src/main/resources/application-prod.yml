@@ -49,5 +49,7 @@ spring:
 mybatis-plus:
   #config-location: classpath:mybatis-config.xml
   type-aliases-package: com.yintu.rixing
-  #configuration:
-  #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+knife4j:
+  enable: true
+machine:
+   code: 3c3c6965ebc713166c4bfeb4705e53f0
