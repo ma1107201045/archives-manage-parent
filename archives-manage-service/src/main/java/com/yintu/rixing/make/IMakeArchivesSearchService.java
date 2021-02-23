@@ -23,4 +23,6 @@ public interface IMakeArchivesSearchService {
      * @return ..
      */
     Page<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchDto makeArchivesSearchDto);
+
+    DataCommonVo findElectronicsDatasBySomethings(Integer num, Integer size, Integer archiveId, String searchThings);
 }
