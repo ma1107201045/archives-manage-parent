@@ -19,7 +19,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -28,7 +27,7 @@ import java.util.List;
  * @Date: 2021/1/28 15:21:35
  * @Version: 1.0
  */
-@WebFilter(urlPatterns = "/remote/*")
+@WebFilter
 @Component
 public class AuthenticationTokenFilter implements Filter {
 
@@ -65,6 +64,7 @@ public class AuthenticationTokenFilter implements Filter {
                     servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
                     servletOutputStream.flush();
                     servletOutputStream.close();
+                    return;
                 }
             }
 
