@@ -36,9 +36,8 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
 
     @Autowired
     private IDataArchivesLibraryFileService iDataArchivesLibraryFileService;
-    @Autowired
-    private ISysDepartmentService iSysDepartmentService;
 
+    @Override
     @Log(level = EnumLogLevel.DEBUG, module = "数据中心", context = "添加档案文件信息")
     @PostMapping
     @ApiOperation(value = "添加档案文件信息", notes = "添加档案文件信息", position = 1)
@@ -47,6 +46,7 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
         return ResultDataUtil.ok("添加档案文件信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.WARN, module = "数据中心", context = "删除档案文件信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除档案文件信息", notes = "删除档案文件信息", position = 2)
@@ -56,6 +56,7 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
         return ResultDataUtil.ok("删除档案文件信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "修改档案文件信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改档案文件信息", notes = "修改档案文件信息", position = 3)
@@ -101,6 +102,7 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
         return ResultDataUtil.ok("修改档案文件备注成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案文件单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询档案文件单条信息", notes = " 查询档案文件单条信息", position = 7)
@@ -110,6 +112,7 @@ public class DataArchivesLibraryFileController extends Authenticator implements 
         return ResultDataUtil.ok("查询档案文件单条信息成功", dataArchivesLibraryFile);
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询档案文件列表信息")
     @GetMapping
     @ApiOperation(value = "查询档案文件列表信息", notes = " 查询档案文件列表信息", position = 8)

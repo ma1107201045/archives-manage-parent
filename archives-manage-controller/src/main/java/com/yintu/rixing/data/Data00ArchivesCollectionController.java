@@ -7,10 +7,9 @@ import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
+import com.yintu.rixing.enumobject.EnumAuthType;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.system.ISysArchivesLibraryService;
-import com.yintu.rixing.system.ISysDepartmentService;
-import com.yintu.rixing.system.SysDepartment;
+import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.ObjectConvertUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
@@ -25,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,9 +46,11 @@ public class Data00ArchivesCollectionController extends Authenticator {
     @Autowired
     private IDataTemporaryLibraryService iDataTemporaryLibraryService;
     @Autowired
-    private ISysArchivesLibraryService iSysArchivesLibraryService;
-    @Autowired
     private ISysDepartmentService iSysDepartmentService;
+    @Autowired
+    private ISysUserService iSysUserService;
+    @Autowired
+    private ISysArchivesLibraryService iSysArchivesLibraryService;
 
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库列表信息")
@@ -65,7 +67,12 @@ public class Data00ArchivesCollectionController extends Authenticator {
     @ApiOperation(value = "查询档案收集档案库列表信息树", notes = "查询档案收集档案库列表信息树")
     @ApiOperationSupport(order = 2)
     public ResultDataUtil<List<TreeUtil>> findTree() {
-        List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
+        List<TreeUtil> treeNodeUtils;
+        if (EnumAuthType.ADMIN.getValue().equals(this.getUserAuthType())) {
+            treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
+        } else {
+            treeNodeUtils = iSysUserService.listSysArchivesLibraryTree(this.getLoginUserId(), -1);
+        }
         return ResultDataUtil.ok("查询档案收集档案库列表信息树成功", treeNodeUtils);
     }
 

@@ -47,8 +47,8 @@ public class CommFileController extends Authenticator {
     @ApiImplicitParam(name = "file", value = "文件对象", required = true, dataType = "__file", paramType = "form")
     @ApiOperationSupport(order = 1)
     public ResultDataUtil<CommFileVo> fileUpload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
-        CommFileVo CommFileVo = iCommFileService.save(multipartFile, request);
-        return ResultDataUtil.ok("上传文件成功", CommFileVo);
+        CommFileVo commFileVo = iCommFileService.save(multipartFile, request);
+        return ResultDataUtil.ok("上传文件成功", commFileVo);
     }
 
     /**
