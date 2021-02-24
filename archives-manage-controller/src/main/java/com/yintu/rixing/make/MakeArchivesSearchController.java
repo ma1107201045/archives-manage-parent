@@ -40,7 +40,7 @@ import java.util.Objects;
 @RequestMapping("/make/make-archives-search")
 @Api("档案检索接口")
 @ApiSupport(order = 4)
-public class MakeArchivesSearchController {
+public class MakeArchivesSearchController extends Authenticator {
     @Autowired
     private IMakeArchivesSearchService iMakeArchivesSearchService;
     @Autowired
@@ -58,7 +58,7 @@ public class MakeArchivesSearchController {
             @ApiImplicitParam(name = "searchThings", value = "搜索条件")
     })
     public ResultDataUtil<Object> searchEntityArchives(@RequestParam Integer num, @RequestParam Integer size, String searchThings) {
-        DataCommonVo dataCommonVo = iMakeArchivesSearchService.searchEntityArchives(num, size, searchThings);
+        DataCommonVo dataCommonVo = iMakeArchivesSearchService.searchEntityArchives(num, size, searchThings, (short) 2, (short) 1, this.getLoginUserId());
         return ResultDataUtil.ok("根据条件查询实体档案数据信息列表数据成功", dataCommonVo);
     }
 
@@ -68,8 +68,9 @@ public class MakeArchivesSearchController {
     @GetMapping("/searchElectronicArchives")
     @ApiOperation(value = "根据条件查询电子档案数据信息列表", notes = "根据条件查询电子档案数据信息列表")
     public ResultDataUtil<Page<MakeArchivesSearchElectronicVo>> searchElectronic(@Validated MakeArchivesSearchDto makeArchivesSearchDto) {
+        makeArchivesSearchDto.setSearchType((short) 2);
         makeArchivesSearchDto.setUserType((short) 1);
-        makeArchivesSearchDto.setUserId(Objects.requireNonNull(Authenticator.getPrincipal()).getId());
+        makeArchivesSearchDto.setUserId(this.getLoginUserId());
         Page<MakeArchivesSearchElectronicVo> makeArchivesSearchElectronicVoPage = iMakeArchivesSearchService.listElectronicByKeyWord(makeArchivesSearchDto);
         return ResultDataUtil.ok("根据条件查询电子档案数据信息列表成功", makeArchivesSearchElectronicVoPage);
     }

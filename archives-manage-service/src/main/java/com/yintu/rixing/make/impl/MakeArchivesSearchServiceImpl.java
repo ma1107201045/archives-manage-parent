@@ -115,7 +115,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
     private IDataArchivesLibraryFileSearchService iDataArchivesLibraryFileSearchService;
 
     @Override
-    public DataCommonVo searchEntityArchives(Integer num, Integer size, String searchThings) {
+    public DataCommonVo searchEntityArchives(Integer num, Integer size, String searchThings, Short searchType, Short userType, Integer userId) {
         String tableName = "ware_physical_warehouse";
         if (wareTemplateLibraryFiledMapper.findTable(tableName) == 0) {
             throw new BaseRuntimeException("请先创建实体库表");
@@ -202,6 +202,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             page.setSize(size);
             page.setCurrent(num);
             Page<Map<String, Object>> entityArchivesPages = wareTemplateLibraryFiledMapper.searchEntityArchives(page, searchThings);
+            List<DataArchivesLibraryFileSearch> dataArchivesLibraryFileSearches = new ArrayList<>();
             for (Map<String, Object> record : entityArchivesPages.getRecords()) {
                 List<Integer> integerList = new ArrayList<>();
                 Integer ware_library_tree_id = (Integer) record.get("ware_library_tree_id");
@@ -219,8 +220,17 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
                 }
                 Arrays.sort(integerList.toArray(), Collections.reverseOrder());
                 record.put("warelibrarytreeid", integerList);
+                //用户添加查询记录
+                DataArchivesLibraryFileSearch dataArchivesLibraryFileSearch = new DataArchivesLibraryFileSearch();
+                dataArchivesLibraryFileSearch.setSearchType(searchType);
+                dataArchivesLibraryFileSearch.setArchivesLibraryFileId((Integer) record.get("id"));
+                dataArchivesLibraryFileSearch.setUserType(userType);
+                dataArchivesLibraryFileSearch.setUserId(userId);
+                dataArchivesLibraryFileSearches.add(dataArchivesLibraryFileSearch);
             }
             dataCommonVo.setPage(entityArchivesPages);
+            //查询出来的文件集合用于保存查询记录
+            iDataArchivesLibraryFileSearchService.saveBatch(dataArchivesLibraryFileSearches);
             return dataCommonVo;
         }
     }
@@ -231,6 +241,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
         Integer num = makeArchivesSearchDto.getNum();
         Integer size = makeArchivesSearchDto.getSize();
         String keyWord = makeArchivesSearchDto.getKeyWord();
+        Short searchType = makeArchivesSearchDto.getSearchType();
         Short userType = makeArchivesSearchDto.getUserType();
         Integer userId = makeArchivesSearchDto.getUserId();
         Page<MakeArchivesSearchPojo> page2 = makeArchivesSearchMapper.selectByKeyWord(new Page<>(num, size), keyWord);
@@ -257,6 +268,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             makeArchivesSearchVos.add(makeArchivesSearchVo);
             //用户添加查询记录
             DataArchivesLibraryFileSearch dataArchivesLibraryFileSearch = new DataArchivesLibraryFileSearch();
+            dataArchivesLibraryFileSearch.setSearchType(searchType);
             dataArchivesLibraryFileSearch.setArchivesLibraryFileId(makeArchivesSearchPojo.getArchivesFileId());
             dataArchivesLibraryFileSearch.setUserType(userType);
             dataArchivesLibraryFileSearch.setUserId(userId);

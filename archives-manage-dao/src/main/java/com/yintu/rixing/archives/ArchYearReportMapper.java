@@ -18,6 +18,7 @@ public interface ArchYearReportMapper {
      *
      * @param archivesLibraryId 档案库id
      * @param tableName         表名
+     * @param searchType        搜索类型 1.电子档案 2.实体档案',
      * @param borrowType        借阅类型 1.实体档案 2.电子档案
      * @param statusList        状态列表
      * @param status            状态
@@ -25,6 +26,6 @@ public interface ArchYearReportMapper {
      * @param year              开始日期
      * @return ..
      */
-    List<Long> selectYearReportData(Integer archivesLibraryId, String tableName, Short borrowType, List<Short> statusList, Short status, Integer departmentId, Integer year);
+    List<Long> selectYearReportData(Integer archivesLibraryId, String tableName, Short searchType, Short borrowType, List<Short> statusList, Short status, Integer departmentId, Integer year);
 
 }

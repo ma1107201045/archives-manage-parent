@@ -12,6 +12,9 @@
             <if test="archivesLibraryId != null">
                 AND dalf.archives_library_id=#{archivesLibraryId,jdbcType=INTEGER}
             </if>
+            <if test="searchType != null">
+                AND dalfs.search_type=#{searchType,jdbcType=SMALLINT}
+            </if>
             <if test="departmentId != null">
                 AND t.department_id=#{departmentId,jdbcType=INTEGER}
             </if>

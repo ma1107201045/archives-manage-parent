@@ -42,7 +42,7 @@ public class ArchSearchArchivesQuantityStatisticsServiceImpl extends ArchAbstrac
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
             String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
-            Long count = archSearchArchivesQuantityStatisticsMapper.selectSearchArchivesQuantityStatisticsData(id, tableName, departmentId, startDate, endDate);
+            Long count = archSearchArchivesQuantityStatisticsMapper.selectSearchArchivesQuantityStatisticsData(id, tableName, (short) 1, departmentId, startDate, endDate);
             values.add(count);
         }
         ArchSearchArchivesQuantityStatisticsDataVo archArchivesQuantityStatisticsDataVo = new ArchSearchArchivesQuantityStatisticsDataVo();

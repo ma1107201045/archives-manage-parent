@@ -39,7 +39,8 @@ public class RemoFullTextSearchController {
     @GetMapping("/electronic")
     @ApiOperation(value = "远程全文电子检索", notes = "远程全文电子检索")
     @ApiOperationSupport(order = 1)
-    public ResultDataUtil<Page<MakeArchivesSearchElectronicVo>> searchElectronic(@ApiIgnore HttpServletRequest request, @Validated MakeArchivesSearchDto makeArchivesSearchDto) {
+    public ResultDataUtil<Page<MakeArchivesSearchElectronicVo>> searchElectronic(@Validated MakeArchivesSearchDto makeArchivesSearchDto) {
+        makeArchivesSearchDto.setSearchType((short) 1);
         Page<MakeArchivesSearchElectronicVo> makeArchivesSearchElectronicVoPage = iMakeArchivesSearchService.listElectronicByKeyWord(makeArchivesSearchDto);
         return ResultDataUtil.ok("远程全文电子检索成功", makeArchivesSearchElectronicVoPage);
     }
@@ -53,7 +54,7 @@ public class RemoFullTextSearchController {
         Integer num = makeArchivesSearchDto.getNum();
         Integer size = makeArchivesSearchDto.getSize();
         String keyWord = makeArchivesSearchDto.getKeyWord();
-        DataCommonVo dataCommonVo = iMakeArchivesSearchService.searchEntityArchives(num, size, keyWord);
+        DataCommonVo dataCommonVo = iMakeArchivesSearchService.searchEntityArchives(num, size, keyWord, (short) 2, null, null);
         return ResultDataUtil.ok("远程全文实体检索成功", dataCommonVo);
     }
 

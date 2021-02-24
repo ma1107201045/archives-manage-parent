@@ -14,7 +14,7 @@ import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
 public interface IMakeArchivesSearchService {
 
 
-    DataCommonVo searchEntityArchives(Integer num, Integer size, String searchThings);
+    DataCommonVo searchEntityArchives(Integer num, Integer size, String searchThings, Short searchType, Short userType, Integer userId);
 
     /**
      * 档案检索电子档
