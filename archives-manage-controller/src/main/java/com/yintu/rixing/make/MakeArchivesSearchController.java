@@ -68,7 +68,7 @@ public class MakeArchivesSearchController extends Authenticator {
     @GetMapping("/searchElectronicArchives")
     @ApiOperation(value = "根据条件查询电子档案数据信息列表", notes = "根据条件查询电子档案数据信息列表")
     public ResultDataUtil<Page<MakeArchivesSearchElectronicVo>> searchElectronic(@Validated MakeArchivesSearchDto makeArchivesSearchDto) {
-        makeArchivesSearchDto.setSearchType((short) 2);
+        makeArchivesSearchDto.setSearchType((short) 1);
         makeArchivesSearchDto.setUserType((short) 1);
         makeArchivesSearchDto.setUserId(this.getLoginUserId());
         Page<MakeArchivesSearchElectronicVo> makeArchivesSearchElectronicVoPage = iMakeArchivesSearchService.listElectronicByKeyWord(makeArchivesSearchDto);
