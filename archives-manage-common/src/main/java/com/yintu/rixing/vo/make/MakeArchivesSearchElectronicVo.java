@@ -48,4 +48,7 @@ public class MakeArchivesSearchElectronicVo {
 
     @ApiModelProperty(value = "档案文件内容", position = 13)
     private String archivesFileContext;
+
+    @ApiModelProperty(value = "档案文件路径", position = 14)
+    private String archivesFileRequestMapping;
 }
