@@ -24,6 +24,8 @@ import java.util.Map;
  */
 @Component
 public class VerificationCodeFilter extends OncePerRequestFilter {
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //判断请求页面是否为/login、该路径对应登录form表单的action路径，请求的方法是否为POST，是的话进行验证码校验逻辑，否则直接执行filterChain.doFilter让代码往下走
@@ -43,6 +45,7 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
                 out.write(jo.toJSONString());
                 out.flush();
                 out.close();
+                return;
             }
         }
         filterChain.doFilter(request, response);

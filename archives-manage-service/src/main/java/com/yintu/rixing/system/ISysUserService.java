@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.system.SysUserFormDto;
 import com.yintu.rixing.dto.system.SysUserPasswordDto;
 import com.yintu.rixing.dto.system.SysUserQueryDto;
+import com.yintu.rixing.util.TreeNodeUtil;
 import com.yintu.rixing.util.TreeUtil;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,10 @@ public interface ISysUserService extends IService<SysUser>, UserDetailsService {
     List<SysDepartment> sysDepartmentsByIdAndDepartmentId(Integer id, Integer departmentId);
 
     void sysDepartmentTreeByIdAndDepartmentId(Integer id, Integer departmentId, List<TreeUtil> treeUtils);
+
+
+
+    List<TreeUtil> listSysArchivesLibraryTree(Integer id, Integer archivesLibraryId);
 
 
 }

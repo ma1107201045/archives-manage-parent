@@ -1,4 +1,4 @@
-package com.yintu.rixing.config.jwt;
+package com.yintu.rixing.config.filter;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
@@ -19,7 +19,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -28,7 +27,7 @@ import java.util.List;
  * @Date: 2021/1/28 15:21:35
  * @Version: 1.0
  */
-@WebFilter(urlPatterns = "/remote/*", filterName = "remoteLoginFilter")
+@WebFilter
 @Component
 public class AuthenticationTokenFilter implements Filter {
 
@@ -43,7 +42,6 @@ public class AuthenticationTokenFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String path = StrUtil.split(request.getRequestURI(), '?').get(0);
         if (PathIgnoringUtil.antMatchers(request, path)) {
-
             List<String> ignores = jwtProperties.getIgnores();
             if (!PathIgnoringUtil.antMatchers(request, ignores, path)) {
                 String token = request.getHeader(jwtProperties.getHeader());
@@ -55,7 +53,8 @@ public class AuthenticationTokenFilter implements Filter {
                     if (claims.getExpiration().before(DateUtil.date())) {
                         throw new BaseRuntimeException("token已过期，请重新获取");
                     }
-                    request.setAttribute(IdentityIdUtil.IDENTITY_ID_NAME, claims.getSubject());//设置用户凭证id
+                    //设置用户凭证id
+                    request.setAttribute(IdentityIdUtil.IDENTITY_ID_NAME, claims.getSubject());
                 } catch (Exception exception) {
                     ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noJWTAuthentication("尚未认证，请先认证");
                     JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
@@ -65,6 +64,7 @@ public class AuthenticationTokenFilter implements Filter {
                     servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
                     servletOutputStream.flush();
                     servletOutputStream.close();
+                    return;
                 }
             }
 

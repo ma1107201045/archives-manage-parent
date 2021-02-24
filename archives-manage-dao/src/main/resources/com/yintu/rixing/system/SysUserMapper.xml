@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.system.SysUserMapper">
-
+    <select id="selectSysArchivesLibraryByIdAndArchivesLibraryId"
+            resultType="com.yintu.rixing.system.SysArchivesLibrary">
+        SELECT sal.*
+        FROM sys_user su
+        INNER JOIN sys_user_role AS sur ON su.id = sur.user_id
+        INNER JOIN sys_role AS sr ON sur.role_id = sr.id
+        INNER JOIN sys_role_archives_library AS sral ON sr.id = sral.role_id
+        INNER JOIN sys_archives_library AS sal ON sral.archives_library_id = sal.id
+        <where>
+            <if test="id != null">
+                AND su.id=#{id,jdbcType=INTEGER}
+            </if>
+            <if test="archivesLibraryId != null">
+                AND sal.parent_id=#{archivesLibraryId,jdbcType=INTEGER}
+            </if>
+        </where>
+        GROUP BY sal.id
+    </select>
 </mapper>

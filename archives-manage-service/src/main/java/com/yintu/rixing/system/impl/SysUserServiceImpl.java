@@ -12,6 +12,7 @@ import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.AssertUtil;
+import com.yintu.rixing.util.TreeNodeUtil;
 import com.yintu.rixing.util.TreeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,6 +37,8 @@ import java.util.stream.Collectors;
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
+    @Autowired
+    private SysUserMapper sysUserMapper;
     @Autowired
     private ISysUserDepartmentService iSysUserDepartmentService;
     @Autowired
@@ -143,11 +146,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public List<Integer> listByUsername(String username) {
-        if (StrUtil.isEmpty(username))
+        if (StrUtil.isEmpty(username)) {
             throw new BaseRuntimeException("用户名不能为空");
+        }
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .select(SysUser.class, tableFieldInfo -> tableFieldInfo.getColumn().equals("id"))
+                .select(SysUser.class, tableFieldInfo -> "id".equals(tableFieldInfo.getColumn()))
                 .eq(SysUser::getUsername, username);
         return this.listObjs(queryWrapper, id -> (Integer) id);
     }
@@ -181,8 +185,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (departmentId == null)
                 return true;
             for (SysDepartment sysDepartment : sysUser.getSysDepartments()) {
-                if (sysDepartment.getId().equals(departmentId))
+                if (sysDepartment.getId().equals(departmentId)) {
                     return true;
+                }
             }
             return false;
         })).collect(Collectors.toList()));
@@ -203,12 +208,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         QueryWrapper<SysUserDepartment> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().select(SysUserDepartment::getDepartmentId).eq(SysUserDepartment::getUserId, id);
         List<Integer> departmentIds = iSysUserDepartmentService.list(queryWrapper).stream().map(SysUserDepartment::getDepartmentId).collect(Collectors.toList());
-        if (departmentIds.isEmpty())
+        if (departmentIds.isEmpty()) {
             return new ArrayList<>();
+        }
         QueryWrapper<SysDepartment> queryWrapper1 = new QueryWrapper<>();
         queryWrapper1.lambda().in(SysDepartment::getId, departmentIds);
-        if (departmentId != null)
+        if (departmentId != null) {
             queryWrapper1.lambda().eq(SysDepartment::getParentId, departmentId);
+        }
         return iSysDepartmentService.list(queryWrapper1);
     }
 
@@ -226,6 +233,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 treeUtils.add(treeUtil);
             }
         }
+    }
+
+    @Override
+    public List<TreeUtil> listSysArchivesLibraryTree(Integer id, Integer archivesLibraryId) {
+        List<SysArchivesLibrary> sysArchivesLibraries = sysUserMapper.selectSysArchivesLibraryByIdAndArchivesLibraryId(id, archivesLibraryId);
+        List<TreeUtil> treeUtils = new ArrayList<>();
+        for (SysArchivesLibrary sysArchivesLibrary : sysArchivesLibraries) {
+            TreeUtil treeUtil = new TreeUtil();
+            treeUtil.setId(sysArchivesLibrary.getId().longValue());
+            treeUtil.setLabel(sysArchivesLibrary.getName());
+            treeUtil.setA_attr(BeanUtil.beanToMap(sysArchivesLibrary));
+            treeUtil.setChildren(this.listSysArchivesLibraryTree(id, sysArchivesLibrary.getId()));
+            treeUtils.add(treeUtil);
+        }
+        return treeUtils;
     }
 
 

@@ -24,16 +24,18 @@ public class PathIgnoringUtil {
 
     public static boolean antMatchers(HttpServletRequest request, String path) {
         for (String antPattern : antPatterns) {
-            if (antPathMatcher.match(request.getContextPath() + antPattern, path))
+            if (antPathMatcher.match(request.getContextPath() + antPattern, path)) {
                 return true;
+            }
         }
         return false;
     }
 
     public static boolean antMatchers(HttpServletRequest request, List<String> antPatterns, String path) {
         for (String antPattern : antPatterns) {
-            if (antPathMatcher.match(request.getContextPath() + antPattern, path))
+            if (antPathMatcher.match(request.getContextPath() + antPattern, path)) {
                 return true;
+            }
         }
         return false;
     }

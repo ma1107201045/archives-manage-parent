@@ -62,8 +62,9 @@ public class SecDataBackupServiceImpl extends ServiceImpl<SecDataBackupMapper, S
         String mysqlFormatCommand = "mysqldump --single-transaction -h %s -u %s -p%s --databases %s %s > %s";
         String mysqlCommand = String.format(mysqlFormatCommand, host, username, password, databaseName, sb.toString(), backupFile);
         String result = this.execCommand(mysqlCommand);
-        if (StrUtil.containsIgnoreCase(result, "ERROR"))
+        if (StrUtil.containsIgnoreCase(result, "ERROR")) {
             throw new BaseRuntimeException("备份失败:" + result);
+        }
         SecDataBackup secDataBackup = new SecDataBackup();
         secDataBackup.setCreateTime(DateUtil.date());
         secDataBackup.setUserId(loginUserId);
