@@ -59,7 +59,7 @@ public class DataArchivesLibraryFile extends BaseEntity {
     private String context;
 
     @ApiModelProperty(value = "文件页数", position = 14)
-    @TableField("context")
+    @TableField("page")
     private Integer page;
 
     @ApiModelProperty(value = "顺序", position = 15)

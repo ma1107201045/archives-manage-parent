@@ -7,6 +7,7 @@ import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.make.IMakeArchivesSearchService;
+import com.yintu.rixing.util.IdentityIdUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
@@ -17,6 +18,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author: mlf
@@ -35,7 +39,9 @@ public class RemoFullTextSearchController {
     @GetMapping("/electronic")
     @ApiOperation(value = "远程全文电子检索", notes = "远程全文电子检索")
     @ApiOperationSupport(order = 1)
-    public ResultDataUtil<Page<MakeArchivesSearchElectronicVo>> searchElectronic(@Validated MakeArchivesSearchDto makeArchivesSearchDto) {
+    public ResultDataUtil<Page<MakeArchivesSearchElectronicVo>> searchElectronic(@ApiIgnore HttpServletRequest request, @Validated MakeArchivesSearchDto makeArchivesSearchDto) {
+        makeArchivesSearchDto.setUserType((short) 2);
+        makeArchivesSearchDto.setUserId(IdentityIdUtil.get(request));
         Page<MakeArchivesSearchElectronicVo> makeArchivesSearchElectronicVoPage = iMakeArchivesSearchService.listElectronicByKeyWord(makeArchivesSearchDto);
         return ResultDataUtil.ok("远程全文电子检索成功", makeArchivesSearchElectronicVoPage);
     }

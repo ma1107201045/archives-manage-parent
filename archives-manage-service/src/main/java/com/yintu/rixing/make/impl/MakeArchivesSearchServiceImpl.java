@@ -2,6 +2,7 @@ package com.yintu.rixing.make.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yintu.rixing.data.DataArchivesLibraryFileSearch;
 import com.yintu.rixing.data.IDataArchivesLibraryFileSearchService;
 import com.yintu.rixing.data.IDataFormalLibraryService;
 import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
@@ -93,7 +94,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             Page page = new Page();
             page.setSize(size);
             page.setCurrent(num);
-            Page<Map<String, Object>> entityArchivesPages = makeArchivesSearchMapper.findElectronicsDatasBySomethings(page,searchThings,fullTableName);
+            Page<Map<String, Object>> entityArchivesPages = makeArchivesSearchMapper.findElectronicsDatasBySomethings(page, searchThings, fullTableName);
             //特殊字段需要处理
             entityArchivesPages.getRecords().forEach(map -> {
                 String dataKey = EnumArchivesLibraryDefaultField.DEPARTMENT_ID.getDataKey();
@@ -109,6 +110,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             return dataCommonVo;
         }
     }
+
     @Autowired
     private IDataArchivesLibraryFileSearchService iDataArchivesLibraryFileSearchService;
 
@@ -229,10 +231,13 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
         Integer num = makeArchivesSearchDto.getNum();
         Integer size = makeArchivesSearchDto.getSize();
         String keyWord = makeArchivesSearchDto.getKeyWord();
+        Short userType = makeArchivesSearchDto.getUserType();
+        Integer userId = makeArchivesSearchDto.getUserId();
         Page<MakeArchivesSearchPojo> page2 = makeArchivesSearchMapper.selectByKeyWord(new Page<>(num, size), keyWord);
         BeanUtil.copyProperties(page2, page1, "records");
         List<MakeArchivesSearchPojo> makeArchivesSearchPojos = page2.getRecords();
         List<MakeArchivesSearchElectronicVo> makeArchivesSearchVos = new ArrayList<>();
+        List<DataArchivesLibraryFileSearch> dataArchivesLibraryFileSearches = new ArrayList<>();
         for (MakeArchivesSearchPojo makeArchivesSearchPojo : makeArchivesSearchPojos) {
             Integer archivesLibId = makeArchivesSearchPojo.getArchivesLibId();
             Integer archivesDirectoryId = makeArchivesSearchPojo.getArchivesDirectoryId();
@@ -250,8 +255,16 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
                 makeArchivesSearchVo.setArchivesDirectoryFilingAnnual((String) map.get(EnumArchivesLibraryDefaultField.FILING_ANNUAL.getDataKey()));
             }
             makeArchivesSearchVos.add(makeArchivesSearchVo);
+            //用户添加查询记录
+            DataArchivesLibraryFileSearch dataArchivesLibraryFileSearch = new DataArchivesLibraryFileSearch();
+            dataArchivesLibraryFileSearch.setArchivesLibraryFileId(makeArchivesSearchPojo.getArchivesFileId());
+            dataArchivesLibraryFileSearch.setUserType(userType);
+            dataArchivesLibraryFileSearch.setUserId(userId);
+            dataArchivesLibraryFileSearches.add(dataArchivesLibraryFileSearch);
         }
         page1.setRecords(makeArchivesSearchVos);
+        //查询出来的文件集合用于保存查询记录
+        iDataArchivesLibraryFileSearchService.saveBatch(dataArchivesLibraryFileSearches);
         return page1;
     }
 

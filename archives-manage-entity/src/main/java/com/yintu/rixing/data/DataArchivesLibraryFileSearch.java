@@ -28,5 +28,13 @@ public class DataArchivesLibraryFileSearch extends BaseEntity {
     @TableField("archives_library_file_id")
     private Integer archivesLibraryFileId;
 
+    @ApiModelProperty(value = "用户类型 1：内部 2：远程", position = 7)
+    @TableField("user_type")
+    private Short userType;
+
+    @ApiModelProperty(value = "用户id", position = 8)
+    @TableField("userId")
+    private Integer userId;
+
 
 }

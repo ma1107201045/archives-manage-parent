@@ -39,9 +39,9 @@ public interface ISysRoleService extends IService<SysRole> {
 
     void sysPermissionTreeByIdAndPermissionId(Integer id, Integer permissionId, List<TreeUtil> treeUtils);
 
-    List<SysArchivesLibrary> sysArchivesLibraryByIdAndArchivesLibraryId(Integer id, Integer archivesLibraryId);
+    List<SysArchivesLibrary> sysArchivesLibrariesByIdAndArchivesLibraryId(Integer id, Integer archivesLibraryId);
 
-    void sysPermissionTreeByIdAndArchivesLibraryId(Integer id, Integer archivesLibraryId, List<TreeUtil> treeUtils);
+    void sysArchivesLibraryTreeByIdAndArchivesLibraryId(Integer id, Integer archivesLibraryId, List<TreeUtil> treeUtils);
 
 
 }

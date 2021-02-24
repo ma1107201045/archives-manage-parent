@@ -41,6 +41,8 @@ public class SysRoleController extends Authenticator implements BaseController<S
     private ISysRoleService iSysRoleService;
     @Autowired
     private ISysPermissionService iSysPermissionService;
+    @Autowired
+    private ISysArchivesLibraryService iSysArchivesLibraryService;
 
     @Override
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加角色信息")
@@ -122,7 +124,7 @@ public class SysRoleController extends Authenticator implements BaseController<S
     @ApiOperation(value = "查询角色档案库树信息", notes = "查询角色档案库树信息")
     @ApiOperationSupport(order = 8)
     public ResultDataUtil<List<TreeUtil>> findArchivesLibraryTree() {
-        List<TreeUtil> treeNodeUtils = iSysPermissionService.listTree(-1);
+        List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
         return ResultDataUtil.ok("查询角色档案库树信息成功", treeNodeUtils);
     }
 
@@ -134,7 +136,7 @@ public class SysRoleController extends Authenticator implements BaseController<S
     @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<List<TreeUtil>> findArchivesLibraryTreeById(@PathVariable Integer id) {
         List<TreeUtil> treeNodeUtils = new ArrayList<>();
-        iSysRoleService.sysPermissionTreeByIdAndPermissionId(id, -1, treeNodeUtils);
+        iSysRoleService.sysArchivesLibraryTreeByIdAndArchivesLibraryId(id, -1, treeNodeUtils);
         return ResultDataUtil.ok("查询角色拥有档案库树信息成功", treeNodeUtils);
     }
 }

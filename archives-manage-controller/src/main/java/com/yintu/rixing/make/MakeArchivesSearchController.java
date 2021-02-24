@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
+import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysArchivesLibraryFieldDefaultService;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.system.SysArchivesLibraryFieldDefault;
+import com.yintu.rixing.util.IdentityIdUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author: mlf
@@ -65,11 +68,11 @@ public class MakeArchivesSearchController {
     @GetMapping("/searchElectronicArchives")
     @ApiOperation(value = "根据条件查询电子档案数据信息列表", notes = "根据条件查询电子档案数据信息列表")
     public ResultDataUtil<Page<MakeArchivesSearchElectronicVo>> searchElectronic(@Validated MakeArchivesSearchDto makeArchivesSearchDto) {
+        makeArchivesSearchDto.setUserType((short) 1);
+        makeArchivesSearchDto.setUserId(Objects.requireNonNull(Authenticator.getPrincipal()).getId());
         Page<MakeArchivesSearchElectronicVo> makeArchivesSearchElectronicVoPage = iMakeArchivesSearchService.listElectronicByKeyWord(makeArchivesSearchDto);
         return ResultDataUtil.ok("根据条件查询电子档案数据信息列表成功", makeArchivesSearchElectronicVoPage);
     }
-
-
 
 
     //////////////////////////条件检索////////////////////////////////
@@ -88,8 +91,8 @@ public class MakeArchivesSearchController {
     @GetMapping("/findField")
     @ApiOperation(value = "查询定义查询字段", notes = "查询定义查询字段")
     public ResultDataUtil<Object> findField() {
-        QueryWrapper<SysArchivesLibraryFieldDefault>queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("title","1");
+        QueryWrapper<SysArchivesLibraryFieldDefault> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("title", "1");
         List<SysArchivesLibraryFieldDefault> sysArchivesLibraryFieldDefaults = iSysArchivesLibraryFieldDefaultService.list(queryWrapper);
         return ResultDataUtil.ok("查询定义查询字段成功", sysArchivesLibraryFieldDefaults);
     }
@@ -104,8 +107,8 @@ public class MakeArchivesSearchController {
             @ApiImplicitParam(name = "archiveId", value = "库id"),
             @ApiImplicitParam(name = "searchThings", value = "搜索条件")
     })
-    public ResultDataUtil<Object> findElectronicsDatasBySomethings(@RequestParam Integer num, @RequestParam Integer size,Integer archiveId, String searchThings) {
-        DataCommonVo dataCommonVo = iMakeArchivesSearchService.findElectronicsDatasBySomethings(num, size, archiveId,searchThings);
-        return ResultDataUtil.ok("根据条件检索数据成功",dataCommonVo);
+    public ResultDataUtil<Object> findElectronicsDatasBySomethings(@RequestParam Integer num, @RequestParam Integer size, Integer archiveId, String searchThings) {
+        DataCommonVo dataCommonVo = iMakeArchivesSearchService.findElectronicsDatasBySomethings(num, size, archiveId, searchThings);
+        return ResultDataUtil.ok("根据条件检索数据成功", dataCommonVo);
     }
 }

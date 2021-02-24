@@ -129,7 +129,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         for (SysPermission sysPermission : sysPermissions) {
             List<SysPermission> permissions = this.sysPermissionsByIdAndPermissionId(id, sysPermission.getId());
             if (!permissions.isEmpty()) {
-                sysPermissionTreeByIdAndPermissionId(id, sysPermission.getId(), treeUtils);
+                this.sysPermissionTreeByIdAndPermissionId(id, sysPermission.getId(), treeUtils);
             } else {
                 TreeUtil treeUtil = new TreeUtil();
                 treeUtil.setId(sysPermission.getId().longValue());
@@ -141,7 +141,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public List<SysArchivesLibrary> sysArchivesLibraryByIdAndArchivesLibraryId(Integer id, Integer archivesLibraryId) {
+    public List<SysArchivesLibrary> sysArchivesLibrariesByIdAndArchivesLibraryId(Integer id, Integer archivesLibraryId) {
         QueryWrapper<SysRoleArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().select(SysRoleArchivesLibrary::getArchivesLibraryId).eq(SysRoleArchivesLibrary::getRoleId, id);
         List<Integer> archivesLibraryIds = iSysRoleArchivesLibraryService.list(queryWrapper).stream().map(SysRoleArchivesLibrary::getArchivesLibraryId).collect(Collectors.toList());
@@ -149,17 +149,17 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             return new ArrayList<>();
         }
         QueryWrapper<SysArchivesLibrary> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper1.lambda().in(SysArchivesLibrary::getId, archivesLibraryId).eq(SysArchivesLibrary::getParentId, archivesLibraryId);
+        queryWrapper1.lambda().in(SysArchivesLibrary::getId, archivesLibraryIds).eq(SysArchivesLibrary::getParentId, archivesLibraryId);
         return iSysArchivesLibraryService.list(queryWrapper1);
     }
 
     @Override
-    public void sysPermissionTreeByIdAndArchivesLibraryId(Integer id, Integer archivesLibraryId, List<TreeUtil> treeUtils) {
-        List<SysArchivesLibrary> sysArchivesLibraries = this.sysArchivesLibraryByIdAndArchivesLibraryId(id, archivesLibraryId);
+    public void sysArchivesLibraryTreeByIdAndArchivesLibraryId(Integer id, Integer archivesLibraryId, List<TreeUtil> treeUtils) {
+        List<SysArchivesLibrary> sysArchivesLibraries = this.sysArchivesLibrariesByIdAndArchivesLibraryId(id, archivesLibraryId);
         for (SysArchivesLibrary sysArchivesLibrary : sysArchivesLibraries) {
-            List<SysArchivesLibrary> archivesLibraries = this.sysArchivesLibraryByIdAndArchivesLibraryId(id, sysArchivesLibrary.getId());
+            List<SysArchivesLibrary> archivesLibraries = this.sysArchivesLibrariesByIdAndArchivesLibraryId(id, sysArchivesLibrary.getId());
             if (!archivesLibraries.isEmpty()) {
-                sysPermissionTreeByIdAndPermissionId(id, sysArchivesLibrary.getId(), treeUtils);
+                this.sysArchivesLibraryTreeByIdAndArchivesLibraryId(id, sysArchivesLibrary.getId(), treeUtils);
             } else {
                 TreeUtil treeUtil = new TreeUtil();
                 treeUtil.setId(sysArchivesLibrary.getId().longValue());

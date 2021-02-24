@@ -23,4 +23,10 @@ public class MakeArchivesSearchDto extends PageDto {
     @NotBlank
     @Length(min = 2, message = "搜索的关键字长度不能小于长度2")
     private String keyWord;
+
+    @ApiModelProperty(value = "用户类型", hidden = true)
+    private Short userType;
+
+    @ApiModelProperty(value = "用户id", hidden = true)
+    private Integer userId;
 }
