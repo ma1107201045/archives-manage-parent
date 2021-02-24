@@ -19,9 +19,11 @@ import com.yintu.rixing.system.ISysArchivesLibraryService;
 import com.yintu.rixing.system.SysArchivesLibrary;
 import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.util.AssertUtil;
+import com.yintu.rixing.util.FilePageUtil;
 import com.yintu.rixing.util.FileParseUtil;
 import com.yintu.rixing.util.TableNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.stereotype.Service;
 
@@ -52,15 +54,17 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
         for (int i = 0; i < originalNames.size(); i++) {
             DataArchivesLibraryFile dataArchivesLibraryFile = new DataArchivesLibraryFile();
             BeanUtil.copyProperties(dataArchivesLibraryFileFormDto, dataArchivesLibraryFile);
+            String path = dataArchivesLibraryFileFormDto.getPaths().get(i);
+            String name = dataArchivesLibraryFileFormDto.getNames().get(i);
+            String requestMapping = dataArchivesLibraryFileFormDto.getRequestMappings().get(i);
             dataArchivesLibraryFile.setOriginalName(originalNames.get(i));
             dataArchivesLibraryFile.setPath(dataArchivesLibraryFileFormDto.getPaths().get(i));
             dataArchivesLibraryFile.setSize(dataArchivesLibraryFileFormDto.getSizes().get(i));
             dataArchivesLibraryFile.setUnit(dataArchivesLibraryFileFormDto.getUnits().get(i));
             dataArchivesLibraryFile.setName(dataArchivesLibraryFileFormDto.getNames().get(i));
-            dataArchivesLibraryFile.setRequestMapping(dataArchivesLibraryFileFormDto.getRequestMappings().get(i));
-            String path = dataArchivesLibraryFile.getPath();
-            String name = dataArchivesLibraryFile.getName();
+            dataArchivesLibraryFile.setRequestMapping(requestMapping);
             dataArchivesLibraryFile.setContext(FileParseUtil.parse(path + File.separator + name));
+            dataArchivesLibraryFile.setPage(FilePageUtil.getPage(requestMapping));
             dataArchivesLibraryFile.setFormalLibrary(EnumFlag.False.getValue());
             dataArchivesLibraryFiles.add(dataArchivesLibraryFile);
         }

@@ -33,6 +33,8 @@
         <druid-spring-boot-starter.version>1.1.21</druid-spring-boot-starter.version>
         <fastjson.version>1.2.62</fastjson.version>
         <poi-ooxml.version>3.17</poi-ooxml.version>
+        <poi-scratchpad.version>3.17</poi-scratchpad.version>
+        <pdfbox.version>2.0.4</pdfbox.version>
         <hutool-all.version>5.5.8</hutool-all.version>
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
         <knife4j-spring-boot-starter.version>3.0.2</knife4j-spring-boot-starter.version>
@@ -106,6 +108,16 @@
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi-ooxml.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-scratchpad</artifactId>
+                <version>${poi-scratchpad.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>${pdfbox.version}</version>
             </dependency>
 
             <dependency>

@@ -58,23 +58,27 @@ public class DataArchivesLibraryFile extends BaseEntity {
     @TableField("context")
     private String context;
 
-    @ApiModelProperty(value = "顺序", position = 14)
+    @ApiModelProperty(value = "文件页数", position = 14)
+    @TableField("context")
+    private Integer page;
+
+    @ApiModelProperty(value = "顺序", position = 15)
     @TableField("`order`")
     private Integer order;
 
-    @ApiModelProperty(value = "备注", position = 15)
+    @ApiModelProperty(value = "备注", position = 16)
     @TableField("remark")
     private String remark;
 
-    @ApiModelProperty(value = "档案库id", position = 16)
+    @ApiModelProperty(value = "档案库id", position = 17)
     @TableField("archives_library_id")
     private Integer archivesLibraryId;
 
-    @ApiModelProperty(value = "动态表id", position = 17)
+    @ApiModelProperty(value = "动态表id", position = 18)
     @TableField("data_id")
     private Integer dataId;
 
-    @ApiModelProperty(value = "是否正式库", position = 18)
+    @ApiModelProperty(value = "是否正式库", position = 19)
     @TableField("formal_library")
     private Short formalLibrary;
 
