@@ -32,4 +32,8 @@ public class MakeArchivesSearchPojo {
      * 档案目录文件内容
      */
     private String archivesFileContext;
+    /**
+     * 档案目录文件内容
+     */
+    private String archivesFileRequestMapping;
 }
