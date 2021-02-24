@@ -32,7 +32,6 @@ public class FilePageUtil {
     private static final String SERVER_ADDRESS_PDF = "http://127.0.0.1:8012/preview/%s";
 
     public static void main(String[] args) {
-        System.out.println(getPage("http://192.168.2.251:8080/archivesManage/files/f758d43a80ea4dd0b727e383e22a7fa5.docx"));
     }
 
     public static int getPage(String requestMapping) {
