@@ -13,8 +13,9 @@ public class IdentityIdUtil {
 
     public static Integer get(HttpServletRequest request) {
         Object identityIdValue = request.getAttribute(IDENTITY_ID_NAME);
-        if (identityIdValue instanceof String)
+        if (identityIdValue instanceof String) {
             return Integer.valueOf((String) identityIdValue);
+        }
         return null;
     }
 }

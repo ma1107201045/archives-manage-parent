@@ -33,7 +33,7 @@ public class DataArchivesLibraryFileSearch extends BaseEntity {
     private Short userType;
 
     @ApiModelProperty(value = "用户id", position = 8)
-    @TableField("userId")
+    @TableField("user_id")
     private Integer userId;
 
 

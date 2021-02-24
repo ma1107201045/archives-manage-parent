@@ -40,8 +40,6 @@ public class RemoFullTextSearchController {
     @ApiOperation(value = "远程全文电子检索", notes = "远程全文电子检索")
     @ApiOperationSupport(order = 1)
     public ResultDataUtil<Page<MakeArchivesSearchElectronicVo>> searchElectronic(@ApiIgnore HttpServletRequest request, @Validated MakeArchivesSearchDto makeArchivesSearchDto) {
-        makeArchivesSearchDto.setUserType((short) 2);
-        makeArchivesSearchDto.setUserId(IdentityIdUtil.get(request));
         Page<MakeArchivesSearchElectronicVo> makeArchivesSearchElectronicVoPage = iMakeArchivesSearchService.listElectronicByKeyWord(makeArchivesSearchDto);
         return ResultDataUtil.ok("远程全文电子检索成功", makeArchivesSearchElectronicVoPage);
     }
