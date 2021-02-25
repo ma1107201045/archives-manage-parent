@@ -46,11 +46,11 @@ public class InxSearchArchivesQuantityStatisticsAndUsingPurposeController {
 
     @Log(level = EnumLogLevel.TRACE, module = "首页", context = "查询利用目的列表信息")
     @GetMapping("/data2")
-    @ApiOperation(value = "查询利用目的列表信息", notes = "查询利用目的列表信息")
+    @ApiOperation(value = "查询利用目的统计列表信息", notes = "查询利用目的统计列表信息")
     @ApiOperationSupport(order = 2)
-    public ResultDataUtil<List<Long>> getSearchArchivesQuantityStatisticsData(InxUsingPurposeStatisticsQueryDto inxUsingPurposeStatisticsQueryDto) {
+    public ResultDataUtil<List<Long>> getUsingPurposeData(InxUsingPurposeStatisticsQueryDto inxUsingPurposeStatisticsQueryDto) {
         List<Long> longs = iInxSearchArchivesQuantityAndUsingPurposeStatisticsService.findUsingPurposeData(inxUsingPurposeStatisticsQueryDto);
-        return ResultDataUtil.ok("查询利用目的列表信息成功", longs);
+        return ResultDataUtil.ok("查询利用目的统计列表信息成功", longs);
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "首页", context = "查询首页利用目的信息")
