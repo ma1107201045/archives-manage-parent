@@ -28,6 +28,7 @@
         CONVERT(SUM(IF(mb.make_id = #{makeId,jdbcType=INTEGER},1,0)),SIGNED) AS 'choose',
         COUNT(*) AS `total`
         FROM make_borrow mb ON dalf.id=mb.fileid
+        INNER JOIN make_borrow_purpose AS mbp ON mb.make_id=mbp.id
         <where>
             <if test="borrowType!=null">
                 AND mb.borrow_type=#{borrowType,jdbcType=SMALLINT}

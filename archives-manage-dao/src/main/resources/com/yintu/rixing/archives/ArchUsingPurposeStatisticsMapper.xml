@@ -7,7 +7,8 @@
         FROM sys_archives_library AS sal
         INNER JOIN data_archives_library_file dalf ON sal.id = dalf.archives_library_id
         INNER JOIN ${tableName} AS t ON t.id=dalf.data_id
-        INNER JOIN make_borrow mb ON dalf.id=mb.fileid
+        INNER JOIN make_borrow AS mb ON dalf.id=mb.fileid
+        INNER JOIN make_borrow_purpose AS mbp ON mb.make_id=mbp.id
         <where>
             <if test="archivesLibraryId!=null">
                 AND dalf.archives_library_id=#{archivesLibraryId,jdbcType=INTEGER}
