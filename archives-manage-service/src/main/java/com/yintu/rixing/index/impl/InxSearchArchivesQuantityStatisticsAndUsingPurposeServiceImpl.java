@@ -58,7 +58,7 @@ public class InxSearchArchivesQuantityStatisticsAndUsingPurposeServiceImpl imple
         Integer makeId = iInxUsingPurposeStatisticsQueryDto.getMakeId();
         Map<String, Long> map = inxSearchArchivesQuantityStatisticsAndUsingPurposeMapper.selectUsingPurposeData((short) 1, date, makeId);
         List<Long> list = new ArrayList<>();
-        Long choose = map.get("choose") == null ? 0L : map.get("choose");
+        Long choose = map.get("choose");
         Long total = map.get("total");
         list.add(choose);
         list.add(total - choose);

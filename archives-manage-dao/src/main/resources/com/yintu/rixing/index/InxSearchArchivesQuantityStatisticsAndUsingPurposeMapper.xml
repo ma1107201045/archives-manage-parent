@@ -25,7 +25,7 @@
 
     <select id="selectUsingPurposeData" resultType="java.util.Map">
         SELECT
-        CONVERT(SUM(IF(mb.make_id = #{makeId,jdbcType=INTEGER},1,0)),SIGNED) AS 'choose',
+        CONVERT(IFNULL(SUM(IF(mb.make_id = #{makeId,jdbcType=INTEGER},1,0)),0.0),SIGNED) AS 'choose',
         COUNT(*) AS `total`
         FROM make_borrow AS mb INNER JOIN make_borrow_purpose AS mbp ON mb.make_id=mbp.id
         <where>
