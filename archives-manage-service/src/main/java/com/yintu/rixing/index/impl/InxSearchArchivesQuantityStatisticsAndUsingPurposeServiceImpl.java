@@ -49,7 +49,7 @@ public class InxSearchArchivesQuantityStatisticsAndUsingPurposeServiceImpl imple
         InxSearchArchivesQuantityStatisticsVo inxSearchArchivesQuantityStatisticsVo = new InxSearchArchivesQuantityStatisticsVo();
         inxSearchArchivesQuantityStatisticsVo.setNames(archivesLibraries.stream().map(SysArchivesLibrary::getName).collect(Collectors.toList()));
         inxSearchArchivesQuantityStatisticsVo.setValues(lists);
-        return null;
+        return inxSearchArchivesQuantityStatisticsVo;
     }
 
     @Override

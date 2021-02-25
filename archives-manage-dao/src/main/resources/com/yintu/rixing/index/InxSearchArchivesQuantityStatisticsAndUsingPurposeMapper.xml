@@ -6,7 +6,7 @@
         SELECT
         COUNT(DISTINCT dalfs.user_id) AS `1`,
         COUNT(DISTINCT dalfs.archives_library_file_id) AS `2`,
-        COUNT(DISTINCT dalfs.archives_library_file_id) AS `3`,
+        COUNT(DISTINCT dalfs.archives_library_file_id) AS `3`
         FROM sys_archives_library AS sal
         INNER JOIN data_archives_library_file AS dalf ON sal.id = dalf.archives_library_id
         INNER JOIN data_archives_library_file_search AS dalfs ON dalf.id = dalfs.archives_library_file_id
