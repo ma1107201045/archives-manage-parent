@@ -28,6 +28,6 @@ public class InxDataStatisticsServiceImpl implements IInxDataStatisticsService {
     public List<Long> findInxDataStatistics() {
         //求出每个动态表的的表名
         List<String> tableNames = iSysArchivesLibraryService.listByType((short) 2).stream().map(sysArchivesLibrary -> TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey())).collect(Collectors.toList());
-        return inxDataStatisticsDao.selectInxDataStatistics((short) 1, EnumFlag.True.getValue(), tableNames, EnumArchivesOrder.FORMAL_LIBRARY.getValue(), EnumFlag.True.getValue(), EnumFlag.True.getValue());
+        return inxDataStatisticsDao.selectInxDataStatistics((short) 1, EnumFlag.True.getValue(), tableNames, EnumArchivesOrder.FORMAL_LIBRARY.getValue());
     }
 }

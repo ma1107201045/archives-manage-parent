@@ -15,26 +15,32 @@
         SELECT CONVERT(SUM(dalf.page),SIGNED) AS `total` FROM data_archives_library_file AS dalf
         <where>
             <if test="formalLibrary!=null">
-                AND dalfs.formal_library = #{formalLibrary,jdbcType=INTEGER}
+                AND dalf.formal_library = #{formalLibrary,jdbcType=INTEGER}
             </if>
         </where>
         UNION ALL
         <!-- 馆藏文件目录数量 -->
-        SELECT CONVERT(SUM(t.eachCount),SIGNED) AS `total` FROM
-        <foreach collection="tableNames" item="tableName" open="(" close=") AS t" separator="UNION ALL">
-            SELECT COUNT(*) AS `eachCount` FROM ${tableName} AS t
-            <where>
-                <if test="status!=null">
-                    AND t.status = #{status,jdbcType=SMALLINT}
-                </if>
-            </where>
-        </foreach>
+        SELECT CONVERT(SUM(t.eachCount),SIGNED) AS `total` FROM (
+        <if test="tableNames.size > 0">
+            <foreach collection="tableNames" item="tableName" separator="UNION ALL">
+                SELECT COUNT(*) AS `eachCount` FROM ${tableName} AS t
+                <where>
+                    <if test="status!=null">
+                        AND t.status = #{status,jdbcType=SMALLINT}
+                    </if>
+                </where>
+            </foreach>
+        </if>
+        <if test="tableNames.size = 0">
+            SELECT 0 AS `eachCount`
+        </if>
+        ) as t
         UNION ALL
         <!-- 归档文件数量 -->
         SELECT COUNT(*) AS `total` FROM data_archives_library_file AS dalf
         <where>
             <if test="formalLibrary!=null">
-                AND dalfs.formal_library = #{formalLibrary,jdbcType=INTEGER}
+                AND dalf.formal_library = #{formalLibrary,jdbcType=INTEGER}
             </if>
         </where>
         UNION ALL
@@ -42,7 +48,7 @@
         SELECT COUNT(*) AS `total` FROM data_archives_library_file AS dalf
         <where>
             <if test="formalLibrary!=null">
-                AND dalfs.formal_library = #{formalLibrary,jdbcType=INTEGER}
+                AND dalf.formal_library = #{formalLibrary,jdbcType=INTEGER}
             </if>
         </where>
     </select>
