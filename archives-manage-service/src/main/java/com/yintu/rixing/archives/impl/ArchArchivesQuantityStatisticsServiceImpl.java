@@ -44,15 +44,15 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
             String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
-            Map<String, BigDecimal> map = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(id, tableName, departmentId, startDate, endDate);
+            Map<String, Long> map = archArchivesQuantityStatisticsMapper.selectArchivesQuantityStatisticsData(id, tableName, departmentId, startDate, endDate);
             if (map == null) {
                 list1.add(0L);
                 list2.add(0L);
                 list3.add(0L);
             } else {
-                list1.add(map.get("1").longValue());
-                list2.add(map.get("2").longValue());
-                list3.add(map.get("3").longValue());
+                list1.add(map.get("1"));
+                list2.add(map.get("2"));
+                list3.add(map.get("3"));
             }
         }
         lists.add(list1);

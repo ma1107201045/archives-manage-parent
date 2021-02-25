@@ -25,6 +25,6 @@ public interface ArchDiseaseArchivesAppraisalMapper {
      * @param status            档案状态：0.档案收集 1.临时库 2.整理库 3.正式库 4.回收站 5.销毁库 6.回退管理 7.病档管理 8.档案销毁
      * @return ..
      */
-    Map<String, BigDecimal> selectArchDiseaseArchivesAppraisalData(Integer archivesLibraryId, String tableName, Integer departmentId, Date startDate, Date endDate, Short status);
+    Map<String, Long> selectArchDiseaseArchivesAppraisalData(Integer archivesLibraryId, String tableName, Integer departmentId, Date startDate, Date endDate, Short status);
 
 }

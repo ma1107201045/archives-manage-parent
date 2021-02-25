@@ -47,10 +47,10 @@ public class ArchArchivesBorrowStatisticsServiceImpl extends ArchAbstractService
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
             String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
-            Map<String, BigDecimal> map = archArchivesBorrowStatisticsMapper.selectArchivesBorrowStatisticsData(id, tableName, (short) 1, departmentId, startDate, endDate);
-            list1.add(map == null ? 0L : map.get("1").longValue());
-            list2.add(map == null ? 0L : map.get("2").longValue());
-            list3.add(map == null ? 0L : map.get("3").longValue());
+            Map<String, Long> map = archArchivesBorrowStatisticsMapper.selectArchivesBorrowStatisticsData(id, tableName, (short) 1, departmentId, startDate, endDate);
+            list1.add(map == null ? 0L : map.get("1"));
+            list2.add(map == null ? 0L : map.get("2"));
+            list3.add(map == null ? 0L : map.get("3"));
         }
         lists.add(list1);
         lists.add(list2);

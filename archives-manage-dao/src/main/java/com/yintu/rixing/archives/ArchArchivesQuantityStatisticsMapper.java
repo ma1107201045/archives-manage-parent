@@ -25,5 +25,5 @@ public interface ArchArchivesQuantityStatisticsMapper {
      * @param endDate           结束日期
      * @return ..
      */
-    Map<String, BigDecimal> selectArchivesQuantityStatisticsData(Integer archivesLibraryId, String tableName, Integer departmentId, Date startDate, Date endDate);
+    Map<String, Long> selectArchivesQuantityStatisticsData(Integer archivesLibraryId, String tableName, Integer departmentId, Date startDate, Date endDate);
 }

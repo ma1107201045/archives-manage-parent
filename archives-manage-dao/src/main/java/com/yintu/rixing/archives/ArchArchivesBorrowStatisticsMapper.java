@@ -27,5 +27,5 @@ public interface ArchArchivesBorrowStatisticsMapper {
      * @param endDate           结束日期
      * @return ..
      */
-    Map<String, BigDecimal> selectArchivesBorrowStatisticsData(Integer archivesLibraryId, String tableName, Short borrowType, Integer departmentId, Date startDate, Date endDate);
+    Map<String, Long> selectArchivesBorrowStatisticsData(Integer archivesLibraryId, String tableName, Short borrowType, Integer departmentId, Date startDate, Date endDate);
 }
