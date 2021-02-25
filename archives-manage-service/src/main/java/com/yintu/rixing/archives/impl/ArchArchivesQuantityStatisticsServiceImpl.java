@@ -31,7 +31,7 @@ public class ArchArchivesQuantityStatisticsServiceImpl extends ArchAbstractServi
     private ArchArchivesQuantityStatisticsMapper archArchivesQuantityStatisticsMapper;
 
     @Override
-    public ArchArchivesQuantityStatisticsDataVo findArchivesQuantityStatisticsData(ArchCommonQueryDto archCommonQueryDto) {
+    public ArchArchivesQuantityStatisticsDataVo findArchArchivesQuantityStatisticsData(ArchCommonQueryDto archCommonQueryDto) {
         Integer departmentId = archCommonQueryDto.getDepartmentId();
         Date startDate = archCommonQueryDto.getStartDate();
         Date endDate = archCommonQueryDto.getEndDate();

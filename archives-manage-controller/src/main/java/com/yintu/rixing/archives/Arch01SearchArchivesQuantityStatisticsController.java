@@ -61,8 +61,8 @@ public class Arch01SearchArchivesQuantityStatisticsController {
     @GetMapping("/data")
     @ApiOperation(value = "查询档案数量统计-数据", notes = "查询档案数量统计-数据")
     @ApiOperationSupport(order = 3)
-    public ResultDataUtil<ArchSearchArchivesQuantityStatisticsDataVo> findArchivesName(@Validated ArchCommonQueryDto archCommonQueryDto) {
-        ArchSearchArchivesQuantityStatisticsDataVo archArchivesQuantityStatisticsDataVo = iArchSearchArchivesQuantityStatisticsService.findSearchArchivesQuantityStatisticsData(archCommonQueryDto);
+    public ResultDataUtil<ArchSearchArchivesQuantityStatisticsDataVo> getArchSearchArchivesQuantityStatisticsData(@Validated ArchCommonQueryDto archCommonQueryDto) {
+        ArchSearchArchivesQuantityStatisticsDataVo archArchivesQuantityStatisticsDataVo = iArchSearchArchivesQuantityStatisticsService.findArchSearchArchivesQuantityStatisticsData(archCommonQueryDto);
         return ResultDataUtil.ok("查询档案数量统计-数据成功", archArchivesQuantityStatisticsDataVo);
     }
 }

@@ -27,5 +27,5 @@ public interface IArchYearReportService {
      * @param archCommonQueryDto 入参
      * @return 统计值集
      */
-    ArchYearReportDataVo findYearReportData(ArchCommonQueryDto archCommonQueryDto);
+    ArchYearReportDataVo findArchYearReportData(ArchCommonQueryDto archCommonQueryDto);
 }

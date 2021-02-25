@@ -26,6 +26,6 @@ public interface ArchYearReportMapper {
      * @param year              开始日期
      * @return ..
      */
-    List<Long> selectYearReportData(Integer archivesLibraryId, String tableName, Short searchType, Short borrowType, List<Short> statusList, Short status, Integer departmentId, Integer year);
+    List<Long> selectArchYearReportData(Integer archivesLibraryId, String tableName, Short searchType, Short borrowType, List<Short> statusList, Short status, Integer departmentId, Integer year);
 
 }

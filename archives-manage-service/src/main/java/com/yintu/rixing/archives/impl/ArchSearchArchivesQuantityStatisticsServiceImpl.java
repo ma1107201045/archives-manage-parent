@@ -32,7 +32,7 @@ public class ArchSearchArchivesQuantityStatisticsServiceImpl extends ArchAbstrac
     private ArchSearchArchivesQuantityStatisticsMapper archSearchArchivesQuantityStatisticsMapper;
 
     @Override
-    public ArchSearchArchivesQuantityStatisticsDataVo findSearchArchivesQuantityStatisticsData(ArchCommonQueryDto archCommonQueryDto) {
+    public ArchSearchArchivesQuantityStatisticsDataVo findArchSearchArchivesQuantityStatisticsData(ArchCommonQueryDto archCommonQueryDto) {
         Integer departmentId = archCommonQueryDto.getDepartmentId();
         Date startDate = archCommonQueryDto.getStartDate();
         Date endDate = archCommonQueryDto.getEndDate();

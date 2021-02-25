@@ -26,5 +26,5 @@ public interface IArchArchivesBorrowStatisticsService {
      * @param archCommonQueryDto 入参
      * @return 统计值集
      */
-    ArchArchivesBorrowStatisticsDataVo findArchivesBorrowStatisticsData(ArchCommonQueryDto archCommonQueryDto);
+    ArchArchivesBorrowStatisticsDataVo findArchArchivesBorrowStatisticsData(ArchCommonQueryDto archCommonQueryDto);
 }

@@ -61,7 +61,7 @@ public class Arch06DiseaseArchivesAppraisalController {
     @GetMapping("/data")
     @ApiOperation(value = "查询病档鉴定统计-数据", notes = "查询病档鉴定统计-数据")
     @ApiOperationSupport(order = 3)
-    public ResultDataUtil<ArchDiseaseArchivesAppraisalDataVo> findArchivesName(@Validated ArchCommonQueryDto archCommonQueryDto) {
+    public ResultDataUtil<ArchDiseaseArchivesAppraisalDataVo> getArchDiseaseArchivesAppraisalData(@Validated ArchCommonQueryDto archCommonQueryDto) {
         ArchDiseaseArchivesAppraisalDataVo archDiseaseArchivesAppraisalDataVo = iArchDiseaseArchivesAppraisalService.findArchDiseaseArchivesAppraisalData(archCommonQueryDto);
         return ResultDataUtil.ok("查询病档鉴定统计-数据成功", archDiseaseArchivesAppraisalDataVo);
     }

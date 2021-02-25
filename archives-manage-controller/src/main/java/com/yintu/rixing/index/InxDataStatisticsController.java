@@ -1,11 +1,9 @@
 package com.yintu.rixing.index;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.system.SysDepartment;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

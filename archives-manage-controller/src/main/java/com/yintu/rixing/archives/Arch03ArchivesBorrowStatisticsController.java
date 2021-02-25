@@ -59,8 +59,8 @@ public class Arch03ArchivesBorrowStatisticsController {
     @GetMapping("/data")
     @ApiOperation(value = "查询档案借阅统计-数据", notes = "查询档案借阅统计-数据")
     @ApiOperationSupport(order = 3)
-    public ResultDataUtil<ArchArchivesBorrowStatisticsDataVo> findArchivesName(@Validated ArchCommonQueryDto archCommonQueryDto) {
-        ArchArchivesBorrowStatisticsDataVo archArchivesBorrowStatisticsDataVo = iArchArchivesBorrowStatisticsService.findArchivesBorrowStatisticsData(archCommonQueryDto);
+    public ResultDataUtil<ArchArchivesBorrowStatisticsDataVo> getArchArchivesBorrowStatisticsData(@Validated ArchCommonQueryDto archCommonQueryDto) {
+        ArchArchivesBorrowStatisticsDataVo archArchivesBorrowStatisticsDataVo = iArchArchivesBorrowStatisticsService.findArchArchivesBorrowStatisticsData(archCommonQueryDto);
         return ResultDataUtil.ok("查询档案借阅统计-数据成功", archArchivesBorrowStatisticsDataVo);
     }
 }

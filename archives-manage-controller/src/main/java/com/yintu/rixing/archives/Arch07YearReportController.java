@@ -61,8 +61,8 @@ public class Arch07YearReportController {
     @GetMapping("/data")
     @ApiOperation(value = "查询年报统计-数据", notes = "查询年报统计-数据")
     @ApiOperationSupport(order = 3)
-    public ResultDataUtil<ArchYearReportDataVo> findArchivesName(@Validated ArchCommonQueryDto archCommonQueryDto) {
-        ArchYearReportDataVo archYearReportDataVo = iArchYearReportService.findYearReportData(archCommonQueryDto);
+    public ResultDataUtil<ArchYearReportDataVo> getArchYearReportData(@Validated ArchCommonQueryDto archCommonQueryDto) {
+        ArchYearReportDataVo archYearReportDataVo = iArchYearReportService.findArchYearReportData(archCommonQueryDto);
         return ResultDataUtil.ok("查询年报统计-数据成功", archYearReportDataVo);
     }
 }

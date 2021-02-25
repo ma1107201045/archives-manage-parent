@@ -59,7 +59,7 @@ public class Arch02UsingPurposeStatisticsController {
     @GetMapping("/data")
     @ApiOperation(value = "查询利用目的统计-数据", notes = "查询利用目的统计-数据")
     @ApiOperationSupport(order = 3)
-    public ResultDataUtil<ArchUsingPurposeStatisticsDataVo> findArchivesName(@Validated ArchCommonQueryDto archCommonQueryDto) {
+    public ResultDataUtil<ArchUsingPurposeStatisticsDataVo> getArchUsingPurposeStatisticsData(@Validated ArchCommonQueryDto archCommonQueryDto) {
         ArchUsingPurposeStatisticsDataVo archUsingPurposeStatisticsDataVo = iArchUsingPurposeStatisticsService.findArchUsingPurposeStatisticsData(archCommonQueryDto);
         return ResultDataUtil.ok("查询利用目的统计-数据成功", archUsingPurposeStatisticsDataVo);
     }

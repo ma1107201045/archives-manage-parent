@@ -27,7 +27,7 @@ public class ArchYearReportServiceImpl extends ArchAbstractService implements IA
     private ArchYearReportMapper archYearReportMapper;
 
     @Override
-    public ArchYearReportDataVo findYearReportData(ArchCommonQueryDto archCommonQueryDto) {
+    public ArchYearReportDataVo findArchYearReportData(ArchCommonQueryDto archCommonQueryDto) {
         Integer departmentId = archCommonQueryDto.getDepartmentId();
         Integer year = archCommonQueryDto.getYear();
         List<Integer> archivesIds = archCommonQueryDto.getArchivesIds();
@@ -41,7 +41,7 @@ public class ArchYearReportServiceImpl extends ArchAbstractService implements IA
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
             String tableName = TableNameUtil.getFullTableName(archivesLibrary.getDataKey());
-            List<Long> counts = archYearReportMapper.selectYearReportData(id, tableName, (short) 1, (short) 1, Arrays.asList((short) 1, (short) 2, (short) 3), EnumArchivesOrder.DISEASE_ARCHIVES.getValue(), departmentId, year);
+            List<Long> counts = archYearReportMapper.selectArchYearReportData(id, tableName, (short) 1, (short) 1, Arrays.asList((short) 1, (short) 2, (short) 3), EnumArchivesOrder.DISEASE_ARCHIVES.getValue(), departmentId, year);
             list1.add(counts.get(0));
             list2.add(counts.get(1));
             list3.add(counts.get(2));

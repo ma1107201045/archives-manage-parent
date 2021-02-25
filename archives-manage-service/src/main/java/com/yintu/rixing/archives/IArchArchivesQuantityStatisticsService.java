@@ -27,7 +27,7 @@ public interface IArchArchivesQuantityStatisticsService {
      * @param archCommonQueryDto 入参
      * @return 统计值集
      */
-    ArchArchivesQuantityStatisticsDataVo findArchivesQuantityStatisticsData(ArchCommonQueryDto archCommonQueryDto);
+    ArchArchivesQuantityStatisticsDataVo findArchArchivesQuantityStatisticsData(ArchCommonQueryDto archCommonQueryDto);
 
 
 }

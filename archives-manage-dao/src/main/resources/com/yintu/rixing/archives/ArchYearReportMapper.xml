@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.archives.ArchYearReportMapper">
-    <select id="selectYearReportData" resultType="java.lang.Long">
+    <select id="selectArchYearReportData" resultType="java.lang.Long">
         <!-- 1.查档数量统计-->
         SELECT COUNT(*) AS `count`
         FROM sys_archives_library AS sal

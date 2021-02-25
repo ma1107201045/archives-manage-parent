@@ -34,7 +34,7 @@ public class ArchArchivesBorrowStatisticsServiceImpl extends ArchAbstractService
 
 
     @Override
-    public ArchArchivesBorrowStatisticsDataVo findArchivesBorrowStatisticsData(ArchCommonQueryDto archCommonQueryDto) {
+    public ArchArchivesBorrowStatisticsDataVo findArchArchivesBorrowStatisticsData(ArchCommonQueryDto archCommonQueryDto) {
         Integer departmentId = archCommonQueryDto.getDepartmentId();
         Date startDate = archCommonQueryDto.getStartDate();
         Date endDate = archCommonQueryDto.getEndDate();
