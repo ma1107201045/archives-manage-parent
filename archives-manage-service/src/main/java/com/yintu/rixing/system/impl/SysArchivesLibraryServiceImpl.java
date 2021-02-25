@@ -49,26 +49,33 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         Integer number = sysArchivesLibraryFormDto.getNumber();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
         Integer templateLibraryId = sysArchivesLibraryFormDto.getTemplateLibraryId();
-        if (type == 2 && (number == null || dataKey == null || templateLibraryId == null))
+        if (type == 2 && (number == null || dataKey == null || templateLibraryId == null)) {
             throw new BaseRuntimeException("档案库编号或者key或者模板库id不能为空");
+        }
         if (type == 2) {
             List<Integer> ids1 = this.listByNumber(number);
-            if (!ids1.isEmpty())
+            if (!ids1.isEmpty()) {
                 throw new BaseRuntimeException("档案编号不能重复");
+            }
             List<Integer> ids2 = this.iSysArchivesLibraryFieldDefaultService.listByDataKey(dataKey);
-            if (!ids2.isEmpty())
+            if (!ids2.isEmpty()) {
                 throw new BaseRuntimeException("key不能与系统默认重复");
+            }
             List<Integer> ids3 = this.listByDataKey(dataKey);
-            if (!ids3.isEmpty())
+            if (!ids3.isEmpty()) {
                 throw new BaseRuntimeException("key不能重复");
+            }
         }
         SysArchivesLibrary sysArchivesLibrary = new SysArchivesLibrary();
         if (parentId != -1) {
             sysArchivesLibrary = this.getById(sysArchivesLibraryFormDto.getParentId());
             if (sysArchivesLibrary != null) {
-                if (type == 1 && sysArchivesLibrary.getType() == 2)
+                if (type == 1 && sysArchivesLibrary.getType() == 2) {
                     throw new BaseRuntimeException("档案库下边不能添加目录");
-            } else return;
+                }
+            } else {
+                return;
+            }
         }
 
         BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
@@ -142,18 +149,22 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         Integer number = sysArchivesLibraryFormDto.getNumber();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
         Integer templateLibraryId = sysArchivesLibraryFormDto.getTemplateLibraryId();
-        if (type == 2 && (number == null || dataKey == null || templateLibraryId == null))
+        if (type == 2 && (number == null || dataKey == null || templateLibraryId == null)) {
             throw new BaseRuntimeException("档案库编号或者key或者模板库id不能为空");
+        }
         if (type == 2) {
             List<Integer> ids1 = this.listByNumber(number);
-            if (!ids1.isEmpty() && !ids1.get(0).equals(id))
+            if (!ids1.isEmpty() && !ids1.get(0).equals(id)) {
                 throw new BaseRuntimeException("档案编号不能重复");
+            }
             List<Integer> ids2 = this.iSysArchivesLibraryFieldDefaultService.listByDataKey(dataKey);
-            if (!ids2.isEmpty())
+            if (!ids2.isEmpty()) {
                 throw new BaseRuntimeException("key不能与系统默认重复");
+            }
             List<Integer> ids3 = this.listByDataKey(dataKey);
-            if (!ids3.isEmpty() && !ids3.get(0).equals(id))
+            if (!ids3.isEmpty() && !ids3.get(0).equals(id)) {
                 throw new BaseRuntimeException("key不能重复");
+            }
         }
 
         SysArchivesLibrary sysArchivesLibrary = this.getById(id);
@@ -166,9 +177,12 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             if (parentId != -1) {
                 SysArchivesLibrary last = this.getById(parentId);
                 if (last != null) {
-                    if (type == 1 && last.getType() == 2)
+                    if (type == 1 && last.getType() == 2) {
                         throw new BaseRuntimeException("目录上边不能有档案库");
-                } else return;
+                    }
+                } else {
+                    return;
+                }
             }
             //判断修改的跟当前的类型对比
             if (type == 1 && oldType == 2) {
@@ -182,8 +196,9 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             //判断修改跟下级的类型对比
             if (type == 2) {
                 List<Integer> ids = this.listByIdAndType(id, (short) 1);
-                if (!ids.isEmpty())
+                if (!ids.isEmpty()) {
                     throw new BaseRuntimeException("档案库下边不能有目录");
+                }
             }
             BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
             this.updateById(sysArchivesLibrary);
@@ -215,8 +230,9 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 //如果更换模板库则删除属于此模板库的字段以及表，并且重新添加字段跟表结构
                 if (!oldTemplateLibraryId.equals(templateLibraryId)) {
                     ids = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndTemplateLibraryId(id, oldTemplateLibraryId);
-                    if (!ids.isEmpty())
+                    if (!ids.isEmpty()) {
                         iSysArchivesLibraryFieldService.removeByIds(ids);
+                    }
 
                     List<SysArchivesLibraryField> sysArchivesLibraryFields = new ArrayList<>();
                     List<CommTableField> commTableFields = new ArrayList<>();
@@ -281,8 +297,9 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
     @Override
     public List<Integer> listByIdAndType(Integer id, Short type) {
-        if (id == null)
+        if (id == null) {
             throw new BaseRuntimeException("档案库id不能为空");
+        }
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysArchivesLibrary::getId)
@@ -292,8 +309,9 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
     @Override
     public List<Integer> listByDataKey(String dataKey) {
-        if (StrUtil.isEmpty(dataKey))
+        if (StrUtil.isEmpty(dataKey)) {
             throw new BaseRuntimeException("key不能为空");
+        }
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysArchivesLibrary::getId)

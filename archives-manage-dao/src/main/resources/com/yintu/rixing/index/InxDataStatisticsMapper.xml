@@ -4,7 +4,7 @@
 
     <select id="selectInxDataStatistics" resultType="java.lang.Long">
         <!-- 查档人数 -->
-        SELECT COUNT(DISTINCT dalfs.user_id) AS `count` FROM data_archives_library_file_search AS dalfs
+        SELECT COUNT(DISTINCT dalfs.user_id) AS `total` FROM data_archives_library_file_search AS dalfs
         <where>
             <if test="userType!=null">
                 AND dalfs.user_type = #{userType,jdbcType=SMALLINT}
@@ -12,8 +12,38 @@
         </where>
         UNION ALL
         <!-- 馆藏档案原文总页数 -->
+        SELECT CONVERT(SUM(dalf.page),SIGNED) AS `total` FROM data_archives_library_file AS dalf
+        <where>
+            <if test="formalLibrary!=null">
+                AND dalfs.formal_library = #{formalLibrary,jdbcType=INTEGER}
+            </if>
+        </where>
+        UNION ALL
         <!-- 馆藏文件目录数量 -->
+        SELECT CONVERT(SUM(t.eachCount),SIGNED) AS `total` FROM
+        <foreach collection="tableNames" item="tableName" open="(" close=") AS t" separator="UNION ALL">
+            SELECT COUNT(*) AS `eachCount` FROM ${tableName} AS t
+            <where>
+                <if test="status!=null">
+                    AND t.status = #{status,jdbcType=SMALLINT}
+                </if>
+            </where>
+        </foreach>
+        UNION ALL
         <!-- 归档文件数量 -->
+        SELECT COUNT(*) AS `total` FROM data_archives_library_file AS dalf
+        <where>
+            <if test="formalLibrary!=null">
+                AND dalfs.formal_library = #{formalLibrary,jdbcType=INTEGER}
+            </if>
+        </where>
+        UNION ALL
         <!-- 馆藏案卷数量 -->
+        SELECT COUNT(*) AS `total` FROM data_archives_library_file AS dalf
+        <where>
+            <if test="formalLibrary!=null">
+                AND dalfs.formal_library = #{formalLibrary,jdbcType=INTEGER}
+            </if>
+        </where>
     </select>
 </mapper>
