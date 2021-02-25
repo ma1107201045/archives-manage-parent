@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/index/inx-search-archives-quantity-statistics")
 @Api(tags = "查档数量和利用目的统计接口")
-@ApiSupport(order = 1)
+@ApiSupport(order = 2)
 public class InxSearchArchivesQuantityStatisticsAndUsingPurposeController {
 
     @Autowired
@@ -57,7 +57,7 @@ public class InxSearchArchivesQuantityStatisticsAndUsingPurposeController {
     @GetMapping("/make-borrow-purpose")
     @ApiOperation(value = "查询首页利用目的信息", notes = "查询首页利用目的信息")
     @ApiOperationSupport(order = 3)
-    public ResultDataUtil<List<MakeBorrowPurpose>> getInxDataStatistics() {
+    public ResultDataUtil<List<MakeBorrowPurpose>> getMakeBorrowPurposes() {
         List<MakeBorrowPurpose> makeBorrowPurposes = iMakeBorrowPurposeService.list().stream().sorted((makeBorrowPurpose1, makeBorrowPurpose2) -> Integer.compare(makeBorrowPurpose2.getId(), makeBorrowPurpose1.getId())).collect(Collectors.toList());
         return ResultDataUtil.ok("查询首页利用目的信息成功", makeBorrowPurposes);
     }
