@@ -2,5 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.index.InxDataStatisticsMapper">
 
-
+    <select id="selectInxDataStatistics" resultType="java.lang.Long">
+        <!-- 查档人数 -->
+        SELECT COUNT(DISTINCT dalfs.user_id) AS `count` FROM data_archives_library_file_search AS dalfs
+        <where>
+            <if test="userType!=null">
+                AND dalfs.user_type = #{userType,jdbcType=SMALLINT}
+            </if>
+        </where>
+        UNION ALL
+        <!-- 馆藏档案原文总页数 -->
+        <!-- 馆藏文件目录数量 -->
+        <!-- 归档文件数量 -->
+        <!-- 馆藏案卷数量 -->
+    </select>
 </mapper>

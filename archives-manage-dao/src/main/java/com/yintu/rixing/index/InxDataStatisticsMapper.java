@@ -12,6 +12,12 @@ import java.util.List;
 @Mapper
 public interface InxDataStatisticsMapper {
 
-    List<Long> selectall();
+    /**
+     * 查询首页统计数据
+     *
+     * @param userType 用户类型 1：内部 2：远程
+     * @return ..
+     */
+    List<Long> selectInxDataStatistics(Short userType);
 
 }
