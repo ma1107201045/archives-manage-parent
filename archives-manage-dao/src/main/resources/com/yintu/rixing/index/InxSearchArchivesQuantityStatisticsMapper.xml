@@ -2,8 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.index.InxSearchArchivesQuantityStatisticsMapper">
 
-    <select id="selectSearchArchivesQuantityStatisticsData" resultType="java.lang.Long">
-        SELECT COUNT(DISTINCT dalfs.archives_library_file_id) AS `count`
+    <select id="selectSearchArchivesQuantityStatisticsData" resultType="java.util.Map">
+        SELECT
+        COUNT(DISTINCT dalfs.user_id) AS `rCount`,
+        COUNT(DISTINCT dalfs.archives_library_file_id) AS `jCount`,
+        COUNT(DISTINCT dalfs.archives_library_file_id) AS `qCount`,
         FROM sys_archives_library AS sal
         INNER JOIN data_archives_library_file AS dalf ON sal.id = dalf.archives_library_id
         INNER JOIN ${tableName} AS t ON t.id=dalf.data_id

@@ -2,6 +2,8 @@ package com.yintu.rixing.index;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Map;
+
 /**
  * @Author: mlf
  * @Date: 2021/2/25 15:33:18
@@ -19,7 +21,7 @@ public interface InxSearchArchivesQuantityStatisticsMapper {
      * @param searchType        搜索类型
      * @return ..
      */
-    Long selectSearchArchivesQuantityStatisticsData(Integer archivesLibraryId, String tableName, Short searchType);
+    Map<String, Long> selectSearchArchivesQuantityStatisticsData(Integer archivesLibraryId, String tableName, Short searchType);
 
 
 }
