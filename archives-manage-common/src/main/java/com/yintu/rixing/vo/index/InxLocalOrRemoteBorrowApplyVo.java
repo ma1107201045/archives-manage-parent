@@ -1,8 +1,11 @@
 package com.yintu.rixing.vo.index;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * @Author: mlf
@@ -26,6 +29,7 @@ public class InxLocalOrRemoteBorrowApplyVo {
     private String borrower;
 
     @ApiModelProperty(value = "借阅日期", position = 4)
-    private String borrowDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date borrowDate;
 
 }

@@ -18,7 +18,7 @@ import java.util.Date;
 public class InxInformVo {
 
     @ApiModelProperty(value = "公告内容", position = 1)
-    private String context;
+    private String title;
 
     @ApiModelProperty(value = "发布日期", position = 2)
     @JsonFormat(pattern = "yyyy-MM-dd")

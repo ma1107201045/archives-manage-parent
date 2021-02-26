@@ -10,6 +10,6 @@ import com.yintu.rixing.vo.index.InxLocalAndRemoteBorrowApplyAndInformVo;
 public interface IInxLocalAndRemoteBorrowApplyAndInformService {
 
 
-    InxLocalAndRemoteBorrowApplyAndInformVo findInxLocalOrRemoteBorrowApplyAndInformData(Short borrowType);
+    InxLocalAndRemoteBorrowApplyAndInformVo findInxLocalOrRemoteBorrowApplyAndInformData();
 
 }
