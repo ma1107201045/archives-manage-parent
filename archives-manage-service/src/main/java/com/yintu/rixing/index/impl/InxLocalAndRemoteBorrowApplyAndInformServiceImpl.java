@@ -49,11 +49,11 @@ public class InxLocalAndRemoteBorrowApplyAndInformServiceImpl implements IInxLoc
     public InxLocalAndRemoteBorrowApplyAndInformVo findInxLocalOrRemoteBorrowApplyAndInformData() {
         InxLocalAndRemoteBorrowApplyAndInformVo inxLocalAndRemoteBorrowApplyAndInformVo = new InxLocalAndRemoteBorrowApplyAndInformVo();
         //本地借阅
-        List<Map<String, Object>> maps1 = inxLocalAndRemoteBorrowApplyAndInformMapper.selectInxLocalOrRemoteBorrowApplyData((short) 1);
+        List<Map<String, Object>> maps1 = inxLocalAndRemoteBorrowApplyAndInformMapper.selectInxLocalBorrowApplyData();
         List<InxLocalOrRemoteBorrowApplyVo> localBorrowApplies = this.listInxLocalOrRemoteBorrowApplyVos(maps1);
         inxLocalAndRemoteBorrowApplyAndInformVo.setLocalBorrowApplies(localBorrowApplies);
         //远程借阅
-        List<Map<String, Object>> maps2 = inxLocalAndRemoteBorrowApplyAndInformMapper.selectInxLocalOrRemoteBorrowApplyData((short) 2);
+        List<Map<String, Object>> maps2 = inxLocalAndRemoteBorrowApplyAndInformMapper.selectInxRemoteBorrowApplyData();
         List<InxLocalOrRemoteBorrowApplyVo> remoteBorrowApplies = this.listInxLocalOrRemoteBorrowApplyVos(maps2);
         inxLocalAndRemoteBorrowApplyAndInformVo.setRemoteBorrowApplies(remoteBorrowApplies);
         //通知公告
@@ -99,7 +99,7 @@ public class InxLocalAndRemoteBorrowApplyAndInformServiceImpl implements IInxLoc
             }
             inxLocalOrRemoteBorrowApplyVo.setTransactor((String) map.get("transactor"));
             inxLocalOrRemoteBorrowApplyVo.setBorrower((String) map.get("borrower"));
-            inxLocalOrRemoteBorrowApplyVo.setBorrowDate((Date) map.get("create_time"));
+            inxLocalOrRemoteBorrowApplyVo.setBorrowDate((Date) map.get("borrowDate"));
             inxLocalOrRemoteBorrowApplyVos.add(inxLocalOrRemoteBorrowApplyVo);
         }
         return inxLocalOrRemoteBorrowApplyVos;

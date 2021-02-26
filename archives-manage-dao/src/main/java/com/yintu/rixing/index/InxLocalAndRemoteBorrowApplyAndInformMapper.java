@@ -15,11 +15,16 @@ public interface InxLocalAndRemoteBorrowApplyAndInformMapper {
 
 
     /**
-     * 本地或者远程借阅申请
+     * 本地借阅申请
      *
-     * @param userType 用户类型 1.本地 2.远程
      * @return .
      */
-    List<Map<String, Object>> selectInxLocalOrRemoteBorrowApplyData(Short userType);
+    List<Map<String, Object>> selectInxLocalBorrowApplyData();
 
+    /**
+     * 远程借阅申请
+     *
+     * @return .
+     */
+    List<Map<String, Object>> selectInxRemoteBorrowApplyData();
 }

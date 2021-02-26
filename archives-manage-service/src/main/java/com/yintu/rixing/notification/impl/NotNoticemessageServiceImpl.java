@@ -23,7 +23,7 @@ public class NotNoticemessageServiceImpl extends ServiceImpl<NotNoticemessageMap
     @Override
     public List<NotNoticemessage> listByLimit(Integer num) {
         QueryWrapper<NotNoticemessage> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().orderByDesc(NotNoticemessage::getId).last("limit ").last(num.toString());
+        queryWrapper.lambda().orderByDesc(NotNoticemessage::getId).last("limit " + num.toString());
         return this.list(queryWrapper);
     }
 }
