@@ -48,7 +48,7 @@
                 mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
             </if>
             <if test="perBorrowManagementQueryDto.type == 2">
-                AND mba.activate=1 AND mba.is_dispose = 1 AND
+                AND mba.activate=0 AND mba.is_dispose = 1 AND
                 mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
             </if>
             <if test="perBorrowManagementQueryDto.type == 3">
