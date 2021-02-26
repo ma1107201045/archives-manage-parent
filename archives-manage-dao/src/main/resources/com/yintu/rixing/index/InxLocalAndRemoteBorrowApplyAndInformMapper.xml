@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.rixing.index.InxLocalAndRemoteBorrowApplyAndInformMapper">
+    <select id="selectInxLocalOrRemoteBorrowApplyData" resultType="java.util.Map">
+        SELECT mb.fileid, mbat.nickname,mb.user_id,mb.create_time
+           FROM make_borrow AS mb LEFT OUTER JOIN (
+              SELECT mba.make_borrow_id,su.nickname FROM make_borrow_auditor mba
+                     INNER JOIN (SELECT mba.make_borrow_id, mba.sort - 1 AS `last_sort`FROM make_borrow_auditor mba WHERE mba.activate = 1) AS mbat ON mba.make_borrow_id = mbat.make_borrow_id AND mba.sort = mbat.last_sort
+                     INNER JOIN sys_user su ON mba.auditor_id = su.id
+                     WHERE mba.context IS NOT NULL OR mba.accessory_name IS NOT NULL OR mba.accessory_path IS NOT NULL
+            ) AS mbat ON mb.id = mbat.make_borrow_id
+        <where>
+            <if test="borrowType!=null">
+                mb.borrow_type = #{borrowType,jdbcType=SMALLINT}
+            </if>
+        </where>
+        ORDER BY mb.create_time
+        LIMIT 7
+    </select>
+</mapper>

@@ -21,6 +21,6 @@ public interface InxDataStatisticsMapper {
      * @param status        档案状态：0.档案收集 1.临时库 2.整理库 3.正式库 4.回收站 5.销毁库 6.回退管理 7.病档管理 8.档案销毁
      * @return ..
      */
-    List<Long> selectInxDataStatistics(Short userType, Short formalLibrary, List<String> tableNames, Short status);
+    List<Long> selectInxDataStatisticsData(Short userType, Short formalLibrary, List<String> tableNames, Short status);
 
 }

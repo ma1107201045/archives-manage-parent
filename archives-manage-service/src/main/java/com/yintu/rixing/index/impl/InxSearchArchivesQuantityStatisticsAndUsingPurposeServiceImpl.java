@@ -38,7 +38,7 @@ public class InxSearchArchivesQuantityStatisticsAndUsingPurposeServiceImpl imple
         List<Long> list3 = new ArrayList<>();
         for (SysArchivesLibrary archivesLibrary : archivesLibraries) {
             Integer id = archivesLibrary.getId();
-            Map<String, Long> map = inxSearchArchivesQuantityStatisticsAndUsingPurposeMapper.selectSearchArchivesQuantityStatisticsData(id, (short) 1, DateUtil.year(DateUtil.date()) - 1);
+            Map<String, Long> map = inxSearchArchivesQuantityStatisticsAndUsingPurposeMapper.selectSearchArchivesQuantityStatisticsData(id, (short) 1, DateUtil.year(DateUtil.date()));
             list1.add(map == null ? 0L : map.get("1"));
             list2.add(map == null ? 0L : map.get("2"));
             list3.add(map == null ? 0L : map.get("3"));

@@ -33,7 +33,7 @@ public class InxDataStatisticsController {
     @ApiOperation(value = "查询查询统计列表信息", notes = "查询查询统计列表信息")
     @ApiOperationSupport(order = 1)
     public ResultDataUtil<List<Long>> getInxDataStatistics() {
-        List<Long> longs = iInxDataStatisticsService.findInxDataStatistics();
+        List<Long> longs = iInxDataStatisticsService.findInxDataStatisticsData();
         return ResultDataUtil.ok("查询查询统计列表信息成功", longs);
     }
 }
