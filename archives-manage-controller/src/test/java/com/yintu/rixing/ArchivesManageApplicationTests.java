@@ -15,6 +15,8 @@ import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.make.MakeBorrow;
 import com.yintu.rixing.person.PerBorrowManagementMapper;
 import com.yintu.rixing.pojo.SysPermissionPojo;
+import com.yintu.rixing.security.ISecLogService;
+import com.yintu.rixing.security.SecLog;
 import com.yintu.rixing.system.ISysPermissionService;
 import com.yintu.rixing.system.ISysUserService;
 import org.junit.jupiter.api.Test;
@@ -49,9 +51,14 @@ public class ArchivesManageApplicationTests {
     @Autowired
     private PerBorrowManagementMapper perBorrowManagementMapper;
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
+    @Autowired
+    private ISecLogService iSecLogService;
 
     @Test
     void contextLoads() {
+        UpdateWrapper<SecLog> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.lambda().set(SecLog::getContext, "11");
+        iSecLogService.update(updateWrapper);
     }
 
 

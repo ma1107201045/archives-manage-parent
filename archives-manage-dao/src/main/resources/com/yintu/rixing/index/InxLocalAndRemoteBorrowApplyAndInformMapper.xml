@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.rixing.index.InxLocalAndRemoteBorrowApplyAndInformMapper">
+   <resultMap id="selectInxLocalOrRemoteBorrowApplyDataMap" type="java.util.Map">
+       <result property="borrowType" javaType="java.lang.Short" column="borrow_type" jdbcType="SMALLINT"/>
+       <result property="fileId" javaType="java.lang.Integer" column="fileid" jdbcType="INTEGER"/>
+       <result property="transactor" javaType="java.lang.String" column="mbat_nickname" jdbcType="VARCHAR"/>
+       <result property="borrower" javaType="java.lang.String" column="nickname" jdbcType="VARCHAR"/>
+       <result property="borrowDate" javaType="java.sql.Timestamp" column="create_time" jdbcType="TIMESTAMP"/>
+   </resultMap>
+
+    <select id="selectInxLocalBorrowApplyData" resultMap="selectInxLocalOrRemoteBorrowApplyDataMap">
+        SELECT mb.borrow_type,mb.fileid , mbat.nickname AS mbat_nickname,su.nickname AS nickname ,mb.create_time
+           FROM make_borrow AS mb LEFT OUTER JOIN (
+              SELECT mba.make_borrow_id,su.nickname FROM make_borrow_auditor mba
+                     INNER JOIN (SELECT mba.make_borrow_id, mba.sort - 1 AS `last_sort`FROM make_borrow_auditor mba WHERE mba.activate = 1) AS mbat ON mba.make_borrow_id = mbat.make_borrow_id AND mba.sort = mbat.last_sort
+                     INNER JOIN sys_user su ON mba.auditor_id = su.id
+                     WHERE mba.context IS NOT NULL OR mba.accessory_name IS NOT NULL OR mba.accessory_path IS NOT NULL
+            ) AS mbat ON mb.id = mbat.make_borrow_id
+            INNER JOIN sys_user AS su on mb.user_id = su.id
+        WHERE mb.user_type=1
+        ORDER BY mb.create_time
+        LIMIT 7
+    </select>
+
+    <select id="selectInxRemoteBorrowApplyData" resultMap="selectInxLocalOrRemoteBorrowApplyDataMap">
+        SELECT mb.borrow_type,mb.fileid , mbat.nickname AS mbat_nickname,sru.username AS nickname ,mb.create_time
+        FROM make_borrow AS mb LEFT OUTER JOIN (
+            SELECT mba.make_borrow_id,su.nickname FROM make_borrow_auditor mba
+                    INNER JOIN (SELECT mba.make_borrow_id, mba.sort - 1 AS `last_sort`FROM make_borrow_auditor mba WHERE mba.activate = 1) AS mbat ON mba.make_borrow_id = mbat.make_borrow_id AND mba.sort = mbat.last_sort
+                    INNER JOIN sys_user su ON mba.auditor_id = su.id
+            WHERE mba.context IS NOT NULL OR mba.accessory_name IS NOT NULL OR mba.accessory_path IS NOT NULL
+        ) AS mbat ON mb.id = mbat.make_borrow_id
+         INNER JOIN sys_remote_user AS sru on mb.user_id = sru.id
+        WHERE mb.user_type=2
+        ORDER BY mb.create_time
+        LIMIT 7
+    </select>
+</mapper>

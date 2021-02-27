@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.index.InxDataStatisticsMapper">
 
-    <select id="selectInxDataStatistics" resultType="java.lang.Long">
+    <select id="selectInxDataStatisticsData" resultType="java.lang.Long">
         <!-- 查档人数 -->
         SELECT COUNT(DISTINCT dalfs.user_id) AS `total` FROM data_archives_library_file_search AS dalfs
         <where>
@@ -12,7 +12,7 @@
         </where>
         UNION ALL
         <!-- 馆藏档案原文总页数 -->
-        SELECT CONVERT(SUM(dalf.page),SIGNED) AS `total` FROM data_archives_library_file AS dalf
+        SELECT CONVERT(IFNULL(SUM(dalf.page),0.0),SIGNED) AS `total` FROM data_archives_library_file AS dalf
         <where>
             <if test="formalLibrary!=null">
                 AND dalf.formal_library = #{formalLibrary,jdbcType=INTEGER}

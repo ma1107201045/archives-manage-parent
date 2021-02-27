@@ -41,16 +41,18 @@
 
     <select id="selectPage" resultMap="PageResultMap">
         SELECT *
-        FROM make_borrow mb INNER JOIN make_borrow_auditor mba on mb.id = mba.make_borrow_id
+        FROM make_borrow mb INNER JOIN make_borrow_auditor mba ON mb.id = mba.make_borrow_id
         <where>
             <if test="perBorrowManagementQueryDto.type == 1">
-                and mba.activate = 1 and mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
+                AND mba.activate=1 AND mba.is_dispose = 0 AND
+                mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
             </if>
             <if test="perBorrowManagementQueryDto.type == 2">
-                and mba.activate = 0 and mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
+                AND mba.activate=0 AND mba.is_dispose = 1 AND
+                mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
             </if>
             <if test="perBorrowManagementQueryDto.type == 3">
-                and mb.user_type = #{perBorrowManagementQueryDto.userType,jdbcType=INTEGER} and
+                and mb.user_type = #{perBorrowManagementQueryDto.userType,jdbcType=INTEGER} AND
                 mb.user_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
             </if>
             <if test="perBorrowManagementQueryDto.borrowType!=null">

@@ -2,6 +2,8 @@ package com.yintu.rixing.notification;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 通知公告表 服务类
@@ -12,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface INotNoticemessageService extends IService<NotNoticemessage> {
 
+    List<NotNoticemessage> listByLimit(Integer num);
 }

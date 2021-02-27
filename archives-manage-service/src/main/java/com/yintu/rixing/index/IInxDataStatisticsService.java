@@ -10,6 +10,6 @@ import java.util.List;
 public interface IInxDataStatisticsService {
 
 
-    List<Long> findInxDataStatistics();
+    List<Long> findInxDataStatisticsData();
 
 }
