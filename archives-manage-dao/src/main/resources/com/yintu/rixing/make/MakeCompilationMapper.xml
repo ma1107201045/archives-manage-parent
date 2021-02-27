@@ -2,4 +2,60 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.make.MakeCompilationMapper">
 
+    <!--待处理的档案编研-->
+    <select id="findAllNotAudit" resultType="com.yintu.rixing.make.MakeCompilation">
+        SELECT
+            mc.*
+        FROM
+            make_compilation mc,
+            make_compilation_auditor mca
+            <where>
+                mc.id = mca.make_compilation_id
+                <if test="topicName!=null">
+                    AND mc.topicName like concat("%",#{topicName},"%")
+                </if>
+                AND ( mc.audit_status = 0 OR mc.audit_status = 1 )
+                AND mca.auditor_id = #{userId}
+                AND mca.activate =1
+            </where>
+        ORDER BY  mc.id desc
+    </select>
+
+
+    <!--已处理的档案编研-->
+    <select id="findAllAlreadyAudit" resultType="com.yintu.rixing.make.MakeCompilation">
+    SELECT
+    mc.*
+    FROM
+    make_compilation mc,
+    make_compilation_auditor mca
+    <where>
+        mc.id = mca.make_compilation_id
+        <if test="topicName!=null">
+            AND mc.topicName like concat("%",#{topicName},"%")
+        </if>
+        AND mca.auditor_id = #{userId}
+        AND mca.is_dispose =1
+    </where>
+    ORDER BY  mc.id desc
+    </select>
+
+    <!--我的档案编研-->
+    <select id="findAllMyCompilation" resultType="com.yintu.rixing.make.MakeCompilation">
+        SELECT
+        *
+        FROM
+        make_compilation
+        <where>
+            <if test="topicName!=null">
+                 topicName like concat("%",#{topicName},"%")
+            </if>
+            AND editorId = #{userId}
+        </where>
+        ORDER BY id DESC
+    </select>
+
+
+
+
 </mapper>
