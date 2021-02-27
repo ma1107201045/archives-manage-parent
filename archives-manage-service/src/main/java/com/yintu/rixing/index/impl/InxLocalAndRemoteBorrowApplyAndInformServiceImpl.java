@@ -61,7 +61,7 @@ public class InxLocalAndRemoteBorrowApplyAndInformServiceImpl implements IInxLoc
         List<InxInformVo> inxInformVos = notNoticeMessages.stream().map(notNoticeMessage -> {
             InxInformVo inxInformVo = new InxInformVo();
             inxInformVo.setTitle(notNoticeMessage.getTitle());
-            inxInformVo.setReleaseDate(notNoticeMessage.getModifiedTime());
+            inxInformVo.setReleaseDate(notNoticeMessage.getCreateTime());
             return inxInformVo;
         }).collect(Collectors.toList());
         inxLocalAndRemoteBorrowApplyAndInformVo.setInforms(inxInformVos);
