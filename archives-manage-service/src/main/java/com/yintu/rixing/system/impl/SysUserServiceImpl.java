@@ -51,14 +51,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void save(SysUserFormDto sysUserFormDto) {
         String password = sysUserFormDto.getPassword();
-        if (StrUtil.isEmpty(password))
+        if (StrUtil.isEmpty(password)) {
             throw new BaseRuntimeException("密码不能为空");
+        }
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         sysUserFormDto.setPassword(passwordEncoder.encode(sysUserFormDto.getPassword()));
         //判断用户名是否重复
         List<Integer> ids = this.listByUsername(sysUserFormDto.getUsername());
-        if (!ids.isEmpty())
+        if (!ids.isEmpty()) {
             throw new BaseRuntimeException("用户名重复");
+        }
         SysUser sysUser = new SysUser();
         sysUser.setAccountExpired(EnumFlag.False.getValue());
         sysUser.setAccountLocked(EnumFlag.False.getValue());
@@ -77,8 +79,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (sysUser != null) {
             //判断用户名是否重复
             List<Integer> ids = this.listByUsername(sysUserFormDto.getUsername());
-            if (!ids.isEmpty() && !ids.get(0).equals(id))
+            if (!ids.isEmpty() && !ids.get(0).equals(id)) {
                 throw new BaseRuntimeException("用户名重复");
+            }
             BeanUtil.copyProperties(sysUserFormDto, sysUser);
             this.updateById(sysUser);
 
@@ -182,8 +185,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             sysUser.setSysDepartments(this.sysDepartmentsByIdAndDepartmentId(id, null));
         });
         sysUserPage.setRecords(sysUserPage.getRecords().stream().filter((sysUser -> {
-            if (departmentId == null)
+            if (departmentId == null) {
                 return true;
+            }
             for (SysDepartment sysDepartment : sysUser.getSysDepartments()) {
                 if (sysDepartment.getId().equals(departmentId)) {
                     return true;

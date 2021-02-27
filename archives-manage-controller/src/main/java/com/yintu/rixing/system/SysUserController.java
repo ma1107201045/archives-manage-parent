@@ -51,6 +51,7 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("添加用户信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.WARN, module = "系统设置", context = "删除用户信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除用户信息", notes = "删除用户信息", position = 2)
@@ -60,6 +61,7 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("删除用户信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = " 修改用户信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改用户信息", notes = "修改用户信息", position = 3)
@@ -90,6 +92,7 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("修改用户启用禁用状态成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询用户单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询用户单条信息", notes = " 查询用户单条信息", position = 6)
@@ -99,6 +102,7 @@ public class SysUserController extends Authenticator implements BaseController<S
         return ResultDataUtil.ok("查询用户单条信息", sysUser);
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询用户列表信息")
     @GetMapping
     @ApiOperation(value = "查询用户列表信息", notes = "查询用户列表信息", position = 7)

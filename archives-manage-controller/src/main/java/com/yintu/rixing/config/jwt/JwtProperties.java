@@ -14,11 +14,16 @@ import java.util.List;
 @Data
 @Component
 public class JwtProperties {
-    private String secret;//加密密钥
-    private Long expire; // token有效期 秒
-    private String header;// token 采用的http头，一般使用: Authorization
-    private String issuer;//发行人
-    private List<String> ignores; //忽略token的页面
+    //加密密钥
+    private String secret;
+    // token有效期 秒
+    private Long expire;
+    // token 采用的http头，一般使用: Authorization
+    private String header;
+    //发行人
+    private String issuer;
+    //忽略token的页面
+    private List<String> ignores;
 
     public JwtProperties() {
         this.secret = "J2m6hNsY2r5";
