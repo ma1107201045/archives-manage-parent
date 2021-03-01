@@ -45,7 +45,7 @@ public class SysDictionariesDetailsServiceImpl extends ServiceImpl<SysDictionari
         Integer size = sysDictionariesDetailsQueryDto.getSize();
         Integer dictionariesId = sysDictionariesDetailsQueryDto.getDictionariesId();
         QueryWrapper<SysDictionariesDetails> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysDictionariesDetails::getDictionariesId, dictionariesId);
+        queryWrapper.lambda().eq(SysDictionariesDetails::getDictionariesId, dictionariesId).orderByAsc(SysDictionariesDetails::getOrder);
         return this.page(new Page<>(num, size), queryWrapper);
     }
 }

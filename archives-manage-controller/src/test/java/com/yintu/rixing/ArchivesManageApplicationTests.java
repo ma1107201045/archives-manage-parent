@@ -56,9 +56,7 @@ public class ArchivesManageApplicationTests {
 
     @Test
     void contextLoads() {
-        UpdateWrapper<SecLog> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.lambda().set(SecLog::getContext, "11");
-        iSecLogService.update(updateWrapper);
+
     }
 
 

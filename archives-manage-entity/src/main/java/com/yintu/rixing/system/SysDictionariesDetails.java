@@ -33,7 +33,7 @@ public class SysDictionariesDetails extends BaseEntity {
     private String value;
 
     @ApiModelProperty(value = "排序")
-    @TableField("order")
+    @TableField("`order`")
     private Integer order;
 
     @ApiModelProperty(value = "数据字典id")
