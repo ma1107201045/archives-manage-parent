@@ -39,6 +39,7 @@ public class SysApprovalProcessController extends Authenticator implements BaseC
     @Autowired
     private ISysApprovalProcessService iSysApprovalProcessService;
 
+    @Override
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加审批流程信息")
     @PostMapping
     @ApiOperation(value = "添加审批流程信息", notes = "添加审批流程信息", position = 1)
@@ -47,6 +48,7 @@ public class SysApprovalProcessController extends Authenticator implements BaseC
         return ResultDataUtil.ok("添加审批流程信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.WARN, module = "系统设置", context = "删除审批流程信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除审批流程信息", notes = "删除审批流程信息", position = 2)
@@ -56,6 +58,7 @@ public class SysApprovalProcessController extends Authenticator implements BaseC
         return ResultDataUtil.ok("删除审批流程信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改审批流程信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改审批流程信息", notes = "修改审批流程信息", position = 3)
@@ -65,6 +68,7 @@ public class SysApprovalProcessController extends Authenticator implements BaseC
         return ResultDataUtil.ok("修改审批流程信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询审批流程单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询审批流程单条信息", notes = " 查询审批流程单条信息", position = 4)
@@ -75,6 +79,7 @@ public class SysApprovalProcessController extends Authenticator implements BaseC
 
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "系统管理", context = "查询审批流程列表信息")
     @GetMapping
     @ApiOperation(value = "查询审批流程列表信息", notes = "查询审批流程列表信息", position = 5)

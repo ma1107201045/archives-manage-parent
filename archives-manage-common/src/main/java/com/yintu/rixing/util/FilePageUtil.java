@@ -7,6 +7,7 @@ import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
+import com.yintu.rixing.exception.BaseRuntimeException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -48,14 +49,34 @@ public class FilePageUtil {
             String serverAddressPdf = String.format(SERVER_ADDRESS_PDF, URLUtil.encode(FileUtil.getPrefix(requestMapping) + ".pdf", StandardCharsets.UTF_8));
             response = HttpUtil.createGet(serverAddressPdf).executeAsync();
         }
+        InputStream is = null;
+        PDDocument document = null;
         try {
             if (response != null) {
-                InputStream inputStream = response.bodyStream();
-                PDDocument document = PDDocument.load(inputStream);
+                is = response.bodyStream();
+                document = PDDocument.load(is);
                 page = document.getNumberOfPages();
             }
         } catch (IOException ignored) {
-
+            throw new BaseRuntimeException("IO异常，上传档案失败");
+        } finally {
+            if (document != null) {
+                try {
+                    document.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (response != null) {
+                response.close();
+            }
         }
         return page;
     }

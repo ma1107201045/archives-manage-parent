@@ -24,7 +24,7 @@ import java.util.List;
  * </p>
  *
  * @author mlf
- * @since 2020-12-22
+ * @since 2020TreeUtil.ROOT_PARENT_ID2-22
  */
 @RestController
 @RequestMapping("/system/sys-department")
@@ -73,7 +73,7 @@ public class SysDepartmentController extends Authenticator {
     @GetMapping
     @ApiOperation(value = "查询组织机构列表信息树", notes = "查询组织机构列表信息树", position = 5)
     public ResultDataUtil<List<TreeUtil>> findTree() {
-        List<TreeUtil> treeNodeUtils = iSysDepartmentService.listTree(-1);
+        List<TreeUtil> treeNodeUtils = iSysDepartmentService.listTree(TreeUtil.ROOT_PARENT_ID);
         return ResultDataUtil.ok("查询组织机构列表信息树成功", treeNodeUtils);
     }
 }

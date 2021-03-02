@@ -4,7 +4,7 @@ server:
     accept-count: 1000
     max-threads: 400
     min-spare-threads: 1000
-    max-swallow-size: 100MB #文件上传总大小
+    max-swallow-size: -1 #文件上传总大小
   servlet:
     context-path: /archivesManage
     session:
@@ -40,8 +40,8 @@ spring:
   servlet:
     multipart:
       enabled: true   #开启文件上传
-      max-file-size: 10MB #单个文件的最大上限
-      max-request-size: 1000MB  #单个请求的文件总大小上限
+      max-file-size: 100MB #单个文件的最大上限
+      max-request-size: 1024MB  #单个请求的文件总大小上限
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8

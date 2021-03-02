@@ -320,9 +320,9 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     }
 
     @Override
-    public List<TreeUtil> listTree(Integer parentId) {
+    public List<TreeUtil> listTree(Integer id) {
         QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysArchivesLibrary::getParentId, parentId);
+        queryWrapper.lambda().eq(SysArchivesLibrary::getParentId, id);
         List<SysArchivesLibrary> sysArchivesLibraries = this.list(queryWrapper);
         List<TreeUtil> treeUtils = new ArrayList<>();
         for (SysArchivesLibrary sysArchivesLibrary : sysArchivesLibraries) {

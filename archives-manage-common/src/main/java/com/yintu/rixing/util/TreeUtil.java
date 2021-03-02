@@ -14,6 +14,8 @@ import java.util.Map;
 @Data
 @ApiModel(value = "TreeUtil对象", description = "返回树结构参数")
 public class TreeUtil {
+    public static final Integer ROOT_PARENT_ID = -1;
+
     @ApiModelProperty(value = "主键id")
     private Long id;
     @ApiModelProperty(value = "文本")

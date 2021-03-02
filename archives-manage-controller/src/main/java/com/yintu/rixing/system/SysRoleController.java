@@ -30,7 +30,7 @@ import java.util.Set;
  * </p>
  *
  * @author mlf
- * @since 2020-11-26
+ * @since 2020TreeUtil.ROOT_PARENT_ID1-26
  */
 @RestController
 @RequestMapping("/system/sys-role")
@@ -102,7 +102,7 @@ public class SysRoleController extends Authenticator implements BaseController<S
     @ApiOperation(value = "查询角色拥有权限树信息", notes = "查询角色拥有权限树信息")
     @ApiOperationSupport(order = 6)
     public ResultDataUtil<List<TreeUtil>> findPermissionTree() {
-        List<TreeUtil> treeNodeUtils = iSysPermissionService.listTree(-1);
+        List<TreeUtil> treeNodeUtils = iSysPermissionService.listTree(TreeUtil.ROOT_PARENT_ID);
         return ResultDataUtil.ok("查询角色拥有权限树信息成功", treeNodeUtils);
     }
 
@@ -114,7 +114,7 @@ public class SysRoleController extends Authenticator implements BaseController<S
     @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<List<TreeUtil>> findPermissionTreeById(@PathVariable Integer id) {
         List<TreeUtil> treeNodeUtils = new ArrayList<>();
-        iSysRoleService.sysPermissionTreeByIdAndPermissionId(id, -1, treeNodeUtils);
+        iSysRoleService.sysPermissionTreeByIdAndPermissionId(id, TreeUtil.ROOT_PARENT_ID, treeNodeUtils);
         return ResultDataUtil.ok("查询角色拥有权限列表信息成功", treeNodeUtils);
     }
 
@@ -124,7 +124,7 @@ public class SysRoleController extends Authenticator implements BaseController<S
     @ApiOperation(value = "查询角色档案库树信息", notes = "查询角色档案库树信息")
     @ApiOperationSupport(order = 8)
     public ResultDataUtil<List<TreeUtil>> findArchivesLibraryTree() {
-        List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
+        List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(TreeUtil.ROOT_PARENT_ID);
         return ResultDataUtil.ok("查询角色档案库树信息成功", treeNodeUtils);
     }
 
@@ -136,7 +136,7 @@ public class SysRoleController extends Authenticator implements BaseController<S
     @ApiImplicitParam(name = "id", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<List<TreeUtil>> findArchivesLibraryTreeById(@PathVariable Integer id) {
         List<TreeUtil> treeNodeUtils = new ArrayList<>();
-        iSysRoleService.sysArchivesLibraryTreeByIdAndArchivesLibraryId(id, -1, treeNodeUtils);
+        iSysRoleService.sysArchivesLibraryTreeByIdAndArchivesLibraryId(id, TreeUtil.ROOT_PARENT_ID, treeNodeUtils);
         return ResultDataUtil.ok("查询角色拥有档案库树信息成功", treeNodeUtils);
     }
 }

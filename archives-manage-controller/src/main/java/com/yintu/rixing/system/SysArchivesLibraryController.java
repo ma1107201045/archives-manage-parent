@@ -23,7 +23,7 @@ import java.util.List;
  * </p>
  *
  * @author mlf
- * @since 2021-01-11
+ * @since 2021-01TreeUtil.ROOT_PARENT_ID1
  */
 @RestController
 @RequestMapping("/system/sys-archives-library")
@@ -75,7 +75,7 @@ public class SysArchivesLibraryController extends Authenticator {
     @GetMapping
     @ApiOperation(value = "查询档案库列表信息树", notes = "查询档案库列表信息树", position = 5)
     public ResultDataUtil<List<TreeUtil>> findTree() {
-        List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
+        List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(TreeUtil.ROOT_PARENT_ID);
         return ResultDataUtil.ok("查询档案库列表信息树成功", treeNodeUtils);
     }
 

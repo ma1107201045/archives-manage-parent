@@ -24,7 +24,7 @@ import java.util.List;
  * </p>
  *
  * @author mlf
- * @since 2020-12-30
+ * @since 2020TreeUtil.ROOT_PARENT_ID2-30
  */
 @RestController
 @RequestMapping("/system/sys-template-library")
@@ -74,7 +74,7 @@ public class SysTemplateLibraryController extends Authenticator {
     @GetMapping
     @ApiOperation(value = "查询模板库列表信息树", notes = "查询模板库列表信息树", position = 5)
     public ResultDataUtil<List<TreeUtil>> findTree() {
-        List<TreeUtil> treeNodeUtils = iSysTemplateLibraryService.listTree(-1);
+        List<TreeUtil> treeNodeUtils = iSysTemplateLibraryService.listTree(TreeUtil.ROOT_PARENT_ID);
         return ResultDataUtil.ok("查询模板库列表信息树成功", treeNodeUtils);
     }
 

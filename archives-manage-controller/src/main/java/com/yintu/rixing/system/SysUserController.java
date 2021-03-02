@@ -29,7 +29,7 @@ import java.util.Set;
  * </p>
  *
  * @author mlf
- * @since 2020-11-26
+ * @since 2020TreeUtil.ROOT_PARENT_ID1-26
  */
 @RestController
 @RequestMapping("/system/sys-user")
@@ -123,7 +123,7 @@ public class SysUserController extends Authenticator implements BaseController<S
     @GetMapping("/sys-department")
     @ApiOperation(value = "查询用户部门列表信息树", notes = "查询用户部门列表信息树", position = 9)
     public ResultDataUtil<List<TreeUtil>> findDepartmentTree() {
-        List<TreeUtil> treeNodeUtils = iSysDepartmentService.listTree(-1);
+        List<TreeUtil> treeNodeUtils = iSysDepartmentService.listTree(TreeUtil.ROOT_PARENT_ID);
         return ResultDataUtil.ok("查询用户部门列表信息树成功", treeNodeUtils);
     }
 
@@ -134,7 +134,7 @@ public class SysUserController extends Authenticator implements BaseController<S
     @ApiImplicitParam(name = "id", type = "int", value = "主键id", required = true, paramType = "path")
     public ResultDataUtil<List<TreeUtil>> findPermissionTreeById(@PathVariable Integer id) {
         List<TreeUtil> treeNodeUtils = new ArrayList<>();
-        iSysUserService.sysDepartmentTreeByIdAndDepartmentId(id, -1, treeNodeUtils);
+        iSysUserService.sysDepartmentTreeByIdAndDepartmentId(id, TreeUtil.ROOT_PARENT_ID, treeNodeUtils);
         return ResultDataUtil.ok("查询用户所在部门列表信息树成功", treeNodeUtils);
     }
 

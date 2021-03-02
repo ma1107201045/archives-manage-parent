@@ -24,7 +24,7 @@ import java.util.Map;
  * </p>
  *
  * @author mlf
- * @since 2020-11-26
+ * @since 2020TreeUtil.ROOT_PARENT_ID1-26
  */
 @RestController
 @RequestMapping("/system/sys-permission")
@@ -74,7 +74,7 @@ public class SysPermissionController extends Authenticator {
     @GetMapping
     @ApiOperation(value = "查询权限列表信息树", notes = "查询权限列表信息树", position = 5)
     public Map<String, Object> findTree() {
-        List<TreeUtil> treeNodeUtils = iSysPermissionService.listTree(-1);
+        List<TreeUtil> treeNodeUtils = iSysPermissionService.listTree(TreeUtil.ROOT_PARENT_ID);
         return ResponseDataUtil.ok("查询权限列表信息树成功", treeNodeUtils);
     }
 

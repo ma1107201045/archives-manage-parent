@@ -1,7 +1,6 @@
 package com.yintu.rixing.util;
 
 import cn.hutool.core.io.FileUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.hslf.extractor.PowerPointExtractor;
@@ -16,7 +15,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @Author: mlf
@@ -26,9 +28,9 @@ import java.io.*;
 public class FileParseUtil {
 
     public static void main(String[] args) {
-
-
+        System.out.println(FileParseUtil.parse(new File("C:\\Users\\Admin\\Desktop\\日兴软件测试数据2\\日兴软件测试数据2\\国家标准\\中国档案机读目录格式.pdf")));
     }
+
 
     public static String parse(File file) {
         return parse(FileUtil.readBytes(file), FileUtil.extName(file.getName()));
@@ -36,6 +38,20 @@ public class FileParseUtil {
 
     public static String parse(String fileBaseName) {
         return parse(FileUtil.readBytes(fileBaseName), FileUtil.extName(fileBaseName));
+    }
+
+
+    public static boolean isBlank(CharSequence cs) {
+        int strLen;
+        if (cs == null || (strLen = cs.length()) == 0) {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(cs.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // 判断文档类型，调用不同的解析方法
@@ -76,8 +92,8 @@ public class FileParseUtil {
     // 读取Word97-2003的全部内容 doc
     private static String getTextFromWord(byte[] file) {
         String text = "";
-        InputStream fis = null;
-        WordExtractor ex = null;
+        InputStream fis;
+        WordExtractor ex;
         try {
             // word 2003： 图片不会被读取
             fis = new ByteArrayInputStream(file);
@@ -94,8 +110,8 @@ public class FileParseUtil {
     // 读取Word2007+的全部内容 docx
     private static String getTextFromWord2007(byte[] file) {
         String text = "";
-        InputStream fis = null;
-        XWPFDocument doc = null;
+        InputStream fis;
+        XWPFDocument doc;
         XWPFWordExtractor workbook = null;
         try {
             fis = new ByteArrayInputStream(file);
@@ -112,8 +128,8 @@ public class FileParseUtil {
 
     // 读取Excel97-2003的全部内容 xls
     private static String getTextFromExcel(byte[] file) {
-        InputStream is = null;
-        HSSFWorkbook wb = null;
+        InputStream is;
+        HSSFWorkbook wb;
         String text = "";
         try {
             is = new ByteArrayInputStream(file);
@@ -131,8 +147,8 @@ public class FileParseUtil {
 
     // 读取Excel2007+的全部内容 xlsx
     private static String getTextFromExcel2007(byte[] file) {
-        InputStream is = null;
-        XSSFWorkbook workBook = null;
+        InputStream is;
+        XSSFWorkbook workBook;
         String text = "";
         try {
             is = new ByteArrayInputStream(file);
@@ -167,8 +183,8 @@ public class FileParseUtil {
 
     // 抽取幻灯片2007+全部内容 pptx
     private static String getTextFromPPT2007(byte[] file) {
-        InputStream is = null;
-        XMLSlideShow slide = null;
+        InputStream is;
+        XMLSlideShow slide;
         String text = "";
         try {
             is = new ByteArrayInputStream(file);
@@ -185,18 +201,20 @@ public class FileParseUtil {
     // 读取pdf文件全部内容 pdf
     private static String getTextFormPDF(byte[] file) {
         String text = "";
-        PDDocument pdfdoc = null;
         InputStream is = null;
+        PDDocument pdfdoc = null;
         try {
             is = new ByteArrayInputStream(file);
             pdfdoc = PDDocument.load(is);
             PDFTextStripper stripper = new PDFTextStripper();
             text = stripper.getText(pdfdoc);
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
+                if (is != null) {
+                    is.close();
+                }
                 if (pdfdoc != null) {
                     pdfdoc.close();
                 }
@@ -212,18 +230,16 @@ public class FileParseUtil {
     private static String getTextFormTxt(byte[] file) {
         String text = "";
         try {
-            String encoding = get_charset(file);
+            String encoding = getCharset(file);
             text = new String(file, encoding);
-        } catch (UnsupportedEncodingException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
         }
         return text;
     }
 
     // 获得txt文件编码方式
-    private static String get_charset(byte[] file) throws IOException {
+    private static String getCharset(byte[] file) throws IOException {
         String charset = "GBK";
         byte[] first3Bytes = new byte[3];
         InputStream bis = null;
@@ -232,8 +248,9 @@ public class FileParseUtil {
             bis = new ByteArrayInputStream(file);
             bis.mark(0);
             int read = bis.read(first3Bytes, 0, 3);
-            if (read == -1)
+            if (read == -1) {
                 return charset;
+            }
             if (first3Bytes[0] == (byte) 0xFF && first3Bytes[1] == (byte) 0xFE) {
                 charset = "UTF-16LE";
                 checked = true;
@@ -248,28 +265,30 @@ public class FileParseUtil {
             bis.reset();
             if (!checked) {
                 while ((read = bis.read()) != -1) {
-                    if (read >= 0xF0)
+                    if (read >= 0xF0) {
                         break;
-                    if (0x80 <= read && read <= 0xBF) // 单独出现BF以下的，也算是GBK
+                    }
+                    // 单独出现BF以下的，也算是GBK
+                    if (0x80 <= read && read <= 0xBF) {
                         break;
+                    }
                     if (0xC0 <= read && read <= 0xDF) {
                         read = bis.read();
-                        if (0x80 <= read && read <= 0xBF) // 双字节 (0xC0 - 0xDF)
-                            // (0x80 - 0xBF),也可能在GB编码内
-                            continue;
-                        else
+                        // 双字节 (0xC0 - 0xDF)
+                        // (0x80 - 0xBF),也可能在GB编码内
+                        if (0x80 <= read && read <= 0xBF) {
                             break;
-                    } else if (0xE0 <= read && read <= 0xEF) {// 也有可能出错，但是几率较小
+                        }
+                        // 也有可能出错，但是几率较小
+                    } else if (0xE0 <= read) {
                         read = bis.read();
                         if (0x80 <= read && read <= 0xBF) {
                             read = bis.read();
                             if (0x80 <= read && read <= 0xBF) {
                                 charset = "UTF-8";
-                                break;
-                            } else
-                                break;
-                        } else
-                            break;
+                            }
+                        }
+                        break;
                     }
                 }
             }

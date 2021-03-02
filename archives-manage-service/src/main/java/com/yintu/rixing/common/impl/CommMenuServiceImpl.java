@@ -59,11 +59,11 @@ public class CommMenuServiceImpl implements ICommMenuService {
         List<CommAuthorityVo> commAuthorityVos = null;
         if (sysUser != null) {
             if (sysUser.getAuthType().equals(EnumAuthType.ADMIN.getValue())) {
-                treeUtils = this.findMenus(-1, null);
+                treeUtils = this.findMenus(TreeUtil.ROOT_PARENT_ID, null);
                 commAuthorityVos = this.findAuthorities(null);
             } else {
                 Integer userId = sysUser.getId();
-                treeUtils = this.findMenus(-1, userId);
+                treeUtils = this.findMenus(TreeUtil.ROOT_PARENT_ID, userId);
                 this.findAuthorities(userId);
             }
         }

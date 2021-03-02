@@ -26,7 +26,7 @@ import java.util.Set;
  * </p>
  *
  * @author mlf
- * @since 2020-11-27
+ * @since 2020TreeUtil.ROOT_PARENT_ID1-27
  */
 @RestController
 @RequestMapping("/system/sys-department-qzh")
@@ -87,7 +87,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
     @GetMapping("/sys-department")
     @ApiOperation(value = "查询全宗号部门列表信息树", notes = "查询全宗号部门列表信息树", position = 6)
     public ResultDataUtil<List<TreeUtil>> findTree() {
-        List<TreeUtil> treeNodeUtils = iSysDepartmentService.listTree(-1);
+        List<TreeUtil> treeNodeUtils = iSysDepartmentService.listTree(TreeUtil.ROOT_PARENT_ID);
         return ResultDataUtil.ok("查询全宗号部门列表信息树成功", treeNodeUtils);
     }
 }

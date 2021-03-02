@@ -160,9 +160,9 @@ public class Data02SortingLibraryController extends Authenticator {
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils;
         if (EnumAuthType.ADMIN.getValue().equals(this.getUserAuthType())) {
-            treeNodeUtils = iSysArchivesLibraryService.listTree(-1);
+            treeNodeUtils = iSysArchivesLibraryService.listTree(TreeUtil.ROOT_PARENT_ID);
         } else {
-            treeNodeUtils = iSysUserService.listSysArchivesLibraryTree(this.getLoginUserId(), -1);
+            treeNodeUtils = iSysUserService.listSysArchivesLibraryTree(this.getLoginUserId(), TreeUtil.ROOT_PARENT_ID);
         }
         return ResultDataUtil.ok("查询整理库档案库列表信息树成功", treeNodeUtils);
     }
