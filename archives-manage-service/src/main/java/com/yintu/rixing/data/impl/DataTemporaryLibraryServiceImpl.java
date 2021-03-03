@@ -120,7 +120,7 @@ public class DataTemporaryLibraryServiceImpl extends DataCommonService implement
     @Override
     public void importExcelRecord(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
         DataCommon dataCommon = this.importExcelFile(multipartFile, archivesLibraryId);
-        dataCommon.getLists().forEach(dataCommonKVS -> dataCommonKVS.add(this.getStatusField(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue())));
+        dataCommon.getLists().forEach(dataCommonKvs -> dataCommonKvs.add(this.getStatusField(EnumArchivesOrder.TEMPORARY_LIBRARY.getValue())));
         dataTemporaryLibraryMapper.insertSelectiveBatch(dataCommon);
     }
 

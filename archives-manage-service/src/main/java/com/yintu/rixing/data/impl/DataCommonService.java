@@ -221,8 +221,9 @@ public class DataCommonService {
     protected DataCommon importExcelFile(MultipartFile multipartFile, Integer archivesLibraryId) throws IOException {
         //浅层次判断此文件是否是excel文件
         String ext = FileUtil.extName(multipartFile.getOriginalFilename());
-        if (!("xls".equals(ext) || "xlsx".equals(ext)))
+        if (!("xls".equals(ext) || "xlsx".equals(ext))) {
             throw new BaseRuntimeException("此文件类型不支持批量导入");
+        }
         InputStream in = multipartFile.getInputStream();
         ExcelReader excelReader = ExcelUtil.getReader(in, true);
         List<Map<String, Object>> records = excelReader.readAll();
@@ -239,16 +240,17 @@ public class DataCommonService {
                 Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
                 Integer length = sysArchivesLibraryField.getLength();
                 Short required = sysArchivesLibraryField.getRequired();
-                Object obj = record.get(name);
-                if (required == 1 && (obj == null || (obj instanceof String && ((String) obj).isEmpty())))
+                String value = (String) record.get(name);
+                if (required == 1 && (value == null || value.isEmpty())) {
                     throw new BaseRuntimeException(name + "不能为空");
-                String value = String.valueOf(obj);
+                }
                 Object newValue = value;
                 switch (EnumDataType.get(dataType)) {
                     case VARCHAR:
                     case TEXT:
-                        if (value != null && value.length() > length)
+                        if (value != null && value.length() > length) {
                             throw new BaseRuntimeException(dataType + "长度超过定义的长度");
+                        }
                         break;
                     case TINYINT:
                         newValue = Byte.valueOf(value);
@@ -260,16 +262,18 @@ public class DataCommonService {
                         newValue = Integer.valueOf(value);
                         break;
                     case DATETIME:
-                        if ("".equals(value))
+                        if ("".equals(value)) {
                             newValue = null;
-                        else
+                        } else {
                             newValue = DateUtil.parseDateTime(value);
+                        }
                         break;
                     case DATE:
-                        if ("".equals(value))
+                        if ("".equals(value)) {
                             newValue = null;
-                        else
+                        } else {
                             newValue = DateUtil.parseDate(value);
+                        }
                         break;
                 }
                 DataCommonKV dataCommon = new DataCommonKV();
