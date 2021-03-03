@@ -275,6 +275,8 @@ public class DataCommonService {
                             newValue = DateUtil.parseDate(value);
                         }
                         break;
+                    default:
+                        break;
                 }
                 DataCommonKV dataCommon = new DataCommonKV();
                 dataCommon.setFieldName(dataKey);
