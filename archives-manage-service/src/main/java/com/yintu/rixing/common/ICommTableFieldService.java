@@ -1,5 +1,6 @@
 package com.yintu.rixing.common;
 
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.yintu.rixing.system.SysArchivesLibraryField;
 
 import java.util.List;
