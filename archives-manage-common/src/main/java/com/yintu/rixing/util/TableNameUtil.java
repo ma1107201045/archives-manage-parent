@@ -33,5 +33,13 @@ public class TableNameUtil {
         return getFullTableName(tName) + ROLLBACK_SUFFIX;
     }
 
+    /**
+     * @param tName 表名
+     * @return 获取表全回退名
+     */
+    public static String getRollbackTableNameByFullTableName(String tName) {
+        AssertUtil.notEmpty(tName, "key不能为空");
+        return tName + ROLLBACK_SUFFIX;
+    }
 
 }

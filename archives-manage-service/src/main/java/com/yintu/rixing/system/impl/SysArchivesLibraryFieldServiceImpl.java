@@ -45,8 +45,9 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         String dataKey = sysArchivesLibraryFieldFormDto.getDataKey();
         //参数校对
         List<Integer> ids = this.listByArchivesLibraryIdDataKeys(sysArchivesLibraryFieldFormDto.getArchivesLibraryId(), dataKey);
-        if (!ids.isEmpty())
+        if (!ids.isEmpty()) {
             throw new BaseRuntimeException("当前档案库中key值不能重复");
+        }
         SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
         BeanUtil.copyProperties(sysArchivesLibraryFieldFormDto, sysArchivesLibraryField);
         sysArchivesLibraryField.setSystem(EnumFlag.False.getValue());
@@ -55,10 +56,14 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         if (sysArchivesLibrary != null) {
             CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField);
             String tableName = commTableField.getTableName();
+            String rollbackTableName = TableNameUtil.getRollbackTableNameByFullTableName(tableName);
             iCommTableFieldService.isHasDataByTableName(tableName);
+            iCommTableFieldService.isHasDataByTableName(rollbackTableName);
             iCommTableFieldService.add(tableName, commTableField);
+            iCommTableFieldService.add(rollbackTableName, commTableField);
             if (commTableField.getIsIndex() == 1) {
                 iCommTableFieldService.addIndex(tableName, dataKey);
+                iCommTableFieldService.addIndex(rollbackTableName, dataKey);
             }
         }
     }
@@ -67,8 +72,9 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
     public void removeByIds(Set<Integer> ids) {
         List<SysArchivesLibraryField> sysArchivesLibraryFields = this.listByIds(ids);
         sysArchivesLibraryFields.forEach(sysArchivesLibraryField -> {
-            if (sysArchivesLibraryField.getSystem().equals(EnumFlag.True.getValue()))
+            if (sysArchivesLibraryField.getSystem().equals(EnumFlag.True.getValue())) {
                 throw new BaseRuntimeException("系统默认key不能删除");
+            }
         });
         Map<Integer, List<SysArchivesLibraryField>> sysArchivesLibraryFieldGroupMap =
                 sysArchivesLibraryFields.stream().collect(Collectors.groupingBy(SysArchivesLibraryField::getArchivesLibraryId));
@@ -76,9 +82,12 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         for (Integer archivesLibraryId : sysArchivesLibraryFieldGroupMap.keySet()) {
             SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
             String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
+            String rollbackTableName = TableNameUtil.getRollbackTableNameByFullTableName(tableName);
             Set<String> fieldNames = sysArchivesLibraryFieldGroupMap.get(archivesLibraryId).stream().map(SysArchivesLibraryField::getDataKey).collect(Collectors.toSet());
             iCommTableFieldService.isHasDataByTableName(tableName);
+            iCommTableFieldService.isHasDataByTableName(rollbackTableName);
             iCommTableFieldService.dropByFieldNames(tableName, fieldNames);
+            iCommTableFieldService.dropByFieldNames(rollbackTableName, fieldNames);
         }
     }
 
@@ -88,8 +97,9 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         String dataKey = sysArchivesLibraryFieldFormDto.getDataKey();
         //参数校对
         List<Integer> ids = this.listByArchivesLibraryIdDataKeys(sysArchivesLibraryFieldFormDto.getArchivesLibraryId(), dataKey);
-        if (!ids.isEmpty() && !ids.get(0).equals(id))
+        if (!ids.isEmpty() && !ids.get(0).equals(id)) {
             throw new BaseRuntimeException("当前模板库中key值不能重复");
+        }
         SysArchivesLibraryField sysArchivesLibraryField = this.getById(id);
         if (sysArchivesLibraryField != null) {
             if (sysArchivesLibraryField.getSystem().equals(EnumFlag.True.getValue()))
@@ -103,16 +113,27 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             if (sysArchivesLibrary != null) {
                 CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField);
                 String tableName = commTableField.getTableName();
+                String rollbackTableName = TableNameUtil.getRollbackTableNameByFullTableName(tableName);
                 iCommTableFieldService.isHasDataByTableName(tableName);
+                iCommTableFieldService.isHasDataByTableName(rollbackTableName);
                 iCommTableFieldService.alter(tableName, oldDataKey, commTableField);
-                if (oldIndex == 0 && index == 1) { //之前没有现在有
+                iCommTableFieldService.alter(rollbackTableName, oldDataKey, commTableField);
+                //之前没有现在有
+                if (oldIndex == 0 && index == 1) {
                     iCommTableFieldService.addIndex(tableName, dataKey);
-                } else if (oldIndex == 1 && index == 0) {//之前有现在没有
+                    iCommTableFieldService.addIndex(rollbackTableName, dataKey);
+                    //之前有现在没有
+                } else if (oldIndex == 1 && index == 0) {
                     iCommTableFieldService.dropIndex(tableName, dataKey);
-                } else if (oldIndex == 1 && index == 1) {//之前有现在也有
-                    if (!oldDataKey.equals(dataKey)) {//再次判断字段名是否一样（索引名跟字段名保持一致）
+                    iCommTableFieldService.dropIndex(rollbackTableName, dataKey);
+                    //之前有现在也有
+                } else if (oldIndex == 1 && index == 1) {
+                    //再次判断字段名是否一样（索引名跟字段名保持一致）
+                    if (!oldDataKey.equals(dataKey)) {
                         iCommTableFieldService.dropIndex(tableName, oldDataKey);
+                        iCommTableFieldService.dropIndex(rollbackTableName, oldDataKey);
                         iCommTableFieldService.addIndex(tableName, dataKey);
+                        iCommTableFieldService.addIndex(rollbackTableName, dataKey);
                     }
                 }
             }
@@ -126,21 +147,26 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         if (sysArchivesLibraryField1 != null && sysArchivesLibraryField2 != null) {
             Integer order1 = sysArchivesLibraryField1.getOrder();
             Integer order2 = sysArchivesLibraryField2.getOrder();
-            if (!order1.equals(order2)) { //如果顺序不相同需要修改
+            //如果顺序不相同需要修改
+            if (!order1.equals(order2)) {
                 sysArchivesLibraryField1.setOrder(order2);
                 sysArchivesLibraryField2.setOrder(order1);
                 this.saveOrUpdate(sysArchivesLibraryField1);
                 this.saveOrUpdate(sysArchivesLibraryField2);
                 Integer archivesLibraryId1 = sysArchivesLibraryField1.getArchivesLibraryId();
                 Integer archivesLibraryId2 = sysArchivesLibraryField2.getArchivesLibraryId();
-                if (archivesLibraryId1.equals(archivesLibraryId2)) {//判断两个字段是否在同一个档案库
+                //判断两个字段是否在同一个档案库
+                if (archivesLibraryId1.equals(archivesLibraryId2)) {
                     SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(sysArchivesLibraryField1.getArchivesLibraryId());
                     if (sysArchivesLibrary != null) {
                         //改变表字段顺序
                         CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField1);
                         String tableName = commTableField.getTableName();
+                        String rollbackTableName = TableNameUtil.getRollbackTableNameByFullTableName(tableName);
                         iCommTableFieldService.isHasDataByTableName(tableName);
+                        iCommTableFieldService.isHasDataByTableName(rollbackTableName);
                         iCommTableFieldService.alterOrder(tableName, commTableField, sysArchivesLibraryField2.getDataKey());
+                        iCommTableFieldService.alterOrder(rollbackTableName, commTableField, sysArchivesLibraryField2.getDataKey());
                     }
                 }
             }
@@ -161,8 +187,9 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
 
     @Override
     public List<Integer> listByArchivesLibraryIdAndSystem(Integer archivesLibraryId, Short system) {
-        if (archivesLibraryId == null || system == null)
+        if (archivesLibraryId == null || system == null) {
             throw new BaseRuntimeException("档案库id或者系统字段不能为空");
+        }
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysArchivesLibraryField::getId)
