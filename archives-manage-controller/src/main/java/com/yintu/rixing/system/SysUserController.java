@@ -29,7 +29,7 @@ import java.util.Set;
  * </p>
  *
  * @author mlf
- * @since 2020TreeUtil.ROOT_PARENT_ID1-26
+ * @since 2020-11-26
  */
 @RestController
 @RequestMapping("/system/sys-user")
@@ -43,6 +43,7 @@ public class SysUserController extends Authenticator implements BaseController<S
     @Autowired
     private ISysRoleService iSysRoleService;
 
+    @Override
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加用户信息")
     @PostMapping
     @ApiOperation(value = "添加用户信息", notes = "添加用户信息", position = 1)

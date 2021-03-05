@@ -24,7 +24,7 @@ import java.util.Map;
  * </p>
  *
  * @author mlf
- * @since 2020TreeUtil.ROOT_PARENT_ID1-26
+ * @since 2020-11-26
  */
 @RestController
 @RequestMapping("/system/sys-permission")
