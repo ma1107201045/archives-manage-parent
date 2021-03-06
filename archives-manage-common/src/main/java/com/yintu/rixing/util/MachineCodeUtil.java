@@ -24,7 +24,7 @@ public class MachineCodeUtil {
      * @return 返回机器码
      */
     public static String getMachineCode() {
-        String cpuSerial = SystemUtil.getOsInfo().isWindows() ? getCPUSerialFormWindow() : getCPUSerialFormLinux();
+        String cpuSerial = SystemUtil.getOsInfo().isWindows() ? getCpuSerialFormWindow() : getCpuSerialFormLinux();
         if (!"".equals(cpuSerial)) {
             return DigestUtil.md5Hex(cpuSerial);
         }
@@ -34,7 +34,7 @@ public class MachineCodeUtil {
     /**
      * 获取WindowCPU信息
      */
-    private static String getCPUSerialFormWindow() {
+    private static String getCpuSerialFormWindow() {
         StringBuilder result = new StringBuilder();
         try {
             //创建临时文件，路径为C:\Documents and Settings\Administrator\Local Settings\Temp
@@ -71,7 +71,7 @@ public class MachineCodeUtil {
     /**
      * 获取 Linux CPU信息
      */
-    private static String getCPUSerialFormLinux() {
+    private static String getCpuSerialFormLinux() {
         String result = "";
         try {
             Process process = RuntimeUtil.exec("sudo dmidecode -s system-uuid");

@@ -52,11 +52,11 @@
                 mba.auditor_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
             </if>
             <if test="perBorrowManagementQueryDto.type == 3">
-                and mb.user_type = #{perBorrowManagementQueryDto.userType,jdbcType=INTEGER} AND
+                AND mb.user_type = #{perBorrowManagementQueryDto.userType,jdbcType=INTEGER} AND
                 mb.user_id=#{perBorrowManagementQueryDto.userId,jdbcType=INTEGER}
             </if>
             <if test="perBorrowManagementQueryDto.borrowType!=null">
-                and mb.borrow_type = #{perBorrowManagementQueryDto.borrowType,jdbcType=SMALLINT}
+                AND mb.borrow_type = #{perBorrowManagementQueryDto.borrowType,jdbcType=SMALLINT}
             </if>
             ORDER BY mb.id DESC
         </where>

@@ -58,13 +58,13 @@ public class ResultDataUtil<T> {
         return responseData;
     }
 
-    public static <T> ResultDataUtil<T> noJWTAuthentication(String message) {
-        return ResultDataUtil.noJWTAuthentication(message, null);
+    public static <T> ResultDataUtil<T> noJwtAuthentication(String message) {
+        return ResultDataUtil.noJwtAuthentication(message, null);
 
     }
 
 
-    public static <T> ResultDataUtil<T> noJWTAuthentication(String message, T data) {
+    public static <T> ResultDataUtil<T> noJwtAuthentication(String message, T data) {
         ResultDataUtil<T> responseData = new ResultDataUtil<>();
         responseData.setCode(CODE_VALUE_666);
         responseData.setData(data);

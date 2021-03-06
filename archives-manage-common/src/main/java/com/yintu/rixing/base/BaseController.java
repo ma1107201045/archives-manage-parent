@@ -32,6 +32,8 @@ public interface BaseController<F extends IdDto, Q extends PageDto, E, PK extend
     ResultDataUtil<Object> remove(Set<PK> ids);
 
     /**
+     * 修改数据
+     *
      * @param id      主键id
      * @param formDto 通用表单提交DTO
      * @return 返回数据

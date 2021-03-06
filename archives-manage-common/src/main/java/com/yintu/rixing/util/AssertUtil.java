@@ -13,34 +13,40 @@ public class AssertUtil {
 
 
     public static void isNull(Object value, String message) {
-        if (value != null)
+        if (value != null) {
             throw new BaseRuntimeException(message);
+        }
     }
 
     public static void notNull(Object value, String message) {
-        if (value == null)
+        if (value == null) {
             throw new BaseRuntimeException(message);
+        }
     }
 
     public static <T extends String> void isEmpty(T value, String message) {
         notNull(value, message);
-        if (!value.isEmpty())
+        if (!value.isEmpty()) {
             throw new BaseRuntimeException(message);
+        }
     }
 
     public static <T extends String> void notEmpty(T value, String message) {
         notNull(value, message);
-        if (value.isEmpty())
+        if (value.isEmpty()) {
             throw new BaseRuntimeException(message);
+        }
     }
 
     public static void isLength(Collection<?> value, String message) {
-        if (!value.isEmpty())
+        if (!value.isEmpty()) {
             throw new BaseRuntimeException(message);
+        }
     }
 
     public static <T extends String> void notLength(Collection<?> value, String message) {
-        if (value.isEmpty())
+        if (value.isEmpty()) {
             throw new BaseRuntimeException(message);
+        }
     }
 }
