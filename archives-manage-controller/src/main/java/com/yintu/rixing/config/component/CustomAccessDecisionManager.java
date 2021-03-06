@@ -1,6 +1,7 @@
 package com.yintu.rixing.config.component;
 
 import com.yintu.rixing.enumobject.EnumAuthType;
+import com.yintu.rixing.enumobject.EnumRole;
 import com.yintu.rixing.system.SysUser;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -17,13 +18,12 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * (授权)自定义权限控制管理器（处理逻辑）
+ *
  * @author:mlf
  * @date:2020/5/18 19:54
  */
 
-/**
- * (授权)自定义权限控制管理器（处理逻辑）
- */
 @Component
 public class CustomAccessDecisionManager implements AccessDecisionManager {
     @Override
@@ -36,24 +36,25 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
             Object obj = authentication.getPrincipal();
             if (obj instanceof SysUser) {
                 SysUser sysUser = (SysUser) obj;
-                if (sysUser.getAuthType().equals(EnumAuthType.ADMIN.getValue()))
+                if (sysUser.getAuthType().equals(EnumAuthType.ADMIN.getValue())) {
                     return;
-            }
-            for (ConfigAttribute configAttribute : configAttributes) {
-                String needRole = configAttribute.getAttribute();
-                Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-                for (GrantedAuthority authority : authorities) {
-                    if (authority.getAuthority().equals(needRole)) {
-                        return;
-                    }
                 }
             }
-            if (configAttributes instanceof List) {
-                List<ConfigAttribute> roles = (List<ConfigAttribute>) configAttributes;
-                if (!roles.isEmpty()) {
-                    String roleName = roles.get(0).getAttribute();
-                    if ("URL_NOT_AUTHORIZATION".equals(roleName)) {
-                        return;
+            if (!configAttributes.isEmpty()) {
+                String attribute = ((List<ConfigAttribute>) configAttributes).get(0).getAttribute();
+                if (EnumRole.URL_NOT_AUTHORIZATION.toString().equals(attribute)) {
+                    return;
+                } else if (EnumRole.URL_NEED_AUTHORIZATION.toString().equals(attribute)) {
+                    throw new AuthorizationServiceException("权限不足，请联系管理员");
+                } else {
+                    for (ConfigAttribute configAttribute : configAttributes) {
+                        String needRole = configAttribute.getAttribute();
+                        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+                        for (GrantedAuthority authority : authorities) {
+                            if (authority.getAuthority().equals(needRole)) {
+                                return;
+                            }
+                        }
                     }
                 }
             }

@@ -21,9 +21,9 @@ public class CustomConverter implements Converter<String, Date> {
         // HH:mm:ss 8
         // yyyy-MM-dd 10
         // yyyy-MM-dd HH:mm:ss 19
-        if (source.length() == 8)
+        if (source.length() == 8) {
             return DateUtil.parseTime(source);
-        else if (source.length() == 10) {
+        } else if (source.length() == 10) {
             return DateUtil.parseDate(source);
         } else if (source.length() == 19) {
             return DateUtil.parseDateTime(source);

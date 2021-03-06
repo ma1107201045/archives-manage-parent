@@ -15,9 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomMetaObjectHandler implements MetaObjectHandler {
 
-//    @Autowired
-//    private AuthenticationTrustResolver authenticationTrustResolver;
-
     @Override
     public void insertFill(MetaObject metaObject) {
         SysUser sysUser = Authenticator.getPrincipal();

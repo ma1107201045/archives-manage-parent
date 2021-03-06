@@ -1,6 +1,7 @@
 package com.yintu.rixing.config.component;
 
 import com.yintu.rixing.enumobject.EnumFlag;
+import com.yintu.rixing.enumobject.EnumRole;
 import com.yintu.rixing.system.ISysPermissionService;
 import com.yintu.rixing.pojo.SysPermissionPojo;
 import com.yintu.rixing.pojo.SysRolePojo;
@@ -32,7 +33,8 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         FilterInvocation filterInvocation = (FilterInvocation) object;
-        String requestUrl = filterInvocation.getRequestUrl().split("[?]")[0];//url后边的参数去掉（？号后边的）
+        //url后边的参数去掉（？号后边的）
+        String requestUrl = filterInvocation.getRequestUrl().split("[?]")[0];
         String requestMethod = filterInvocation.getRequest().getMethod();
         List<SysPermissionPojo> sysPermissionVos = iSysPermissionService.list(EnumFlag.False.getValue());
         List<ConfigAttribute> configAttributes = new ArrayList<>();
@@ -47,9 +49,9 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
         //如果不想在数据库中的权限分配给角色则可以在此处写逻辑
         if (configAttributes.isEmpty()) {
             if (antPathMatcher.match("/common/**", requestUrl)) {
-                return SecurityConfig.createList("URL_NOT_AUTHORIZATION");
+                return SecurityConfig.createList(EnumRole.URL_NOT_AUTHORIZATION.toString());
             } else {
-                return SecurityConfig.createList("URL_NEED_AUTHORIZATION");
+                return SecurityConfig.createList(EnumRole.URL_NEED_AUTHORIZATION.toString());
             }
         }
         return configAttributes;
