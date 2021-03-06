@@ -42,11 +42,13 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
             }
             if (!configAttributes.isEmpty()) {
                 String attribute = ((List<ConfigAttribute>) configAttributes).get(0).getAttribute();
+                //根据角色判断不需要授权的接口
                 if (EnumRole.URL_NOT_AUTHORIZATION.toString().equals(attribute)) {
                     return;
                 } else if (EnumRole.URL_NEED_AUTHORIZATION.toString().equals(attribute)) {
                     throw new AuthorizationServiceException("权限不足，请联系管理员");
                 } else {
+                    //根据当前人的角色比对当前请求的所拥有的角色
                     for (ConfigAttribute configAttribute : configAttributes) {
                         String needRole = configAttribute.getAttribute();
                         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

@@ -6,9 +6,14 @@ package com.yintu.rixing.enumobject;
  * @Version: 1.0
  */
 public enum EnumLogLevel {
-    TRACE, //查询
-    DEBUG, //新增
-    INFO, //编辑
-    WARN, //删除
-    ERROR //系统报错
+    //查询
+    TRACE,
+    //新增
+    DEBUG,
+    //编辑
+    INFO,
+    //删除
+    WARN,
+    //系统报错
+    ERROR
 }
