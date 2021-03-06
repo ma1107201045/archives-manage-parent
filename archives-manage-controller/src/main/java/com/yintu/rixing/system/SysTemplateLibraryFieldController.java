@@ -26,7 +26,7 @@ import java.util.Set;
  * </p>
  *
  * @author mlf
- * @since 2020TreeUtil.ROOT_PARENT_ID2-30
+ * @since 2020-12-30
  */
 @RestController
 @RequestMapping("/system/sys-template-library-field")
@@ -39,6 +39,7 @@ public class SysTemplateLibraryFieldController extends Authenticator implements 
     @Autowired
     private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
 
+    @Override
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加模板库字段信息")
     @PostMapping
     @ApiOperation(value = "添加模板库字段信息", notes = "添加模板库字段信息", position = 1)
@@ -47,6 +48,7 @@ public class SysTemplateLibraryFieldController extends Authenticator implements 
         return ResultDataUtil.ok("添加模板库字段信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.WARN, module = "系统设置", context = "删除模板库字段信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除模板库字段信息", notes = "删除模板库字段信息", position = 2)
@@ -56,6 +58,7 @@ public class SysTemplateLibraryFieldController extends Authenticator implements 
         return ResultDataUtil.ok("删除模板库字段信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改模板库字段信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改模板库字段信息", notes = "修改模板库字段信息", position = 3)
@@ -77,6 +80,7 @@ public class SysTemplateLibraryFieldController extends Authenticator implements 
         return ResultDataUtil.ok("修改模板库字段顺序成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询模板库字段单条信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询模板库字段单条信息", notes = "查询模板库字段单条信息", position = 5)
@@ -86,6 +90,7 @@ public class SysTemplateLibraryFieldController extends Authenticator implements 
         return ResultDataUtil.ok("查询模板库字段单条信息成功", sysTemplateLibraryField);
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询模板库字段列表信息")
     @GetMapping
     @ApiOperation(value = "查询模板库字段列表信息", notes = "查询模板库字段列表信息", position = 6)
