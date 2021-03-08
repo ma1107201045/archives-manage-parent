@@ -64,7 +64,7 @@ public class CommMenuServiceImpl implements ICommMenuService {
             } else {
                 Integer userId = sysUser.getId();
                 treeUtils = this.findMenus(TreeUtil.ROOT_PARENT_ID, userId);
-                this.findAuthorities(userId);
+                commAuthorityVos = this.findAuthorities(userId);
             }
         }
         commPermissionVo.setMenu(treeUtils);
