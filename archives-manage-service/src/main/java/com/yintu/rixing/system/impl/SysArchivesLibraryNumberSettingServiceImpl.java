@@ -58,7 +58,7 @@ public class SysArchivesLibraryNumberSettingServiceImpl extends ServiceImpl<SysA
             String customCharacter = sysArchivesLibraryNumberSetting.getCustomCharacter();
             if (archivesLibraryFieldId != null) {
                 SysArchivesLibraryField sysArchivesLibraryField = iSysArchivesLibraryFieldService.getById(archivesLibraryFieldId);
-                sysArchivesLibraryNumberSettingVo.setArchivesLibraryFieldName(iSysArchivesLibraryFieldService.getById(sysArchivesLibraryField.getName()).getName());
+                sysArchivesLibraryNumberSettingVo.setArchivesLibraryFieldName(sysArchivesLibraryField.getName());
             } else {
                 sysArchivesLibraryNumberSettingVo.setSeparator(separator);
                 sysArchivesLibraryNumberSettingVo.setCustomCharacter(customCharacter);

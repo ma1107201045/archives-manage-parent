@@ -34,7 +34,7 @@ public class SysArchivesLibraryNumberSetting extends BaseEntity {
     private Integer archivesLibraryFieldId;
 
     @ApiModelProperty(value = "分隔符 1.- 2.·3..4.~5.=6./7.`")
-    @TableField("separator")
+    @TableField("`separator`")
     private String separator;
 
     @ApiModelProperty(value = "自定义字符")
