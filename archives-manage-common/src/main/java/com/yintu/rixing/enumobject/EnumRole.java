@@ -17,8 +17,3 @@ public enum EnumRole {
 }
 
 
-class Test {
-    public static void main(String[] args) {
-        System.out.println(EnumRole.URL_NEED_AUTHORIZATION.toString());
-    }
-}
