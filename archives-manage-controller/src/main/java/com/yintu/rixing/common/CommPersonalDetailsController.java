@@ -36,21 +36,21 @@ public class CommPersonalDetailsController extends Authenticator {
     private ISysUserService iSysUserService;
 
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = " 修改个人信息")
-    @PutMapping("/{id}")
+    @PutMapping
     @ApiOperation(value = "修改个人信息", notes = "修改个人信息")
-    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     @ApiOperationSupport(order = 1)
-    public ResultDataUtil<Object> edit(@PathVariable Integer id, @Validated CommPersonalDetailsFormDto commPersonalDetailsFormDto) {
+    public ResultDataUtil<Object> edit(@Validated CommPersonalDetailsFormDto commPersonalDetailsFormDto) {
+        commPersonalDetailsFormDto.setId(this.getLoginUserId());
         iCommPersonalDetailsService.updateById(commPersonalDetailsFormDto);
         return ResultDataUtil.ok("修改个人信息成功");
     }
 
     @Log(level = EnumLogLevel.INFO, module = "系统管理", context = " 重置个人密码")
-    @PatchMapping("/{id}")
+    @PatchMapping
     @ApiOperation(value = "重置个人密码", notes = "重置个人密码")
-    @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
     @ApiOperationSupport(order = 2)
-    public ResultDataUtil<Object> editPassword(@PathVariable Integer id, @Validated SysUserPasswordDto sysUserPasswordDto) {
+    public ResultDataUtil<Object> editPassword(@Validated SysUserPasswordDto sysUserPasswordDto) {
+        sysUserPasswordDto.setId(this.getLoginUserId());
         iSysUserService.resetPassword(sysUserPasswordDto);
         return ResultDataUtil.ok("重置个人密码成功");
     }

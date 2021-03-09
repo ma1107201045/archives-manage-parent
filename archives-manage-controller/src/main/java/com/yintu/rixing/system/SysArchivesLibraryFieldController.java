@@ -9,10 +9,7 @@ import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
 import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.config.other.Authenticator;
-import com.yintu.rixing.dto.system.SysArchivesLibraryFieldFormDto;
-import com.yintu.rixing.dto.system.SysArchivesLibraryFieldQueryDto;
-import com.yintu.rixing.dto.system.SysTemplateLibraryFieldFormDto;
-import com.yintu.rixing.dto.system.SysTemplateLibraryFieldQueryDto;
+import com.yintu.rixing.dto.system.*;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.*;
@@ -29,7 +26,7 @@ import java.util.Set;
  * </p>
  *
  * @author mlf
- * @since 2021-01TreeUtil.ROOT_PARENT_ID4
+ * @since 2021-01-14
  */
 @RestController
 @RequestMapping("/system/sys-archives-library-field")
@@ -41,6 +38,9 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
     private ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
     @Autowired
     private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
+
+    @Autowired
+    private ISysArchivesLibraryNumberSettingService iSysArchivesLibraryNumberSettingService;
 
     @Override
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加档案库字段信息")
@@ -109,4 +109,14 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
         List<SysTemplateLibraryFieldType> sysTemplateLibraryFieldTypes = iSysTemplateLibraryFieldTypeService.list(new QueryWrapper<SysTemplateLibraryFieldType>().orderByDesc("id"));
         return ResultDataUtil.ok("查询档案库字段类型列表信息成功", sysTemplateLibraryFieldTypes);
     }
+
+    @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "档案设置")
+    @GetMapping("/sys-archives-library-number-setting")
+    @ApiOperation(value = "档案设置", notes = "档案设置", position = 8)
+    public ResultDataUtil<Object> archivesLibraryNumberSetting(@Validated SysArchivesLibraryNumberSettingDto sysArchivesLibraryNumberSettingDto) {
+        iSysArchivesLibraryNumberSettingService.archivesLibraryNumberSetting(sysArchivesLibraryNumberSettingDto);
+        return ResultDataUtil.ok("档案设置成功");
+    }
+
+
 }
