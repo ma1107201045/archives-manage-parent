@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yintu.rixing.dto.system.SysArchivesLibraryNumberSettingDto;
 import com.yintu.rixing.system.*;
 import com.yintu.rixing.util.AssertUtil;
-import com.yintu.rixing.vo.system.SysArchivesLibraryNumberSettingVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +33,7 @@ public class SysArchivesLibraryNumberSettingServiceImpl extends ServiceImpl<SysA
         List<SysArchivesLibraryNumberSetting> sysArchivesLibraryNumberSettings = new ArrayList<>();
         for (SysArchivesLibraryNumberSettingDto sysArchivesLibraryNumberSettingDto : sysArchivesLibraryNumberSettingDtos) {
             SysArchivesLibraryNumberSetting sysArchivesLibraryNumberSetting = new SysArchivesLibraryNumberSetting();
+            sysArchivesLibraryNumberSetting.setArchivesLibraryId(archivesLibraryId);
             sysArchivesLibraryNumberSetting.setArchivesLibraryFieldId(sysArchivesLibraryNumberSettingDto.getArchivesLibraryFieldId());
             sysArchivesLibraryNumberSetting.setSeparator(sysArchivesLibraryNumberSettingDto.getSeparator());
             sysArchivesLibraryNumberSetting.setCustomCharacter(sysArchivesLibraryNumberSettingDto.getCustomCharacter());
@@ -46,25 +46,27 @@ public class SysArchivesLibraryNumberSettingServiceImpl extends ServiceImpl<SysA
     }
 
     @Override
-    public List<SysArchivesLibraryNumberSettingVo> findByArchivesLibraryId(Integer archivesLibraryId) {
-        List<SysArchivesLibraryNumberSettingVo> sysArchivesLibraryNumberSettingVos = new ArrayList<>();
+    public List<SysArchivesLibraryNumberSettingDto> findByArchivesLibraryId(Integer archivesLibraryId) {
+        List<SysArchivesLibraryNumberSettingDto> sysArchivesLibraryNumberSettingDtos = new ArrayList<>();
         QueryWrapper<SysArchivesLibraryNumberSetting> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(SysArchivesLibraryNumberSetting::getArchivesLibraryId, archivesLibraryId);
         List<SysArchivesLibraryNumberSetting> sysArchivesLibraryNumberSettings = this.list(queryWrapper);
         sysArchivesLibraryNumberSettings.forEach(sysArchivesLibraryNumberSetting -> {
-            SysArchivesLibraryNumberSettingVo sysArchivesLibraryNumberSettingVo = new SysArchivesLibraryNumberSettingVo();
+            SysArchivesLibraryNumberSettingDto sysArchivesLibraryNumberSettingDto = new SysArchivesLibraryNumberSettingDto();
+            sysArchivesLibraryNumberSettingDto.setArchivesLibraryId(archivesLibraryId);
             Integer archivesLibraryFieldId = sysArchivesLibraryNumberSetting.getArchivesLibraryFieldId();
             String separator = sysArchivesLibraryNumberSetting.getSeparator();
             String customCharacter = sysArchivesLibraryNumberSetting.getCustomCharacter();
             if (archivesLibraryFieldId != null) {
                 SysArchivesLibraryField sysArchivesLibraryField = iSysArchivesLibraryFieldService.getById(archivesLibraryFieldId);
-                sysArchivesLibraryNumberSettingVo.setArchivesLibraryFieldName(sysArchivesLibraryField.getName());
+                sysArchivesLibraryNumberSettingDto.setArchivesLibraryFieldId(archivesLibraryFieldId);
+                sysArchivesLibraryNumberSettingDto.setArchivesLibraryFieldName(sysArchivesLibraryField.getName());
             } else {
-                sysArchivesLibraryNumberSettingVo.setSeparator(separator);
-                sysArchivesLibraryNumberSettingVo.setCustomCharacter(customCharacter);
+                sysArchivesLibraryNumberSettingDto.setSeparator(separator);
+                sysArchivesLibraryNumberSettingDto.setCustomCharacter(customCharacter);
             }
-            sysArchivesLibraryNumberSettingVos.add(sysArchivesLibraryNumberSettingVo);
+            sysArchivesLibraryNumberSettingDtos.add(sysArchivesLibraryNumberSettingDto);
         });
-        return sysArchivesLibraryNumberSettingVos;
+        return sysArchivesLibraryNumberSettingDtos;
     }
 }

@@ -4,17 +4,19 @@ package com.yintu.rixing.system;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.base.BaseController;
-import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.config.other.Authenticator;
-import com.yintu.rixing.dto.system.*;
+import com.yintu.rixing.dto.system.SysArchivesLibraryFieldFormDto;
+import com.yintu.rixing.dto.system.SysArchivesLibraryFieldQueryDto;
+import com.yintu.rixing.dto.system.SysArchivesLibraryNumberSettingDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResultDataUtil;
-import com.yintu.rixing.vo.system.SysArchivesLibraryNumberSettingVo;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -127,8 +129,8 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
     @ApiOperation(value = "档案设置", notes = "档案设置")
     @ApiOperationSupport(order = 9)
     @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
-    public ResultDataUtil<List<SysArchivesLibraryNumberSettingVo>> archivesLibraryNumberSetting(@RequestParam Integer archivesLibraryId) {
-        List<SysArchivesLibraryNumberSettingVo> sysArchivesLibraryNumberSettingVos = iSysArchivesLibraryNumberSettingService.findByArchivesLibraryId(archivesLibraryId);
+    public ResultDataUtil<List<SysArchivesLibraryNumberSettingDto>> archivesLibraryNumberSetting(@RequestParam Integer archivesLibraryId) {
+        List<SysArchivesLibraryNumberSettingDto> sysArchivesLibraryNumberSettingVos = iSysArchivesLibraryNumberSettingService.findByArchivesLibraryId(archivesLibraryId);
         return ResultDataUtil.ok("查询档案设置信息成功", sysArchivesLibraryNumberSettingVos);
     }
 }

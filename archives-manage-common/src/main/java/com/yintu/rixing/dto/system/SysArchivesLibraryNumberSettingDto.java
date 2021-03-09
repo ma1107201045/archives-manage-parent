@@ -23,6 +23,8 @@ public class SysArchivesLibraryNumberSettingDto {
     @ApiModelProperty(value = "档案库字段id")
     private Integer archivesLibraryFieldId;
 
+    @ApiModelProperty(value = "档案库字段名称")
+    private String archivesLibraryFieldName;
 
     @ApiModelProperty(value = "分隔符 1.- 2.·3..4.~5.=6./7.`")
     @NotNull

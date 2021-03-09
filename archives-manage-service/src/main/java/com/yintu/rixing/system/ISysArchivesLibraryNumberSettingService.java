@@ -2,7 +2,6 @@ package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yintu.rixing.dto.system.SysArchivesLibraryNumberSettingDto;
-import com.yintu.rixing.vo.system.SysArchivesLibraryNumberSettingVo;
 
 import java.util.List;
 
@@ -29,6 +28,6 @@ public interface ISysArchivesLibraryNumberSettingService extends IService<SysArc
      * @param archivesLibraryId 档案库id
      * @return ..
      */
-    List<SysArchivesLibraryNumberSettingVo> findByArchivesLibraryId(Integer archivesLibraryId);
+    List<SysArchivesLibraryNumberSettingDto> findByArchivesLibraryId(Integer archivesLibraryId);
 
 }
