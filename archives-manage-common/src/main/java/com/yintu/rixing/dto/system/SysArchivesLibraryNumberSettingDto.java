@@ -19,12 +19,14 @@ public class SysArchivesLibraryNumberSettingDto {
     @NotNull
     private Integer archivesLibraryId;
 
-    @ApiModelProperty(value = "分隔符 1.- 2.·3..4.~5.=6./7.`")
-    @NotNull
-    private String separator;
 
     @ApiModelProperty(value = "档案库字段id")
     private Integer archivesLibraryFieldId;
+
+
+    @ApiModelProperty(value = "分隔符 1.- 2.·3..4.~5.=6./7.`")
+    @NotNull
+    private String separator;
 
     @ApiModelProperty(value = "自定义字符")
     private String customCharacter;

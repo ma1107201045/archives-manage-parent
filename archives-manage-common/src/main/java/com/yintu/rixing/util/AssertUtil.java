@@ -39,12 +39,14 @@ public class AssertUtil {
     }
 
     public static void isLength(Collection<?> value, String message) {
+        notNull(value, message);
         if (!value.isEmpty()) {
             throw new BaseRuntimeException(message);
         }
     }
 
     public static <T extends String> void notLength(Collection<?> value, String message) {
+        notNull(value, message);
         if (value.isEmpty()) {
             throw new BaseRuntimeException(message);
         }
