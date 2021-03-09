@@ -56,7 +56,10 @@ public class ArchivesManageApplicationTests {
 
     @Test
     void contextLoads() {
-
+        DeTest deTest = new DeTest();
+        deTest.setId(3);
+        deTest.setEmail("111111");
+        deTestMapper.updateById(deTest);
     }
 
 
