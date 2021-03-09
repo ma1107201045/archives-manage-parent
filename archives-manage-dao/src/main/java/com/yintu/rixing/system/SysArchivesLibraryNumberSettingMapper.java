@@ -1,7 +1,6 @@
 package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yintu.rixing.system.entity.SysArchivesLibraryNumberSetting;
 
 /**
  * <p>

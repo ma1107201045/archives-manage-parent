@@ -111,12 +111,19 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
     }
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "档案设置")
-    @GetMapping("/sys-archives-library-number-setting")
+    @PostMapping("/sys-archives-library-number-setting")
     @ApiOperation(value = "档案设置", notes = "档案设置", position = 8)
     public ResultDataUtil<Object> archivesLibraryNumberSetting(@Validated SysArchivesLibraryNumberSettingDto sysArchivesLibraryNumberSettingDto) {
         iSysArchivesLibraryNumberSettingService.archivesLibraryNumberSetting(sysArchivesLibraryNumberSettingDto);
         return ResultDataUtil.ok("档案设置成功");
     }
 
-
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询档案设置信息")
+    @GetMapping("/sys-archives-library-number-setting")
+    @ApiOperation(value = "档案设置", notes = "档案设置", position = 9)
+    @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
+    public ResultDataUtil<List<SysArchivesLibraryNumberSetting>> archivesLibraryNumberSetting(@RequestParam Integer archivesLibraryId) {
+        List<SysArchivesLibraryNumberSetting> sysArchivesLibraryNumberSettings = iSysArchivesLibraryNumberSettingService.findByArchivesLibraryId(archivesLibraryId);
+        return ResultDataUtil.ok("查询档案设置信息成功", sysArchivesLibraryNumberSettings);
+    }
 }
