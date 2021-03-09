@@ -45,7 +45,7 @@ public class RemoAuthenticationRegisterDto {
     @NotBlank
     private String phoneNum;
 
-    @ApiModelProperty(value = "备注", position = 13)
+    @ApiModelProperty(value = "备注")
     @TableField("remark")
     private String remark;
 }

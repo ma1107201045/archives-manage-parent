@@ -13,19 +13,27 @@ import java.util.Date;
  */
 @Component
 public class CustomConverter implements Converter<String, Date> {
+
+    private static final int TIME_LENGTH = 8;
+
+    private static final int DATE_LENGTH = 10;
+
+    private static final int DATE_TIME_LENGTH = 19;
+
     @Override
     public Date convert(String source) {
-        if (source.length() == 0) {
+        int length = source.length();
+        if (length == 0) {
             return null;
         }
         // HH:mm:ss 8
         // yyyy-MM-dd 10
         // yyyy-MM-dd HH:mm:ss 19
-        if (source.length() == 8) {
+        if (length == TIME_LENGTH) {
             return DateUtil.parseTime(source);
-        } else if (source.length() == 10) {
+        } else if (length == DATE_LENGTH) {
             return DateUtil.parseDate(source);
-        } else if (source.length() == 19) {
+        } else if (length == DATE_TIME_LENGTH) {
             return DateUtil.parseDateTime(source);
         }
         return DateUtil.parseUTC(source);

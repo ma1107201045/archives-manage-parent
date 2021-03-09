@@ -35,7 +35,7 @@ public class CaptchaController {
     public void getCode(@ApiIgnore HttpSession session, @ApiIgnore HttpServletResponse response) throws IOException {
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
         response.setStatus(HttpServletResponse.SC_OK);
-        CircleCaptcha circleCaptcha = CaptchaUtil.createCircleCaptcha(150, 40, 4, 10);
+        CircleCaptcha circleCaptcha = CaptchaUtil.createCircleCaptcha(150, 40, 4, 0);
         session.setAttribute("captcha", circleCaptcha.getCode());
         OutputStream os = response.getOutputStream();
         circleCaptcha.write(os);

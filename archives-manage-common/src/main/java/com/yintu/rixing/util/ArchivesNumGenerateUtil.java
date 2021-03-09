@@ -7,9 +7,9 @@ package com.yintu.rixing.util;
  */
 public class ArchivesNumGenerateUtil {
 
-    private static final String format = "%s-%s-%s-%s";
+    private static final String FORMAT = "%s-%s-%s-%s";
 
     public static String get(Object... args) {
-        return String.format(format, args);
+        return String.format(FORMAT, args);
     }
 }

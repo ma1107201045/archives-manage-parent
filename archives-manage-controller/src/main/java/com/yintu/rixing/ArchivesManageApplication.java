@@ -6,7 +6,9 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- * @author Admin
+ * @Author: mlf
+ * @Date: 2020/12/20 15:07:24
+ * @Version: 1.0
  */
 @EnableScheduling
 @ServletComponentScan

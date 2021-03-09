@@ -30,31 +30,30 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
 
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+    private static final String URL_IGNORE = "/common/**";
+
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         FilterInvocation filterInvocation = (FilterInvocation) object;
         //url后边的参数去掉（？号后边的）
         String requestUrl = filterInvocation.getRequestUrl().split("[?]")[0];
         String requestMethod = filterInvocation.getRequest().getMethod();
-        List<SysPermissionPojo> sysPermissionVos = iSysPermissionService.list(EnumFlag.False.getValue());
-        List<ConfigAttribute> configAttributes = new ArrayList<>();
-        for (SysPermissionPojo sysPermissionVo : sysPermissionVos) {
-            if (antPathMatcher.match(sysPermissionVo.getUrl(), requestUrl) && requestMethod.toUpperCase().equals(sysPermissionVo.getMethod())) {
-                List<SysRolePojo> sysRoleVos = sysPermissionVo.getSysRoleVos();
-                for (SysRolePojo sysRoleVo : sysRoleVos) {
-                    configAttributes.add(new SecurityConfig(sysRoleVo.getName().trim()));
+        //如果需要授权的接口直接返回固定角色
+        if (antPathMatcher.match(URL_IGNORE, requestUrl)) {
+            return SecurityConfig.createList(EnumRole.URL_NOT_AUTHORIZATION.toString());
+        } else {
+            List<SysPermissionPojo> sysPermissionVos = iSysPermissionService.list(EnumFlag.False.getValue());
+            List<ConfigAttribute> configAttributes = new ArrayList<>();
+            for (SysPermissionPojo sysPermissionVo : sysPermissionVos) {
+                if (antPathMatcher.match(sysPermissionVo.getUrl(), requestUrl) && requestMethod.toUpperCase().equals(sysPermissionVo.getMethod())) {
+                    List<SysRolePojo> sysRoleVos = sysPermissionVo.getSysRoleVos();
+                    for (SysRolePojo sysRoleVo : sysRoleVos) {
+                        configAttributes.add(new SecurityConfig(sysRoleVo.getName().trim()));
+                    }
                 }
             }
+            return configAttributes.isEmpty() ? SecurityConfig.createList(EnumRole.URL_NEED_AUTHORIZATION.toString()) : configAttributes;
         }
-        //如果不想在数据库中的权限分配给角色则可以在此处写逻辑
-        if (configAttributes.isEmpty()) {
-            if (antPathMatcher.match("/common/**", requestUrl)) {
-                return SecurityConfig.createList(EnumRole.URL_NOT_AUTHORIZATION.toString());
-            } else {
-                return SecurityConfig.createList(EnumRole.URL_NEED_AUTHORIZATION.toString());
-            }
-        }
-        return configAttributes;
     }
 
     @Override

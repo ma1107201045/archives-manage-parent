@@ -1,6 +1,7 @@
 package com.yintu.rixing.common;
 
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.enumobject.EnumAuthType;
@@ -27,7 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/common/comm-menu")
 @Api(tags = "菜单栏接口")
-@ApiSort(1)
+@ApiSupport(order = 1)
 public class CommMenuController extends Authenticator {
 
     @Autowired

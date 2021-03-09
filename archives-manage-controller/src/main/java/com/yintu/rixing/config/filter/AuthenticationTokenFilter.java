@@ -49,14 +49,14 @@ public class AuthenticationTokenFilter implements Filter {
                     if (StrUtil.isEmpty(token)) {
                         throw new BaseRuntimeException("token不能为空");
                     }
-                    Claims claims = jwtTokenUtil.parseJWTPayLoad(token);
+                    Claims claims = jwtTokenUtil.parseJwtPayLoad(token);
                     if (claims.getExpiration().before(DateUtil.date())) {
                         throw new BaseRuntimeException("token已过期，请重新获取");
                     }
                     //设置用户凭证id
                     request.setAttribute(IdentityIdUtil.IDENTITY_ID_NAME, claims.getSubject());
                 } catch (Exception exception) {
-                    ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noJWTAuthentication("尚未认证，请先认证");
+                    ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noJwtAuthentication("尚未认证，请先认证");
                     JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
                     response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     response.setStatus(HttpServletResponse.SC_OK);

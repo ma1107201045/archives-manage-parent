@@ -26,7 +26,7 @@ import java.util.Set;
  * </p>
  *
  * @author mlf
- * @since 2020TreeUtil.ROOT_PARENT_ID1-27
+ * @since 2020-11-27
  */
 @RestController
 @RequestMapping("/system/sys-department-qzh")
@@ -40,6 +40,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
     @Autowired
     private ISysDepartmentService iSysDepartmentService;
 
+    @Override
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加全宗号信息")
     @PostMapping
     @ApiOperation(value = "添加全宗号信息", notes = "添加全宗号信息", position = 1)
@@ -48,6 +49,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
         return ResultDataUtil.ok("添加全宗号信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.WARN, module = "系统设置", context = "删除全宗号信息")
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除全宗号信息", notes = "删除全宗号信息", position = 2)
@@ -57,6 +59,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
         return ResultDataUtil.ok("删除全宗号信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = " 修改全宗号信息")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改全宗号信息", notes = "修改全宗号信息", position = 3)
@@ -66,6 +69,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
         return ResultDataUtil.ok("修改全宗号信息成功");
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询全宗号信息")
     @GetMapping("/{id}")
     @ApiOperation(value = "查询全宗号信息", notes = " 查询全宗号单条信息", position = 4)
@@ -75,6 +79,7 @@ public class SysDepartmentQzhController extends Authenticator implements BaseCon
         return ResultDataUtil.ok("查询全宗号信息成功", sysQzh);
     }
 
+    @Override
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询全宗号信息列表")
     @GetMapping
     @ApiOperation(value = "查询全宗号信息列表", notes = " 查询全宗号信息列表", position = 5)

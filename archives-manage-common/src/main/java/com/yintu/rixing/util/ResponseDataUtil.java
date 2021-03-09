@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 200 成功 500 失败 401未登录 403 未授权
+ * @Author: mlf
+ * @Date: 200 成功 500 失败 401未登录 403 未授权
+ * @Version: 1.0
  */
 public class ResponseDataUtil {
 

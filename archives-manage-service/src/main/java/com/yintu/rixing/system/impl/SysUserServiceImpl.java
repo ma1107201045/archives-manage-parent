@@ -47,6 +47,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private ISysUserRoleService iSysUserRoleService;
     @Autowired
     private ISysRoleService iSysRoleService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void save(SysUserFormDto sysUserFormDto) {
@@ -104,11 +106,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         String newPassword = sysUserPasswordDto.getNewPassword();
         if (oldPassword != null && !oldPassword.isEmpty() && newPassword != null && !newPassword.isEmpty()) {
             SysUser sysUser = this.getById(id);
-            if (sysUser == null)
+            if (sysUser == null) {
                 throw new BaseRuntimeException("当前用户不存在");
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if (!passwordEncoder.matches(oldPassword, sysUser.getPassword()))
+            }
+            if (!passwordEncoder.matches(oldPassword, sysUser.getPassword())) {
                 throw new BaseRuntimeException("旧密码错误");
+            }
             sysUser.setPassword(passwordEncoder.encode(newPassword));
             this.updateById(sysUser);
         }
