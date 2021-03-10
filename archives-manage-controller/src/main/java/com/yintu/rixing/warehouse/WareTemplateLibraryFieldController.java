@@ -230,21 +230,21 @@ public class WareTemplateLibraryFieldController {
 
     //分页查询 实体档案管理
     @GetMapping("/findAllEntityArchives")
-    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "分页查询实体档案管理信息")
-    @ApiOperation(value = "分页查询实体档案管理信息", notes = " 分页查询实体档案管理信息")
+    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "分页查询实体档案信息")
+    @ApiOperation(value = "分页查询实体档案信息", notes = " 分页查询实体档案信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "15")
     })
     public ResultDataUtil<DataCommonVo>findAllEntityArchives(@RequestParam Integer num, @RequestParam Integer size){
         DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findAllEntityArchives(num,size);
-        return ResultDataUtil.ok("分页查询实体档案管理信息成功",dataCommonVo);
+        return ResultDataUtil.ok("分页查询实体档案信息成功",dataCommonVo);
     }
 
     //多条件查询分页查询 实体档案管理
     @PostMapping("/findAllEntityArchivesBySomethings/{num}/{size}")
-    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案管理信息")
-    @ApiOperation(value = "根据条件分页查询实体档案管理信息", notes = " 根据条件分页查询实体档案管理信息")
+    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案信息")
+    @ApiOperation(value = "根据条件分页查询实体档案信息", notes = " 根据条件分页查询实体档案信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
@@ -252,7 +252,7 @@ public class WareTemplateLibraryFieldController {
     })
     public ResultDataUtil<DataCommonVo>findAllEntityArchivesBySomethings(@RequestBody JSONObject jsonObject, @PathVariable Integer num, @PathVariable Integer size){
         DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findAllEntityArchivesBySomethings(num,size,jsonObject);
-        return ResultDataUtil.ok("根据条件分页查询实体档案管理信息成功",dataCommonVo);
+        return ResultDataUtil.ok("根据条件分页查询实体档案信息成功",dataCommonVo);
     }
 
     //分页查询 实体档案入库管理
@@ -270,8 +270,8 @@ public class WareTemplateLibraryFieldController {
 
     //多条件分页查询 实体档案入库管理
     @PostMapping("/findInWarehouseBySomethings/{num}/{size}")
-    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案入库管理信息")
-    @ApiOperation(value = "根据条件分页查询实体档案入库管理信息", notes = " 根据条件分页查询实体档案入库管理信息")
+    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案入库信息")
+    @ApiOperation(value = "根据条件分页查询实体档案入库信息", notes = " 根据条件分页查询实体档案入库信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
@@ -279,7 +279,7 @@ public class WareTemplateLibraryFieldController {
     })
     public ResultDataUtil<DataCommonVo>findInWarehouseBySomethings(@RequestBody JSONObject jsonObject,@PathVariable Integer num, @PathVariable Integer size){
         DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findInWarehouseBySomethings(num,size,jsonObject);
-        return ResultDataUtil.ok("根据条件分页查询实体档案入库管理信息成功",dataCommonVo);
+        return ResultDataUtil.ok("根据条件分页查询实体档案入库信息成功",dataCommonVo);
     }
 
     //分页查询 实体档案出库管理
@@ -296,8 +296,8 @@ public class WareTemplateLibraryFieldController {
     }
     //多条件分页查询 实体档案出库管理
     @PostMapping("/findOutWarehouseBySomethings/{num}/{size}")
-    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案出库管理信息")
-    @ApiOperation(value = "根据条件分页查询实体档案出库管理信息", notes = " 根据条件分页查询实体档案出库管理信息")
+    @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "根据条件分页查询实体档案出库信息")
+    @ApiOperation(value = "根据条件分页查询实体档案出库信息", notes = " 根据条件分页查询实体档案出库信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "num", value = "页码", required = true, defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "页数", required = true, defaultValue = "10"),
@@ -305,7 +305,7 @@ public class WareTemplateLibraryFieldController {
     })
     public ResultDataUtil<DataCommonVo>findOutWarehouseBySomethings(@RequestBody JSONObject jsonObject,@PathVariable Integer num, @PathVariable Integer size){
         DataCommonVo dataCommonVo =iWareTemplateLibraryFieldService.findOutWarehouseBySomethings(num,size,jsonObject);
-        return ResultDataUtil.ok("根据条件分页查询实体档案出库管理信息成功",dataCommonVo);
+        return ResultDataUtil.ok("根据条件分页查询实体档案出库信息成功",dataCommonVo);
     }
 
     //根据id 对数据进行编辑
