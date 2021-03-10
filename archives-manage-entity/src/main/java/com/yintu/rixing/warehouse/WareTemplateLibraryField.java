@@ -1,11 +1,9 @@
 package com.yintu.rixing.warehouse;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.yintu.rixing.BaseEntity;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.yintu.rixing.system.SysTemplateLibraryFieldType;
+import com.yintu.rixing.system.SysDataType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -73,7 +71,7 @@ public class WareTemplateLibraryField extends BaseEntity {
 
     @ApiModelProperty(value = "模板库字段对应类型")
     @TableField(exist = false)
-    private SysTemplateLibraryFieldType sysTemplateLibraryFieldType;
+    private SysDataType sysTemplateLibraryFieldType;
 
 
 }

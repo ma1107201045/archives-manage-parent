@@ -5,9 +5,9 @@ import com.yintu.rixing.common.CommTableField;
 import com.yintu.rixing.common.CommTableFieldMapper;
 import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.exception.BaseRuntimeException;
-import com.yintu.rixing.system.ISysTemplateLibraryFieldTypeService;
+import com.yintu.rixing.system.ISysDataTypeService;
 import com.yintu.rixing.system.SysArchivesLibraryField;
-import com.yintu.rixing.system.SysTemplateLibraryFieldType;
+import com.yintu.rixing.system.SysDataType;
 import com.yintu.rixing.util.TableNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class CommTableFieldServiceImpl implements ICommTableFieldService {
     @Autowired
     private CommTableFieldMapper commTableFieldMapper;
     @Autowired
-    private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
+    private ISysDataTypeService iSysTemplateLibraryFieldTypeService;
 
     public void addTable(String tableName, String tableComment, List<CommTableField> commTableFields) {
         commTableFieldMapper.createTable(tableName, tableComment, commTableFields);
@@ -141,7 +141,7 @@ public class CommTableFieldServiceImpl implements ICommTableFieldService {
     public CommTableField findByDataKeyAndSysArchivesLibraryField(String dataKey, SysArchivesLibraryField sysArchivesLibraryField) {
         String tableName = TableNameUtil.getFullTableName(dataKey);
         Integer templateLibraryFieldTypeId = sysArchivesLibraryField.getTemplateLibraryFieldTypeId();
-        SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+        SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
         String dataType = sysTemplateLibraryFieldType.getDataKey();
         CommTableField commTableField = new CommTableField();
         commTableField.setTableName(tableName);

@@ -2,15 +2,13 @@ package com.yintu.rixing.warehouse;
 
 
 import cn.hutool.core.date.DateUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.system.ISysTemplateLibraryFieldTypeService;
-import com.yintu.rixing.system.SysTemplateLibraryFieldType;
+import com.yintu.rixing.system.ISysDataTypeService;
+import com.yintu.rixing.system.SysDataType;
 import com.yintu.rixing.util.ResponseDataUtil;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
@@ -36,13 +34,13 @@ public class WareTemplateLibraryFieldController {
     @Autowired
     private IWareTemplateLibraryFieldService iWareTemplateLibraryFieldService;
     @Autowired
-    private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
+    private ISysDataTypeService iSysTemplateLibraryFieldTypeService;
 
     @Log(level = EnumLogLevel.TRACE, module = "库房管理", context = "查询模板库字段类型列表信息")
     @GetMapping("/findTemplateLibraryFieldType")
     @ApiOperation(value = "查询模板库字段类型列表信息", notes = "查询模板库字段类型列表信息")
-    public ResultDataUtil<List<SysTemplateLibraryFieldType>> findSysTemplateLibraryFieldTypes() {
-        List<SysTemplateLibraryFieldType> sysTemplateLibraryFieldTypes = iSysTemplateLibraryFieldTypeService.list(new QueryWrapper<SysTemplateLibraryFieldType>().orderByDesc("id"));
+    public ResultDataUtil<List<SysDataType>> findSysTemplateLibraryFieldTypes() {
+        List<SysDataType> sysTemplateLibraryFieldTypes = iSysTemplateLibraryFieldTypeService.list(new QueryWrapper<SysDataType>().orderByDesc("id"));
         return ResultDataUtil.ok("查询模板库字段类型列表信息成功", sysTemplateLibraryFieldTypes);
     }
 
@@ -99,9 +97,9 @@ public class WareTemplateLibraryFieldController {
         QueryWrapper<WareTemplateLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("`order`");
         List<WareTemplateLibraryField> wareTemplateLibraryFieldPage = iWareTemplateLibraryFieldService.list(queryWrapper);
-        QueryWrapper<SysTemplateLibraryFieldType> queryWrapper1 = new QueryWrapper<>();
+        QueryWrapper<SysDataType> queryWrapper1 = new QueryWrapper<>();
         queryWrapper1.like("data_key","datetime");
-        SysTemplateLibraryFieldType sysTemplateLibraryFieldType=iSysTemplateLibraryFieldTypeService.getOne(queryWrapper1);
+        SysDataType sysTemplateLibraryFieldType=iSysTemplateLibraryFieldTypeService.getOne(queryWrapper1);
         WareTemplateLibraryField wareTemplateLibraryField1=new WareTemplateLibraryField();
         Long time1 = new Date().getTime();
         wareTemplateLibraryField1.setId( time1.intValue());
@@ -131,9 +129,9 @@ public class WareTemplateLibraryFieldController {
         wareTemplateLibraryFieldPage.add(wareTemplateLibraryField2);
         //添加档案号
         WareTemplateLibraryField wareTemplateLibraryField3=new WareTemplateLibraryField();
-        QueryWrapper<SysTemplateLibraryFieldType> queryWrapper2 = new QueryWrapper<>();
+        QueryWrapper<SysDataType> queryWrapper2 = new QueryWrapper<>();
         queryWrapper2.like("data_key","varchar");
-        SysTemplateLibraryFieldType sysTemplateLibraryFieldType1=iSysTemplateLibraryFieldTypeService.getOne(queryWrapper2);
+        SysDataType sysTemplateLibraryFieldType1=iSysTemplateLibraryFieldTypeService.getOne(queryWrapper2);
         wareTemplateLibraryField3.setId(time1.intValue()+2);
         wareTemplateLibraryField3.setName("档案号");
         wareTemplateLibraryField3.setDataKey("archivesNum");

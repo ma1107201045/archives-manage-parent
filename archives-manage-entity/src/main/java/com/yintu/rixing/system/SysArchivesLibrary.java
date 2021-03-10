@@ -29,10 +29,6 @@ public class SysArchivesLibrary extends BaseEntity {
     @TableField("parent_id")
     private Integer parentId;
 
-    @ApiModelProperty(value = "档案库编号")
-    @TableField(value = "number", updateStrategy = FieldStrategy.IGNORED)
-    private Integer number;
-
     @ApiModelProperty(value = "档案库名称")
     @TableField("name")
     private String name;
@@ -41,9 +37,13 @@ public class SysArchivesLibrary extends BaseEntity {
     @TableField(value = "data_key", updateStrategy = FieldStrategy.IGNORED)
     private String dataKey;
 
-    @ApiModelProperty(value = "档案库分类 1.目录 2.档案库")
+    @ApiModelProperty(value = "分类 1.目录 2.档案库")
     @TableField("type")
     private Short type;
+
+    @ApiModelProperty(value = "档案库分类 1.案卷级 2.一文一件")
+    @TableField("type")
+    private Short type2;
 
     @ApiModelProperty(value = "档案库描述")
     @TableField("description")

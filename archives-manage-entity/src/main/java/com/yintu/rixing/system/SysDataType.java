@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统模板库字段类型表
+ * 系统数据类型表
  * </p>
  *
  * @author mlf
@@ -18,9 +18,9 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_template_library_field_type")
-@ApiModel(value = "SysTemplateLibraryFieldType对象", description = "系统模板库字段类型表")
-public class SysTemplateLibraryFieldType extends BaseEntity {
+@TableName("sys_data_type")
+@ApiModel(value = "SysDataType对象", description = "系统数据类型表")
+public class SysDataType extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

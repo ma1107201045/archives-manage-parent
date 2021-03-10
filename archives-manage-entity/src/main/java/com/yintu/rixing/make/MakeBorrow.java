@@ -6,18 +6,12 @@ import com.yintu.rixing.BaseEntity;
 
 import java.util.Date;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.yintu.rixing.data.DataArchivesLibraryFile;
-import com.yintu.rixing.system.SysTemplateLibraryFieldType;
-import com.yintu.rixing.system.SysUser;
 import com.yintu.rixing.vo.make.MakeBorrowAuditorVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

@@ -11,8 +11,8 @@ import com.yintu.rixing.common.CommTableField;
 import com.yintu.rixing.common.ICommTableFieldService;
 import com.yintu.rixing.enumobject.EnumFlag;
 import com.yintu.rixing.exception.BaseRuntimeException;
-import com.yintu.rixing.system.ISysTemplateLibraryFieldTypeService;
-import com.yintu.rixing.system.SysTemplateLibraryFieldType;
+import com.yintu.rixing.system.ISysDataTypeService;
+import com.yintu.rixing.system.SysDataType;
 import com.yintu.rixing.vo.data.DataCommonFieldVo;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import com.yintu.rixing.warehouse.IWareLibraryTreeService;
@@ -38,7 +38,7 @@ import java.util.*;
 @Service
 public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplateLibraryFiledMapper, WareTemplateLibraryField> implements IWareTemplateLibraryFieldService {
     @Autowired
-    private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
+    private ISysDataTypeService iSysTemplateLibraryFieldTypeService;
     @Autowired
     private ICommTableFieldService iCommTableFieldService;
     @Autowired
@@ -100,7 +100,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         for (WareTemplateLibraryField wareTemplateLibraryField : wareTemplateLibraryFieldList) {
             DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
             Integer templateLibraryFieldTypeId = wareTemplateLibraryField.getTemplateLibraryFieldTypeId();
-            SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+            SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
             Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
             String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
             String fieldTypeName = sysTemplateLibraryFieldType.getName();
@@ -226,7 +226,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             for (WareTemplateLibraryField wareTemplateLibraryField : wareTemplateLibraryFieldList) {
                 DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
                 Integer templateLibraryFieldTypeId = wareTemplateLibraryField.getTemplateLibraryFieldTypeId();
-                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+                SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
                 Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
                 String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
                 String fieldTypeName = sysTemplateLibraryFieldType.getName();
@@ -321,7 +321,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         for (WareTemplateLibraryField wareTemplateLibraryField : wareTemplateLibraryFieldList) {
             DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
             Integer templateLibraryFieldTypeId = wareTemplateLibraryField.getTemplateLibraryFieldTypeId();
-            SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+            SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
             Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
             String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
             String fieldTypeName = sysTemplateLibraryFieldType.getName();
@@ -441,7 +441,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             for (WareTemplateLibraryField wareTemplateLibraryField : wareTemplateLibraryFieldList) {
                 DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
                 Integer templateLibraryFieldTypeId = wareTemplateLibraryField.getTemplateLibraryFieldTypeId();
-                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+                SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
                 Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
                 String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
                 String fieldTypeName = sysTemplateLibraryFieldType.getName();
@@ -536,7 +536,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
         for (WareTemplateLibraryField wareTemplateLibraryField : wareTemplateLibraryFieldList) {
             DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
             Integer templateLibraryFieldTypeId = wareTemplateLibraryField.getTemplateLibraryFieldTypeId();
-            SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+            SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
             Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
             String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
             String fieldTypeName = sysTemplateLibraryFieldType.getName();
@@ -672,7 +672,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
             for (WareTemplateLibraryField wareTemplateLibraryField : wareTemplateLibraryFieldList) {
                 DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
                 Integer templateLibraryFieldTypeId = wareTemplateLibraryField.getTemplateLibraryFieldTypeId();
-                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+                SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
                 Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
                 String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
                 String fieldTypeName = sysTemplateLibraryFieldType.getName();
@@ -905,7 +905,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                 Integer required = (Integer) map.get("required");
                 String dataKey = (String) map.get("dataKey");
                 Integer templateLibraryFieldTypeId = (Integer) map.get("templateLibraryFieldTypeId");
-                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+                SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
                 String dataType = sysTemplateLibraryFieldType.getDataKey();
                 String name = (String) map.get("name");
                 if ("datetime".equals(dataType) || "date".equals(dataType)) {
@@ -971,7 +971,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                     Integer required = (Integer) map.get("required");
                     String dataKey = (String) map.get("dataKey");
                     Integer templateLibraryFieldTypeId = (Integer) map.get("templateLibraryFieldTypeId");
-                    SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+                    SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
                     String dataType = sysTemplateLibraryFieldType.getDataKey();
                     String name = (String) map.get("name");
                     commTableField.setComment(name);//注释
@@ -1006,7 +1006,7 @@ public class WareTemplateLibraryFieldServiceImpl extends ServiceImpl<WareTemplat
                     Integer required = (Integer) map.get("required");
                     String dataKey = (String) map.get("dataKey");
                     Integer templateLibraryFieldTypeId = (Integer) map.get("templateLibraryFieldTypeId");
-                    SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+                    SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
                     String dataType = sysTemplateLibraryFieldType.getDataKey();
                     String name = (String) map.get("name");
                     commTableField.setComment(name);//注释

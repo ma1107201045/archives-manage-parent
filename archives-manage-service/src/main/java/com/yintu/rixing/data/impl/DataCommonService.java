@@ -307,7 +307,7 @@ public class DataCommonService {
             String dataKey = sysArchivesLibraryField.getDataKey();
             String name = sysArchivesLibraryField.getName();
 
-            SysTemplateLibraryFieldType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysTemplateLibraryFieldType();
+            SysDataType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysTemplateLibraryFieldType();
             Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
             String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
             String fieldTypeName = sysTemplateLibraryFieldType.getName();

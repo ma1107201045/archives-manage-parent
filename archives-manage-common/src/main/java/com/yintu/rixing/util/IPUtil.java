@@ -24,8 +24,9 @@ public class IPUtil {
      * @return ip地址
      */
     public static String getIpAddress(HttpServletRequest request) {
-        if (request == null)
+        if (request == null) {
             return "";
+        }
         String ip = request.getHeader("X-Requested-For");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Forwarded-For");

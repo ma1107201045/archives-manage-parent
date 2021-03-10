@@ -21,33 +21,27 @@ import javax.validation.constraints.NotNull;
 public class SysArchivesLibraryFormDto extends IdDto {
 
     @ApiModelProperty(value = "父节点主键", required = true)
-    @TableField("parent_id")
     @NotNull
     private Integer parentId;
 
-    @ApiModelProperty(value = "档案库编号")
-    @TableField("number")
-    private Integer number;
-
     @ApiModelProperty(value = "档案库名称", required = true)
-    @TableField("name")
     @NotBlank
     private String name;
 
     @ApiModelProperty(value = "key（定义数据库表名）")
-    @TableField("data_key")
     private String dataKey;
 
-    @ApiModelProperty(value = "档案库分类 1.目录 2.档案库", required = true)
-    @TableField("type")
-    @NotNull
+    @ApiModelProperty(value = "分类 1.目录 2.档案库", required = true)
     private Short type;
+
+    @ApiModelProperty(value = "档案库分类 1.案卷级 2.一文一件")
+    private Short type1;
 
     @ApiModelProperty(value = "档案库描述")
     @TableField("description")
     private String description;
 
-    @ApiModelProperty(value = "模板库id", required = true)
+    @ApiModelProperty(value = "模板库id")
     @TableField("template_library_id")
     private Integer templateLibraryId;
 

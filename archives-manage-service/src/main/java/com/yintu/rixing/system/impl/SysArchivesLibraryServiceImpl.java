@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibraryMapper, SysArchivesLibrary> implements ISysArchivesLibraryService {
 
     @Autowired
-    private ISysTemplateLibraryFieldService iSysTemplateLibraryFieldService;
+    private ISysCommonFieldLibraryService iSysTemplateLibraryFieldService;
     @Autowired
     private ISysArchivesLibraryFieldDefaultService iSysArchivesLibraryFieldDefaultService;
     @Autowired
@@ -46,17 +46,13 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         Integer parentId = sysArchivesLibraryFormDto.getParentId();
         String name = sysArchivesLibraryFormDto.getName();
         Short type = sysArchivesLibraryFormDto.getType();
-        Integer number = sysArchivesLibraryFormDto.getNumber();
+        Short type1 = sysArchivesLibraryFormDto.getType1();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
         Integer templateLibraryId = sysArchivesLibraryFormDto.getTemplateLibraryId();
-        if (type == 2 && (number == null || dataKey == null || templateLibraryId == null)) {
+        if (type == 2 && (dataKey == null || templateLibraryId == null)) {
             throw new BaseRuntimeException("档案库编号或者key或者模板库id不能为空");
         }
         if (type == 2) {
-            List<Integer> ids1 = this.listByNumber(number);
-            if (!ids1.isEmpty()) {
-                throw new BaseRuntimeException("档案编号不能重复");
-            }
             List<Integer> ids2 = this.iSysArchivesLibraryFieldDefaultService.listByDataKey(dataKey);
             if (!ids2.isEmpty()) {
                 throw new BaseRuntimeException("key不能与系统默认重复");
@@ -96,8 +92,8 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 commTableFields.add(commTableField);
             }
 
-            List<SysTemplateLibraryField> sysTemplateLibraryFields = iSysTemplateLibraryFieldService.listByTemplateLibraryId(templateLibraryId);
-            for (SysTemplateLibraryField sysTemplateLibraryField : sysTemplateLibraryFields) {
+            List<SysCommonFieldLibrary> sysTemplateLibraryFields = null;//iSysTemplateLibraryFieldService.listByTemplateLibraryId(templateLibraryId);
+            for (SysCommonFieldLibrary sysTemplateLibraryField : sysTemplateLibraryFields) {
                 String dataKey1 = sysTemplateLibraryField.getDataKey();
                 //从模板库中的字段复制到档案库的字段
                 List<Integer> idList = sysArchivesLibraryFieldDefaults.stream().filter(sysArchivesLibraryFieldDefault -> sysArchivesLibraryFieldDefault.getDataKey().equals(dataKey1)).map(SysArchivesLibraryFieldDefault::getId).collect(Collectors.toList());
@@ -146,17 +142,12 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         Integer parentId = sysArchivesLibraryFormDto.getParentId();
         String name = sysArchivesLibraryFormDto.getName();
         Short type = sysArchivesLibraryFormDto.getType();
-        Integer number = sysArchivesLibraryFormDto.getNumber();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
         Integer templateLibraryId = sysArchivesLibraryFormDto.getTemplateLibraryId();
-        if (type == 2 && (number == null || dataKey == null || templateLibraryId == null)) {
+        if (type == 2 && (dataKey == null || templateLibraryId == null)) {
             throw new BaseRuntimeException("档案库编号或者key或者模板库id不能为空");
         }
         if (type == 2) {
-            List<Integer> ids1 = this.listByNumber(number);
-            if (!ids1.isEmpty() && !ids1.get(0).equals(id)) {
-                throw new BaseRuntimeException("档案编号不能重复");
-            }
             List<Integer> ids2 = this.iSysArchivesLibraryFieldDefaultService.listByDataKey(dataKey);
             if (!ids2.isEmpty()) {
                 throw new BaseRuntimeException("key不能与系统默认重复");
@@ -186,7 +177,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             }
             //判断修改的跟当前的类型对比
             if (type == 1 && oldType == 2) {
-                sysArchivesLibrary.setNumber(null);
                 sysArchivesLibrary.setDataKey(null);
                 sysArchivesLibrary.setTemplateLibraryId(null);
                 //删除表
@@ -249,8 +239,8 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                         commTableFields.add(commTableField);
                     }
 
-                    List<SysTemplateLibraryField> sysTemplateLibraryFields = iSysTemplateLibraryFieldService.listByTemplateLibraryId(templateLibraryId);
-                    for (SysTemplateLibraryField sysTemplateLibraryField : sysTemplateLibraryFields) {
+                    List<SysCommonFieldLibrary> sysTemplateLibraryFields = null;//iSysTemplateLibraryFieldService.listByTemplateLibraryId(templateLibraryId);
+                    for (SysCommonFieldLibrary sysTemplateLibraryField : sysTemplateLibraryFields) {
                         String dataKey1 = sysTemplateLibraryField.getDataKey();
                         //判断模板库字段是否跟档案库之前添加的字段一样
                         List<Integer> idList = iSysArchivesLibraryFieldService.listByArchivesLibraryIdDataKeys(id, dataKey1);
@@ -285,15 +275,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         }
     }
 
-
-    @Override
-    public List<Integer> listByNumber(Integer number) {
-        QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda()
-                .select(SysArchivesLibrary::getId)
-                .eq(SysArchivesLibrary::getNumber, number);
-        return this.listObjs(queryWrapper, id -> (Integer) id);
-    }
 
     @Override
     public List<Integer> listByIdAndType(Integer id, Short type) {

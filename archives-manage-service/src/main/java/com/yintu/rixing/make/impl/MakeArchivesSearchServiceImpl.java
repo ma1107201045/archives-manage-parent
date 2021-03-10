@@ -44,7 +44,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
     @Autowired
     private WareTemplateLibraryFiledMapper wareTemplateLibraryFiledMapper;
     @Autowired
-    private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
+    private ISysDataTypeService iSysTemplateLibraryFieldTypeService;
     @Autowired
     private IWareTemplateLibraryFieldService iWareTemplateLibraryFieldService;
     @Autowired
@@ -67,7 +67,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
                 String dataKey = sysArchivesLibraryField.getDataKey();
                 String name = sysArchivesLibraryField.getName();
-                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysTemplateLibraryFieldType();
+                SysDataType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysTemplateLibraryFieldType();
                 Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
                 String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
                 String fieldTypeName = sysTemplateLibraryFieldType.getName();
@@ -125,7 +125,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             for (WareTemplateLibraryField wareTemplateLibraryField : wareTemplateLibraryFieldList) {
                 DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
                 Integer templateLibraryFieldTypeId = wareTemplateLibraryField.getTemplateLibraryFieldTypeId();
-                SysTemplateLibraryFieldType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
+                SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
                 Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
                 String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
                 String fieldTypeName = sysTemplateLibraryFieldType.getName();

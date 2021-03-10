@@ -20,7 +20,7 @@ import javax.validation.constraints.Pattern;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel
-public class SysTemplateLibraryFieldFormDto extends IdDto {
+public class SysCommonFieldLibraryFormDto extends IdDto {
 
     @ApiModelProperty(value = "字段名称（注释或者描述）")
     @NotBlank
@@ -59,11 +59,10 @@ public class SysTemplateLibraryFieldFormDto extends IdDto {
     @NotNull
     private Short form;
 
-    @ApiModelProperty(value = "模板库id", required = true)
-    @NotNull
-    private Integer templateLibraryId;
+    @ApiModelProperty(value = "数据选项(数据类型为下拉框，则存储json串作为选项)")
+    private String dataOptions;
 
-    @ApiModelProperty(value = "模板库字段类型id", required = true)
+    @ApiModelProperty(value = "数据类型id", required = true)
     @NotNull
-    private Integer templateLibraryFieldTypeId;
+    private Integer dataTypeId;
 }

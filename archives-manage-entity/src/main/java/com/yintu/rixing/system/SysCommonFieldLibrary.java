@@ -8,8 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * <p>
  * 系统模板库字段表
@@ -20,9 +18,9 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_template_library_field")
-@ApiModel(value = "SysTemplateLibraryField对象", description = "系统模板库字段表")
-public class SysTemplateLibraryField extends BaseEntity {
+@TableName("sys_common_field_library")
+@ApiModel(value = "SysCommonFieldLibrary对象", description = "系统公共字段库表")
+public class SysCommonFieldLibrary extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -62,15 +60,15 @@ public class SysTemplateLibraryField extends BaseEntity {
     @TableField("form")
     private Short form;
 
-    @ApiModelProperty(value = "模板库id", position = 15)
-    @TableField("template_library_id")
-    private Integer templateLibraryId;
+    @ApiModelProperty(value = "数据选项(数据类型为下拉框，则存储json串作为选项)", position = 15)
+    @TableField("data_options")
+    private String dataOptions;
 
-    @ApiModelProperty(value = "模板库字段类型id", position = 16)
-    @TableField("template_library_field_type_id")
-    private Integer templateLibraryFieldTypeId;
+    @ApiModelProperty(value = "数据类型id", position = 16)
+    @TableField("data_type_id")
+    private Integer dataTypeId;
 
-    @ApiModelProperty(value = "模板库字段对应类型", position = 17)
+    @ApiModelProperty(value = "数据类型", position = 17)
     @TableField(exist = false)
-    private SysTemplateLibraryFieldType sysTemplateLibraryFieldType;
+    private SysDataType sysDataType;
 }

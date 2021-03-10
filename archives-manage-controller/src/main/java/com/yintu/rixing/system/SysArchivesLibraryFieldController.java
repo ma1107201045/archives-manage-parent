@@ -41,7 +41,7 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
     @Autowired
     private ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
     @Autowired
-    private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
+    private ISysDataTypeService iSysTemplateLibraryFieldTypeService;
 
     @Autowired
     private ISysArchivesLibraryNumberSettingService iSysArchivesLibraryNumberSettingService;
@@ -109,8 +109,8 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询档案库字段类型列表信息")
     @GetMapping("/sys-template-library-field-type")
     @ApiOperation(value = "查询档案库字段类型列表信息", notes = "查询档案库字段类型列表信息", position = 7)
-    public ResultDataUtil<List<SysTemplateLibraryFieldType>> findSysTemplateLibraryFieldTypes() {
-        List<SysTemplateLibraryFieldType> sysTemplateLibraryFieldTypes = iSysTemplateLibraryFieldTypeService.list(new QueryWrapper<SysTemplateLibraryFieldType>().orderByDesc("id"));
+    public ResultDataUtil<List<SysDataType>> findSysTemplateLibraryFieldTypes() {
+        List<SysDataType> sysTemplateLibraryFieldTypes = iSysTemplateLibraryFieldTypeService.list(new QueryWrapper<SysDataType>().orderByDesc("id"));
         return ResultDataUtil.ok("查询档案库字段类型列表信息成功", sysTemplateLibraryFieldTypes);
     }
 

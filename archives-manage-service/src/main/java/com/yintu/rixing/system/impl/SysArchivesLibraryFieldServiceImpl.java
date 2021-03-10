@@ -1,7 +1,6 @@
 package com.yintu.rixing.system.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -35,7 +34,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
     @Autowired
-    private ISysTemplateLibraryFieldTypeService iSysTemplateLibraryFieldTypeService;
+    private ISysDataTypeService iSysTemplateLibraryFieldTypeService;
 
     @Autowired
     private ICommTableFieldService iCommTableFieldService;
@@ -254,13 +253,18 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         Integer size = sysArchivesLibraryFieldQueryDto.getSize();
         Integer archivesLibraryId = sysArchivesLibraryFieldQueryDto.getArchivesLibraryId();
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
-        if (sysArchivesLibraryFieldQueryDto.getArchivesLibraryId() != null)
+        //判断是否查所有的档案库字段列表
+        if (sysArchivesLibraryFieldQueryDto.getArchivesLibraryId() != null) {
             queryWrapper.lambda().eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId);
+        }
+        //排除系统默认字段
+        queryWrapper.lambda().eq(SysArchivesLibraryField::getSystem, EnumFlag.False.getValue());
         queryWrapper.lambda().orderByAsc(SysArchivesLibraryField::getOrder);
         Page<SysArchivesLibraryField> sysArchivesLibraryFieldPage = this.page(new Page<>(num, size), queryWrapper);
         sysArchivesLibraryFieldPage.getRecords().forEach(sysArchivesLibraryField -> {
             sysArchivesLibraryField.setSysTemplateLibraryFieldType(iSysTemplateLibraryFieldTypeService.getById(sysArchivesLibraryField.getTemplateLibraryFieldTypeId()));
         });
+
         return sysArchivesLibraryFieldPage;
     }
 }

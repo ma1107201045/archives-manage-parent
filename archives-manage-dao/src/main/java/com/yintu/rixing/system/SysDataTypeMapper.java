@@ -5,13 +5,13 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- * 系统模板库字段表 Mapper 接口
+ * 系统数据类型表 Mapper 接口
  * </p>
  *
  * @author mlf
  * @since 2020-12-30
  */
 @Mapper
-public interface SysTemplateLibraryFieldMapper extends BaseMapper<SysTemplateLibraryField> {
+public interface SysDataTypeMapper extends BaseMapper<SysDataType> {
 
 }

@@ -14,8 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel
-public class SysTemplateLibraryFieldQueryDto extends PageDto {
+public class SysCommonFieldLibraryQueryDto extends PageDto {
 
-    @ApiModelProperty(value = "模板库id")
-    private Integer templateLibraryId;
+
 }

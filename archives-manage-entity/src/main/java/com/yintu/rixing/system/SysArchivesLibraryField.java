@@ -80,6 +80,6 @@ public class SysArchivesLibraryField extends BaseEntity {
 
     @ApiModelProperty(value = "模板库字段对应类型", position = 19)
     @TableField(exist = false)
-    private SysTemplateLibraryFieldType sysTemplateLibraryFieldType;
+    private SysDataType sysTemplateLibraryFieldType;
 
 }
