@@ -68,6 +68,11 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
     }
 
     @Override
+    public void chooseSysCommonFieldLibrary(Integer archivesLibraryId, List<Integer> commonFieldLibraries) {
+
+    }
+
+    @Override
     public void removeByIds(Set<Integer> ids) {
         List<SysArchivesLibraryField> sysArchivesLibraryFields = this.listByIds(ids);
         sysArchivesLibraryFields.forEach(sysArchivesLibraryField -> {
@@ -101,8 +106,9 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         }
         SysArchivesLibraryField sysArchivesLibraryField = this.getById(id);
         if (sysArchivesLibraryField != null) {
-            if (sysArchivesLibraryField.getSystem().equals(EnumFlag.True.getValue()))
+            if (sysArchivesLibraryField.getSystem().equals(EnumFlag.True.getValue())) {
                 throw new BaseRuntimeException("系统默认key不能修改");
+            }
             String oldDataKey = sysArchivesLibraryField.getDataKey();
             Short oldIndex = sysArchivesLibraryField.getIndex();
             BeanUtil.copyProperties(sysArchivesLibraryFieldFormDto, sysArchivesLibraryField);
@@ -199,8 +205,9 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
 
     @Override
     public List<Integer> listByArchivesLibraryIdAndTemplateLibraryId(Integer archivesLibraryId, Integer templateLibraryId) {
-        if (archivesLibraryId == null || templateLibraryId == null)
+        if (archivesLibraryId == null || templateLibraryId == null) {
             throw new BaseRuntimeException("档案库id或者模板库id不能为空");
+        }
         QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .select(SysArchivesLibraryField::getId)

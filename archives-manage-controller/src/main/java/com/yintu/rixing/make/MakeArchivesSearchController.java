@@ -2,21 +2,18 @@ package com.yintu.rixing.make;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.make.MakeArchivesSearchDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
-import com.yintu.rixing.system.ISysArchivesLibraryFieldDefaultService;
 import com.yintu.rixing.system.ISysArchivesLibraryService;
-import com.yintu.rixing.system.SysArchivesLibraryFieldDefault;
-import com.yintu.rixing.util.IdentityIdUtil;
+import com.yintu.rixing.system.ISysBaseFieldLibraryService;
+import com.yintu.rixing.system.SysBaseFieldLibrary;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
-import com.yintu.rixing.warehouse.IWareTemplateLibraryFieldService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -29,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @Author: mlf
@@ -46,7 +42,7 @@ public class MakeArchivesSearchController extends Authenticator {
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
     @Autowired
-    private ISysArchivesLibraryFieldDefaultService iSysArchivesLibraryFieldDefaultService;
+    private ISysBaseFieldLibraryService iSysArchivesLibraryFieldDefaultService;
 
     //根据条件查询实体库数据
     @Log(level = EnumLogLevel.DEBUG, module = "档案检索", context = "根据条件查询实体档案数据信息列表")
@@ -92,9 +88,9 @@ public class MakeArchivesSearchController extends Authenticator {
     @GetMapping("/findField")
     @ApiOperation(value = "查询定义查询字段", notes = "查询定义查询字段")
     public ResultDataUtil<Object> findField() {
-        QueryWrapper<SysArchivesLibraryFieldDefault> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<SysBaseFieldLibrary> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("title", "1");
-        List<SysArchivesLibraryFieldDefault> sysArchivesLibraryFieldDefaults = iSysArchivesLibraryFieldDefaultService.list(queryWrapper);
+        List<SysBaseFieldLibrary> sysArchivesLibraryFieldDefaults = iSysArchivesLibraryFieldDefaultService.list(queryWrapper);
         return ResultDataUtil.ok("查询定义查询字段成功", sysArchivesLibraryFieldDefaults);
     }
 

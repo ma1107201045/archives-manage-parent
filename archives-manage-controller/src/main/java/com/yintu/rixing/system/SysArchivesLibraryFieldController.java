@@ -41,10 +41,10 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
     @Autowired
     private ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
     @Autowired
-    private ISysDataTypeService iSysTemplateLibraryFieldTypeService;
-
-    @Autowired
     private ISysArchivesLibraryNumberSettingService iSysArchivesLibraryNumberSettingService;
+    @Autowired
+    private ISysDataTypeService iSysDataTypeService;
+
 
     @Override
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加档案库字段信息")
@@ -106,19 +106,44 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
         return ResultDataUtil.ok("查询档案库字段列表信息成功", page);
     }
 
-    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询档案库字段类型列表信息")
-    @GetMapping("/sys-template-library-field-type")
-    @ApiOperation(value = "查询档案库字段类型列表信息", notes = "查询档案库字段类型列表信息", position = 7)
-    public ResultDataUtil<List<SysDataType>> findSysTemplateLibraryFieldTypes() {
-        List<SysDataType> sysTemplateLibraryFieldTypes = iSysTemplateLibraryFieldTypeService.list(new QueryWrapper<SysDataType>().orderByDesc("id"));
-        return ResultDataUtil.ok("查询档案库字段类型列表信息成功", sysTemplateLibraryFieldTypes);
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询档案库字段数据类型列表信息")
+    @GetMapping("/sys-data-type")
+    @ApiOperation(value = "查询档案库字段数据类型列表信息", notes = "查询档案库字段数据类型列表信息", position = 7)
+    public ResultDataUtil<List<SysDataType>> findSysDataTypes() {
+        List<SysDataType> sysTemplateLibraryFieldTypes = iSysDataTypeService.list(new QueryWrapper<SysDataType>().orderByDesc("id"));
+        return ResultDataUtil.ok("查询档案库字段数据类型列表信息成功", sysTemplateLibraryFieldTypes);
+    }
+
+
+    @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "选择公共字段库信息")
+    @PostMapping("/sys-common-field-library")
+    @ApiOperation(value = "档案设置", notes = "选择公共字段库信息")
+    @ApiOperationSupport(order = 8)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "commonFieldLibraries", allowMultiple = true, dataType = "__int", value = "公共字段库id集", required = true, paramType = "query")
+    })
+    public ResultDataUtil<Object> chooseSysCommonFieldLibrary(@RequestParam Integer archivesLibraryId, @RequestParam List<Integer> commonFieldLibraries) {
+
+        iSysArchivesLibraryFieldService.chooseSysCommonFieldLibrary();
+        return ResultDataUtil.ok("选择公共字段库信息成功");
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询档案库字段公共字段库信息列表")
+    @GetMapping("/sys-common-field-library")
+    @ApiOperation(value = "查询档案库字段公共字段库信息列表", notes = "查询档案库字段公共字段库信息列表")
+    @ApiOperationSupport(order = 9)
+    @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
+    public ResultDataUtil<List<SysArchivesLibraryNumberSettingDto>> findSysCommonFieldLibrary(@RequestParam Integer archivesLibraryId) {
+
+        return ResultDataUtil.ok("查询档案库字段公共字段库信息列表成功", null);
     }
 
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "档案设置")
     @PostMapping("/sys-archives-library-number-setting")
     @ApiOperation(value = "档案设置", notes = "档案设置")
-    @ApiOperationSupport(order = 8)
+    @ApiOperationSupport(order = 10)
     public ResultDataUtil<Object> archivesLibraryNumberSetting(@RequestBody List<SysArchivesLibraryNumberSettingDto> sysArchivesLibraryNumberSettingDtos) {
         iSysArchivesLibraryNumberSettingService.archivesLibraryNumberSetting(sysArchivesLibraryNumberSettingDtos);
         return ResultDataUtil.ok("档案设置成功");
@@ -127,7 +152,7 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询档案设置信息")
     @GetMapping("/sys-archives-library-number-setting")
     @ApiOperation(value = "档案设置", notes = "档案设置")
-    @ApiOperationSupport(order = 9)
+    @ApiOperationSupport(order = 10)
     @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     public ResultDataUtil<List<SysArchivesLibraryNumberSettingDto>> archivesLibraryNumberSetting(@RequestParam Integer archivesLibraryId) {
         List<SysArchivesLibraryNumberSettingDto> sysArchivesLibraryNumberSettingVos = iSysArchivesLibraryNumberSettingService.findByArchivesLibraryId(archivesLibraryId);

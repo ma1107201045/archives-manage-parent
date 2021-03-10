@@ -18,9 +18,9 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_archives_library_field_default")
-@ApiModel(value = "SysArchivesLibraryFieldDefault对象", description = "系统档案库字段默认表")
-public class SysArchivesLibraryFieldDefault extends BaseEntity {
+@TableName("sys_base_field_library")
+@ApiModel(value = "SysBaseFieldLibrary对象", description = "系统基础字段库表")
+public class SysBaseFieldLibrary extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -60,9 +60,17 @@ public class SysArchivesLibraryFieldDefault extends BaseEntity {
     @TableField("form")
     private Short form;
 
-    @ApiModelProperty(value = "模板库字段类型id", position = 15)
-    @TableField("template_library_field_type_id")
-    private Integer templateLibraryFieldTypeId;
+    @ApiModelProperty(value = "数据选项(数据类型为下拉框，则存储json串作为选项)", position = 15)
+    @TableField("data_options")
+    private String dataOptions;
+
+    @ApiModelProperty(value = "数据类型id", position = 16)
+    @TableField("data_type_id")
+    private Integer dataTypeId;
+
+    @ApiModelProperty(value = "数据类型", position = 17)
+    @TableField(exist = false)
+    private SysDataType sysDataType;
 
 
 }

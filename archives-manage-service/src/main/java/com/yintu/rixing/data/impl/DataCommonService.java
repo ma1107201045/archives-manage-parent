@@ -51,7 +51,7 @@ public class DataCommonService {
     @Autowired
     protected ISysArchivesLibraryService iSysArchivesLibraryService;
     @Autowired
-    protected ISysArchivesLibraryFieldDefaultService iSysArchivesLibraryFieldDefaultService;
+    protected ISysBaseFieldLibraryService iSysArchivesLibraryFieldDefaultService;
     @Autowired
     protected ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
     @Autowired

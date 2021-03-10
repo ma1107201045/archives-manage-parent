@@ -34,7 +34,7 @@ public class SysCommonFieldLibraryImpl extends ServiceImpl<SysCommonFieldLibrary
         //参数校对
         List<Integer> ids = this.listByDataKey(dataKey);
         if (!ids.isEmpty()) {
-            throw new BaseRuntimeException("当前模板库中key（英文名称）值不能重复");
+            throw new BaseRuntimeException("当前模板库中key（英文字段名称）值不能重复");
         }
         SysCommonFieldLibrary sysCommonFieldLibrary = new SysCommonFieldLibrary();
         BeanUtil.copyProperties(sysTemplateLibraryFieldFormDto, sysCommonFieldLibrary);
@@ -48,7 +48,7 @@ public class SysCommonFieldLibraryImpl extends ServiceImpl<SysCommonFieldLibrary
         //参数校对
         List<Integer> ids = this.listByDataKey(dataKey);
         if (!ids.isEmpty() && !ids.get(0).equals(id)) {
-            throw new BaseRuntimeException("当前公共库中key（英文名称）值不能重复");
+            throw new BaseRuntimeException("当前公共库中key（英文字段名称）值不能重复");
         }
         SysCommonFieldLibrary sysCommonFieldLibrary = this.getById(id);
         if (sysCommonFieldLibrary != null) {

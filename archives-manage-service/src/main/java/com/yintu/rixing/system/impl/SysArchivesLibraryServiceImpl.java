@@ -35,7 +35,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     @Autowired
     private ISysCommonFieldLibraryService iSysTemplateLibraryFieldService;
     @Autowired
-    private ISysArchivesLibraryFieldDefaultService iSysArchivesLibraryFieldDefaultService;
+    private ISysBaseFieldLibraryService iSysArchivesLibraryFieldDefaultService;
     @Autowired
     private ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
     @Autowired
@@ -80,8 +80,8 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             List<SysArchivesLibraryField> sysArchivesLibraryFields = new ArrayList<>();
             List<CommTableField> commTableFields = new ArrayList<>();
 
-            List<SysArchivesLibraryFieldDefault> sysArchivesLibraryFieldDefaults = iSysArchivesLibraryFieldDefaultService.list();
-            for (SysArchivesLibraryFieldDefault sysArchivesLibraryFieldDefault : sysArchivesLibraryFieldDefaults) {
+            List<SysBaseFieldLibraryDefault> sysArchivesLibraryFieldDefaults = iSysArchivesLibraryFieldDefaultService.list();
+            for (SysBaseFieldLibraryDefault sysArchivesLibraryFieldDefault : sysArchivesLibraryFieldDefaults) {
                 //从系统默认中的字段复制到档案库的字段
                 SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
                 BeanUtil.copyProperties(sysArchivesLibraryFieldDefault, sysArchivesLibraryField, "id");
@@ -96,7 +96,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             for (SysCommonFieldLibrary sysTemplateLibraryField : sysTemplateLibraryFields) {
                 String dataKey1 = sysTemplateLibraryField.getDataKey();
                 //从模板库中的字段复制到档案库的字段
-                List<Integer> idList = sysArchivesLibraryFieldDefaults.stream().filter(sysArchivesLibraryFieldDefault -> sysArchivesLibraryFieldDefault.getDataKey().equals(dataKey1)).map(SysArchivesLibraryFieldDefault::getId).collect(Collectors.toList());
+                List<Integer> idList = sysArchivesLibraryFieldDefaults.stream().filter(sysArchivesLibraryFieldDefault -> sysArchivesLibraryFieldDefault.getDataKey().equals(dataKey1)).map(SysBaseFieldLibraryDefault::getId).collect(Collectors.toList());
                 //判断模板库字段是否跟系统默认字段一样
                 if (idList.isEmpty()) {
                     //判断模板库字段是否跟档案库回退记录表定义字段一样
@@ -227,8 +227,8 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                     List<SysArchivesLibraryField> sysArchivesLibraryFields = new ArrayList<>();
                     List<CommTableField> commTableFields = new ArrayList<>();
 
-                    List<SysArchivesLibraryFieldDefault> sysArchivesLibraryFieldDefaults = iSysArchivesLibraryFieldDefaultService.list();
-                    for (SysArchivesLibraryFieldDefault sysArchivesLibraryFieldDefault : sysArchivesLibraryFieldDefaults) {
+                    List<SysBaseFieldLibraryDefault> sysArchivesLibraryFieldDefaults = iSysArchivesLibraryFieldDefaultService.list();
+                    for (SysBaseFieldLibraryDefault sysArchivesLibraryFieldDefault : sysArchivesLibraryFieldDefaults) {
                         //从系统默认中的字段复制到档案库的字段
                         SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
                         BeanUtil.copyProperties(sysArchivesLibraryFieldDefault, sysArchivesLibraryField, "id");
@@ -246,7 +246,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                         List<Integer> idList = iSysArchivesLibraryFieldService.listByArchivesLibraryIdDataKeys(id, dataKey1);
                         if (idList.isEmpty()) {
                             //判断模板库字段是否跟系统默认字段一样
-                            idList = sysArchivesLibraryFieldDefaults.stream().filter(sysArchivesLibraryFieldDefault -> sysArchivesLibraryFieldDefault.getDataKey().equals(dataKey1)).map(SysArchivesLibraryFieldDefault::getId).collect(Collectors.toList());
+                            idList = sysArchivesLibraryFieldDefaults.stream().filter(sysArchivesLibraryFieldDefault -> sysArchivesLibraryFieldDefault.getDataKey().equals(dataKey1)).map(SysBaseFieldLibraryDefault::getId).collect(Collectors.toList());
                             if (idList.isEmpty()) {
                                 //判断模板库字段是否跟档案库回退记录表定义字段一样
                                 if (!dataKey1.equals(iCommTableFieldService.findFixed().getFieldName())) {
