@@ -42,8 +42,8 @@ public class SysArchivesLibrary extends BaseEntity {
     private Short type;
 
     @ApiModelProperty(value = "档案库分类 1.案卷级 2.一文一件")
-    @TableField("type")
-    private Short type2;
+    @TableField("arch_type")
+    private Short archType;
 
     @ApiModelProperty(value = "档案库描述")
     @TableField("description")

@@ -33,8 +33,6 @@ import java.util.stream.Collectors;
 public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibraryMapper, SysArchivesLibrary> implements ISysArchivesLibraryService {
 
     @Autowired
-    private ISysCommonFieldLibraryService iSysTemplateLibraryFieldService;
-    @Autowired
     private ISysBaseFieldLibraryService iSysArchivesLibraryFieldDefaultService;
     @Autowired
     private ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
@@ -46,19 +44,14 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         Integer parentId = sysArchivesLibraryFormDto.getParentId();
         String name = sysArchivesLibraryFormDto.getName();
         Short type = sysArchivesLibraryFormDto.getType();
-        Short type1 = sysArchivesLibraryFormDto.getType1();
+        Short archType = sysArchivesLibraryFormDto.getArchType();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
-        Integer templateLibraryId = sysArchivesLibraryFormDto.getTemplateLibraryId();
-        if (type == 2 && (dataKey == null || templateLibraryId == null)) {
-            throw new BaseRuntimeException("档案库编号或者key或者模板库id不能为空");
-        }
         if (type == 2) {
-            List<Integer> ids2 = this.iSysArchivesLibraryFieldDefaultService.listByDataKey(dataKey);
-            if (!ids2.isEmpty()) {
-                throw new BaseRuntimeException("key不能与系统默认重复");
+            if (dataKey == null) {
+                throw new BaseRuntimeException("档案库key()不能为空");
             }
-            List<Integer> ids3 = this.listByDataKey(dataKey);
-            if (!ids3.isEmpty()) {
+            List<Integer> ids = this.listByDataKey(dataKey);
+            if (!ids.isEmpty()) {
                 throw new BaseRuntimeException("key不能重复");
             }
         }
@@ -73,18 +66,17 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 return;
             }
         }
-
         BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
         this.save(sysArchivesLibrary);
         if (type == 2) {
             List<SysArchivesLibraryField> sysArchivesLibraryFields = new ArrayList<>();
             List<CommTableField> commTableFields = new ArrayList<>();
 
-            List<SysBaseFieldLibraryDefault> sysArchivesLibraryFieldDefaults = iSysArchivesLibraryFieldDefaultService.list();
-            for (SysBaseFieldLibraryDefault sysArchivesLibraryFieldDefault : sysArchivesLibraryFieldDefaults) {
+            List<SysBaseFieldLibrary> sysArchivesLibraryFieldDefaults = iSysArchivesLibraryFieldDefaultService.list();
+            for (SysBaseFieldLibrary sysBaseFieldLibrary : sysArchivesLibraryFieldDefaults) {
                 //从系统默认中的字段复制到档案库的字段
                 SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
-                BeanUtil.copyProperties(sysArchivesLibraryFieldDefault, sysArchivesLibraryField, "id");
+                BeanUtil.copyProperties(sysBaseFieldLibrary, sysArchivesLibraryField, "id");
                 sysArchivesLibraryField.setArchivesLibraryId(sysArchivesLibrary.getId());
                 sysArchivesLibraryField.setSystem(EnumFlag.True.getValue());
                 sysArchivesLibraryFields.add(sysArchivesLibraryField);
@@ -96,7 +88,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             for (SysCommonFieldLibrary sysTemplateLibraryField : sysTemplateLibraryFields) {
                 String dataKey1 = sysTemplateLibraryField.getDataKey();
                 //从模板库中的字段复制到档案库的字段
-                List<Integer> idList = sysArchivesLibraryFieldDefaults.stream().filter(sysArchivesLibraryFieldDefault -> sysArchivesLibraryFieldDefault.getDataKey().equals(dataKey1)).map(SysBaseFieldLibraryDefault::getId).collect(Collectors.toList());
+                List<Integer> idList = sysArchivesLibraryFieldDefaults.stream().filter(sysArchivesLibraryFieldDefault -> sysArchivesLibraryFieldDefault.getDataKey().equals(dataKey1)).map(SysBaseFieldLibrary::getId).collect(Collectors.toList());
                 //判断模板库字段是否跟系统默认字段一样
                 if (idList.isEmpty()) {
                     //判断模板库字段是否跟档案库回退记录表定义字段一样
@@ -143,8 +135,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         String name = sysArchivesLibraryFormDto.getName();
         Short type = sysArchivesLibraryFormDto.getType();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
-        Integer templateLibraryId = sysArchivesLibraryFormDto.getTemplateLibraryId();
-        if (type == 2 && (dataKey == null || templateLibraryId == null)) {
+        if (type == 2 && (dataKey == null )) {
             throw new BaseRuntimeException("档案库编号或者key或者模板库id不能为空");
         }
         if (type == 2) {
@@ -218,7 +209,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 List<Integer> ids = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndSystem(id, EnumFlag.True.getValue());
                 iSysArchivesLibraryFieldService.removeByIds(ids);
                 //如果更换模板库则删除属于此模板库的字段以及表，并且重新添加字段跟表结构
-                if (!oldTemplateLibraryId.equals(templateLibraryId)) {
+                if (!oldTemplateLibraryId.equals(null)) {
                     ids = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndTemplateLibraryId(id, oldTemplateLibraryId);
                     if (!ids.isEmpty()) {
                         iSysArchivesLibraryFieldService.removeByIds(ids);
@@ -227,11 +218,11 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                     List<SysArchivesLibraryField> sysArchivesLibraryFields = new ArrayList<>();
                     List<CommTableField> commTableFields = new ArrayList<>();
 
-                    List<SysBaseFieldLibraryDefault> sysArchivesLibraryFieldDefaults = iSysArchivesLibraryFieldDefaultService.list();
-                    for (SysBaseFieldLibraryDefault sysArchivesLibraryFieldDefault : sysArchivesLibraryFieldDefaults) {
+                    List<SysBaseFieldLibrary> sysBaseFieldLibraries = iSysArchivesLibraryFieldDefaultService.list();
+                    for (SysBaseFieldLibrary sysBaseFieldLibrary : sysBaseFieldLibraries) {
                         //从系统默认中的字段复制到档案库的字段
                         SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
-                        BeanUtil.copyProperties(sysArchivesLibraryFieldDefault, sysArchivesLibraryField, "id");
+                        BeanUtil.copyProperties(sysBaseFieldLibrary, sysArchivesLibraryField, "id");
                         sysArchivesLibraryField.setArchivesLibraryId(sysArchivesLibrary.getId());
                         sysArchivesLibraryField.setSystem(EnumFlag.True.getValue());
                         sysArchivesLibraryFields.add(sysArchivesLibraryField);
@@ -246,7 +237,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                         List<Integer> idList = iSysArchivesLibraryFieldService.listByArchivesLibraryIdDataKeys(id, dataKey1);
                         if (idList.isEmpty()) {
                             //判断模板库字段是否跟系统默认字段一样
-                            idList = sysArchivesLibraryFieldDefaults.stream().filter(sysArchivesLibraryFieldDefault -> sysArchivesLibraryFieldDefault.getDataKey().equals(dataKey1)).map(SysBaseFieldLibraryDefault::getId).collect(Collectors.toList());
+                            idList = sysBaseFieldLibraries.stream().filter(sysArchivesLibraryFieldDefault -> sysArchivesLibraryFieldDefault.getDataKey().equals(dataKey1)).map(SysBaseFieldLibrary::getId).collect(Collectors.toList());
                             if (idList.isEmpty()) {
                                 //判断模板库字段是否跟档案库回退记录表定义字段一样
                                 if (!dataKey1.equals(iCommTableFieldService.findFixed().getFieldName())) {

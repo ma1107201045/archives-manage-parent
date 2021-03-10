@@ -33,8 +33,7 @@ public class SysArchivesLibraryController extends Authenticator {
 
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
-    @Autowired
-    private ISysCommonFieldLibraryService iSysCommonFieldLibraryService;
+
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加档案库信息")
     @PostMapping
@@ -79,11 +78,4 @@ public class SysArchivesLibraryController extends Authenticator {
         return ResultDataUtil.ok("查询档案库列表信息树成功", treeNodeUtils);
     }
 
-//    @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询档案库模板库列表信息列表")
-//    @GetMapping("/sys-common-field-library")
-//    @ApiOperation(value = "查询档案库模板库列表信息列表", notes = "查询档案库模板库列表信息列表", position = 6)
-//    public ResultDataUtil<List<SysTemplateLibrary>> findSysTemplateLibraries() {
-//        List<SysTemplateLibrary> sysTemplateLibraries = iSysCommonFieldLibraryService.listByType((short) 2);
-//        return ResultDataUtil.ok("查询档案库模板库列表信息列表成功", sysTemplateLibraries);
-//    }
 }

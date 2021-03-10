@@ -35,14 +35,10 @@ public class SysArchivesLibraryFormDto extends IdDto {
     private Short type;
 
     @ApiModelProperty(value = "档案库分类 1.案卷级 2.一文一件")
-    private Short type1;
+    private Short archType;
 
     @ApiModelProperty(value = "档案库描述")
     @TableField("description")
     private String description;
-
-    @ApiModelProperty(value = "模板库id")
-    @TableField("template_library_id")
-    private Integer templateLibraryId;
 
 }

@@ -125,7 +125,7 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
     })
     public ResultDataUtil<Object> chooseSysCommonFieldLibrary(@RequestParam Integer archivesLibraryId, @RequestParam List<Integer> commonFieldLibraries) {
 
-        iSysArchivesLibraryFieldService.chooseSysCommonFieldLibrary();
+        iSysArchivesLibraryFieldService.chooseSysCommonFieldLibrary(null, null);
         return ResultDataUtil.ok("选择公共字段库信息成功");
     }
 

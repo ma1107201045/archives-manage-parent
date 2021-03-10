@@ -110,7 +110,7 @@ public class SysCommonFieldLibraryController extends Authenticator implements Ba
     @ApiOperation(value = "查询公共字段库类型列表信息", notes = "查询公共字段库类型列表信息")
     @ApiOperationSupport(order = 7)
     public ResultDataUtil<List<SysDataType>> findSysTemplateLibraryFieldTypes() {
-        List<SysDataType> sysTemplateLibraryFieldTypes = iSysDataTypeService.list(new QueryWrapper<SysDataType>().orderByDesc("id"));
+        List<SysDataType> sysTemplateLibraryFieldTypes = iSysDataTypeService.list(new QueryWrapper<SysDataType>());
         return ResultDataUtil.ok("查询公共字段库类型列表信息成功", sysTemplateLibraryFieldTypes);
     }
 }
