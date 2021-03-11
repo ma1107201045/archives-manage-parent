@@ -49,9 +49,5 @@ public class SysArchivesLibrary extends BaseEntity {
     @TableField("description")
     private String description;
 
-    @ApiModelProperty(value = "模板库id")
-    @TableField(value = "template_library_id", updateStrategy = FieldStrategy.IGNORED)
-    private Integer templateLibraryId;
-
 
 }
