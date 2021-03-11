@@ -101,6 +101,13 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     public void removeTree(Integer id) {
         SysArchivesLibrary sysArchivesLibrary = this.getById(id);
         if (sysArchivesLibrary != null) {
+            this.removeById(id);
+            QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(SysArchivesLibrary::getParentId, id);
+            List<Integer> ids = this.listObjs(queryWrapper, obj -> (Integer) obj);
+            for (Integer integer : ids) {
+                this.removeTree(integer);
+            }
             Short type = sysArchivesLibrary.getType();
             Short archType = sysArchivesLibrary.getArchType();
             if (type == 2) {
@@ -114,13 +121,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                     iCommTableFieldService.isHasDataByTableName(tableName);
                     iCommTableFieldService.removeTableByTableName(tableName);
                 }
-            }
-            this.removeById(id);
-            QueryWrapper<SysArchivesLibrary> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(SysArchivesLibrary::getParentId, id);
-            List<Integer> ids = this.listObjs(queryWrapper, obj -> (Integer) obj);
-            for (Integer integer : ids) {
-                this.removeTree(integer);
             }
         }
     }

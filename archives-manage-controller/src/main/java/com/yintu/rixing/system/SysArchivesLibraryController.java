@@ -34,7 +34,6 @@ public class SysArchivesLibraryController extends Authenticator {
     @Autowired
     private ISysArchivesLibraryService iSysArchivesLibraryService;
 
-
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加档案库信息")
     @PostMapping
     @ApiOperation(value = "添加档案库信息", notes = "添加档案库信息", position = 1)
