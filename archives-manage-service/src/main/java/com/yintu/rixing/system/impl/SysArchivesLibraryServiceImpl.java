@@ -139,7 +139,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             Short oldArchType = sysArchivesLibrary.getArchType();
             String oldName = sysArchivesLibrary.getName();
             String oldDataKey = sysArchivesLibrary.getDataKey();
-            String oldTableName = TableNameUtil.getFullTableName(oldDataKey);
             if (!type.equals(oldType)) {
                 //判断修改跟上级的类型对比
                 if (!parentId.equals(TreeUtil.ROOT_PARENT_ID)) {
@@ -157,21 +156,40 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                     sysArchivesLibrary.setDataKey("");
                     //先删除之前档案库的字段
                     iSysArchivesLibraryFieldService.removeByArchivesLibraryId(id);
+                    String oldTableName = TableNameUtil.getFullTableName(oldDataKey);
                     //判断表中是否有数据
                     iCommTableFieldService.isHasDataByTableName(oldTableName);
                     //删除表
                     iCommTableFieldService.removeTableByTableName(oldTableName);
+                    //
+                } else {
+                    if (archType == 1) {
+
+
+                    } else {
+                        //一文一件
+                        List<SysArchivesLibraryField> sysArchivesLibraryFields = new ArrayList<>();
+                        List<CommTableField> commTableFields = new ArrayList<>();
+                        //新建的档案库需要同步基础字段库
+                        List<SysBaseFieldLibrary> sysBaseFieldLibraries = iSysBaseFieldLibraryService.list();
+                        for (SysBaseFieldLibrary sysBaseFieldLibrary : sysBaseFieldLibraries) {
+                            SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
+                            BeanUtil.copyProperties(sysBaseFieldLibrary, sysArchivesLibraryField, "id");
+                            sysArchivesLibraryField.setArchivesLibraryId(id);
+                            sysArchivesLibraryField.setFromType(EnumFieldType.BASE.getValue());
+                            sysArchivesLibraryFields.add(sysArchivesLibraryField);
+                            CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibraryField.getDataKey(), sysArchivesLibraryField);
+                            commTableFields.add(commTableField);
+                        }
+                        iSysArchivesLibraryFieldService.saveBatch(sysArchivesLibraryFields);
+                        iCommTableFieldService.addTable(TableNameUtil.getFullTableName(dataKey), name, commTableFields);
+                    }
                 }
                 //判断修改跟下级的类型对比
                 if (type == 2) {
                     if (StrUtil.isEmpty(dataKey)) {
                         throw new BaseRuntimeException("key（英文名称）不能为空");
                     }
-                    List<Integer> ids1 = this.listByDataKey(dataKey);
-                    if (!ids1.isEmpty()) {
-                        throw new BaseRuntimeException("key（英文名称）重复");
-                    }
-
                     List<Integer> ids2 = this.listByIdAndType(id, (short) 1);
                     if (!ids2.isEmpty()) {
                         throw new BaseRuntimeException("档案库下边不能有目录");
@@ -180,7 +198,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             }
             BeanUtil.copyProperties(sysArchivesLibraryFormDto, sysArchivesLibrary);
             this.updateById(sysArchivesLibrary);
-            if (type == 2) {
+            if (type == 2 && oldType == 2) {
                 if (!oldArchType.equals(archType)) {
                     if (oldArchType == 1 && archType == 2) {
 
@@ -194,6 +212,8 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
                     } else {
                         //一文一件
+
+                        String oldTableName = TableNameUtil.getFullTableName(oldDataKey);
                         //更改表的注释
                         if (!oldName.equals(name)) {
                             iCommTableFieldService.editTableCommentByTableName(oldTableName, name);
