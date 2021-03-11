@@ -57,11 +57,15 @@ public class SysArchivesLibraryFieldFormDto extends IdDto {
     @NotNull
     private Short form;
 
+    @ApiModelProperty(value = "数据选项(数据类型为下拉框，则存储json串作为选项)")
+    private String dataOptions;
+
+    @ApiModelProperty(value = "数据类型id", required = true)
+    @NotNull
+    private Integer dataTypeId;
+
     @ApiModelProperty(value = "档案库id", required = true)
     @NotNull
     private Integer archivesLibraryId;
 
-    @ApiModelProperty(value = "档案库字段类型id", required = true)
-    @NotNull
-    private Integer templateLibraryFieldTypeId;
 }
