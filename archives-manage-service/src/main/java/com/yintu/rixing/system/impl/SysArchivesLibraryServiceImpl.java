@@ -212,7 +212,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
                     } else {
                         //一文一件
-
                         String oldTableName = TableNameUtil.getFullTableName(oldDataKey);
                         //更改表的注释
                         if (!oldName.equals(name)) {
