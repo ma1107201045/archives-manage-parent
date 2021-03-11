@@ -1,6 +1,7 @@
 package com.yintu.rixing.system;
 
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
@@ -36,7 +37,8 @@ public class SysArchivesLibraryController extends Authenticator {
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "添加档案库信息")
     @PostMapping
-    @ApiOperation(value = "添加档案库信息", notes = "添加档案库信息", position = 1)
+    @ApiOperation(value = "添加档案库信息", notes = "添加档案库信息")
+    @ApiOperationSupport(order = 1)
     public ResultDataUtil<Object> add(@Validated SysArchivesLibraryFormDto formDto) {
         iSysArchivesLibraryService.save(formDto);
         return ResultDataUtil.ok("添加档案库信息成功");
@@ -44,8 +46,9 @@ public class SysArchivesLibraryController extends Authenticator {
 
     @Log(level = EnumLogLevel.WARN, module = "系统设置", context = "删除档案库信息")
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "删除档案库信息", notes = "删除档案库信息", position = 2)
+    @ApiOperation(value = "删除档案库信息", notes = "删除档案库信息")
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    @ApiOperationSupport(order = 2)
     public ResultDataUtil<Object> remove(@PathVariable Integer id) {
         iSysArchivesLibraryService.removeTree(id);
         return ResultDataUtil.ok("删除档案库信息成功");
@@ -53,8 +56,9 @@ public class SysArchivesLibraryController extends Authenticator {
 
     @Log(level = EnumLogLevel.INFO, module = "系统设置", context = "修改档案库信息")
     @PutMapping("/{id}")
-    @ApiOperation(value = "修改档案库信息", notes = "修改档案库信息", position = 3)
+    @ApiOperation(value = "修改档案库信息", notes = "修改档案库信息")
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    @ApiOperationSupport(order = 3)
     public ResultDataUtil<Object> edit(@PathVariable Integer id, @Validated SysArchivesLibraryFormDto formDto) {
         iSysArchivesLibraryService.updateById(formDto);
         return ResultDataUtil.ok("修改档案库信息成功");
@@ -62,8 +66,9 @@ public class SysArchivesLibraryController extends Authenticator {
 
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询档案库单条信息")
     @GetMapping("/{id}")
-    @ApiOperation(value = "查询档案库单条信息", notes = " 查询档案库单条信息", position = 4)
+    @ApiOperation(value = "查询档案库单条信息", notes = " 查询档案库单条信息")
     @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path")
+    @ApiOperationSupport(order = 4)
     public ResultDataUtil<SysArchivesLibrary> findById(@PathVariable Integer id) {
         SysArchivesLibrary sysTemplateLibrary = iSysArchivesLibraryService.getById(id);
         return ResultDataUtil.ok("查询档案库单条信息成功", sysTemplateLibrary);
@@ -71,7 +76,8 @@ public class SysArchivesLibraryController extends Authenticator {
 
     @Log(level = EnumLogLevel.TRACE, module = "系统设置", context = "查询档案库列表信息树")
     @GetMapping
-    @ApiOperation(value = "查询档案库列表信息树", notes = "查询档案库列表信息树", position = 5)
+    @ApiOperation(value = "查询档案库列表信息树", notes = "查询档案库列表信息树")
+    @ApiOperationSupport(order = 5)
     public ResultDataUtil<List<TreeUtil>> findTree() {
         List<TreeUtil> treeNodeUtils = iSysArchivesLibraryService.listTree(TreeUtil.ROOT_PARENT_ID);
         return ResultDataUtil.ok("查询档案库列表信息树成功", treeNodeUtils);
