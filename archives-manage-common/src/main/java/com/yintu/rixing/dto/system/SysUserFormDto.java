@@ -26,7 +26,6 @@ public class SysUserFormDto extends IdDto {
     private String username;
 
     @ApiModelProperty(value = "密码")
-    @Null
     //@NotBlank 添加必须传 修改不需要
     private String password;
 
