@@ -7,7 +7,7 @@ package com.yintu.rixing.util;
  */
 public class TableNameUtil {
 
-    public static final String PREFIX = "data";
+    public static final String PREFIX = "data_dynamic";
 
     public static final String ROLLBACK_SUFFIX = "_rollback_info";
     public static final String ROLLBACK_COMMENT_SUFFIX = "-回退管理记录表";
