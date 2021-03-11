@@ -20,6 +20,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
@@ -53,6 +55,9 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
     @Autowired
     private ISecLogService isecLogService;
@@ -177,17 +182,18 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                     servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
                     servletOutputStream.flush();
                     servletOutputStream.close();
-                }).and().sessionManagement().maximumSessions(1).expiredSessionStrategy(event -> {//用户登录踢出上一个相同用户
-            HttpServletResponse response = event.getResponse();
-            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            response.setStatus(HttpServletResponse.SC_OK);
-            ServletOutputStream servletOutputStream = response.getOutputStream();
-            ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noAuthentication("您已在另一台设备登录，本次登录已下线");
-            JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
-            servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
-            servletOutputStream.flush();
-            servletOutputStream.close();
-        });
+                }).and().sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry)
+                .expiredSessionStrategy(event -> {//用户登录踢出上一个相同用户
+                    HttpServletResponse response = event.getResponse();
+                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    ServletOutputStream servletOutputStream = response.getOutputStream();
+                    ResultDataUtil<Object> resultDataUtil = ResultDataUtil.noAuthentication("您已在另一台设备登录，本次登录已下线");
+                    JSONObject jo = (JSONObject) JSONObject.toJSON(resultDataUtil);
+                    servletOutputStream.write(jo.toJSONString().getBytes(StandardCharsets.UTF_8));
+                    servletOutputStream.flush();
+                    servletOutputStream.close();
+                });
         //开启跨域访问
         http.cors();
         //开启模拟请求，比如API POST测试工具的测试，不开启时，API POST为报403错误

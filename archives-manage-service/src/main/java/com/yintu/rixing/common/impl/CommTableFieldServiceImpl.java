@@ -140,7 +140,7 @@ public class CommTableFieldServiceImpl implements ICommTableFieldService {
     @Override
     public CommTableField findByDataKeyAndSysArchivesLibraryField(String dataKey, SysArchivesLibraryField sysArchivesLibraryField) {
         String tableName = TableNameUtil.getFullTableName(dataKey);
-        Integer templateLibraryFieldTypeId = sysArchivesLibraryField.getTemplateLibraryFieldTypeId();
+        Integer templateLibraryFieldTypeId = sysArchivesLibraryField.getDataTypeId();
         SysDataType sysTemplateLibraryFieldType = iSysTemplateLibraryFieldTypeService.getById(templateLibraryFieldTypeId);
         String dataType = sysTemplateLibraryFieldType.getDataKey();
         CommTableField commTableField = new CommTableField();

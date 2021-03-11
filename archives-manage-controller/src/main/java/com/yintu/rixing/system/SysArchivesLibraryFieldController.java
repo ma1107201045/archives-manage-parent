@@ -127,7 +127,7 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
 
     @Log(level = EnumLogLevel.DEBUG, module = "系统设置", context = "选择公共字段库信息")
     @PostMapping("/sys-common-field-library")
-    @ApiOperation(value = "档案设置", notes = "选择公共字段库信息")
+    @ApiOperation(value = "选择公共字段库信息", notes = "选择公共字段库信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query"),
             @ApiImplicitParam(name = "commonFieldLibraries", allowMultiple = true, dataType = "__int", value = "公共字段库id集", required = true, paramType = "query")

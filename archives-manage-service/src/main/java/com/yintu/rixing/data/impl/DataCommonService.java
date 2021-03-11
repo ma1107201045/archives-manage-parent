@@ -68,7 +68,7 @@ public class DataCommonService {
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
             String name = sysArchivesLibraryField.getName();
             String dataKey = sysArchivesLibraryField.getDataKey();
-            Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
+            Integer dataType = sysArchivesLibraryField.getSysDataType().getId();
             Integer length = sysArchivesLibraryField.getLength();
             Short required = sysArchivesLibraryField.getRequired();
             String value = params.get(dataKey);
@@ -178,7 +178,7 @@ public class DataCommonService {
         List<DataCommonKV> dataCommonKVS = new ArrayList<>();
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
             String dataKey = sysArchivesLibraryField.getDataKey();
-            Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
+            Integer dataType = sysArchivesLibraryField.getSysDataType().getId();
             String value = params.get(dataKey);
             if (value == null || "".equals(value)) {
                 continue;
@@ -237,7 +237,7 @@ public class DataCommonService {
             for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
                 String name = sysArchivesLibraryField.getName();
                 String dataKey = sysArchivesLibraryField.getDataKey();
-                Integer dataType = sysArchivesLibraryField.getSysTemplateLibraryFieldType().getId();
+                Integer dataType = sysArchivesLibraryField.getSysDataType().getId();
                 Integer length = sysArchivesLibraryField.getLength();
                 Short required = sysArchivesLibraryField.getRequired();
                 String value = (String) record.get(name);
@@ -307,7 +307,7 @@ public class DataCommonService {
             String dataKey = sysArchivesLibraryField.getDataKey();
             String name = sysArchivesLibraryField.getName();
 
-            SysDataType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysTemplateLibraryFieldType();
+            SysDataType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysDataType();
             Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
             String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
             String fieldTypeName = sysTemplateLibraryFieldType.getName();

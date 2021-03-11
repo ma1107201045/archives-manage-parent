@@ -139,27 +139,21 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             if (sysArchivesLibrary != null) {
                 CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(sysArchivesLibrary.getDataKey(), sysArchivesLibraryField);
                 String tableName = commTableField.getTableName();
-                String rollbackTableName = TableNameUtil.getRollbackTableNameByFullTableName(tableName);
                 iCommTableFieldService.isHasDataByTableName(tableName);
-                iCommTableFieldService.isHasDataByTableName(rollbackTableName);
                 iCommTableFieldService.alter(tableName, oldDataKey, commTableField);
-                iCommTableFieldService.alter(rollbackTableName, oldDataKey, commTableField);
                 //之前没有现在有
                 if (oldIndex == 0 && index == 1) {
                     iCommTableFieldService.addIndex(tableName, dataKey);
-                    iCommTableFieldService.addIndex(rollbackTableName, dataKey);
                     //之前有现在没有
                 } else if (oldIndex == 1 && index == 0) {
                     iCommTableFieldService.dropIndex(tableName, dataKey);
-                    iCommTableFieldService.dropIndex(rollbackTableName, dataKey);
                     //之前有现在也有
                 } else if (oldIndex == 1 && index == 1) {
                     //再次判断字段名是否一样（索引名跟字段名保持一致）
                     if (!oldDataKey.equals(dataKey)) {
                         iCommTableFieldService.dropIndex(tableName, oldDataKey);
-                        iCommTableFieldService.dropIndex(rollbackTableName, oldDataKey);
                         iCommTableFieldService.addIndex(tableName, dataKey);
-                        iCommTableFieldService.addIndex(rollbackTableName, dataKey);
+
                     }
                 }
             }

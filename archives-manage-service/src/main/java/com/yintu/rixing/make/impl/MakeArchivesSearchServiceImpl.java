@@ -67,7 +67,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
                 String dataKey = sysArchivesLibraryField.getDataKey();
                 String name = sysArchivesLibraryField.getName();
-                SysDataType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysTemplateLibraryFieldType();
+                SysDataType sysTemplateLibraryFieldType = sysArchivesLibraryField.getSysDataType();
                 Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
                 String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
                 String fieldTypeName = sysTemplateLibraryFieldType.getName();
