@@ -42,22 +42,11 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
 
     @Override
     public void save(SysArchivesLibraryFormDto sysArchivesLibraryFormDto) {
-        Integer parentId = sysArchivesLibraryFormDto.getParentId();
         String name = sysArchivesLibraryFormDto.getName();
         Short type = sysArchivesLibraryFormDto.getType();
         Short archType = sysArchivesLibraryFormDto.getArchType();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
         SysArchivesLibrary sysArchivesLibrary = new SysArchivesLibrary();
-        if (!parentId.equals(TreeUtil.ROOT_PARENT_ID)) {
-            sysArchivesLibrary = this.getById(parentId);
-            if (sysArchivesLibrary != null) {
-                if (type == 1 && sysArchivesLibrary.getType() == 2) {
-                    throw new BaseRuntimeException("档案库下边不能添加目录");
-                }
-            } else {
-                throw new BaseRuntimeException("档案库上级目录有误");
-            }
-        }
         if (type == 2) {
             if (StrUtil.isEmpty(dataKey)) {
                 throw new BaseRuntimeException("key（英文名称）不能为空");
@@ -128,7 +117,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
     @Override
     public void updateById(SysArchivesLibraryFormDto sysArchivesLibraryFormDto) {
         Integer id = sysArchivesLibraryFormDto.getId();
-        Integer parentId = sysArchivesLibraryFormDto.getParentId();
         String name = sysArchivesLibraryFormDto.getName();
         Short type = sysArchivesLibraryFormDto.getType();
         Short archType = sysArchivesLibraryFormDto.getArchType();
@@ -140,17 +128,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
             String oldName = sysArchivesLibrary.getName();
             String oldDataKey = sysArchivesLibrary.getDataKey();
             if (!type.equals(oldType)) {
-                //判断修改跟上级的类型对比
-                if (!parentId.equals(TreeUtil.ROOT_PARENT_ID)) {
-                    SysArchivesLibrary last = this.getById(parentId);
-                    if (last != null) {
-                        if (type == 1 && last.getType() == 2) {
-                            throw new BaseRuntimeException("目录上边不能有档案库");
-                        }
-                    } else {
-                        throw new BaseRuntimeException("档案库上级目录有误");
-                    }
-                }
                 //判断修改的跟当前的类型对比
                 if (type == 1 && oldType == 2) {
                     sysArchivesLibrary.setDataKey("");
@@ -163,6 +140,13 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                     iCommTableFieldService.removeTableByTableName(oldTableName);
                     //
                 } else {
+                    if (StrUtil.isEmpty(dataKey)) {
+                        throw new BaseRuntimeException("key（英文名称）不能为空");
+                    }
+                    List<Integer> ids = this.listByDataKey(dataKey);
+                    if (!ids.isEmpty()) {
+                        throw new BaseRuntimeException("key（英文名称）重复");
+                    }
                     if (archType == 1) {
 
 
@@ -183,16 +167,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                         }
                         iSysArchivesLibraryFieldService.saveBatch(sysArchivesLibraryFields);
                         iCommTableFieldService.addTable(TableNameUtil.getFullTableName(dataKey), name, commTableFields);
-                    }
-                }
-                //判断修改跟下级的类型对比
-                if (type == 2) {
-                    if (StrUtil.isEmpty(dataKey)) {
-                        throw new BaseRuntimeException("key（英文名称）不能为空");
-                    }
-                    List<Integer> ids2 = this.listByIdAndType(id, (short) 1);
-                    if (!ids2.isEmpty()) {
-                        throw new BaseRuntimeException("档案库下边不能有目录");
                     }
                 }
             }
