@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @Author: mlf
  * @Date: 2021/1/14 10:53:13
@@ -18,5 +20,6 @@ public class SysArchivesLibraryFieldQueryDto extends PageDto {
 
 
     @ApiModelProperty(value = "档案库id")
+    @NotNull
     private Integer archivesLibraryId;
 }

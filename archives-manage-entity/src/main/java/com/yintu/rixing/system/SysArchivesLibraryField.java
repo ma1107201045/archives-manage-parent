@@ -65,21 +65,20 @@ public class SysArchivesLibraryField extends BaseEntity {
     @TableField("`from_type`")
     private Short fromType;
 
-    @ApiModelProperty(value = "档案库id", position = 16)
+    @ApiModelProperty(value = "数据选项(数据类型为下拉框，则存储json串作为选项)", position = 16)
+    @TableField("data_options")
+    private String dataOptions;
+
+    @ApiModelProperty(value = "数据类型id", position = 17)
+    @TableField("data_type_id")
+    private Integer dataTypeId;
+
+    @ApiModelProperty(value = "数据类型", position = 18)
+    @TableField(exist = false)
+    private SysDataType sysDataType;
+
+    @ApiModelProperty(value = "档案库id", position = 19)
     @TableField("archives_library_id")
     private Integer archivesLibraryId;
-
-    @ApiModelProperty(value = "模板库id", position = 17)
-    @TableField("template_library_id")
-    private Integer templateLibraryId;
-
-
-    @ApiModelProperty(value = "模板库字段类型id", position = 18)
-    @TableField("template_library_field_type_id")
-    private Integer templateLibraryFieldTypeId;
-
-    @ApiModelProperty(value = "模板库字段对应类型", position = 19)
-    @TableField(exist = false)
-    private SysDataType sysTemplateLibraryFieldType;
 
 }

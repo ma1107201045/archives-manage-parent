@@ -26,7 +26,7 @@ public interface ISysArchivesLibraryFieldService extends IService<SysArchivesLib
     void save(SysArchivesLibraryFieldFormDto sysArchivesLibraryFieldFormDto);
 
     @Transactional(rollbackFor = {Exception.class})
-    void chooseSysCommonFieldLibrary(Integer archivesLibraryId, List<Integer> commonFieldLibraries);
+    void chooseSysCommonFieldLibrary(Integer archivesLibraryId, List<Integer> commonFieldLibraryIds);
 
     @Transactional(rollbackFor = {Exception.class})
     void removeByIds(Set<Integer> ids);
@@ -37,7 +37,7 @@ public interface ISysArchivesLibraryFieldService extends IService<SysArchivesLib
     @Transactional(rollbackFor = {Exception.class})
     void updateOrderByIds(Integer id1, Integer id2);
 
-    List<Integer> listByArchivesLibraryIdDataKeys(Integer archivesLibraryId, String dataKey);
+    List<Integer> listByArchivesLibraryIdAndDataKeys(Integer archivesLibraryId, List<String> dataKey);
 
     List<Integer> listByArchivesLibraryIdAndSystem(Integer archivesLibraryId, Short system);
 
