@@ -11,6 +11,7 @@ import com.yintu.rixing.config.other.Authenticator;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFieldFormDto;
 import com.yintu.rixing.dto.system.SysArchivesLibraryFieldQueryDto;
 import com.yintu.rixing.dto.system.SysArchivesLibraryNumberSettingDto;
+import com.yintu.rixing.dto.system.SysCommonFieldLibraryQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.util.ResultDataUtil;
 import io.swagger.annotations.Api;
@@ -44,6 +45,8 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
     private ISysArchivesLibraryNumberSettingService iSysArchivesLibraryNumberSettingService;
     @Autowired
     private ISysDataTypeService iSysDataTypeService;
+    @Autowired
+    private ISysCommonFieldLibraryService iSysCommonFieldLibraryService;
 
 
     @Override
@@ -124,8 +127,7 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
             @ApiImplicitParam(name = "commonFieldLibraries", allowMultiple = true, dataType = "__int", value = "公共字段库id集", required = true, paramType = "query")
     })
     public ResultDataUtil<Object> chooseSysCommonFieldLibrary(@RequestParam Integer archivesLibraryId, @RequestParam List<Integer> commonFieldLibraries) {
-
-        iSysArchivesLibraryFieldService.chooseSysCommonFieldLibrary(null, null);
+        iSysArchivesLibraryFieldService.chooseSysCommonFieldLibrary(archivesLibraryId, commonFieldLibraries);
         return ResultDataUtil.ok("选择公共字段库信息成功");
     }
 
@@ -133,10 +135,9 @@ public class SysArchivesLibraryFieldController extends Authenticator implements 
     @GetMapping("/sys-common-field-library")
     @ApiOperation(value = "查询档案库字段公共字段库信息列表", notes = "查询档案库字段公共字段库信息列表")
     @ApiOperationSupport(order = 9)
-    @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
-    public ResultDataUtil<List<SysArchivesLibraryNumberSettingDto>> findSysCommonFieldLibrary(@RequestParam Integer archivesLibraryId) {
-
-        return ResultDataUtil.ok("查询档案库字段公共字段库信息列表成功", null);
+    public ResultDataUtil<Page<SysCommonFieldLibrary>> findSysCommonFieldLibrary(@Validated SysCommonFieldLibraryQueryDto sysCommonFieldLibraryQueryDto) {
+        Page<SysCommonFieldLibrary> sysCommonFieldLibraries = iSysCommonFieldLibraryService.page(sysCommonFieldLibraryQueryDto);
+        return ResultDataUtil.ok("查询档案库字段公共字段库信息列表成功", sysCommonFieldLibraries);
     }
 
 
