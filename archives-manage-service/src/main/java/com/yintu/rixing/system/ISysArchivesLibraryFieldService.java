@@ -31,6 +31,8 @@ public interface ISysArchivesLibraryFieldService extends IService<SysArchivesLib
     @Transactional(rollbackFor = {Exception.class})
     void removeByIds(Set<Integer> ids);
 
+    void removeByArchivesLibraryId(Integer archivesLibraryId);
+
     @Transactional(rollbackFor = {Exception.class})
     void updateById(SysArchivesLibraryFieldFormDto sysArchivesLibraryFieldFormDto);
 

@@ -38,7 +38,6 @@ public class SysArchivesLibraryFormDto extends IdDto {
     private Short archType;
 
     @ApiModelProperty(value = "档案库描述")
-    @TableField("description")
     private String description;
 
 }

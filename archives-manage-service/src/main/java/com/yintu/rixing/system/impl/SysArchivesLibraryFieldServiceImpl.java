@@ -84,7 +84,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
                 SysArchivesLibraryField sysArchivesLibraryField = new SysArchivesLibraryField();
                 BeanUtil.copyProperties(sysCommonFieldLibrary, sysArchivesLibraryField, "id");
                 sysArchivesLibraryField.setArchivesLibraryId(archivesLibraryId);
-                sysArchivesLibraryField.setFromType(EnumFieldType.BASE.getValue());
+                sysArchivesLibraryField.setFromType(EnumFieldType.COMMON.getValue());
                 sysArchivesLibraryFields.add(sysArchivesLibraryField);
                 CommTableField commTableField = iCommTableFieldService.findByDataKeyAndSysArchivesLibraryField(dataKey, sysArchivesLibraryField);
                 String tableName = commTableField.getTableName();
@@ -114,6 +114,13 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             iCommTableFieldService.isHasDataByTableName(tableName);
             iCommTableFieldService.dropByFieldNames(tableName, fieldNames);
         }
+    }
+
+    @Override
+    public void removeByArchivesLibraryId(Integer archivesLibraryId) {
+        QueryWrapper<SysArchivesLibraryField> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId);
+        this.remove(queryWrapper);
     }
 
     @Override
@@ -262,7 +269,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
         queryWrapper.lambda()
                 .eq(SysArchivesLibraryField::getArchivesLibraryId, archivesLibraryId)
                 //排除基础字段库
-                .gt(SysArchivesLibraryField::getFromType, EnumFieldType.BASE)
+                .gt(SysArchivesLibraryField::getFromType, EnumFieldType.BASE.getValue())
                 .orderByAsc(SysArchivesLibraryField::getOrder);
         Page<SysArchivesLibraryField> sysArchivesLibraryFieldPage = this.page(new Page<>(num, size), queryWrapper);
         sysArchivesLibraryFieldPage.getRecords().forEach(sysArchivesLibraryField -> {

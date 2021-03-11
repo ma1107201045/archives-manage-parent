@@ -133,7 +133,6 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
         Short type = sysArchivesLibraryFormDto.getType();
         Short archType = sysArchivesLibraryFormDto.getArchType();
         String dataKey = sysArchivesLibraryFormDto.getDataKey();
-        String tableName = TableNameUtil.getFullTableName(dataKey);
         SysArchivesLibrary sysArchivesLibrary = this.getById(id);
         if (sysArchivesLibrary != null) {
             Short oldType = sysArchivesLibrary.getType();
@@ -156,10 +155,12 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                 //判断修改的跟当前的类型对比
                 if (type == 1 && oldType == 2) {
                     sysArchivesLibrary.setDataKey("");
+                    //先删除之前档案库的字段
+                    iSysArchivesLibraryFieldService.removeByArchivesLibraryId(id);
                     //判断表中是否有数据
-                    iCommTableFieldService.isHasDataByTableName(tableName);
+                    iCommTableFieldService.isHasDataByTableName(oldTableName);
                     //删除表
-                    iCommTableFieldService.removeTableByTableName(tableName);
+                    iCommTableFieldService.removeTableByTableName(oldTableName);
                 }
                 //判断修改跟下级的类型对比
                 if (type == 2) {
@@ -199,6 +200,7 @@ public class SysArchivesLibraryServiceImpl extends ServiceImpl<SysArchivesLibrar
                         }
                         //更改表的表名
                         if (!oldDataKey.equals(dataKey)) {
+                            String tableName = TableNameUtil.getFullTableName(dataKey);
                             iCommTableFieldService.editTableNameByTableName(oldTableName, tableName);
                         }
                     }
