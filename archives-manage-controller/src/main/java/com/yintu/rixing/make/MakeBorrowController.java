@@ -86,6 +86,7 @@ public class MakeBorrowController extends Authenticator {
     @Log(level = EnumLogLevel.INFO, module = "借阅申请", context = "添加新的借阅申请信息")
     @ApiOperation(value = "添加新的借阅申请信息", notes = "添加新的借阅申请信息")
     public Map<String, Object> add(MakeBorrow makeBorrow) {
+        makeBorrow.setBorrowType((short)1);
         iMakeBorrowService.add(makeBorrow);
         return ResponseDataUtil.ok("新增借阅申请信息成功");
     }

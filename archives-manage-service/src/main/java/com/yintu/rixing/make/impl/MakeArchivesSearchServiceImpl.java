@@ -17,6 +17,7 @@ import com.yintu.rixing.util.TableNameUtil;
 import com.yintu.rixing.vo.make.MakeArchivesSearchElectronicVo;
 import com.yintu.rixing.vo.data.DataCommonFieldVo;
 import com.yintu.rixing.vo.data.DataCommonVo;
+import com.yintu.rixing.vo.make.MakeArchivesSearchVo;
 import com.yintu.rixing.warehouse.IWareLibraryTreeService;
 import com.yintu.rixing.warehouse.IWareTemplateLibraryFieldService;
 import com.yintu.rixing.warehouse.WareTemplateLibraryField;
@@ -51,6 +52,8 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
     private ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
     @Autowired
     protected ISysDepartmentService iSysDepartmentService;
+    @Autowired
+    private SysArchivesLibraryMapper sysArchivesLibraryMapper;
 
     @Override
     public DataCommonVo findElectronicsDatasBySomethings(Integer num, Integer size, Integer archiveId, String searchThings) {
@@ -236,6 +239,115 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
     }
 
     @Override
+    public Page<MakeArchivesSearchPojo> searchArchivesFileByIds(Integer num, Integer size, Integer archivesDirectoryId, Integer archivesLibId) {
+        Page<MakeArchivesSearchPojo> makeArchivesSearchPojoPage = makeArchivesSearchMapper.selectFileByIds(new Page<>(num, size),archivesDirectoryId,archivesLibId);
+        return makeArchivesSearchPojoPage;
+    }
+
+    @Override
+    public Page<MakeArchivesSearchPojo> page(Integer num,  Integer size, String searchThings, Integer archivesDirectoryId, Integer archivesLibId) {
+        Page<MakeArchivesSearchPojo> makeArchivesSearchPojoPage = makeArchivesSearchMapper.selectFileByWords(new Page<>(num, size), searchThings,archivesDirectoryId,archivesLibId);
+        return makeArchivesSearchPojoPage;
+    }
+
+    @Override
+    public Page<MakeArchivesSearchVo> findDatasBySomethings(Integer num, Integer size, Integer archiveId, String searchThings) {
+        Page<MakeArchivesSearchVo> page1 = new Page<>();
+        SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archiveId);
+        String dataKey1 = sysArchivesLibrary.getDataKey();
+        String fullTableName = TableNameUtil.getFullTableName(dataKey1);
+        if (wareTemplateLibraryFiledMapper.findTable(fullTableName) == 0) {
+            throw new BaseRuntimeException("请先创建实相关表");
+        } else {
+            List<MakeArchivesSearchVo> list=new ArrayList<>();
+            Page page = new Page();
+            page.setSize(size);
+            page.setCurrent(num);
+            Page<Map<Object, String>> entityArchivesPages = makeArchivesSearchMapper.findDatasBySomethings(page, fullTableName,searchThings);
+            List<Map<Object, String>> archivesPagesRecords = entityArchivesPages.getRecords();
+            BeanUtil.copyProperties(entityArchivesPages, page1, "records");
+            for (Map<Object, String> archivesPagesRecord : archivesPagesRecords) {
+                String archives_code = archivesPagesRecord.get("archives_code");//档号
+                String folder_code = archivesPagesRecord.get("folder_code");//案卷号
+                String file_code = archivesPagesRecord.get("file_code");//件号
+                String title = archivesPagesRecord.get("title");//提名
+                String year =String.valueOf(archivesPagesRecord.get("year"));//年度
+                String responsible_person = archivesPagesRecord.get("responsible_person");//责任者
+                String id =String.valueOf(archivesPagesRecord.get("id")) ;//文档id
+
+                MakeArchivesSearchVo makeArchivesSearchVo=new MakeArchivesSearchVo();
+                makeArchivesSearchVo.setArchivesDirectoryId(Integer.parseInt(id));
+                makeArchivesSearchVo.setArchivesLibId(archiveId);
+                makeArchivesSearchVo.setArchivesCode(archives_code);
+                makeArchivesSearchVo.setFolderCode(folder_code);
+                makeArchivesSearchVo.setFileCode(file_code);
+                makeArchivesSearchVo.setTitle(title);
+                makeArchivesSearchVo.setYear(year);
+                makeArchivesSearchVo.setResponsiblePerson(responsible_person);
+                makeArchivesSearchVo.setArchivesFile(sysArchivesLibrary.getName());
+                list.add(makeArchivesSearchVo);
+            }
+            page1.setRecords(list);
+            return page1;
+        }
+    }
+
+    @Override
+    public Page<MakeArchivesSearchVo> listArchivesByKeyWord(MakeArchivesSearchDto makeArchivesSearchDto) {
+        Page<MakeArchivesSearchVo> page1 = new Page<>();
+        Integer num = makeArchivesSearchDto.getNum();
+        Integer size = makeArchivesSearchDto.getSize();
+        String keyWord = makeArchivesSearchDto.getKeyWord();
+        Short searchType = makeArchivesSearchDto.getSearchType();
+        Short userType = makeArchivesSearchDto.getUserType();
+        Integer userId = makeArchivesSearchDto.getUserId();
+        Page<MakeArchivesSearchPojo> page2 = makeArchivesSearchMapper.selectFileByKeyWord(new Page<>(num, size), keyWord);
+        BeanUtil.copyProperties(page2, page1, "records");
+        List<MakeArchivesSearchPojo> makeArchivesSearchPojos = page2.getRecords();
+        List<MakeArchivesSearchVo> list=new ArrayList<>();
+        List<DataArchivesLibraryFileSearch> dataArchivesLibraryFileSearches = new ArrayList<>();
+        for (MakeArchivesSearchPojo makeArchivesSearchPojo : makeArchivesSearchPojos) {
+            Integer archivesLibId = makeArchivesSearchPojo.getArchivesLibId();
+            Integer archivesDirectoryId = makeArchivesSearchPojo.getArchivesDirectoryId();
+            SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibId);
+            String dataKey = sysArchivesLibrary.getDataKey();
+            String fullTableName = TableNameUtil.getFullTableName(dataKey);
+            Map<Object,String> map=sysArchivesLibraryMapper.findHourseData(fullTableName,archivesDirectoryId);
+            System.out.println("mapppppp="+map);
+            String archives_code = map.get("archives_code");//档号
+            String folder_code = map.get("folder_code");//案卷号
+            String file_code = map.get("file_code");//件号
+            String title = map.get("title");//提名
+            String year =String.valueOf(map.get("year"));//年度
+            String responsible_person = map.get("responsible_person");//责任者
+
+            MakeArchivesSearchVo makeArchivesSearchVo=new MakeArchivesSearchVo();
+            makeArchivesSearchVo.setArchivesDirectoryId(archivesDirectoryId);
+            makeArchivesSearchVo.setArchivesLibId(archivesLibId);
+            makeArchivesSearchVo.setArchivesCode(archives_code);
+            makeArchivesSearchVo.setFolderCode(folder_code);
+            makeArchivesSearchVo.setFileCode(file_code);
+            makeArchivesSearchVo.setTitle(title);
+            makeArchivesSearchVo.setYear(year);
+            makeArchivesSearchVo.setResponsiblePerson(responsible_person);
+            makeArchivesSearchVo.setArchivesFile(sysArchivesLibrary.getName());
+            list.add(makeArchivesSearchVo);
+
+            //用户添加查询记录
+            DataArchivesLibraryFileSearch dataArchivesLibraryFileSearch = new DataArchivesLibraryFileSearch();
+            dataArchivesLibraryFileSearch.setSearchType(searchType);
+            dataArchivesLibraryFileSearch.setArchivesLibraryFileId(archivesDirectoryId);
+            dataArchivesLibraryFileSearch.setUserType(userType);
+            dataArchivesLibraryFileSearch.setUserId(userId);
+            dataArchivesLibraryFileSearches.add(dataArchivesLibraryFileSearch);
+        }
+        //查询出来的文件集合用于保存查询记录
+        iDataArchivesLibraryFileSearchService.saveBatch(dataArchivesLibraryFileSearches);
+        page1.setRecords(list);
+        return page1;
+    }
+
+    @Override
     public Page<MakeArchivesSearchElectronicVo> listElectronicByKeyWord(MakeArchivesSearchDto makeArchivesSearchDto) {
         Page<MakeArchivesSearchElectronicVo> page1 = new Page<>();
         Integer num = makeArchivesSearchDto.getNum();
@@ -268,7 +380,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             makeArchivesSearchVos.add(makeArchivesSearchVo);
             //用户添加查询记录
             DataArchivesLibraryFileSearch dataArchivesLibraryFileSearch = new DataArchivesLibraryFileSearch();
-            dataArchivesLibraryFileSearch.setSearchType(searchType);
+            dataArchivesLibraryFileSearch.setSearchType((short)1);
             dataArchivesLibraryFileSearch.setArchivesLibraryFileId(makeArchivesSearchPojo.getArchivesFileId());
             dataArchivesLibraryFileSearch.setUserType(userType);
             dataArchivesLibraryFileSearch.setUserId(userId);
