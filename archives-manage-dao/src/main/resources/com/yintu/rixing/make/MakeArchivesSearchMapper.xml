@@ -2,6 +2,61 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.rixing.make.MakeArchivesSearchMapper">
 
+
+    <select id="selectFileByIds" resultType="com.yintu.rixing.pojo.MakeArchivesSearchPojo">
+        SELECT dalf.`id`                  AS archivesFileId,
+               dalf.`modified_time`,
+               dalf.`original_name`       AS archivesFileOriginalName,
+               dalf.`context`             AS archivesFileContext,
+               dalf.`archives_library_id` AS archivesLibId,
+               dalf.`data_id`             AS archivesDirectoryId,
+               dalf.`request_mapping`     AS archivesFileRequestMapping
+        FROM data_archives_library_file AS dalf
+        WHERE dalf.`formal_library` = 1
+        AND archives_library_id =#{archivesLibId}
+	    AND data_id =#{archivesDirectoryId}
+         ORDER BY `modified_time`
+    </select>
+
+
+    <select id="selectFileByWords" resultType="com.yintu.rixing.pojo.MakeArchivesSearchPojo">
+        SELECT dalf.`id`                  AS archivesFileId,
+               dalf.`modified_time`,
+               dalf.`original_name`       AS archivesFileOriginalName,
+               dalf.`context`             AS archivesFileContext,
+               dalf.`archives_library_id` AS archivesLibId,
+               dalf.`data_id`             AS archivesDirectoryId,
+               dalf.`request_mapping`     AS archivesFileRequestMapping
+        FROM data_archives_library_file AS dalf
+        WHERE dalf.`formal_library` = 1
+        AND archives_library_id =#{archivesLibId}
+	    AND data_id =#{archivesDirectoryId}
+          AND MATCH(dalf.`original_name`, `context`)
+                    AGAINST(CONCAT('*', #{searchThings,jdbcType=VARCHAR}
+                                , '*') IN BOOLEAN MODE)
+         ORDER BY `modified_time`
+    </select>
+
+
+
+
+    <select id="selectFileByKeyWord" resultType="com.yintu.rixing.pojo.MakeArchivesSearchPojo">
+        SELECT
+               dalf.`archives_library_id` AS archivesLibId,
+               dalf.`data_id`             AS archivesDirectoryId
+        FROM data_archives_library_file AS dalf
+        WHERE dalf.`formal_library` = 1
+          AND MATCH(dalf.`original_name`, `context`)
+                    AGAINST(CONCAT('*', #{keyWord,jdbcType=VARCHAR}
+                                , '*') IN BOOLEAN MODE)
+       GROUP BY
+	    archives_library_id,data_id
+    </select>
+
+
+
+
+
     <select id="selectByKeyWord" resultType="com.yintu.rixing.pojo.MakeArchivesSearchPojo">
         SELECT dalf.`id`                  AS archivesFileId,
                dalf.`modified_time`,
@@ -28,6 +83,21 @@
     </where>
     order by id desc
   </select>
+
+
+    <select id="findDatasBySomethings" resultType="java.util.Map">
+        select *
+        from ${fullTableName}
+        <where>
+            <if test="searchThings!=null">
+                ${searchThings}
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+
+
 
 
 </mapper>
