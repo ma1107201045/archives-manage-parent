@@ -158,7 +158,7 @@ public class MakeBorrowController extends Authenticator {
                         makeBorrowVo.setArchivesLibName(sysArchivesLibrary.getName());
                         Map<String, Object> map = iDataFormalLibraryService.getById(dataId, archivesLibraryId);
                         if (map != null) {
-                            makeBorrowVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
+                            makeBorrowVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_CODE.getDataKey()));
                             makeBorrowVo.setArchivesDirectoryTopicName((String) map.get(EnumArchivesLibraryDefaultField.TOPIC_NAME.getDataKey()));
                             makeBorrowVo.setArchivesDirectoryRetentionPeriod(map.get(EnumArchivesLibraryDefaultField.RETENTION_PERIOD.getDataKey()));
                             makeBorrowVo.setArchivesDirectoryValidPeriod(map.get(EnumArchivesLibraryDefaultField.VALID_PERIOD.getDataKey()));
@@ -224,7 +224,7 @@ public class MakeBorrowController extends Authenticator {
                     makeBorrowVo.setArchivesLibName(sysArchivesLibrary.getName());
                     Map<String, Object> map = iDataFormalLibraryService.getById(dataId, archivesLibraryId);
                     if (map != null) {
-                        makeBorrowVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
+                        makeBorrowVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_CODE.getDataKey()));
                         makeBorrowVo.setArchivesDirectoryTopicName((String) map.get(EnumArchivesLibraryDefaultField.TOPIC_NAME.getDataKey()));
                         makeBorrowVo.setArchivesDirectoryRetentionPeriod(map.get(EnumArchivesLibraryDefaultField.RETENTION_PERIOD.getDataKey()));
                         makeBorrowVo.setArchivesDirectoryValidPeriod(map.get(EnumArchivesLibraryDefaultField.VALID_PERIOD.getDataKey()));

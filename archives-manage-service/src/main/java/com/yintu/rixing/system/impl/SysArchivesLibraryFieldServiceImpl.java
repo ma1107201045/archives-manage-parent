@@ -99,13 +99,14 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
 
     @Override
     public void removeByIds(Set<Integer> ids) {
-        super.removeByIds(ids);
+
         List<SysArchivesLibraryField> sysArchivesLibraryFields = this.listByIds(ids);
         sysArchivesLibraryFields.forEach(sysArchivesLibraryField -> {
             if (sysArchivesLibraryField.getFromType().equals(EnumFieldType.BASE.getValue())) {
                 throw new BaseRuntimeException("系统默认key不能删除");
             }
         });
+        super.removeByIds(ids);
         Map<Integer, List<SysArchivesLibraryField>> sysArchivesLibraryFieldGroupMap = sysArchivesLibraryFields.stream().collect(Collectors.groupingBy(SysArchivesLibraryField::getArchivesLibraryId));
         for (Integer archivesLibraryId : sysArchivesLibraryFieldGroupMap.keySet()) {
             SysArchivesLibrary sysArchivesLibrary = iSysArchivesLibraryService.getById(archivesLibraryId);
@@ -114,6 +115,7 @@ public class SysArchivesLibraryFieldServiceImpl extends ServiceImpl<SysArchivesL
             iCommTableFieldService.isHasDataByTableName(tableName);
             iCommTableFieldService.dropByFieldNames(tableName, fieldNames);
         }
+
     }
 
     @Override

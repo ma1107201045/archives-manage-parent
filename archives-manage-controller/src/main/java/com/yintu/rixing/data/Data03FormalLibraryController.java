@@ -6,6 +6,8 @@ import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
+import com.yintu.rixing.dto.data.DataCommonMarkDto;
+import com.yintu.rixing.dto.data.DataCommonRollBackDto;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.enumobject.EnumAuthType;
 import com.yintu.rixing.enumobject.EnumLogLevel;
@@ -19,6 +21,7 @@ import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -92,5 +95,44 @@ public class Data03FormalLibraryController extends Authenticator {
         iDataFormalLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.FORMAL_LIBRARY.getName(), ids, archivesLibraryId);
     }
 
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "普通搜索正式库列表信息")
+    @GetMapping("/findPage")
+    @ApiOperation(value = "普通搜索正式库列表信息", notes = "普通搜索正式库列表信息")
+    @ApiOperationSupport(order = 5)
+    public ResultDataUtil<DataCommonVo> findPageEasy(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataFormalLibraryService.getPageEasy(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询正式库列表信息成功", dataCommonVo);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "高级搜索正式库列表信息")
+    @PostMapping("/findPage")
+    @ApiOperation(value = "高级搜索正式库列表信息", notes = "高级搜索正式库列表信息")
+    @ApiOperationSupport(order = 6)
+    public ResultDataUtil<DataCommonVo> findPageComplex(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataFormalLibraryService.getPageComplex(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询正式库列表信息成功", dataCommonVo);
+    }
+
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "正式库信息标记/取消为病档")
+    @PatchMapping("/mark")
+    @ApiOperation(value = "正式库信息标记/取消为病档信息", notes = "正式库信息标记/取消为病档信息")
+    @ApiOperationSupport(order = 7)
+    public ResultDataUtil<Object> mark(@Validated DataCommonMarkDto dataCommonMarkDto) {
+        iDataFormalLibraryService.mark(dataCommonMarkDto);
+        if(dataCommonMarkDto.getType() == 1){
+            return ResultDataUtil.ok("正式库信息标记为病档信息成功");
+        }else{
+            return ResultDataUtil.ok("正式库信息取消病档信息成功");
+        }
+    }
+
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "正式库信息回退整理库")
+    @PatchMapping("/rollback")
+    @ApiOperation(value = "正式库信息回退整理库", notes = "正式库信息回退整理库")
+    @ApiOperationSupport(order = 8)
+    public ResultDataUtil<Object> rollback(@Validated DataCommonRollBackDto dataCommonRollBackDto) {
+        iDataFormalLibraryService.rollBack(dataCommonRollBackDto);
+        return ResultDataUtil.ok("正式库信息回退整理库成功");
+    }
 
 }

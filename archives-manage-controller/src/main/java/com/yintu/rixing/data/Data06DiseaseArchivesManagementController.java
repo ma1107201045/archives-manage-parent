@@ -69,7 +69,7 @@ public class Data06DiseaseArchivesManagementController extends Authenticator {
             @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
     })
     public ResultDataUtil<Object> cancel(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        iDataDiseaseArchivesManagementService.updateStatusById(id, archivesLibraryId, null);
+        iDataDiseaseArchivesManagementService.mark(id, archivesLibraryId);
         return ResultDataUtil.ok("取消病档管理信息成功");
     }
 
@@ -117,5 +117,23 @@ public class Data06DiseaseArchivesManagementController extends Authenticator {
     public ResultDataUtil<List<SysDepartment>> findList() {
         List<SysDepartment> sysDepartments = iSysDepartmentService.list(new QueryWrapper<SysDepartment>().orderByDesc("id"));
         return ResultDataUtil.ok("查询销毁库组织机构列表信息成功", sysDepartments);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "普通搜索病档管理列表信息")
+    @GetMapping("/findPage")
+    @ApiOperation(value = "普通搜索病档管理列表信息", notes = "普通搜索病档管理列表信息")
+    @ApiOperationSupport(order = 7)
+    public ResultDataUtil<DataCommonVo> findPageEasy(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataDiseaseArchivesManagementService.getPageEasy(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询病档管理列表信息成功", dataCommonVo);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "高级搜索病档管理列表信息")
+    @PostMapping("/findPage")
+    @ApiOperation(value = "高级搜索病档管理列表信息", notes = "高级搜索病档管理列表信息")
+    @ApiOperationSupport(order = 8)
+    public ResultDataUtil<DataCommonVo> findPageComplex(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataDiseaseArchivesManagementService.getPageComplex(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询病档管理列表信息成功", dataCommonVo);
     }
 }

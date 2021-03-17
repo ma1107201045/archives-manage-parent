@@ -6,6 +6,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
+import com.yintu.rixing.dto.data.DataCommonMarkDto;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.enumobject.EnumAuthType;
 import com.yintu.rixing.enumobject.EnumLogLevel;
@@ -16,6 +17,7 @@ import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -99,17 +101,17 @@ public class Data01TemporaryLibraryController extends Authenticator {
         return ResultDataUtil.ok("临时库信息移交到整理库成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "临时库信息标记为病档信息")
-    @PatchMapping("/mark/{id}")
-    @ApiOperation(value = "临时库信息标记为病档信息", notes = "临时库信息标记为病档信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
-            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
-    })
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "临时库信息标记/取消为病档信息")
+    @PatchMapping("/mark")
+    @ApiOperation(value = "临时库信息标记/取消为病档信息", notes = "临时库信息标记/取消为病档信息")
     @ApiOperationSupport(order = 5)
-    public ResultDataUtil<Object> mark(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        iDataTemporaryLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.DISEASE_ARCHIVES.getValue());
-        return ResultDataUtil.ok("临时库信息标记为病档信息成功");
+    public ResultDataUtil<Object> mark(@Validated DataCommonMarkDto dataCommonMarkDto) {
+        iDataTemporaryLibraryService.mark(dataCommonMarkDto);
+        if(dataCommonMarkDto.getType() == 1){
+            return ResultDataUtil.ok("临时库信息标记为病档信息成功");
+        }else{
+            return ResultDataUtil.ok("临时库信息取消病档信息成功");
+        }
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "查询临时库单条信息")
@@ -166,4 +168,23 @@ public class Data01TemporaryLibraryController extends Authenticator {
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataTemporaryLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.TEMPORARY_LIBRARY.getName(), ids, archivesLibraryId);
     }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "普通搜索临时库列表信息")
+    @GetMapping("/findPage")
+    @ApiOperation(value = "普通搜索临时库列表信息", notes = "普通搜索临时库列表信息")
+    @ApiOperationSupport(order = 11)
+    public ResultDataUtil<DataCommonVo> findPageEasy(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPageEasy(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询临时库列表信息成功", dataCommonVo);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "高级搜索临时库列表信息")
+    @PostMapping("/findPage")
+    @ApiOperation(value = "高级搜索临时库列表信息", notes = "高级搜索临时库列表信息")
+    @ApiOperationSupport(order = 12)
+    public ResultDataUtil<DataCommonVo> findPageComplex(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPageComplex(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询临时库列表信息成功", dataCommonVo);
+    }
+
 }

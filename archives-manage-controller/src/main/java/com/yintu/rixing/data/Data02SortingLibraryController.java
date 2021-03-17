@@ -6,6 +6,8 @@ import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
+import com.yintu.rixing.dto.data.DataCommonMarkDto;
+import com.yintu.rixing.dto.data.DataCommonRollBackDto;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.enumobject.EnumAuthType;
 import com.yintu.rixing.enumobject.EnumLogLevel;
@@ -19,6 +21,7 @@ import com.yintu.rixing.util.TreeUtil;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -90,15 +93,11 @@ public class Data02SortingLibraryController extends Authenticator {
     }
 
     @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "整理库信息回退临时库")
-    @PatchMapping("/rollback/{id}")
+    @PatchMapping("/rollback")
     @ApiOperation(value = "整理库信息回退临时库", notes = "整理库信息回退临时库")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
-            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
-    })
     @ApiOperationSupport(order = 4)
-    public ResultDataUtil<Object> rollback(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        iDataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.TEMPORARY_LIBRARY.getValue());
+    public ResultDataUtil<Object> rollback(@Validated DataCommonRollBackDto dataCommonRollBackDto) {
+        iDataSortingLibraryService.rollBack(dataCommonRollBackDto);
         return ResultDataUtil.ok("整理库信息回退临时库成功");
     }
 
@@ -115,17 +114,17 @@ public class Data02SortingLibraryController extends Authenticator {
         return ResultDataUtil.ok("整理库信息移交正式库成功");
     }
 
-    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "整理库信息标记为病档")
-    @PatchMapping("/mark/{id}")
-    @ApiOperation(value = "整理库信息标记为病档信息", notes = "整理库信息标记为病档信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", dataType = "int", value = "主键id", required = true, paramType = "path"),
-            @ApiImplicitParam(name = "archivesLibraryId", dataType = "int", value = "档案库id", required = true, paramType = "query")
-    })
+    @Log(level = EnumLogLevel.INFO, module = "数据中心", context = "整理库信息标记/取消为病档")
+    @PatchMapping("/mark")
+    @ApiOperation(value = "整理库信息标记/取消为病档信息", notes = "整理库信息标记/取消为病档信息")
     @ApiOperationSupport(order = 6)
-    public ResultDataUtil<Object> mark(@PathVariable Integer id, @RequestParam Integer archivesLibraryId) {
-        iDataSortingLibraryService.updateStatusById(id, archivesLibraryId, EnumArchivesOrder.DISEASE_ARCHIVES.getValue());
-        return ResultDataUtil.ok("整理库信息标记为病档信息成功");
+    public ResultDataUtil<Object> mark(@Validated DataCommonMarkDto dataCommonMarkDto) {
+        iDataSortingLibraryService.mark(dataCommonMarkDto);
+        if(dataCommonMarkDto.getType() == 1){
+            return ResultDataUtil.ok("整理库信息标记为病档信息成功");
+        }else{
+            return ResultDataUtil.ok("整理库信息取消病档信息成功");
+        }
     }
 
 
@@ -203,6 +202,24 @@ public class Data02SortingLibraryController extends Authenticator {
     @ApiOperationSupport(order = 13)
     public void exportExcelDataFile(HttpServletResponse response, @PathVariable Set<Integer> ids, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataSortingLibraryService.exportExcelRecordFile(response, EnumArchivesOrder.SORTING_LIBRARY.getName(), ids, archivesLibraryId);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "普通搜索整理库列表信息")
+    @GetMapping("/findPage")
+    @ApiOperation(value = "普通搜索整理库列表信息", notes = "普通搜索整理库列表信息")
+    @ApiOperationSupport(order = 14)
+    public ResultDataUtil<DataCommonVo> findPageEasy(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataSortingLibraryService.getPageEasy(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询整理库列表信息成功", dataCommonVo);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "高级搜索整理库列表信息")
+    @PostMapping("/findPage")
+    @ApiOperation(value = "高级搜索整理库列表信息", notes = "高级搜索整理库列表信息")
+    @ApiOperationSupport(order = 15)
+    public ResultDataUtil<DataCommonVo> findPageComplex(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataSortingLibraryService.getPageComplex(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询整理库列表信息成功", dataCommonVo);
     }
 
 }

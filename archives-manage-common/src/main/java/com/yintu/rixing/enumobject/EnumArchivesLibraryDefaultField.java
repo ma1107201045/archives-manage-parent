@@ -12,7 +12,7 @@ public enum EnumArchivesLibraryDefaultField {
     CREATE_TIME("创建时间", 3, "create_time", ""),
     MODIFIED_BY("修改人", 4, "modified_by", ""),
     MODIFIED_TIME("修改时间", 5, "modified_time", ""),
-    ARCHIVES_NUM("档号", 6, "archives_num", ""),
+    ARCHIVES_CODE("档号", 6, "archives_code", ""),
     TOPIC_NAME("题名", 7, "topic_name", ""),
     RETENTION_PERIOD("保管期限", 8, "retention_period", ""),
     VALID_PERIOD("有效期", 9, "valid_period", ""),
@@ -23,7 +23,10 @@ public enum EnumArchivesLibraryDefaultField {
     STATUS_FIELD1("档案状态预留字段1", 14, "status_field1", ""),
     OPERATION_TIME_FIELD1("操作时间预留字段1", 15, "operation_time _field1", ""),
     STATUS_FIELD2("档案状态预留字段2", 16, "status_field2", ""),
-    OPERATION_TIME_FIELD2("档案状态预留字段2", 17, "operation_time _field2", "");
+    OPERATION_TIME_FIELD2("档案状态预留字段2", 17, "operation_time _field2", ""),
+    DISEASE("是否病档", 18, "disease", "是否病档(1:是;0:不是)"),
+    DISEASE_REMARK("病档备注", 19, "disease_remark", ""),
+    ROLLBACK_REMARK("回退备注", 20, "rollback_remark", "");
 
     private final String name;
     private final Integer value;

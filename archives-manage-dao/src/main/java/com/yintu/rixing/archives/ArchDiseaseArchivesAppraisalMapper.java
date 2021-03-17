@@ -27,4 +27,14 @@ public interface ArchDiseaseArchivesAppraisalMapper {
      */
     Map<String, Long> selectArchDiseaseArchivesAppraisalData(Integer archivesLibraryId, String tableName, Integer departmentId, Date startDate, Date endDate, Short status);
 
+    /**
+     * 查询档案统计数量数据
+     *
+     * @param archivesLibraryId 档案库id
+     * @param tableName         表名
+     * @param startDate         开始日期
+     * @param endDate           结束日期
+     * @return ..
+     */
+    Map<String, Long> selectDiseaseArchivesAppraisalData(Integer archivesLibraryId, String tableName,  Date startDate, Date endDate);
 }

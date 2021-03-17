@@ -30,6 +30,9 @@ public class DataCommonFieldVo {
     private Boolean notNull;
 
 
+    @ApiModelProperty(value = "数据选项(数据类型为下拉框，则存储json串作为选项)")
+    private String dataOptions;
+
     @ApiModelProperty(value = "字段是否在页面查询 1.是 0.否")
     private Boolean query;
 

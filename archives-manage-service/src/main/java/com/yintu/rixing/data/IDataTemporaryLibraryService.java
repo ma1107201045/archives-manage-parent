@@ -1,6 +1,7 @@
 package com.yintu.rixing.data;
 
 import com.yintu.rixing.dto.data.DataCommonFormDto;
+import com.yintu.rixing.dto.data.DataCommonMarkDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,4 +42,12 @@ public interface IDataTemporaryLibraryService {
 
     void exportExcelRecordFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException;
 
+    //简单查询
+    DataCommonVo getPageEasy(DataCommonQueryDto dataCommonPageDto);
+
+    //高级查询
+    DataCommonVo getPageComplex(DataCommonQueryDto dataCommonPageDto);
+
+    //设为病档
+    void mark(DataCommonMarkDto dataCommonMarkDto);
 }

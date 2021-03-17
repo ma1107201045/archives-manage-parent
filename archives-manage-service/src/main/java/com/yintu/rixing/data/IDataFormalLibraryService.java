@@ -1,7 +1,9 @@
 package com.yintu.rixing.data;
 
 import com.yintu.rixing.dto.data.DataCommonFormDto;
+import com.yintu.rixing.dto.data.DataCommonMarkDto;
 import com.yintu.rixing.dto.data.DataCommonQueryDto;
+import com.yintu.rixing.dto.data.DataCommonRollBackDto;
 import com.yintu.rixing.vo.data.DataCommonVo;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,4 +43,13 @@ public interface IDataFormalLibraryService {
     DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
 
     void exportExcelRecordFile(HttpServletResponse response, String fileName, Set<Integer> ids, Integer archivesLibraryId) throws IOException;
+
+    //简单查询
+    DataCommonVo getPageEasy(DataCommonQueryDto queryDto);
+    //高级查询
+    DataCommonVo getPageComplex(DataCommonQueryDto queryDto);
+    //标记/取消病档
+    void mark(DataCommonMarkDto dataCommonMarkDto);
+    //回退
+    void rollBack(DataCommonRollBackDto dataCommonRollBackDto);
 }

@@ -13,4 +13,6 @@ public class DataCommonKV {
     private String fieldName;
 
     private Object fieldValue;
+
+    private int link;
 }

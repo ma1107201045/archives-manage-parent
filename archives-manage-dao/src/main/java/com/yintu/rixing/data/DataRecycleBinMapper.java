@@ -29,4 +29,9 @@ public interface DataRecycleBinMapper {
     Map<String, Object> selectByPrimaryKey(DataCommon dataCommon);
 
     Page<Map<String, Object>> selectPage(Page<Map<String, Object>> page, DataCommon dataCommon);
+
+    //普通搜索
+    Page<Map<String, Object>> selectPageEasy(Page<Map<String, Object>> page,DataCommonKV statusField, DataCommon dataCommon);
+    //高级搜索
+    Page<Map<String, Object>> selectPageComplex(Page<Map<String, Object>> page, DataCommon dataCommon);
 }

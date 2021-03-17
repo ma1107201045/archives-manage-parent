@@ -121,4 +121,22 @@ public class Data04RecycleBinController extends Authenticator {
         List<SysDepartment> sysDepartments = iSysDepartmentService.list(new QueryWrapper<SysDepartment>().orderByDesc("id"));
         return ResultDataUtil.ok("查询回收站组织机构列表信息成功", sysDepartments);
     }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "普通搜索回收站列表信息")
+    @GetMapping("/findPage")
+    @ApiOperation(value = "普通搜索回收站列表信息", notes = "普通搜索回收站列表信息")
+    @ApiOperationSupport(order = 7)
+    public ResultDataUtil<DataCommonVo> findPageEasy(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataRecycleBinService.getPageEasy(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询回收站列表信息成功", dataCommonVo);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "高级搜索回收站列表信息")
+    @PostMapping("/findPage")
+    @ApiOperation(value = "高级搜索回收站列表信息", notes = "高级搜索回收站列表信息")
+    @ApiOperationSupport(order = 8)
+    public ResultDataUtil<DataCommonVo> findPageComplex(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataRecycleBinService.getPageComplex(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询回收站列表信息成功", dataCommonVo);
+    }
 }

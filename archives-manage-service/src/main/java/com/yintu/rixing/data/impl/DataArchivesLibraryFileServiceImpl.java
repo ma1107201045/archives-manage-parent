@@ -65,7 +65,7 @@ public class DataArchivesLibraryFileServiceImpl extends ServiceImpl<DataArchives
             dataArchivesLibraryFile.setRequestMapping(requestMapping);
             dataArchivesLibraryFile.setContext(FileParseUtil.parse(path + File.separator + name));
             //dataArchivesLibraryFile.setPage(FilePageUtil.getPage(requestMapping));
-            dataArchivesLibraryFile.setPage(null);
+            dataArchivesLibraryFile.setPage(0);
             dataArchivesLibraryFile.setFormalLibrary(EnumFlag.False.getValue());
             dataArchivesLibraryFiles.add(dataArchivesLibraryFile);
         }

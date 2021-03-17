@@ -5,18 +5,22 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.dto.archives.ArchCommonQueryDto;
+import com.yintu.rixing.dto.archives.ArchivesStatsQueryDto;
 import com.yintu.rixing.enumobject.EnumLogLevel;
 import com.yintu.rixing.system.ISysDepartmentService;
 import com.yintu.rixing.system.SysDepartment;
 import com.yintu.rixing.util.ResultDataUtil;
 import com.yintu.rixing.vo.archives.ArchArchivesQuantityStatisticsDataVo;
 import com.yintu.rixing.vo.archives.ArchCommonVo;
+import com.yintu.rixing.vo.archives.ArchivesCommonVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -61,6 +65,23 @@ public class Arch04ArchivesQuantityStatisticsController {
     public ResultDataUtil<ArchArchivesQuantityStatisticsDataVo> getArchArchivesQuantityStatisticsData(@Validated ArchCommonQueryDto archCommonQueryDto) {
         ArchArchivesQuantityStatisticsDataVo archArchivesQuantityStatisticsDataVo = iArchQuantityStatisticsService.findArchArchivesQuantityStatisticsData(archCommonQueryDto);
         return ResultDataUtil.ok("查询档案数量统计-数据成功", archArchivesQuantityStatisticsDataVo);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "档案统计", context = "查询馆藏档案统计-数据")
+    @PostMapping("/data-info")
+    @ApiOperation(value = "查询馆藏档案统计-数据", notes = "查询馆藏档案统计-数据")
+    @ApiOperationSupport(order = 4)
+    public ResultDataUtil<List<ArchivesCommonVo>> getDataInfo(@Validated ArchivesStatsQueryDto archivesStatsQueryDto) {
+        List<ArchivesCommonVo> archivesInfo = iArchQuantityStatisticsService.findArchivesInfo(archivesStatsQueryDto);
+        return ResultDataUtil.ok("查询馆藏档案统计-数据成功", archivesInfo);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "档案统计", context = "导出馆藏档案统计数据")
+    @GetMapping("/export-data")
+    @ApiOperation(value = "导出馆藏档案统计数据", notes = "导出馆藏档案统计数据")
+    @ApiOperationSupport(order = 5)
+    public void exportExcel(HttpServletResponse response, @Validated ArchivesStatsQueryDto archivesStatsQueryDto) throws IOException {
+        iArchQuantityStatisticsService.exportExcel(response,archivesStatsQueryDto);
     }
 
 }

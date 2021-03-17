@@ -110,4 +110,22 @@ public class Data05DestructionLibraryController extends Authenticator {
         return ResultDataUtil.ok("查询销毁库组织机构列表信息成功", sysDepartments);
     }
 
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "普通搜索销毁库列表信息")
+    @GetMapping("/findPage")
+    @ApiOperation(value = "普通搜索销毁库列表信息", notes = "普通搜索销毁库列表信息")
+    @ApiOperationSupport(order = 6)
+    public ResultDataUtil<DataCommonVo> findPageEasy(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = dataDestructionLibraryService.getPageEasy(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询销毁库列表信息成功", dataCommonVo);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "高级搜索销毁库列表信息")
+    @PostMapping("/findPage")
+    @ApiOperation(value = "高级搜索销毁库列表信息", notes = "高级搜索销毁库列表信息")
+    @ApiOperationSupport(order = 7)
+    public ResultDataUtil<DataCommonVo> findPageComplex(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = dataDestructionLibraryService.getPageComplex(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询销毁库列表信息成功", dataCommonVo);
+    }
+
 }

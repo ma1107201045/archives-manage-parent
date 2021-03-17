@@ -24,4 +24,9 @@ public interface IDataDestructionLibraryService {
     Map<String, Object> getById(Integer id, Integer archivesLibraryId);
 
     DataCommonVo getPage(DataCommonQueryDto dataCommonPageDto);
+
+    //简单查询
+    DataCommonVo getPageEasy(DataCommonQueryDto queryDto);
+    //高级查询
+    DataCommonVo getPageComplex(DataCommonQueryDto queryDto);
 }

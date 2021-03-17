@@ -100,4 +100,78 @@ public class DataRecycleBinServiceImpl extends DataCommonService implements IDat
         return dataCommonVo;
     }
 
+    /**
+     * 普通搜索
+     * @param dataCommonPageDto
+     * @return
+     */
+    @Override
+    public DataCommonVo getPageEasy(DataCommonQueryDto dataCommonPageDto) {
+        DataCommon dataCommon = this.page(dataCommonPageDto);
+        DataCommonKV statusField = this.getStatusField(EnumArchivesOrder.RECYCLE_BIN.getValue());
+        Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
+        Integer num = dataCommonPageDto.getNum();
+        Integer size = dataCommonPageDto.getSize();
+        DataCommonVo dataCommonVo = new DataCommonVo();
+        List<DataCommonFieldVo> dataCommonFieldVos = this.getDataCommonFieldVos(archivesLibraryId);
+        if(dataCommonFieldVos.size()>0){
+            for (DataCommonFieldVo dataCommonFieldVo : dataCommonFieldVos) {
+                if(dataCommonFieldVo.getQuery()){
+                    DataCommonKV dataCommonKV = new DataCommonKV();
+                    dataCommonKV.setFieldName(dataCommonFieldVo.getProp());
+                    String keyword = dataCommonPageDto.getParams().get("keyword");
+                    if(keyword == null){
+                        keyword = "";
+                    }
+                    dataCommonKV.setFieldValue(keyword.trim());
+                    dataCommon.getDataCommonKVs().add(dataCommonKV);
+                }
+            }
+        }
+        Page<Map<String, Object>> page = this.dataRecycleBinMapper.selectPageEasy(new Page<>(num, size),statusField, dataCommon);
+        //特殊字段需要处理
+        page.getRecords().forEach(map -> {
+            String dataKey = EnumArchivesLibraryDefaultField.DEPARTMENT_ID.getDataKey();
+            if (map.containsKey(dataKey)) {
+                Integer departmentId = (Integer) map.get(dataKey);
+                SysDepartment sysDepartment = iSysDepartmentService.getById(departmentId);
+                map.put(dataKey, sysDepartment.getName());
+            }
+        });
+        dataCommonVo.setFields(dataCommonFieldVos);
+        dataCommonVo.setPage(page);
+        return dataCommonVo;
+    }
+
+
+    /**
+     * 高级搜索
+     * @param dataCommonPageDto
+     * @return
+     */
+    @Override
+    public DataCommonVo getPageComplex(DataCommonQueryDto dataCommonPageDto) {
+        DataCommon dataCommon = this.pageComplex(dataCommonPageDto);
+        dataCommon.getDataCommonKVs().add(this.getStatusField(EnumArchivesOrder.RECYCLE_BIN.getValue()));
+        Integer archivesLibraryId = dataCommonPageDto.getArchivesLibraryId();
+        Integer num = dataCommonPageDto.getNum();
+        Integer size = dataCommonPageDto.getSize();
+
+        DataCommonVo dataCommonVo = new DataCommonVo();
+        List<DataCommonFieldVo> dataCommonFieldVos = this.getDataCommonFieldVos(archivesLibraryId);
+        Page<Map<String, Object>> page = this.dataRecycleBinMapper.selectPageComplex(new Page<>(num, size), dataCommon);
+        //特殊字段需要处理
+        page.getRecords().forEach(map -> {
+            String dataKey = EnumArchivesLibraryDefaultField.DEPARTMENT_ID.getDataKey();
+            if (map.containsKey(dataKey)) {
+                Integer departmentId = (Integer) map.get(dataKey);
+                SysDepartment sysDepartment = iSysDepartmentService.getById(departmentId);
+                map.put(dataKey, sysDepartment.getName());
+            }
+        });
+        dataCommonVo.setFields(dataCommonFieldVos);
+        dataCommonVo.setPage(page);
+        return dataCommonVo;
+    }
+
 }

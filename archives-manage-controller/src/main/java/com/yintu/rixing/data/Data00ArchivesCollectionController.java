@@ -6,6 +6,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.yintu.rixing.annotation.Log;
 import com.yintu.rixing.config.other.Authenticator;
+import com.yintu.rixing.dto.data.DataCommonQueryDto;
 import com.yintu.rixing.enumobject.EnumArchivesOrder;
 import com.yintu.rixing.enumobject.EnumAuthType;
 import com.yintu.rixing.enumobject.EnumLogLevel;
@@ -90,7 +91,7 @@ public class Data00ArchivesCollectionController extends Authenticator {
     @ApiOperation(value = "下载档案收集信息模板", notes = "下载档案收集信息模板")
     @ApiOperationSupport(order = 4)
     public void exportExcelTemplateFile(HttpServletResponse response, @RequestParam Integer archivesLibraryId) throws IOException {
-        iDataTemporaryLibraryService.exportExcelTemplateFile(response, EnumArchivesOrder.ARCHIVES_COLLECTION.getName(), archivesLibraryId);
+        iDataTemporaryLibraryService.exportExcelTemplateFile(response, EnumArchivesOrder.TEMPORARY_LIBRARY.getName(), archivesLibraryId);
     }
 
     @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "批量导入档案收集信息")
@@ -103,7 +104,25 @@ public class Data00ArchivesCollectionController extends Authenticator {
     @ApiOperationSupport(order = 5)
     public ResultDataUtil<Object> importExcelData(@RequestParam("file") MultipartFile multipartFile, @RequestParam Integer archivesLibraryId) throws IOException {
         iDataTemporaryLibraryService.importExcelRecord(multipartFile, archivesLibraryId);
-        return ResultDataUtil.ok("批量导入档案收集信息成功");
+        return ResultDataUtil.ok("批量导入临时库信息成功");
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "普通搜索临时库列表信息")
+    @GetMapping("/findPage")
+    @ApiOperation(value = "普通搜索档案收集列表信息", notes = "普通搜索档案收集列表信息")
+    @ApiOperationSupport(order = 6)
+    public ResultDataUtil<DataCommonVo> findPageEasy(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPageEasy(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询档案收集列表信息成功", dataCommonVo);
+    }
+
+    @Log(level = EnumLogLevel.TRACE, module = "数据中心", context = "高级搜索临时库列表信息")
+    @PostMapping("/findPage")
+    @ApiOperation(value = "高级搜索档案收集列表信息", notes = "高级搜索档案收集列表信息")
+    @ApiOperationSupport(order = 7)
+    public ResultDataUtil<DataCommonVo> findPageComplex(@RequestParam Map<String, String> params) {
+        DataCommonVo dataCommonVo = iDataTemporaryLibraryService.getPageComplex(ObjectConvertUtil.getQueryDto(params));
+        return ResultDataUtil.ok("查询档案收集列表信息成功", dataCommonVo);
     }
 
 }

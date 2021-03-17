@@ -1,9 +1,12 @@
 package com.yintu.rixing.archives;
 
 import com.yintu.rixing.dto.archives.ArchCommonQueryDto;
+import com.yintu.rixing.dto.archives.ArchivesStatsQueryDto;
 import com.yintu.rixing.vo.archives.ArchCommonVo;
 import com.yintu.rixing.vo.archives.ArchUsingPurposeStatisticsDataVo;
+import com.yintu.rixing.vo.archives.ArchivesCommonVo;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -27,4 +30,20 @@ public interface IArchUsingPurposeStatisticsService {
      * @return 统计值集
      */
     ArchUsingPurposeStatisticsDataVo findArchUsingPurposeStatisticsData(ArchCommonQueryDto archCommonQueryDto);
+
+    /**
+     * 查询档案利用统计数据
+     * @param archivesStatsQueryDto
+     * @return
+     */
+    List<ArchivesCommonVo> findArchivesInfo(ArchivesStatsQueryDto archivesStatsQueryDto);
+
+    /**
+     * 导出档案利用统计数据
+     * @param response
+     * @param archivesStatsQueryDto
+     */
+    void exportExcel(HttpServletResponse response, ArchivesStatsQueryDto archivesStatsQueryDto);
+
+
 }

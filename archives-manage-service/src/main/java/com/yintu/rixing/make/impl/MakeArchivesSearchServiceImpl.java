@@ -258,7 +258,7 @@ public class MakeArchivesSearchServiceImpl implements IMakeArchivesSearchService
             makeArchivesSearchVo.setArchivesLibName(sysArchivesLibrary.getName());
             Map<String, Object> map = iDataFormalLibraryService.getById(archivesDirectoryId, archivesLibId);
             if (map != null) {
-                makeArchivesSearchVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
+                makeArchivesSearchVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_CODE.getDataKey()));
                 makeArchivesSearchVo.setArchivesDirectoryTopicName((String) map.get(EnumArchivesLibraryDefaultField.TOPIC_NAME.getDataKey()));
                 makeArchivesSearchVo.setArchivesDirectoryRetentionPeriod(map.get(EnumArchivesLibraryDefaultField.RETENTION_PERIOD.getDataKey()));
                 makeArchivesSearchVo.setArchivesDirectoryValidPeriod(map.get(EnumArchivesLibraryDefaultField.VALID_PERIOD.getDataKey()));

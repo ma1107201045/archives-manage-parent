@@ -82,7 +82,7 @@ public class InxLocalAndRemoteBorrowApplyAndInformServiceImpl implements IInxLoc
                 String originalName = dataArchivesLibraryFile.getOriginalName();
                 commMap = iDataFormalLibraryService.getById(dataId, archivesLibraryId);
                 if (commMap != null) {
-                    inxLocalOrRemoteBorrowApplyVo.setArchivesNumber((String) commMap.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
+                    inxLocalOrRemoteBorrowApplyVo.setArchivesNumber((String) commMap.get(EnumArchivesLibraryDefaultField.ARCHIVES_CODE.getDataKey()));
                 }
                 inxLocalOrRemoteBorrowApplyVo.setArchivesName(originalName);
             } else {

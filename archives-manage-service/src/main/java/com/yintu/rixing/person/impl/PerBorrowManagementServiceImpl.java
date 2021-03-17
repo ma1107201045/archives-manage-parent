@@ -70,7 +70,7 @@ public class PerBorrowManagementServiceImpl implements IPerBorrowManagementServi
                     Integer dataId = dataArchivesLibraryFile.getDataId();
                     Map<String, Object> map = iDataFormalLibraryService.getById(dataId, archivesLibraryId);
                     if (map != null) {
-                        makeBorrowVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey()));
+                        makeBorrowVo.setArchivesDirectoryNum((String) map.get(EnumArchivesLibraryDefaultField.ARCHIVES_CODE.getDataKey()));
                     }
                 }
             } else { //实体借阅

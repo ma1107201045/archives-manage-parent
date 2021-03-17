@@ -1,6 +1,7 @@
 package com.yintu.rixing.system;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yintu.rixing.data.DataCommonKV;
 import com.yintu.rixing.dto.system.SysArchivesLibraryNumberSettingDto;
 
 import java.util.List;
@@ -30,4 +31,11 @@ public interface ISysArchivesLibraryNumberSettingService extends IService<SysArc
      */
     List<SysArchivesLibraryNumberSettingDto> findByArchivesLibraryId(Integer archivesLibraryId);
 
+    /**
+     * 档号生成
+     * @param id 档案库id
+     * @param dataCommonKVS 字段信息
+     * @return
+     */
+    String createArchivesCode(int id, List<DataCommonKV> dataCommonKVS);
 }

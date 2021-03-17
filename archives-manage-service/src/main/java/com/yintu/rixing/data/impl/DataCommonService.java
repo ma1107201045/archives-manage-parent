@@ -7,6 +7,7 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
+import com.alibaba.fastjson.JSON;
 import com.yintu.rixing.data.DataCommonKV;
 import com.yintu.rixing.data.DataCommon;
 import com.yintu.rixing.data.DataCommonMapper;
@@ -34,6 +35,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.yintu.rixing.enumobject.EnumArchivesLibraryDefaultField.ARCHIVES_CODE;
+
 /**
  * @Author: mlf
  * @Date: 2021/1/18 18:35:49
@@ -56,6 +59,8 @@ public class DataCommonService {
     protected ISysArchivesLibraryFieldService iSysArchivesLibraryFieldService;
     @Autowired
     protected ISysDepartmentService iSysDepartmentService;
+    @Autowired
+    private ISysArchivesLibraryNumberSettingService iSysArchivesLibraryNumberSettingService;
 
     protected DataCommon saveOrUpdateHandler(DataCommonFormDto dataCommonFormDto) {
         Integer archivesLibraryId = dataCommonFormDto.getArchivesLibraryId();
@@ -65,16 +70,26 @@ public class DataCommonService {
         List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndForm(archivesLibraryId);
         Map<String, String> params = dataCommonFormDto.getParams();
         List<DataCommonKV> dataCommonKVS = new ArrayList<>(this.getDefaultFields(id));
+        boolean flag = false;
+        boolean codeFlag = false;
         for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
+
             String name = sysArchivesLibraryField.getName();
             String dataKey = sysArchivesLibraryField.getDataKey();
             Integer dataType = sysArchivesLibraryField.getSysDataType().getId();
             Integer length = sysArchivesLibraryField.getLength();
             Short required = sysArchivesLibraryField.getRequired();
             String value = params.get(dataKey);
+            if(ARCHIVES_CODE.getDataKey().equalsIgnoreCase(sysArchivesLibraryField.getDataKey())){
+                flag = true;
+                if(value != null && !value.isEmpty()){
+                    codeFlag = true;
+                }
+            }else{
+                if (required == 1 && (value == null || value.isEmpty()))
+                    throw new BaseRuntimeException(name + "不能为空");
+            }
             Object newValue = value;
-            if (required == 1 && (value == null || value.isEmpty()))
-                throw new BaseRuntimeException(name + "不能为空");
             switch (EnumDataType.get(dataType)) {
                 case VARCHAR:
                 case TEXT:
@@ -91,22 +106,49 @@ public class DataCommonService {
                     newValue = Integer.valueOf(value);
                     break;
                 case DATETIME:
-                    if ("".equals(value))
+                    if ("".equals(value) || "null".equalsIgnoreCase(value))
                         newValue = null;
                     else
                         newValue = DateUtil.parseDateTime(value);
                     break;
                 case DATE:
-                    if ("".equals(value))
+                    if ("".equals(value) || "null".equalsIgnoreCase(value))
                         newValue = null;
                     else
                         newValue = DateUtil.parseDate(value);
                     break;
+                case DROPDOWNLIST:
+                    break;
+                default:
+                    break;
             }
+
+
             DataCommonKV dataCommonKV = new DataCommonKV();
             dataCommonKV.setFieldName(dataKey);
             dataCommonKV.setFieldValue(newValue);
             dataCommonKVS.add(dataCommonKV);
+
+        }
+        if(!flag){
+            for (int i = 0; i < dataCommonKVS.size(); i++) {
+                if(ARCHIVES_CODE.getDataKey().equalsIgnoreCase(dataCommonKVS.get(i).getFieldName())){
+                    dataCommonKVS.remove(i);
+                    i--;
+                }
+            }
+        }else{
+            if(id == null || id <= 0){
+                if(!codeFlag){
+                    String archivesCode = iSysArchivesLibraryNumberSettingService.createArchivesCode(archivesLibraryId, dataCommonKVS);
+                    for (DataCommonKV dataCommonKV : dataCommonKVS) {
+                        if(dataCommonKV.getFieldName().equalsIgnoreCase(ARCHIVES_CODE.getDataKey())){
+                            dataCommonKV.setFieldValue(archivesCode);
+                            break;
+                        }
+                    }
+                }
+            }
         }
         DataCommon dataCommon = new DataCommon();
         String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
@@ -127,13 +169,13 @@ public class DataCommonService {
             dataCommonKV2.setFieldName(EnumArchivesLibraryDefaultField.CREATE_TIME.getDataKey());
             dataCommonKV2.setFieldValue(DateUtil.date());
 
-            DataCommonKV dataCommonKV = new DataCommonKV();
-            dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.ARCHIVES_NUM.getDataKey());
-            dataCommonKV.setFieldValue("DH-" + UUID.randomUUID().toString(true).substring(0, 5));
+//            DataCommonKV dataCommonKV = new DataCommonKV();
+//            dataCommonKV.setFieldName(EnumArchivesLibraryDefaultField.ARCHIVES_CODE.getDataKey());
+//            dataCommonKV.setFieldValue("DH-" + UUID.randomUUID().toString(true).substring(0, 5));
 
             dataCommonKVS.add(dataCommonKV1);
             dataCommonKVS.add(dataCommonKV2);
-            dataCommonKVS.add(dataCommonKV);
+//            dataCommonKVS.add(dataCommonKV);
         }
         DataCommonKV dataCommonKV3 = new DataCommonKV();
         dataCommonKV3.setFieldName(EnumArchivesLibraryDefaultField.MODIFIED_BY.getDataKey());
@@ -240,7 +282,7 @@ public class DataCommonService {
                 Integer dataType = sysArchivesLibraryField.getSysDataType().getId();
                 Integer length = sysArchivesLibraryField.getLength();
                 Short required = sysArchivesLibraryField.getRequired();
-                String value = (String) record.get(name);
+                String value = record.get(name) == null ? "" : String.valueOf(record.get(name));
                 if (required == 1 && (value == null || value.isEmpty())) {
                     throw new BaseRuntimeException(name + "不能为空");
                 }
@@ -280,7 +322,7 @@ public class DataCommonService {
                 }
                 DataCommonKV dataCommon = new DataCommonKV();
                 dataCommon.setFieldName(dataKey);
-                dataCommon.setFieldValue(newValue);
+                dataCommon.setFieldValue(newValue == null ? "" : newValue);
                 dataCommons.add(dataCommon);
             }
             lists.add(dataCommons);
@@ -311,14 +353,17 @@ public class DataCommonService {
             Integer fieldTypeId = sysTemplateLibraryFieldType.getId();
             String fieldTypeDataKey = sysTemplateLibraryFieldType.getDataKey();
             String fieldTypeName = sysTemplateLibraryFieldType.getName();
+            String dataOptions = sysArchivesLibraryField.getDataOptions();
 
             Short query = sysArchivesLibraryField.getQuery();
             Short title = sysArchivesLibraryField.getTitle();
             Short form = sysArchivesLibraryField.getForm();
 
+
             DataCommonFieldVo dataCommonTitleVo = new DataCommonFieldVo();
             dataCommonTitleVo.setProp(dataKey);
             dataCommonTitleVo.setLabel(name);
+            dataCommonTitleVo.setDataOptions(dataOptions);
 
             dataCommonTitleVo.setTypeId(fieldTypeId);
             dataCommonTitleVo.setTypeProp(fieldTypeDataKey);
@@ -384,6 +429,112 @@ public class DataCommonService {
         excelWriter.close();
         IoUtil.close(out);
     }
+
+
+    /**
+     * 高级搜索
+     * @param dataCommonQueryDto
+     * @return
+     */
+    protected DataCommon pageComplex(DataCommonQueryDto dataCommonQueryDto) {
+        Integer archivesLibraryId = dataCommonQueryDto.getArchivesLibraryId();
+        SysArchivesLibrary sysArchivesLibrary = this.iSysArchivesLibraryService.getById(archivesLibraryId);
+        AssertUtil.notNull(sysArchivesLibrary, "档案库不能为空");
+        List<SysArchivesLibraryField> sysArchivesLibraryFields = iSysArchivesLibraryFieldService.listByArchivesLibraryIdAndQuery(archivesLibraryId);
+        Map<String, String> params = dataCommonQueryDto.getParams();
+        String search = dataCommonQueryDto.getParams().get("search");
+        List<DataCommonKV> dataCommonKVS = new ArrayList<>();
+        if (search != null && search.length() > 0) {
+            List<Map> paramArray = JSON.parseObject(search, List.class);
+            if (paramArray.size() > 0) {
+                for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
+                    String dataKey = sysArchivesLibraryField.getDataKey();
+                    Integer dataType = sysArchivesLibraryField.getSysDataType().getId();
+                    for (Map<String, String> map : paramArray) {
+                        String name = map.get("name");
+                        if (!dataKey.equals(name)) {
+                            continue;
+                        }
+                        String value = map.get("value");
+                        if (value == null || "".equals(value)) {
+                            continue;
+                        }
+                        Object newValue = value;
+                        switch (EnumDataType.get(dataType)) {
+                            case VARCHAR:
+                            case TEXT:
+                                break;
+                            case TINYINT:
+                                newValue = Byte.valueOf(value);
+                                break;
+                            case SMALLINT:
+                                newValue = Short.valueOf(value);
+                                break;
+                            case INT:
+                                newValue = Integer.valueOf(value);
+                                break;
+                            case DATETIME:
+                                newValue = DateUtil.parseDateTime(value);
+                                break;
+                            case DATE:
+                                newValue = DateUtil.parseDate(value);
+                                break;
+                            default:
+                                break;
+                        }
+                        DataCommonKV dataCommonKV = new DataCommonKV();
+                        dataCommonKV.setFieldName(dataKey);
+                        dataCommonKV.setFieldValue(newValue);
+                        dataCommonKV.setLink(Integer.valueOf(map.get("link")));
+                        dataCommonKVS.add(dataCommonKV);
+                    }
+                }
+            }
+        } else {
+            for (SysArchivesLibraryField sysArchivesLibraryField : sysArchivesLibraryFields) {
+                String dataKey = sysArchivesLibraryField.getDataKey();
+                Integer dataType = sysArchivesLibraryField.getSysDataType().getId();
+                String value = params.get(dataKey);
+                if (value == null || "".equals(value)) {
+                    continue;
+                }
+                Object newValue = value;
+                switch (EnumDataType.get(dataType)) {
+                    case VARCHAR:
+                    case TEXT:
+                        break;
+                    case TINYINT:
+                        newValue = Byte.valueOf(value);
+                        break;
+                    case SMALLINT:
+                        newValue = Short.valueOf(value);
+                        break;
+                    case INT:
+                        newValue = Integer.valueOf(value);
+                        break;
+                    case DATETIME:
+                        newValue = DateUtil.parseDateTime(value);
+                        break;
+                    case DATE:
+                        newValue = DateUtil.parseDate(value);
+                        break;
+                    default:
+                        break;
+                }
+                DataCommonKV dataCommonKV = new DataCommonKV();
+                dataCommonKV.setFieldName(dataKey);
+                dataCommonKV.setFieldValue(newValue);
+                dataCommonKVS.add(dataCommonKV);
+            }
+        }
+
+        DataCommon dataCommon = new DataCommon();
+        String tableName = TableNameUtil.getFullTableName(sysArchivesLibrary.getDataKey());
+        dataCommon.setTableName(tableName);
+        dataCommon.setDataCommonKVs(dataCommonKVS);
+        return dataCommon;
+    }
+
 
 
 }
